@@ -23,7 +23,7 @@ This is a library for AFQMC.
 
   It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
 
-            cmake .. -DPLATFORM=platform
+            cmake .. -DPLATFORM=platform -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
 - If nothing works for these platforms, set everything manually:
 
