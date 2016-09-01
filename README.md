@@ -27,8 +27,21 @@ This is a library for AFQMC.
 
 - If nothing works for these platforms, set everything manually:
 
-            cmake .. -DPLATFORM=MANUAL
+            cmake .. -DPLATFORM=MANUAL args
 
-this is a test
+  args can be
 
-`<addr>`
+            -DCMAKE_CXX_COMPILER=mpic++
+            -DMPIEXEC=mpiexec
+            -DMPIEXEC_NUMPROC_FLAG=np
+            -DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO"
+            -DCMAKE_CXX_FLAGS="-Wall -O3"
+            -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+
+  For examples, serial manual looks like:
+
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+
+  MPI manual looks like:
+
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DDMPIEXEC_NUMPROC_FLAG=np -DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO" -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"

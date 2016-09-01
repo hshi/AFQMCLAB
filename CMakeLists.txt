@@ -8,6 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 set(PLATFORM "DEFUALT" CACHE STRING "The platform to be run.")
 include("PLATFORM_${PLATFORM}")
 
+#For flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message("${PLATFORM}")
