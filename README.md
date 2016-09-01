@@ -3,19 +3,32 @@
 This is a library for AFQMC.
 
 
-How to use:
-<ol>
-<li> git clone https://github.com/hshi/AFQMCLIB.git </li>
-<li> cd AFQMCLIB </li>
-<li> mkdir build </li>
-<li> cd build </li>
-<li> cmake ..   (More detals below) </li>
-<li> make </li>
-<li> make test </li>
-<li> make install </li>
-</ol>
+##How to use:
+    git clone https://github.com/hshi/AFQMCLIB.git
+    cd AFQMCLIB
+    mkdir build
+    cd build
+    cmake ..
+    make
+    make test
+    make install
 
-More detals about cmake:
-1. Set install directory:  cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/gtest"
-2. If defualt setting not working, change platform:  cmake .. -DPLATFORM=platform   (platform can be STORM, HURRIANCE, COMET...)
-3. If not platform working, set by hand:
+
+##Tune cmake
+- Set install directory to ~/lib/afqmclib.
+
+            cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+
+- If defualt setting not working, change to different platform.
+
+  It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
+
+            cmake .. -DPLATFORM=platform
+
+- If nothing works for these platforms, set everything manually:
+
+            cmake .. -DPLATFORM=MANUAL
+
+this is a test
+
+`<addr>`
