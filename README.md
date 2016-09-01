@@ -31,12 +31,12 @@ This is a library for AFQMC.
 
   args can be
 
-            -DCMAKE_CXX_COMPILER=mpic++
-            -DMPIEXEC=mpiexec
-            -DMPIEXEC_NUMPROC_FLAG=np
-            -DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO"
-            -DCMAKE_CXX_FLAGS="-Wall -O3"
-            -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+  - Set cxx compiler: `-DCMAKE_CXX_COMPILER=mpic++`
+  - (Only if we are using MPI) Set mpi executable: `-DMPIEXEC=mpiexec`
+  - (Only if we are using MPI) Set mpi number of process flag: `-DMPIEXEC_NUMPROC_FLAG=np`
+  - (Only if we are using MPI) Set MPI flag: `-DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO"`
+  - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3"`
+  - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
 
   For examples, serial manual looks like:
 
