@@ -2,6 +2,9 @@
 
 This is a library for AFQMC.
 
+##Dependence
+
+This code depends on fftw, ...
 
 ##How to use:
     git clone https://github.com/hshi/AFQMCLIB.git
