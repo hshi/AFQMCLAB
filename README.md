@@ -47,4 +47,4 @@ This code depends on fftw, ...
 
   MPI manual looks like:
 
-            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DDMPIEXEC_NUMPROC_FLAG="-np" -DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO" -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DCOMPILER_EXTRA_DEF:STRING="-DMPI_HAO" -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
