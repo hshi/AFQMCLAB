@@ -174,162 +174,110 @@ TEST(MPISum, complex_float)
 TEST(MPISum, complex_double)
 {
     complex<double> i    ={2.0, 3.0};
-    complex<double> size = MPISize();
+    double size = MPISize();
     complex<double> sum  = MPISum(i);
 
     if( MPIRank()==0 ) EXPECT_COMPLEXDOUBLE_EQ(i*size, sum);
 }
 
-#else
-
-#endif
-/*
-
- #ifdef MPI_HAO
-
-void MPISum_double_pointer_test()
-{   
-    double s[3]={2,3,5};
-    double r[3]={0,0,0};
-    MPISum(3,s,r);
-    
-    if(MPIRank()==0)
-    {
-        int flag=0;
-        for(int i=0; i<3; i++)
-        {   
-            if( abs( r[i]-s[i]*static_cast<double>(MPISize()) ) > 1e-12) flag++;
-        }
-        if(flag!=0) cout<<"Warning!!!!MPISum failed the double pointer test! rank: "<<0<<endl;
-    }
-    else
-    {
-        int flag=0;
-        for(int i=0; i<3; i++)
-        {   
-            if( abs( r[i] ) > 1e-12) flag++;
-        }
-       if(flag!=0) cout<<"Warning!!!!MPISum failed the double pointer test! rank: "<<MPIRank()<<endl;
-
-    }
- 
-}
-
-
-void MPISum_complex_double_pointer_test()
+TEST(MPISum, double_pointer)
 {
-    complex<double> s[3]={{2,3},{1,5},{7,8}};
-    complex<double> r[3]={{0,0},{0,0},{0,0}};
-    MPISum(3,s,r);
-    
-    if(MPIRank()==0)
-    {
-        int flag=0;
-        for(int i=0; i<3; i++)
-        {
-            if( abs( r[i]-s[i]*static_cast<double>(MPISize()) ) > 1e-12) flag++;
-        }
-        if(flag!=0) cout<<"Warning!!!!MPISum failed the complex double pointer test! rank: "<<0<<endl;
-    }
-    else
-    {
-        int flag=0;
-        for(int i=0; i<3; i++)
-        {
-            if( abs( r[i] ) > 1e-12) flag++;
-        }
-       if(flag!=0) cout<<"Warning!!!!MPISum failed the complex double pointer test! rank: "<<MPIRank()<<endl;
+    double s[3] = { 2.22, 3.860, 5.239 };
+    double expected[3] = {};
+    double actual[3] = {};
 
+    double size = MPISize();
+    for (int i = 0; i < 3; ++i)
+    {
+        expected[i] = s[i] * size;
     }
-   
+
+    MPISum( 3, s, actual );
+
+    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(3, expected , actual);
 }
 
 
-void MPIGather_double_test()
+TEST(MPISum, complexdouble_pointer)
+{
+    complex<double> s[3] = { {2.2, 3.0}, {3, 8.9}, {5.2, 7.111} };
+    complex<double> expected[3] = {};
+    complex<double> actual[3] = {};
+
+    double size = MPISize();
+    for (int i = 0; i < 3; ++i)
+    {
+        expected[i] = s[i] * size;
+    }
+
+    MPISum( 3, s, actual );
+
+    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(3, expected , actual);
+}
+
+
+TEST(MPIGather, double)
 {
     double i=MPIRank();
-    double* v= nullptr;
-    if(MPIRank()==0) v=new double[MPISize()];
-   
-    MPIGather(i,v);
-    if(MPIRank()==0) 
+    int size = MPISize();
+
+    double actual[size];
+    MPIGather(i,actual);
+
+    double expected[size];
+    for (int j = 0; j < size ; ++j)
     {
-        for(int index=0; index<MPISize(); index++) 
-        {
-            if(abs(v[index]-index)>1e-12) cout<<"Warning!!!!MPIGather failed the double test! index: "<<index<<endl;
-        }
+        expected[j] = j;
     }
-   
-    if(MPIRank()==0) delete[] v;
+
+    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(size, expected , actual);
 }
 
-void MPIGather_complex_double_test()
+
+TEST(MPIGather, complex_double)
 {
-    complex<double>  i={MPIRank()*1.0,MPIRank()*2.0};
-    complex<double>* v= nullptr;
-    if(MPIRank()==0) v=new complex<double>[MPISize()];
-    
-    MPIGather(i,v);
-    if(MPIRank()==0)
+    complex<double> i( MPIRank()*1.0, MPIRank()*2.0 );
+    int size = MPISize();
+
+    complex<double> actual[size];
+    MPIGather(i,actual);
+
+    complex<double> expected[size];
+    for (int j = 0; j < size ; ++j)
     {
-        for(int index=0; index<MPISize(); index++)
-        {
-            if(abs(v[index]-complex<double>(index*1.0,index*2.0))>1e-12)
-              cout<<"Warning!!!!MPIGather failed the complex double test! index: "<<index<<endl;
-        }
+        expected[j] = complex<double>( j, j*2.0 );
     }
-     
-    if(MPIRank()==0) delete[] v;
+
+    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(size, expected , actual);
 }
-
-void mpi_fun_test()
-{
-    MPIBcast_int_test();
-    MPIBcast_long_test();
-    MPIBcast_long_long_test();
-    MPIBcast_sizet_test();
-    MPIBcast_float_test();
-    MPIBcast_double_test();
-    MPIBcast_complex_float_test();
-    MPIBcast_complex_double_test();
-   
-    MPIBcast_int_pointer_test();
-    MPIBcast_double_pointer_test();
-    MPIBcast_complex_double_pointer_test();
-   
-    MPISum_int_test();
-    MPISum_long_test();
-    MPISum_long_long_test();
-    MPISum_float_test();
-    MPISum_double_test();
-    MPISum_complex_float_test();
-    MPISum_complex_double_test();
-
-    MPISum_double_pointer_test();
-    MPISum_complex_double_pointer_test();
-   
-    MPIGather_double_test();
-    MPIGather_complex_double_test();
-}
-
 #else
-void mpi_fun_test()
+
+TEST(MPIFun, serial)
 {
-    int flag;
     complex<double> buffer(1.9,2.3);
-    if(MPISize()!=1) cout<<"Warning!!!!MPISize failed the serial test!"<<endl;
-    if(MPIRank()!=0) cout<<"Warning!!!!MPIRank failed the serail test!"<<endl;
-   
+    complex<double> buffer_array[3] = { {1.2, 3.0}, {5.2, 1.0}, {7.0, 8.999} };
+
+    complex<double> expected = buffer;
+    complex<double> expected_array[3];
+    for(int i=0; i<3; i++) expected_array[i] = buffer_array[i];
+
+
+    //Test MPISzie and MPIRank
+    EXPECT_EQ( 1, MPISize() );
+    EXPECT_EQ( 0, MPIRank() );
+
+
+    //Test MPIBcast
     MPIBcast(buffer);
-    if( abs(buffer-complex<double>(1.9,2.3))>1e-12 ) cout<<"Warning!!!!MPIBcast failed the serial test!"<<endl;
-    if( abs(MPISum(buffer)-complex<double>(1.9,2.3))>1e-12 ) cout<<"Warning!!!!MPISum failed the serial test!"<<endl;
+    EXPECT_COMPLEXDOUBLE_EQ( expected, buffer );
+    MPIBcast(3, buffer_array);
+    EXPECT_POINTER_COMPLEXDOUBLE_EQ( 3, expected_array, buffer_array );
 
-    complex<double> a[3]={{2,3},{1,5},{7,8}};
-    complex<double> b[3]={};
-    MPISum(3,a,b);
-    flag=0; for(int i=0; i<3; i++) { if( abs(a[i]-b[i])>1e-12 ) flag++;}   
-    if(flag!=0) cout<<"Warning!!!!MPISum failed the serial pointer test!"<<endl;
+    //Test MPISum
+    buffer = MPISum(buffer);
+    EXPECT_COMPLEXDOUBLE_EQ( expected, buffer );
+    MPISum( 3, expected_array, buffer_array );
+    EXPECT_POINTER_COMPLEXDOUBLE_EQ( 3, expected_array, buffer_array );
 }
-#endif 
 
- */
+#endif

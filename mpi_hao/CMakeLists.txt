@@ -17,4 +17,4 @@ target_link_libraries(mpitest libgtest-main-hao ${GTEST_LIBRARIES} ${CMAKE_THREA
 
 target_include_directories(mpitest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_test(mpitest mpirun -np 4 mpitest)
+add_my_test(mpitest mpitest)

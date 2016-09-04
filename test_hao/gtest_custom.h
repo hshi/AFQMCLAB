@@ -34,4 +34,5 @@ void EXPECT_POINTER_EQ(size_t L,  T * expected, T * actual )
 void EXPECT_POINTER_DOUBLE_EQ(size_t L,  double * expected, double * actual );
 
 void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L,  std::complex<double> * expected, std::complex<double> * actual );
+
 #endif //AFQMCLIB_GTEST_CUSTOM_H
