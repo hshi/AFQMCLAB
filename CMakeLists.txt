@@ -24,4 +24,4 @@ find_package(GTest REQUIRED)
 add_subdirectory(test_hao)
 add_subdirectory(mpi_hao)
 add_subdirectory(time_hao)
-
+add_subdirectory(error_analysis)

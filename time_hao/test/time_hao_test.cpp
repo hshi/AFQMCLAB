@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gtest/gtest.h"
+#include "../../test_hao/gtest_custom.h"
 #include "../include/time_hao.h"
 
 TEST (Timer_hao, void_constructor)

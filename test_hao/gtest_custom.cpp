@@ -20,7 +20,7 @@ void EXPECT_COMPLEXDOUBLE_EQ (complex<double> expected, complex<double> actual)
     EXPECT_DOUBLE_EQ( expected.imag(), actual.imag() );
 }
 
-void EXPECT_POINTER_DOUBLE_EQ(size_t L,  double * expected, double * actual )
+void EXPECT_POINTER_DOUBLE_EQ(size_t L, const double *expected, const double *actual)
 {
     ::testing::AssertionResult results = ::testing::AssertionSuccess();
 
@@ -37,7 +37,7 @@ void EXPECT_POINTER_DOUBLE_EQ(size_t L,  double * expected, double * actual )
     EXPECT_TRUE( results );
 }
 
-void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L,  complex<double> * expected, complex<double> * actual )
+void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L, const complex<double> *expected, const complex<double> *actual)
 {
     ::testing::AssertionResult results = ::testing::AssertionSuccess();
 
@@ -52,4 +52,16 @@ void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L,  complex<double> * expected, comp
         }
     }
     EXPECT_TRUE( results );
+}
+
+void EXPECT_VECOTR_DOUBLE_EQ(const vector<double>& expected, const vector<double>& actual )
+{
+    EXPECT_EQ( expected.size(), actual.size() );
+    EXPECT_POINTER_DOUBLE_EQ( expected.size(), expected.data(), actual.data() );
+}
+
+void EXPECT_VECOTR_COMPLEXDOUBLE_EQ(const vector< complex<double> >& expected, const vector< complex<double> >& actual )
+{
+    EXPECT_EQ( expected.size(), actual.size() );
+    EXPECT_POINTER_COMPLEXDOUBLE_EQ( expected.size(), expected.data(), actual.data() );
 }

@@ -1,4 +1,4 @@
-#For souce
+#For source
 set(SOURCE_HEADERS include/mpi_fun.h)
 
 set(SOURCE_FILES source/mpi_fun.cpp)

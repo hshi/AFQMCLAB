@@ -1,4 +1,4 @@
-#For souce
+#For source
 set(SOURCE_HEADERS include/time_hao.h)
 
 set(SOURCE_FILES source/time_hao.cpp)

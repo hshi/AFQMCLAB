@@ -7,6 +7,7 @@
 
 #include <complex>
 #include <cmath>
+#include <vector>
 #include "gtest/gtest.h"
 
 void EXPECT_COMPLEXFLOAT_EQ (std::complex<float> expected, std::complex<float> actual);
@@ -14,7 +15,7 @@ void EXPECT_COMPLEXFLOAT_EQ (std::complex<float> expected, std::complex<float> a
 void EXPECT_COMPLEXDOUBLE_EQ (std::complex<double> expected, std::complex<double> actual);
 
 template<typename T>
-void EXPECT_POINTER_EQ(size_t L,  T * expected, T * actual )
+void EXPECT_POINTER_EQ(size_t L, const T *expected, const T *actual)
 {
     ::testing::AssertionResult results = ::testing::AssertionSuccess();
 
@@ -31,8 +32,18 @@ void EXPECT_POINTER_EQ(size_t L,  T * expected, T * actual )
     EXPECT_TRUE( results );
 }
 
-void EXPECT_POINTER_DOUBLE_EQ(size_t L,  double * expected, double * actual );
+void EXPECT_POINTER_DOUBLE_EQ(size_t L, const double *expected, const double *actual);
 
-void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L,  std::complex<double> * expected, std::complex<double> * actual );
+void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L, const std::complex<double> *expected, const std::complex<double> *actual);
+
+template<typename T>
+void EXPECT_VECOTR_EQ(const std::vector<T>& expected, const std::vector<T>& actual )
+{
+    EXPECT_EQ(expected, actual);
+}
+
+void EXPECT_VECOTR_DOUBLE_EQ(const std::vector<double>& expected, const std::vector<double>& actual );
+
+void EXPECT_VECOTR_COMPLEXDOUBLE_EQ(const std::vector< std::complex<double> >& expected, const std::vector< std::complex<double> >& actual );
 
 #endif //AFQMCLIB_GTEST_CUSTOM_H
