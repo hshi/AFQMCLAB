@@ -47,14 +47,14 @@ TEST (Timer_hao, end)
     timer.init();
 
     clock_t start_time = clock();
-    clock_t sec=1;
+    double sec=0.02;
     clock_t end_time = sec * CLOCKS_PER_SEC + start_time;
     while(clock() != end_time);
 
     timer.end();
 
     EXPECT_EQ(0, timer.timing_flag);
-    EXPECT_DOUBLE_EQ(1, timer.seconds);
+    EXPECT_DOUBLE_EQ(sec, timer.seconds);
 }
 
 TEST (Timer_hao, second_to_tm)

@@ -1,5 +1,5 @@
-#ifndef MPI_FUN_HAO_H
-#define MPI_FUN_HAO_H
+#ifndef AFQMCLIB_MPI_FUN_HAO_H
+#define AFQMCLIB_MPI_FUN_HAO_H
 #include <algorithm> 
 
 #ifdef MPI_HAO
