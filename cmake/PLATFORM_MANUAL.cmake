@@ -1,2 +1,4 @@
 #For definitions
-add_definitions(${COMPILER_EXTRA_DEF})
+if(USE_MPI)
+    add_definitions (-DMPI_HAO)
+endif()

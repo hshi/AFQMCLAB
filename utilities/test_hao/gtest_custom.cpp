@@ -16,8 +16,10 @@ void EXPECT_COMPLEXFLOAT_EQ (complex<float> expected, complex<float> actual)
 
 void EXPECT_COMPLEXDOUBLE_EQ (complex<double> expected, complex<double> actual)
 {
-    EXPECT_DOUBLE_EQ( expected.real(), actual.real() );
-    EXPECT_DOUBLE_EQ( expected.imag(), actual.imag() );
+//    EXPECT_DOUBLE_EQ( expected.real(), actual.real() );
+//    EXPECT_DOUBLE_EQ( expected.imag(), actual.imag() );
+    EXPECT_NEAR ( expected.real(), actual.real(), lit_double );
+    EXPECT_NEAR ( expected.imag(), actual.imag(), lit_double );
 }
 
 void EXPECT_POINTER_DOUBLE_EQ(size_t L, const double *expected, const double *actual)

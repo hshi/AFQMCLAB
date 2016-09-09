@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <complex>
-#include "../../mpi_hao/include/mpi_fun.h"
+#include "../../../utilities/mpi_hao/include/mpi_fun.h"
 
 //Calculate mean value and error bar between different thread
 //Send mean value to all the thread

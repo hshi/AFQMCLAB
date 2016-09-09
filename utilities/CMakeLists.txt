@@ -1,0 +1,3 @@
+add_subdirectory(test_hao)
+add_subdirectory(mpi_hao)
+add_subdirectory(time_hao)

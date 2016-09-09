@@ -3,7 +3,7 @@
 
 #define SIMPLE_SPRNG
 
-#include "../../mpi_hao/include/mpi_fun.h"
+#include "../../../utilities/mpi_hao/include/mpi_fun.h"
 
 #ifdef MPI_HAO
 #include <mpi.h> 
