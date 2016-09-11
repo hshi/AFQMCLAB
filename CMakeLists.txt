@@ -26,6 +26,8 @@ find_package(gmp REQUIRED)
 
 find_package(sprng REQUIRED)
 
+find_package(fftw REQUIRED)
+
 include(LAPACK_BLAS_ALL)
 
 add_subdirectory(utilities)
