@@ -6,7 +6,7 @@ using namespace tensor_hao;
 
 TEST(Tensor_mpi, MPIBcast_double)
 {
-    Tensor_hao<double,1> A(4), A_exact(4);
+    TensorHao<double,1> A(4), A_exact(4);
 
     A_exact = {14.861,12.630129,20.984,23.753129};
 
@@ -19,7 +19,7 @@ TEST(Tensor_mpi, MPIBcast_double)
 
 TEST(Tensor_mpi, MPIBcast_complex_double)
 {
-    Tensor_hao<complex<double>, 2> A(2, 2), A_exact(2, 2);
+    TensorHao<complex<double>, 2> A(2, 2), A_exact(2, 2);
 
     A_exact = {{-13.769,    40.877},
                {-16.551971, 38.73806},

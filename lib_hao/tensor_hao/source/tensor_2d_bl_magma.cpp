@@ -15,7 +15,7 @@ namespace tensor_hao
  /*************************************/
  //Magma_*gemm only support GPU interface.
 
- void gmm_magma(const Tensor_core<float,2>& A, const Tensor_core<float,2>& B, Tensor_core<float,2>& C,
+ void gmm_magma(const TensorCore<float,2>& A, const TensorCore<float,2>& B, TensorCore<float,2>& C,
           char TRANSA, char TRANSB, float alpha, float beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
@@ -52,7 +52,7 @@ namespace tensor_hao
      magma_free(d_A); magma_free(d_B); magma_free(d_C);
  }
 
- void gmm_magma(const Tensor_core<double,2>& A, const Tensor_core<double,2>& B, Tensor_core<double,2>& C,
+ void gmm_magma(const TensorCore<double,2>& A, const TensorCore<double,2>& B, TensorCore<double,2>& C,
           char TRANSA, char TRANSB, double alpha, double beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
@@ -89,7 +89,7 @@ namespace tensor_hao
      magma_free(d_A); magma_free(d_B); magma_free(d_C);
  }
 
- void gmm_magma(const Tensor_core<complex<float>,2>& A, const Tensor_core<complex<float>,2>& B, Tensor_core<complex<float>,2>& C,
+ void gmm_magma(const TensorCore<complex<float>,2>& A, const TensorCore<complex<float>,2>& B, TensorCore<complex<float>,2>& C,
           char TRANSA, char TRANSB, complex<float> alpha, complex<float> beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
@@ -126,7 +126,7 @@ namespace tensor_hao
      magma_free(d_A); magma_free(d_B); magma_free(d_C);
  }
 
- void gmm_magma(const Tensor_core<complex<double>,2>& A, const Tensor_core<complex<double>,2>& B, Tensor_core<complex<double>,2>& C,
+ void gmm_magma(const TensorCore<complex<double>,2>& A, const TensorCore<complex<double>,2>& B, TensorCore<complex<double>,2>& C,
           char TRANSA, char TRANSB, complex<double> alpha, complex<double> beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
@@ -166,7 +166,7 @@ namespace tensor_hao
  /******************************/
  /*Diagonalize symmetric Matrix*/
  /******************************/
- void eigen_magma(Tensor_core<double,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ void eigen_magma(TensorCore<double,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
      if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
@@ -190,7 +190,7 @@ namespace tensor_hao
  /******************************/
  /*Diagonalize Hermition Matrix*/
  /******************************/
- void eigen_magma(Tensor_core<complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ void eigen_magma(TensorCore<complex<double>,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
      if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
@@ -217,14 +217,14 @@ namespace tensor_hao
  /*LU Decomposition a complex square Matrix*/
  /******************************************/
 
- LUDecomp<complex<double>> LUconstruct_magma(const Tensor_core<complex<double>,2>& x)
+ LUDecomp<complex<double>> LUconstruct_magma(const TensorCore<complex<double>,2>& x)
  {
      if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
 
      //Create LU object
      LUDecomp<complex<double>> y;
-     y.A    = Tensor_hao< complex<double>, 2 > ( x.n_ptr() );
-     y.ipiv = Tensor_hao<int,1>( x.rank(0) );
+     y.A    = TensorHao< complex<double>, 2 > ( x.n_ptr() );
+     y.ipiv = TensorHao<int,1>( x.rank(0) );
 
      //Prepare for zgetrf
      magma_int_t M = x.rank(0), N = x.rank(1);
@@ -250,7 +250,7 @@ namespace tensor_hao
  /*Inverse of matrix: If determinant of the matrix is outof machine precision, inverse should be fine, since it solve*
   *The linear equation, every small value is well defined                                                            */
  /********************************************************************************************************************/
- Tensor_hao<complex<double>,2> inverse_magma(const LUDecomp<complex<double>>& x)
+ TensorHao<complex<double>,2> inverse_magma(const LUDecomp<complex<double>>& x)
  {
      magma_int_t N=x.A.rank(0); magma_int_t info;
 
@@ -268,7 +268,7 @@ namespace tensor_hao
      if(info<0) {cout<<"The "<<info<<"-th parameter is illegal in inverse_magma!"<<endl; exit(1);}
 
      //copy matrix from GPU to CPU
-     Tensor_hao<complex<double>,2> A(N,N);
+     TensorHao<complex<double>,2> A(N,N);
      magma_zgetmatrix( N, N, d_A, lda, (magmaDoubleComplex* )A.data(), N );
 
      magma_free(d_A); magma_free(dwork);
@@ -280,7 +280,7 @@ namespace tensor_hao
  /*********************************************************/
  /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
  /*********************************************************/
- Tensor_hao<complex<double>,2> solve_lineq_magma(const LUDecomp<complex<double>>& x, const Tensor_core<complex<double>,2>& B, char TRANS)
+ TensorHao<complex<double>,2> solve_lineq_magma(const LUDecomp<complex<double>>& x, const TensorCore<complex<double>,2>& B, char TRANS)
  {
      if( x.A.rank(0) != B.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      magma_int_t N=B.rank(0); magma_int_t NRHS=B.rank(1); magma_int_t info;
@@ -308,7 +308,7 @@ namespace tensor_hao
      }
 
      //copy matrix from GPU to CPU
-     Tensor_hao<complex<double>,2> M(N,NRHS);
+     TensorHao<complex<double>,2> M(N,NRHS);
      magma_zgetmatrix( N, NRHS, d_B, ldb, (magmaDoubleComplex* ) M.data(), N );
 
      //free memory
@@ -327,7 +327,7 @@ namespace tensor_hao
 //It looks like GPU interface return some part of R in tau, we need some
 //extra work to get Det(R), read the post in magma forum for details! 
 /*
- double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)
+ double QRMatrix_magma(TensorCore<complex<double>,2>& ph)
  {
      //If we need to call magma two or more times, it's better 
      //to use GPU interface, this will avoid transfer between
@@ -369,7 +369,7 @@ namespace tensor_hao
 */
 
 
- double QRMatrix_magma(Tensor_core<complex<double>,2>& ph)
+ double QRMatrix_magma(TensorCore<complex<double>,2>& ph)
  {
      magma_int_t L=ph.rank(0); magma_int_t N=ph.rank(1); magma_int_t info; 
      int L_cpu = L; int N_cpu = N;
@@ -397,7 +397,7 @@ namespace tensor_hao
  }
 
 
- double QRMatrix_magma(Tensor_core<complex<double>,2>& ph, Tensor_core<double,1>& det_list)
+ double QRMatrix_magma(TensorCore<complex<double>,2>& ph, TensorCore<double,1>& det_list)
  {
      if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph!"<<endl; exit(1); }
 
@@ -435,7 +435,7 @@ namespace tensor_hao
  /********************************************/
  /*SVD a matrix U = U D V, return U, D, and V*/
  /********************************************/
- void SVDMatrix_magma(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
+ void SVDMatrix_magma(TensorCore<complex<double>,2>& U, TensorCore<double,1>& D, TensorCore<complex<double>,2>& V)
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
      {

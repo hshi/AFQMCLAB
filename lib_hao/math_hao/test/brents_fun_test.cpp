@@ -22,7 +22,7 @@ TEST (brent, linear_x)
 {
     double eta=1e-15;
     double x;
-    brents_fun(fun1,x,-1.0,5.0,eta);
+    brentRootFinding(fun1, x, -1.0, 5.0, eta);
 
     EXPECT_DOUBLE_EQ (0.5, x);
 }
@@ -31,7 +31,7 @@ TEST (brent, quadratic_x)
 {
     double eta=1e-15;
     double x;
-    brents_fun(fun2,x,1.0,5.0,eta);
+    brentRootFinding(fun2, x, 1.0, 5.0, eta);
 
     EXPECT_DOUBLE_EQ (3.0, x);
 }
@@ -40,9 +40,10 @@ TEST (brent, quadratic_x_y)
 {
     double eta=1e-15;
     double x;
-    brents_fun([](double x) { return fun3(x, 7.0); },x,0.0,5.0,eta);
+    brentRootFinding([](double x)
+                     { return fun3(x, 7.0); }, x, 0.0, 5.0, eta);
     EXPECT_DOUBLE_EQ (4.0, x);
 
-    brents_fun( bind(fun3, placeholders::_1, 7.0),x, 0.0, 5.0,eta);
+    brentRootFinding(bind(fun3, placeholders::_1, 7.0), x, 0.0, 5.0, eta);
     EXPECT_DOUBLE_EQ (4.0, x);
 }

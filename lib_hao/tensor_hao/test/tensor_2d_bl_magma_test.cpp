@@ -9,7 +9,7 @@ using namespace tensor_hao;
 
 TEST ( Tensor_2d_bl_magma, gmm_float)
 {
-    Tensor_hao<float,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
+    TensorHao<float,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
     a={0.0,3.0,2.123,2.0,4.0,3.123 };
     b={0.0,3.0,2.123,2.0,4.0,3.123 };
     c_exact={14.861,12.630129,20.984,23.753129};
@@ -24,7 +24,7 @@ TEST ( Tensor_2d_bl_magma, gmm_float)
 
 TEST ( Tensor_2d_bl_magma, gmm_double)
 {
-    Tensor_hao<double,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
+    TensorHao<double,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
     a={0.0,3.0,2.123,2.0,4.0,3.123 };
     b={0.0,3.0,2.123,2.0,4.0,3.123 };
     c_exact={14.861,12.630129,20.984,23.753129};
@@ -39,7 +39,7 @@ TEST ( Tensor_2d_bl_magma, gmm_double)
 
 TEST ( Tensor_2d_bl_magma, gmm_complex_float)
 {
-    Tensor_hao<complex<float>,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
+    TensorHao<complex<float>,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
     a={ {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
     b={ {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
     c_exact={ {-13.769,40.877}, {-16.551971,38.73806}, {-17.756,56.71}, {-22.838971, 66.77106} };
@@ -54,7 +54,7 @@ TEST ( Tensor_2d_bl_magma, gmm_complex_float)
 
 TEST ( Tensor_2d_bl_magma, gmm_complex_double)
 {
-    Tensor_hao<complex<double>,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
+    TensorHao<complex<double>,2> a(2,3), b(3,2), c(2,2), c_exact(2,2);
     a={ {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
     b={ {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
     c_exact={ {-13.769,40.877}, {-16.551971,38.73806}, {-17.756,56.71}, {-22.838971, 66.77106} };
@@ -69,8 +69,8 @@ TEST ( Tensor_2d_bl_magma, gmm_complex_double)
 
 TEST ( Tensor_2d_bl_magma, eigen_double)
 {
-    Tensor_hao<double,2> a(3,3), a_exact(3,3);
-    Tensor_hao<double,1> w(3), w_exact(3);
+    TensorHao<double,2> a(3,3), a_exact(3,3);
+    TensorHao<double,1> w(3), w_exact(3);
 
     a = { 1.0, 3.0, 2.123,
           3.0, 2.0, 5.123,
@@ -91,8 +91,8 @@ TEST ( Tensor_2d_bl_magma, eigen_double)
 
 TEST ( Tensor_2d_bl_magma, eigen_complex_double )
 {
-    Tensor_hao<complex<double>,2> a(3,3), a_exact(3,3);
-    Tensor_hao<double,1> w(3), w_exact(3);
+    TensorHao<complex<double>,2> a(3,3), a_exact(3,3);
+    TensorHao<double,1> w(3), w_exact(3);
 
     a = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
           {3.0,-4.0},   {2.0,0.0},    {5.123,3.11},
@@ -118,7 +118,7 @@ TEST ( Tensor_2d_bl_magma, eigen_complex_double )
 
 TEST ( Tensor_2d_bl_magma, LUconstruct )
 {
-    Tensor_hao<complex<double>,2> X(3,3), A_exact(3,3);
+    TensorHao<complex<double>,2> X(3,3), A_exact(3,3);
 
     X={ {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
         {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
@@ -137,7 +137,7 @@ TEST ( Tensor_2d_bl_magma, LUconstruct )
 
 TEST ( Tensor_2d_bl_magma, inverse )
 {
-    Tensor_hao<complex<double>,2> A(3,3), INV_A, INV_A_exact(3,3);
+    TensorHao<complex<double>,2> A(3,3), INV_A, INV_A_exact(3,3);
 
     A = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
           {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
@@ -163,7 +163,7 @@ TEST ( Tensor_2d_bl_magma, inverse )
 
 TEST ( Tensor_2d_bl_magma, solve_lineq )
 {
-    Tensor_hao<complex<double>,2> A(3,3), B(3,2), X_exact(3,2), X;
+    TensorHao<complex<double>,2> A(3,3), B(3,2), X_exact(3,2), X;
 
     A = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
           {3.0,-2.0},   {2.0,0.0},    {5.123,3.11},
@@ -189,8 +189,8 @@ TEST ( Tensor_2d_bl_magma, solve_lineq )
 TEST ( Tensor_2d_bl_magma, QRMatrix )
 {
     const int L0=3; const int L1=2;
-    Tensor_hao<complex<double>,2> A(L0,L1), B(L0,L1), A_exact(L0,L1);
-    Tensor_hao<double, 1> det_list(L1);
+    TensorHao<complex<double>,2> A(L0,L1), B(L0,L1), A_exact(L0,L1);
+    TensorHao<double, 1> det_list(L1);
 
     A = { {2.0,0.0} ,   {3.0,5.0},    {3.123,3.11},
           {3.0,-6.0},   {2.0,1.0},    {6.123,3.11} };
@@ -225,8 +225,8 @@ TEST ( Tensor_2d_bl_magma, QRMatrix )
 TEST ( Tensor_2d_bl_magma, SVDMatrix )
 {
     const int L=3;
-    Tensor_hao<complex<double>,2> U_before(L,L), U(L,L), V(L,L);
-    Tensor_hao<double,1> D(L), D_exact(L);
+    TensorHao<complex<double>,2> U_before(L,L), U(L,L), V(L,L);
+    TensorHao<double,1> D(L), D_exact(L);
 
     U_before = { {1.0,2.0}, {2.0,1.0}, {3.0,5.0},
                  {2.0,0.5}, {2.0,0.0}, {1.0,2.0},
@@ -238,8 +238,8 @@ TEST ( Tensor_2d_bl_magma, SVDMatrix )
 
     SVDMatrix_magma(U, D, V);
 
-    Tensor_hao<complex<double>,1> D_cd(L);
-    Tensor_hao<complex<double>,2> U_back(L,L);
+    TensorHao<complex<double>,1> D_cd(L);
+    TensorHao<complex<double>,2> U_back(L,L);
     for(int i=0; i<L; i++) D_cd(i)=D(i);
 
     gmm_magma(U, D_Multi_Matrix(D_cd, V), U_back);

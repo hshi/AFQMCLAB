@@ -6,14 +6,14 @@
 
 using namespace std;
 
-void random_hao_init(int seed, int gtype)
+void randomHaoInit(int seed, int gtype)
 {
     MPIBcast(seed);
     MPIBcast(gtype);
 
     if(seed==-1) //If seed is -1, start from last run
-    {  
-        random_hao_read(); 
+    {
+        randomHaoRead();
     }
     else if(seed==0) //If seed is 0, random set the seed
     {
@@ -26,7 +26,7 @@ void random_hao_init(int seed, int gtype)
     }
 }
 
-void random_hao_read()
+void randomHaoRead()
 {
     int size;
     char buffer[MAX_PACKED_LENGTH];
@@ -40,7 +40,7 @@ void random_hao_read()
     fclose(fp);
 }
 
-void random_hao_save()
+void randomHaoSave()
 {
     int size;
     char *bytes;
@@ -56,7 +56,7 @@ void random_hao_save()
     free(bytes);	
 }
 
-void random_hao_backup()
+void randomHaoBackup()
 {
     int rank=MPIRank();
 
@@ -73,12 +73,12 @@ void random_hao_backup()
     MPIBarrier();
 }
 
-double uniform_hao()
+double uniformHao()
 {
     return sprng();
 }
 
-double gaussian_hao()
+double gaussianHao()
 {
 #define pi 3.14159265358979324
     double tmp=sprng();

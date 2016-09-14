@@ -1,5 +1,5 @@
-#ifndef SORT_FUN_H
-#define SORT_FUN_H
+#ifndef AFQMCLIB_SORT_FUN_H
+#define AFQMCLIB_SORT_FUN_H
 
 #include <iostream>
 #include <vector>

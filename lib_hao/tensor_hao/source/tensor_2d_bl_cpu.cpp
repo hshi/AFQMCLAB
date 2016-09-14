@@ -10,7 +10,7 @@ namespace tensor_hao
  /*Matrix Multiply C=alpha*A.B+beta*C */
  /*************************************/
 
- void gmm_cpu(const Tensor_core<float,2>& A, const Tensor_core<float,2>& B, Tensor_core<float,2>& C,
+ void gmm_cpu(const TensorCore<float,2>& A, const TensorCore<float,2>& B, TensorCore<float,2>& C,
           char TRANSA, char TRANSB, float alpha, float beta)
  {
      int  M, N, K, LDA, LDB, LDC;
@@ -24,7 +24,7 @@ namespace tensor_hao
      F77NAME(sgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
- void gmm_cpu(const Tensor_core<double,2>& A, const Tensor_core<double,2>& B, Tensor_core<double,2>& C,
+ void gmm_cpu(const TensorCore<double,2>& A, const TensorCore<double,2>& B, TensorCore<double,2>& C,
           char TRANSA, char TRANSB, double alpha, double beta)
  {
      int  M, N, K, LDA, LDB, LDC;
@@ -38,7 +38,7 @@ namespace tensor_hao
      F77NAME(dgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
- void gmm_cpu(const Tensor_core<complex<float>,2>& A, const Tensor_core<complex<float>,2>& B, Tensor_core<complex<float>,2>& C,
+ void gmm_cpu(const TensorCore<complex<float>,2>& A, const TensorCore<complex<float>,2>& B, TensorCore<complex<float>,2>& C,
           char TRANSA, char TRANSB, complex<float> alpha, complex<float> beta)
  {
      int  M, N, K, LDA, LDB, LDC;
@@ -52,7 +52,7 @@ namespace tensor_hao
      F77NAME(cgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
- void gmm_cpu(const Tensor_core<complex<double>,2>& A, const Tensor_core<complex<double>,2>& B, Tensor_core<complex<double>,2>& C,
+ void gmm_cpu(const TensorCore<complex<double>,2>& A, const TensorCore<complex<double>,2>& B, TensorCore<complex<double>,2>& C,
           char TRANSA, char TRANSB, complex<double> alpha, complex<double> beta)
  {
      int  M, N, K, LDA, LDB, LDC;
@@ -70,7 +70,7 @@ namespace tensor_hao
  /******************************/
  /*Diagonalize symmetric Matrix*/
  /******************************/
- void eigen_cpu(Tensor_core<double,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ void eigen_cpu(TensorCore<double,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
      if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
@@ -90,7 +90,7 @@ namespace tensor_hao
  /******************************/
  /*Diagonalize Hermition Matrix*/
  /******************************/
- void eigen_cpu(Tensor_core<complex<double>,2>& A, Tensor_core<double,1>& W, char JOBZ, char UPLO)
+ void eigen_cpu(TensorCore<complex<double>,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
      if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
@@ -110,22 +110,22 @@ namespace tensor_hao
  /******************************************/
  /*LU Decomposition a complex square Matrix*/
  /******************************************/
- LUDecomp<complex<double>> LUconstruct_cpu(const Tensor_core<complex<double>,2>& x)
+ LUDecomp<complex<double>> LUconstruct_cpu(const TensorCore<complex<double>,2>& x)
  {
      if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
      int N=x.rank(0);
-     LUDecomp<complex<double>> y; y.A=x; y.ipiv=Tensor_hao<int,1>(N);
+     LUDecomp<complex<double>> y; y.A=x; y.ipiv=TensorHao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
  }
 
- LUDecomp<complex<double>> LUconstruct_cpu(Tensor_hao<complex<double>,2>&& x)
+ LUDecomp<complex<double>> LUconstruct_cpu(TensorHao<complex<double>,2>&& x)
  {
      if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
      int N=x.rank(0);
-     LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=Tensor_hao<int,1>(N);
+     LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=TensorHao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
@@ -137,7 +137,7 @@ namespace tensor_hao
  /*Inverse of matrix: If determinant of the matrix is outof machine precision, inverse should be fine, since it solve*
   *The linear equation, every small value is well defined                                                            */
  /********************************************************************************************************************/
- void inverse_cpu_utilities(Tensor_core<complex<double>,2>& A, const Tensor_core<int,1>& ipiv)
+ void inverse_cpu_utilities(TensorCore<complex<double>,2>& A, const TensorCore<int,1>& ipiv)
  {
      int N=A.rank(0); int info;
 
@@ -150,16 +150,16 @@ namespace tensor_hao
      if(info<0) {cout<<"The "<<info<<"-th parameter is illegal in inverse_cpu_utilities!"<<endl; exit(1);}
  }
 
- Tensor_hao<complex<double>,2> inverse_cpu(const LUDecomp<complex<double>>& x)
+ TensorHao<complex<double>,2> inverse_cpu(const LUDecomp<complex<double>>& x)
  {
-     Tensor_hao<complex<double>,2> A=x.A;
+     TensorHao<complex<double>,2> A=x.A;
      inverse_cpu_utilities(A, x.ipiv);
      return A;
  }
 
- Tensor_hao<complex<double>,2> inverse_cpu(LUDecomp<complex<double>>&& x)
+ TensorHao<complex<double>,2> inverse_cpu(LUDecomp<complex<double>>&& x)
  {
-     Tensor_hao<complex<double>,2> A=move(x.A);
+     TensorHao<complex<double>,2> A=move(x.A);
      inverse_cpu_utilities(A, x.ipiv);
      return A;
  }
@@ -167,7 +167,7 @@ namespace tensor_hao
  /*********************************************************/
  /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
  /*********************************************************/
- void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, Tensor_hao<complex<double>,2>& M, char TRANS)
+ void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, TensorHao<complex<double>,2>& M, char TRANS)
  {
      if( x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      int N=M.rank(0); int NRHS=M.rank(1); int info;
@@ -179,16 +179,16 @@ namespace tensor_hao
      }
  }
 
- Tensor_hao<complex<double>,2> solve_lineq_cpu(const LUDecomp<complex<double>>& x, const Tensor_core<complex<double>,2>& B, char TRANS)
+ TensorHao<complex<double>,2> solve_lineq_cpu(const LUDecomp<complex<double>>& x, const TensorCore<complex<double>,2>& B, char TRANS)
  {
-     Tensor_hao<complex<double>,2> M(B);
+     TensorHao<complex<double>,2> M(B);
      solve_lineq_cpu_utilities(x, M, TRANS);
      return M;
  }
 
- Tensor_hao<complex<double>,2> solve_lineq_cpu(const LUDecomp<complex<double>>& x, Tensor_hao<complex<double>,2>&&B, char TRANS)
+ TensorHao<complex<double>,2> solve_lineq_cpu(const LUDecomp<complex<double>>& x, TensorHao<complex<double>,2>&&B, char TRANS)
  {
-     Tensor_hao<complex<double>,2> M( move(B) );
+     TensorHao<complex<double>,2> M( move(B) );
      solve_lineq_cpu_utilities(x, M, TRANS);
      return M;
  }
@@ -196,7 +196,7 @@ namespace tensor_hao
  /******************************/
  /*QR decompostion of matrix ph*/
  /******************************/
- double QRMatrix_cpu(Tensor_core<complex<double>,2>& ph)
+ double QRMatrix_cpu(TensorCore<complex<double>,2>& ph)
  {
      int L=ph.rank(0); int N=ph.rank(1); int info;
      int lwork=-1; complex<double> work_test[1];
@@ -219,7 +219,7 @@ namespace tensor_hao
      return det.real();
  }
 
- double QRMatrix_cpu(Tensor_core<complex<double>,2>& ph, Tensor_core<double,1>& det_list)
+ double QRMatrix_cpu(TensorCore<complex<double>,2>& ph, TensorCore<double,1>& det_list)
  {
      if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
 
@@ -255,7 +255,7 @@ namespace tensor_hao
  /*********************************************/
  //Use zgesdd instead of zgesvd, since zgesdd is faster for large matrix: http://www.netlib.org/lapack/lug/node32.html
  //Test in Hurricane, zgesdd is faster.
- void SVDMatrix_cpu(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
+ void SVDMatrix_cpu(TensorCore<complex<double>,2>& U, TensorCore<double,1>& D, TensorCore<complex<double>,2>& V)
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
      {
@@ -284,7 +284,7 @@ namespace tensor_hao
      }
  }
 /*
- void SVDMatrix_cpu(Tensor_core<complex<double>,2>& U, Tensor_core<double,1>& D, Tensor_core<complex<double>,2>& V)
+ void SVDMatrix_cpu(TensorCore<complex<double>,2>& U, TensorCore<double,1>& D, TensorCore<complex<double>,2>& V)
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
      {

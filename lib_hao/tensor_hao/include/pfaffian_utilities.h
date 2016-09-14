@@ -40,7 +40,7 @@ namespace tensor_hao
  }
  
  
- //Goal:   Compute the Pfaffian of a skew-symmetric matrix A using 
+ //Goal:   Compute the pfaffian of a skew-symmetric matrix A using
  //        the ideas of Aitken's block diagonalization formula. 
  //        Full pivoting is implemented to make the whole procedure stable.
  //        reference: Computer Physics Communications 182 (2011) 2213–2218

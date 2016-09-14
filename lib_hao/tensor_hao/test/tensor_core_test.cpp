@@ -8,14 +8,14 @@ using namespace tensor_hao;
 
 TEST(Tensor_core, nptr)
 {
-    Tensor_hao<double,5>  tensor(2,3,4,5,6);
+    TensorHao<double,5>  tensor(2,3,4,5,6);
     int n_ptr_exact[5] = {2,3,4,5,6};
     EXPECT_POINTER_EQ( 5, n_ptr_exact, tensor.n_ptr() );
 }
 
 TEST(Tensor_core, read_1)
 {
-    Tensor_hao<double,1>  tensor(3);
+    TensorHao<double,1>  tensor(3);
     int L = tensor.size();
     double* p = tensor.data();
 
@@ -32,7 +32,7 @@ TEST(Tensor_core, read_1)
 
 TEST(Tensor_core, write_1)
 {
-    Tensor_hao<double,1>  tensor(3);
+    TensorHao<double,1>  tensor(3);
     int L = tensor.size();
     double* p = tensor.data();
     int count=0;
@@ -54,7 +54,7 @@ TEST(Tensor_core, write_1)
 
 TEST(Tensor_core, read_2)
 {
-    Tensor_hao<double,2>  tensor(3,4);
+    TensorHao<double,2>  tensor(3,4);
     int L = tensor.size();
     double* p = tensor.data();
 
@@ -73,7 +73,7 @@ TEST(Tensor_core, read_2)
 
 TEST(Tensor_core, write_2)
 {
-    Tensor_hao<double,2>  tensor(3,4);
+    TensorHao<double,2>  tensor(3,4);
     int L = tensor.size();
     double* p = tensor.data();
     int count=0;
@@ -97,7 +97,7 @@ TEST(Tensor_core, write_2)
 
 TEST(Tensor_core, read_3)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
 
@@ -119,7 +119,7 @@ TEST(Tensor_core, read_3)
 
 TEST(Tensor_core, write_3)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     int count=0;
@@ -146,7 +146,7 @@ TEST(Tensor_core, write_3)
 
 TEST(Tensor_core, read_5)
 {
-    Tensor_hao<double,5>  tensor(3,4,5,6,7);
+    TensorHao<double,5>  tensor(3,4,5,6,7);
     int L = tensor.size();
     double* p = tensor.data();
 
@@ -174,7 +174,7 @@ TEST(Tensor_core, read_5)
 
 TEST(Tensor_core, write_5)
 {
-    Tensor_hao<double,5>  tensor(3,4,5,6,7);
+    TensorHao<double,5>  tensor(3,4,5,6,7);
     int L = tensor.size();
     double* p = tensor.data();
     int count=0;
@@ -206,12 +206,12 @@ TEST(Tensor_core, write_5)
 
 TEST(Tensor_core, add_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -226,12 +226,12 @@ TEST(Tensor_core, add_equal_Tensor_core)
 
 TEST(Tensor_core, minus_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*3.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -246,12 +246,12 @@ TEST(Tensor_core, minus_equal_Tensor_core)
 
 TEST(Tensor_core, min_add_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*3.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -266,12 +266,12 @@ TEST(Tensor_core, min_add_equal_Tensor_core)
 
 TEST(Tensor_core, time_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*3.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -285,12 +285,12 @@ TEST(Tensor_core, time_equal_Tensor_core)
 
 TEST(Tensor_core, divide_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*3.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -304,12 +304,12 @@ TEST(Tensor_core, divide_equal_Tensor_core)
 
 TEST(Tensor_core, inv_div_equal_Tensor_core)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*3.0;
 
-    Tensor_hao<double,3>  tensor_b(3,4,5);
+    TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
     for(int i=0; i<L; i++) p_b[i] = i*1.0;
 
@@ -324,7 +324,7 @@ TEST(Tensor_core, inv_div_equal_Tensor_core)
 
 TEST(Tensor_core, add_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -341,7 +341,7 @@ TEST(Tensor_core, add_equal_T)
 
 TEST(Tensor_core, minus_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -358,7 +358,7 @@ TEST(Tensor_core, minus_equal_T)
 
 TEST(Tensor_core, min_add_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -376,7 +376,7 @@ TEST(Tensor_core, min_add_equal_T)
 
 TEST(Tensor_core, time_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -393,7 +393,7 @@ TEST(Tensor_core, time_equal_T)
 
 TEST(Tensor_core, divide_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -411,7 +411,7 @@ TEST(Tensor_core, divide_equal_T)
 
 TEST(Tensor_core, inv_div_equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*2.0;
@@ -428,7 +428,7 @@ TEST(Tensor_core, inv_div_equal_T)
 
 TEST(Tensor_core, sum)
 {
-    Tensor_hao< complex<double>,2>  tensor_a(3,2);
+    TensorHao< complex<double>,2>  tensor_a(3,2);
     tensor_a={ {1.0, 2.0} , {3.0 ,4.0} , {5.0 ,6.0} , {7.0 ,8.0} , {9.0 ,10.0} , {11.0 ,12.0} };
 
     complex<double> exact(15., 18.0);
@@ -438,7 +438,7 @@ TEST(Tensor_core, sum)
 
 TEST(Tensor_core, mean)
 {
-    Tensor_hao< complex<double>,2>  tensor_a(3,2);
+    TensorHao< complex<double>,2>  tensor_a(3,2);
     tensor_a={ {1.0, 2.0} , {3.0 ,4.0} , {5.0 ,6.0} , {7.0 ,8.0} , {9.0 ,10.0} , {11.0 ,12.0} };
 
     complex<double> exact(5., 6.0);

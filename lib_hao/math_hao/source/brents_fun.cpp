@@ -2,7 +2,7 @@
 #include <iomanip>
 
 //The code is from: http://rosettacode.org/wiki/Roots_of_a_function#C.2B.2B 
-unsigned int brents_fun(std::function<double (double)> f, double& sol, double lower, double upper, double tol, unsigned int max_iter)
+unsigned int brentRootFinding(std::function<double(double)> f, double &solution, double lower, double upper, double tol, unsigned int max_iter)
 {
 	double a = lower;
 	double b = upper;
@@ -35,7 +35,7 @@ unsigned int brents_fun(std::function<double (double)> f, double& sol, double lo
 		if (std::abs(b-a) < tol || fb==0)
 		{
 			//std::cout<<std::setprecision(16)<< "After " << iter << " iterations the root is: " << s << std::endl;
-                        sol=s;
+                        solution=s;
 			return iter;
 		} // end if
 
@@ -97,4 +97,4 @@ unsigned int brents_fun(std::function<double (double)> f, double& sol, double lo
 	//std::cout<< "The solution does not converge or iterations are not sufficient" << std::endl;
         return max_iter;
  
-} // end brents_fun
+} // end brentRootFinding

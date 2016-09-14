@@ -9,9 +9,9 @@ namespace tensor_hao
 {
 
  template <class T, int D>
- Tensor_hao<std::complex<T>, D> conj(const Tensor_core<std::complex<T>, D>& A) 
+ TensorHao<std::complex<T>, D> conj(const TensorCore<std::complex<T>, D>& A)
  {
-     Tensor_hao<std::complex<T>, D> B ( A.n_ptr() );
+     TensorHao<std::complex<T>, D> B ( A.n_ptr() );
      int L = A.size(); 
      const std::complex<T>* A_p = A.data(); 
            std::complex<T>* B_p = B.data();
@@ -20,9 +20,9 @@ namespace tensor_hao
  }
 
  template <class T, int D>
- Tensor_hao<T, D> exp(const Tensor_core<T, D>& A)
+ TensorHao<T, D> exp(const TensorCore<T, D>& A)
  {
-     Tensor_hao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B ( A.n_ptr() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -31,9 +31,9 @@ namespace tensor_hao
  }
 
  template <class T, int D>
- Tensor_hao<T, D> norm(const Tensor_core<T, D>& A)
+ TensorHao<T, D> norm(const TensorCore<T, D>& A)
  {
-     Tensor_hao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B ( A.n_ptr() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -42,9 +42,9 @@ namespace tensor_hao
  }
 
  template <class T, int D>
- Tensor_hao<T, D> abs(const Tensor_core<T, D>& A)
+ TensorHao<T, D> abs(const TensorCore<T, D>& A)
  {
-     Tensor_hao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B ( A.n_ptr() );
      int L = A.size();
      const T * A_p = A.data();
      T * B_p = B.data();
@@ -53,9 +53,9 @@ namespace tensor_hao
  }
 
  template <class T, int D>
- Tensor_hao<T, D> sqrt(const Tensor_core<T, D>& A)
+ TensorHao<T, D> sqrt(const TensorCore<T, D>& A)
  {
-     Tensor_hao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B ( A.n_ptr() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -65,9 +65,9 @@ namespace tensor_hao
 
 
  template <class T, int D>
- Tensor_hao<T, D> operator - (const Tensor_core<T, D>& A)
+ TensorHao<T, D> operator - (const TensorCore<T, D>& A)
  {
-     Tensor_hao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B ( A.n_ptr() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -78,145 +78,145 @@ namespace tensor_hao
 
  //for add tensor + tensor
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHao<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao<T,D>& A, Tensor_hao<T,D>&& B)     {Tensor_hao<T,D> C=std::move(B); C+=A; return C;}
+ TensorHao<T,D> operator + (const TensorHao<T,D>& A, TensorHao<T,D>&& B)     {TensorHao<T,D> C=std::move(B); C+=A; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (Tensor_hao<T,D>&& A,const Tensor_hao<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C+=B; return C;}
+ TensorHao<T,D> operator + (TensorHao<T,D>&& A,const TensorHao<T,D>& B)      {TensorHao<T,D> C=std::move(A); C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (Tensor_hao<T,D>&& A,Tensor_hao<T,D>&& B)           {Tensor_hao<T,D> C=std::move(A); C+=B; return C;}
+ TensorHao<T,D> operator + (TensorHao<T,D>&& A,TensorHao<T,D>&& B)           {TensorHao<T,D> C=std::move(A); C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHao<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (Tensor_hao<T,D>&& A,const Tensor_hao_ref<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C+=B; return C;}
+ TensorHao<T,D> operator + (TensorHao<T,D>&& A,const TensorHaoRef<T,D>& B)      {TensorHao<T,D> C=std::move(A); C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao_ref<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHaoRef<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao_ref<T,D>& A, Tensor_hao<T,D>&& B)  {Tensor_hao<T,D> C=std::move(B); C+=A; return C;}
+ TensorHao<T,D> operator + (const TensorHaoRef<T,D>& A, TensorHao<T,D>&& B)  {TensorHao<T,D> C=std::move(B); C+=A; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao_ref<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHaoRef<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C+=B; return C;}
 
 
  //for minus tensor - tensor
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHao<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao<T,D>& A, Tensor_hao<T,D>&& B) {Tensor_hao<T,D> C=std::move(B); C.min_add_equal(A); return C;}
+ TensorHao<T,D> operator - (const TensorHao<T,D>& A, TensorHao<T,D>&& B) {TensorHao<T,D> C=std::move(B); C.min_add_equal(A); return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (Tensor_hao<T,D>&& A,const Tensor_hao<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C-=B; return C;}
+ TensorHao<T,D> operator - (TensorHao<T,D>&& A,const TensorHao<T,D>& B)      {TensorHao<T,D> C=std::move(A); C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (Tensor_hao<T,D>&& A,Tensor_hao<T,D>&& B)           {Tensor_hao<T,D> C=std::move(A); C-=B; return C;}
+ TensorHao<T,D> operator - (TensorHao<T,D>&& A,TensorHao<T,D>&& B)           {TensorHao<T,D> C=std::move(A); C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHao<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (Tensor_hao<T,D>&& A,const Tensor_hao_ref<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C-=B; return C;}
+ TensorHao<T,D> operator - (TensorHao<T,D>&& A,const TensorHaoRef<T,D>& B)      {TensorHao<T,D> C=std::move(A); C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao_ref<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHaoRef<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao_ref<T,D>& A, Tensor_hao<T,D>&& B)  {Tensor_hao<T,D> C=std::move(B); C.min_add_equal(A); return C;}
+ TensorHao<T,D> operator - (const TensorHaoRef<T,D>& A, TensorHao<T,D>&& B)  {TensorHao<T,D> C=std::move(B); C.min_add_equal(A); return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao_ref<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHaoRef<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C-=B; return C;}
 
 
  //for time tensor * tensor
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHao<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao<T,D>& A, Tensor_hao<T,D>&& B)     {Tensor_hao<T,D> C=std::move(B); C*=A; return C;}
+ TensorHao<T,D> operator * (const TensorHao<T,D>& A, TensorHao<T,D>&& B)     {TensorHao<T,D> C=std::move(B); C*=A; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (Tensor_hao<T,D>&& A,const Tensor_hao<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C*=B; return C;}
+ TensorHao<T,D> operator * (TensorHao<T,D>&& A,const TensorHao<T,D>& B)      {TensorHao<T,D> C=std::move(A); C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (Tensor_hao<T,D>&& A,Tensor_hao<T,D>&& B)           {Tensor_hao<T,D> C=std::move(A); C*=B; return C;}
+ TensorHao<T,D> operator * (TensorHao<T,D>&& A,TensorHao<T,D>&& B)           {TensorHao<T,D> C=std::move(A); C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHao<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (Tensor_hao<T,D>&& A,const Tensor_hao_ref<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C*=B; return C;}
+ TensorHao<T,D> operator * (TensorHao<T,D>&& A,const TensorHaoRef<T,D>& B)      {TensorHao<T,D> C=std::move(A); C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao_ref<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHaoRef<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao_ref<T,D>& A, Tensor_hao<T,D>&& B)  {Tensor_hao<T,D> C=std::move(B); C*=A; return C;}
+ TensorHao<T,D> operator * (const TensorHaoRef<T,D>& A, TensorHao<T,D>&& B)  {TensorHao<T,D> C=std::move(B); C*=A; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao_ref<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHaoRef<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C*=B; return C;}
 
  //for divide tensor / tensor
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHao<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao<T,D>& A, Tensor_hao<T,D>&& B) {Tensor_hao<T,D> C=std::move(B); C.inv_div_equal(A); return C;}
+ TensorHao<T,D> operator / (const TensorHao<T,D>& A, TensorHao<T,D>&& B) {TensorHao<T,D> C=std::move(B); C.inv_div_equal(A); return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (Tensor_hao<T,D>&& A,const Tensor_hao<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C/=B; return C;}
+ TensorHao<T,D> operator / (TensorHao<T,D>&& A,const TensorHao<T,D>& B)      {TensorHao<T,D> C=std::move(A); C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (Tensor_hao<T,D>&& A,Tensor_hao<T,D>&& B)           {Tensor_hao<T,D> C=std::move(A); C/=B; return C;}
+ TensorHao<T,D> operator / (TensorHao<T,D>&& A,TensorHao<T,D>&& B)           {TensorHao<T,D> C=std::move(A); C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHao<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (Tensor_hao<T,D>&& A,const Tensor_hao_ref<T,D>& B)      {Tensor_hao<T,D> C=std::move(A); C/=B; return C;}
+ TensorHao<T,D> operator / (TensorHao<T,D>&& A,const TensorHaoRef<T,D>& B)      {TensorHao<T,D> C=std::move(A); C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao_ref<T,D>& A,const Tensor_hao<T,D>& B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHaoRef<T,D>& A,const TensorHao<T,D>& B) {TensorHao<T,D> C=A; C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao_ref<T,D>& A, Tensor_hao<T,D>&& B)  {Tensor_hao<T,D> C=std::move(B); C.inv_div_equal(A); return C;}
+ TensorHao<T,D> operator / (const TensorHaoRef<T,D>& A, TensorHao<T,D>&& B)  {TensorHao<T,D> C=std::move(B); C.inv_div_equal(A); return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao_ref<T,D>& A,const Tensor_hao_ref<T,D>& B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHaoRef<T,D>& A,const TensorHaoRef<T,D>& B) {TensorHao<T,D> C=A; C/=B; return C;}
 
  //for add: tensor + scalar
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao<T,D>& A,T B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHao<T,D>& A,T B) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (Tensor_hao<T,D>&& A, T B)     {Tensor_hao<T,D> C=std::move(A); C+=B; return C;}
+ TensorHao<T,D> operator + (TensorHao<T,D>&& A, T B)     {TensorHao<T,D> C=std::move(A); C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (T B,const Tensor_hao<T,D>& A) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (T B,const TensorHao<T,D>& A) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (T B,Tensor_hao<T,D>&& A)      {Tensor_hao<T,D> C=std::move(A); C+=B; return C;}
+ TensorHao<T,D> operator + (T B,TensorHao<T,D>&& A)      {TensorHao<T,D> C=std::move(A); C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (const Tensor_hao_ref<T,D>& A,T B) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (const TensorHaoRef<T,D>& A,T B) {TensorHao<T,D> C=A; C+=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator + (T B,const Tensor_hao_ref<T,D>& A) {Tensor_hao<T,D> C=A; C+=B; return C;}
+ TensorHao<T,D> operator + (T B,const TensorHaoRef<T,D>& A) {TensorHao<T,D> C=A; C+=B; return C;}
 
  //for minus: tensor - scalar
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao<T,D>& A,T B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHao<T,D>& A,T B) {TensorHao<T,D> C=A; C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (Tensor_hao<T,D>&& A, T B)     {Tensor_hao<T,D> C=std::move(A); C-=B; return C;}
+ TensorHao<T,D> operator - (TensorHao<T,D>&& A, T B)     {TensorHao<T,D> C=std::move(A); C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (T B,const Tensor_hao<T,D>& A) {Tensor_hao<T,D> C=A; C.min_add_equal(B);return C;}
+ TensorHao<T,D> operator - (T B,const TensorHao<T,D>& A) {TensorHao<T,D> C=A; C.min_add_equal(B);return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (T B,Tensor_hao<T,D>&& A)      {Tensor_hao<T,D> C=std::move(A);C.min_add_equal(B);return C;}
+ TensorHao<T,D> operator - (T B,TensorHao<T,D>&& A)      {TensorHao<T,D> C=std::move(A);C.min_add_equal(B);return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (const Tensor_hao_ref<T,D>& A,T B) {Tensor_hao<T,D> C=A; C-=B; return C;}
+ TensorHao<T,D> operator - (const TensorHaoRef<T,D>& A,T B) {TensorHao<T,D> C=A; C-=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator - (T B,const Tensor_hao_ref<T,D>& A) {Tensor_hao<T,D> C=A; C.min_add_equal(B);return C;}
+ TensorHao<T,D> operator - (T B,const TensorHaoRef<T,D>& A) {TensorHao<T,D> C=A; C.min_add_equal(B);return C;}
 
  //for time: tensor * scalar
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao<T,D>& A,T B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHao<T,D>& A,T B) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (Tensor_hao<T,D>&& A, T B)     {Tensor_hao<T,D> C=std::move(A); C*=B; return C;}
+ TensorHao<T,D> operator * (TensorHao<T,D>&& A, T B)     {TensorHao<T,D> C=std::move(A); C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (T B,const Tensor_hao<T,D>& A) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (T B,const TensorHao<T,D>& A) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (T B,Tensor_hao<T,D>&& A)      {Tensor_hao<T,D> C=std::move(A); C*=B; return C;}
+ TensorHao<T,D> operator * (T B,TensorHao<T,D>&& A)      {TensorHao<T,D> C=std::move(A); C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (const Tensor_hao_ref<T,D>& A,T B) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (const TensorHaoRef<T,D>& A,T B) {TensorHao<T,D> C=A; C*=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator * (T B,const Tensor_hao_ref<T,D>& A) {Tensor_hao<T,D> C=A; C*=B; return C;}
+ TensorHao<T,D> operator * (T B,const TensorHaoRef<T,D>& A) {TensorHao<T,D> C=A; C*=B; return C;}
 
  //for minus: tensor / scalar
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao<T,D>& A,T B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHao<T,D>& A,T B) {TensorHao<T,D> C=A; C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (Tensor_hao<T,D>&& A, T B)     {Tensor_hao<T,D> C=std::move(A); C/=B; return C;}
+ TensorHao<T,D> operator / (TensorHao<T,D>&& A, T B)     {TensorHao<T,D> C=std::move(A); C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (T B,const Tensor_hao<T,D>& A) {Tensor_hao<T,D> C=A; C.inv_div_equal(B);return C;}
+ TensorHao<T,D> operator / (T B,const TensorHao<T,D>& A) {TensorHao<T,D> C=A; C.inv_div_equal(B);return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (T B,Tensor_hao<T,D>&& A)      {Tensor_hao<T,D> C=std::move(A);C.inv_div_equal(B);return C;}
+ TensorHao<T,D> operator / (T B,TensorHao<T,D>&& A)      {TensorHao<T,D> C=std::move(A);C.inv_div_equal(B);return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (const Tensor_hao_ref<T,D>& A,T B) {Tensor_hao<T,D> C=A; C/=B; return C;}
+ TensorHao<T,D> operator / (const TensorHaoRef<T,D>& A,T B) {TensorHao<T,D> C=A; C/=B; return C;}
  template <class T, int D>
- Tensor_hao<T,D> operator / (T B,const Tensor_hao_ref<T,D>& A) {Tensor_hao<T,D> C=A; C.inv_div_equal(B);return C;}
+ TensorHao<T,D> operator / (T B,const TensorHaoRef<T,D>& A) {TensorHao<T,D> C=A; C.inv_div_equal(B);return C;}
 
  //for diff: return the different elements in two Tensors
  template <class T, int D>
- int diff(const Tensor_core<T,D>& A, const Tensor_core<T,D>& B, double eta)
+ int diff(const TensorCore<T,D>& A, const TensorCore<T,D>& B, double eta)
  {
     //Use std::abs instead of abs is very important here since it is in header file
     //For normal cpp file, if we use " using namespace std; ", we are using std:abs
@@ -236,7 +236,7 @@ namespace tensor_hao
 
  //for cout
  template <class T, int D>
- std::ostream& operator<< (std::ostream &out, const Tensor_core<T,D>& object)
+ std::ostream& operator<< (std::ostream &out, const TensorCore<T,D>& object)
  {
      out<<"Size: "<<object.size()<<"\n";
      int L = object.size(); const T* object_p = object.data();

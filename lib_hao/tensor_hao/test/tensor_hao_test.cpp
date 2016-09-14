@@ -7,7 +7,7 @@ using namespace tensor_hao;
 
 TEST(Tensor_hao, void_construction)
 {
-    Tensor_hao<double,2>  tensor;
+    TensorHao<double,2>  tensor;
     for (int i = 0; i < 2; ++i)
     {
         EXPECT_EQ( 0, tensor.rank(i) );
@@ -21,7 +21,7 @@ TEST(Tensor_hao, void_construction)
 TEST(Tensor_hao, variadic_construction)
 {
     const int D=3;
-    Tensor_hao<double, D>  tensor(3,4,7);
+    TensorHao<double, D>  tensor(3,4,7);
     int size=84;
     int n[D]={3,4,7};
     int n_step[D]={1,3,12};
@@ -39,7 +39,7 @@ TEST(Tensor_hao, pointer_constructor)
 {
     const int D=3;
     int n_ptr[D] = {3,4,7};
-    Tensor_hao<double, D>  tensor(n_ptr);
+    TensorHao<double, D>  tensor(n_ptr);
     int size=84;
     int n[D]={3,4,7};
     int n_step[D]={1,3,12};
@@ -55,10 +55,10 @@ TEST(Tensor_hao, pointer_constructor)
 
 TEST(Tensor_hao, copy_constructor)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
-    Tensor_hao<double,2>  tensor_b( tensor_a );
+    TensorHao<double,2>  tensor_b( tensor_a );
 
     const int size=12;
     const int D=2;
@@ -77,10 +77,10 @@ TEST(Tensor_hao, copy_constructor)
 
 TEST(Tensor_hao, move_constructor)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
-    Tensor_hao<double,2>  tensor_b( move(tensor_a) );
+    TensorHao<double,2>  tensor_b( move(tensor_a) );
 
     const int size=12;
     const int D=2;
@@ -99,11 +99,11 @@ TEST(Tensor_hao, move_constructor)
 
 TEST(Tensor_hao, copy_ref_constructor)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
-    Tensor_hao_ref<double,2>  tensor_a_ref(tensor_a);
+    TensorHaoRef<double,2>  tensor_a_ref(tensor_a);
 
-    Tensor_hao<double,2>  tensor_b( tensor_a_ref );
+    TensorHao<double,2>  tensor_b( tensor_a_ref );
 
     const int size=12;
     const int D=2;
@@ -122,10 +122,10 @@ TEST(Tensor_hao, copy_ref_constructor)
 
 TEST(Tensor_hao, copy_assignment)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
-    Tensor_hao<double,2>  tensor_b; tensor_b = tensor_a;
+    TensorHao<double,2>  tensor_b; tensor_b = tensor_a;
 
     const int size=12;
     const int D=2;
@@ -144,10 +144,10 @@ TEST(Tensor_hao, copy_assignment)
 
 TEST(Tensor_hao, move_assignment)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
-    Tensor_hao<double,2>  tensor_b; tensor_b = move(tensor_a) ;
+    TensorHao<double,2>  tensor_b; tensor_b = move(tensor_a) ;
 
     const int size=12;
     const int D=2;
@@ -166,11 +166,11 @@ TEST(Tensor_hao, move_assignment)
 
 TEST(Tensor_hao, copy_ref_assignment)
 {
-    Tensor_hao<double,2>  tensor_a(3,4);
+    TensorHao<double,2>  tensor_a(3,4);
     tensor_a={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
-    Tensor_hao_ref<double,2>  tensor_a_ref(tensor_a);
+    TensorHaoRef<double,2>  tensor_a_ref(tensor_a);
 
-    Tensor_hao<double,2>  tensor_b; tensor_b = tensor_a_ref ;
+    TensorHao<double,2>  tensor_b; tensor_b = tensor_a_ref ;
 
     const int size=12;
     const int D=2;
@@ -189,7 +189,7 @@ TEST(Tensor_hao, copy_ref_assignment)
 
 TEST(Tensor_hao, equal_T)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size();
     tensor=3.0;
 
@@ -200,11 +200,11 @@ TEST(Tensor_hao, equal_T)
 
 TEST(Tensor_hao, slice)
 {
-    Tensor_hao<double,3>  tensor(3,4,5);
+    TensorHao<double,3>  tensor(3,4,5);
     int L = tensor.size(); double* p = tensor.data();
     for(int i=0; i<L; i++) p[i] = i*1.0;
 
-    Tensor_hao_ref<double,2 >  slice = tensor[4];
+    TensorHaoRef<double,2 >  slice = tensor[4];
 
     EXPECT_EQ( 12, slice.size() );
     EXPECT_POINTER_EQ(12, tensor.data()+12*4, slice.data() );

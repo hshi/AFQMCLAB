@@ -12,11 +12,11 @@
 
 #include "sprng.h"
 
-void random_hao_init(int seed=985456376, int gtype=1);
-void random_hao_save();
-void random_hao_read();
-void random_hao_backup();
-double uniform_hao();
-double gaussian_hao();
+void randomHaoInit(int seed = 985456376, int gtype = 1);
+void randomHaoSave();
+void randomHaoRead();
+void randomHaoBackup();
+double uniformHao();
+double gaussianHao();
 
 #endif

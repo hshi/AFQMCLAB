@@ -103,3 +103,9 @@ complex<double>* FFTServer::fourier_back(const complex<double>* inarray)
     fftw_execute(planback);
     return outback;
 }
+
+int FFTServer::returnDimen() const { return dimen; }
+
+const int* FFTServer::returnN() const { return n; }
+
+int FFTServer::returnSize() const { return L;}

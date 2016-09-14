@@ -8,10 +8,10 @@
 namespace tensor_hao
 {
 
- template<class T, int D> class Tensor_hao_ref;
- template<class T, int D> class Tensor_hao;
+ template<class T, int D> class TensorHaoRef;
+ template<class T, int D> class TensorHao;
 
- template<class T = double, int D =1 > class Tensor_core
+ template<class T = double, int D =1 > class TensorCore
  {
   private:
      int n[D];
@@ -19,8 +19,8 @@ namespace tensor_hao
      int L;
      T* p;
 
-     Tensor_core(void): L(0), p(nullptr) {}
-     ~Tensor_core() {}
+     TensorCore(void): L(0), p(nullptr) {}
+     ~TensorCore() {}
 
   public:
      inline const int* n_ptr() const {return n;}
@@ -63,8 +63,8 @@ namespace tensor_hao
      inline T operator () (int i0) const 
      {
          #ifndef NDEBUG
-         if( D != 1    )         { std::cout<<"Tensor_core::operator(int) only works for D=1 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if( D != 1    )         { std::cout<<"TensorCore::operator(int) only works for D=1 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif 
          return p[ i0 ];
      }
@@ -72,8 +72,8 @@ namespace tensor_hao
      inline T& operator () (int i0)
      {
          #ifndef NDEBUG
-         if( D != 1    )         { std::cout<<"Tensor_core::operator(int) only works for D=1 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if( D != 1    )         { std::cout<<"TensorCore::operator(int) only works for D=1 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
          return p[ i0 ];
      }
@@ -83,9 +83,9 @@ namespace tensor_hao
      inline T operator () (int i0, int i1) const 
      {
          #ifndef NDEBUG
-         if(D != 2) { std::cout<<"Tensor_core::operator(int, int) only works for D=2 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); } 
-         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if(D != 2) { std::cout<<"TensorCore::operator(int, int) only works for D=2 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
          return p[ i0+i1*n_step[1] ]; 
@@ -94,9 +94,9 @@ namespace tensor_hao
      inline T& operator () (int i0, int i1)
      {
          #ifndef NDEBUG
-         if(D != 2) { std::cout<<"Tensor_core::operator(int, int) only works for D=2 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
-         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if(D != 2) { std::cout<<"TensorCore::operator(int, int) only works for D=2 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
          return p[ i0+i1*n_step[1] ];
@@ -107,10 +107,10 @@ namespace tensor_hao
      inline T operator () (int i0, int i1, int i2) const 
      {
          #ifndef NDEBUG
-         if(D != 3) { std::cout<<"Tensor_core::operator(int, int, int) only works for D=3 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }   
-         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
-         if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if(D != 3) { std::cout<<"TensorCore::operator(int, int, int) only works for D=3 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
          return p[ i0+i1*n_step[1]+i2*n_step[2] ]; 
@@ -119,10 +119,10 @@ namespace tensor_hao
      inline T& operator () (int i0, int i1, int i2)
      {
          #ifndef NDEBUG
-         if(D != 3) { std::cout<<"Tensor_core::operator(int, int, int) only works for D=3 !!!"<<std::endl; exit(1); }
-         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
-         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
-         if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+         if(D != 3) { std::cout<<"TensorCore::operator(int, int, int) only works for D=3 !!!"<<std::endl; exit(1); }
+         if(i0 >= n[0] || i0<0 ) { std::cout<<"i0 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
+         if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
          return p[ i0+i1*n_step[1]+i2*n_step[2] ];
@@ -137,10 +137,10 @@ namespace tensor_hao
 
          #ifndef NDEBUG
          int  len = sizeof...(Values);
-         if(D != (len+4) ) { std::cout<<"Tensor_core::operator(int...) not consisten with D !!!"<<std::endl; exit(1); }
+         if(D != (len+4) ) { std::cout<<"TensorCore::operator(int...) not consisten with D !!!"<<std::endl; exit(1); }
          for(int i=0; i<D; i++)
          {
-             if( vals[i] >= n[i] || vals[i]<0  ) { std::cout<<"i... is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+             if( vals[i] >= n[i] || vals[i]<0  ) { std::cout<<"i... is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          }
          #endif
 
@@ -155,10 +155,10 @@ namespace tensor_hao
 
          #ifndef NDEBUG
          int  len = sizeof...(Values);
-         if(D != (len+4) ) { std::cout<<"Tensor_core::operator(int...) not consisten with D !!!"<<std::endl; exit(1); }
+         if(D != (len+4) ) { std::cout<<"TensorCore::operator(int...) not consisten with D !!!"<<std::endl; exit(1); }
          for(int i=0; i<D; i++)
          {
-             if( vals[i] >= n[i] || vals[i]<0  ) { std::cout<<"i... is out of range in Tensor_core::operator() !!!"<<std::endl; exit(1); }
+             if( vals[i] >= n[i] || vals[i]<0  ) { std::cout<<"i... is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          }
          #endif
 
@@ -170,38 +170,38 @@ namespace tensor_hao
      //=====================================================================
 
 
-     inline void operator += (const Tensor_core<T,D>& x) 
+     inline void operator += (const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator += "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]+=x.p[i];
      }
 
 
-     inline void operator -= (const Tensor_core<T,D>& x)
+     inline void operator -= (const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator -= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]-=x.p[i];
      }
 
-     inline void min_add_equal(const Tensor_core<T,D>& x)
+     inline void min_add_equal(const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator min_add_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]=x.p[i]-p[i];
      }
 
-     inline void operator *= (const Tensor_core<T,D>& x)
+     inline void operator *= (const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator *= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]*=x.p[i];
      }
 
-     inline void operator /= (const Tensor_core<T,D>& x)
+     inline void operator /= (const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator /= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]/=x.p[i];
      }
 
-     inline void inv_div_equal(const Tensor_core<T,D>& x)
+     inline void inv_div_equal(const TensorCore<T,D>& x)
      {
          if( L != x.L ) { std::cout<<"Size not consistent in operator inv_div_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i] = x.p[i]/p[i];
@@ -254,16 +254,16 @@ namespace tensor_hao
 
 
   private:
-     //Avoid program to generater constructor and assigment for Tensor_core. (Suppose to be an abstract class.)
-     Tensor_core(const Tensor_core<T,D>& x)  { }
-     Tensor_core<T,D> & operator  = (const Tensor_core<T,D>& x) { return *this; }
+     //Avoid program to generater constructor and assigment for TensorCore. (Suppose to be an abstract class.)
+     TensorCore(const TensorCore<T,D>& x)  { }
+     TensorCore<T,D> & operator  = (const TensorCore<T,D>& x) { return *this; }
 
-  friend class Tensor_hao_ref<T,D>;
-  friend class Tensor_hao<T,D>;
-  friend class Tensor_hao_ref<T,D+1>;
-  friend class Tensor_hao<T,D+1>;
+  friend class TensorHaoRef<T,D>;
+  friend class TensorHao<T,D>;
+  friend class TensorHaoRef<T,D+1>;
+  friend class TensorHao<T,D+1>;
 
- };  //end class Tensor_core
+ };  //end class TensorCore
 
 } //end namespace tensor_hao
 

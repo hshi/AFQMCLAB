@@ -4,7 +4,7 @@ using namespace std;
 /******************************************************/
 /*solve the equation cosh(x)=exp(y), input y, return x*/
 /******************************************************/
-complex<double> coshx_eq_expy(double y)
+complex<double> sloveCoshxEqExpy(double y)
 {
     complex<double> ey={exp(y),0};
     complex<double> gamma=log(ey-sqrt(ey*ey-1.0));
@@ -20,7 +20,7 @@ complex<double> coshx_eq_expy(double y)
 /******************************************************/
 /*solve the equation cos(x)=exp(y), input y, return x*/
 /******************************************************/
-complex<double> cosx_eq_expy(double y)
+complex<double> sloveCosxEqExpy(double y)
 {
     complex<double> ey={exp(y),0};
     complex<double> gamma=acos(ey);
@@ -40,7 +40,7 @@ complex<double> cosx_eq_expy(double y)
 /* Output exp of this matrix                                   */
 /* Similiar to diagonalize BCS matrix, see my note for details */
 /***************************************************************/
-void exp_matrix(double& a, double& b, complex<double>& c)
+void exp2by2Matrix(double &a, double &b, complex<double> &c)
 {
     if( std::abs(c) < 1e-60 )
     {
@@ -97,12 +97,12 @@ void exp_matrix(double& a, double& b, complex<double>& c)
 /* (c , b )                                                    */
 /* Output eigenvalues and eigenvectors                         */
 /***************************************************************/
-void eigen_matrix(double a, double b, complex<double> c, double* eig, complex<double>* vec)
+void eigen2by2Matrix(double a, double b, complex<double> c, double *eigvalue, complex<double> *eigvec)
 {
     if( std::abs(c) < 1e-60 )
     {
-        eig[0] = a; eig[1] = b;
-        vec[0] = 1.0; vec[1] = 0.0; vec[2] = 0.0; vec[3] = 1.0;
+        eigvalue[0] = a; eigvalue[1] = b;
+        eigvec[0] = 1.0; eigvec[1] = 0.0; eigvec[2] = 0.0; eigvec[3] = 1.0;
         return; 
     }
 
@@ -114,21 +114,21 @@ void eigen_matrix(double a, double b, complex<double> c, double* eig, complex<do
     {
         double norm = 1.0/sqrt(2.0);
 
-        eig[0] = -abs_c + a; eig[1] = abs_c + b;
-        vec[0] = -norm; vec[1] =  norm * exp( im*arg_c ); vec[2] =  norm;  vec[3] =  norm * exp( im*arg_c );
+        eigvalue[0] = -abs_c + a; eigvalue[1] = abs_c + b;
+        eigvec[0] = -norm; eigvec[1] =  norm * exp( im*arg_c ); eigvec[2] =  norm;  eigvec[3] =  norm * exp( im*arg_c );
     }
     else
     {
         double xi    = 0.5*atan( 2.0*abs_c/(a-b) );
 
         //Eigenvalues
-        eig[0] = 0.5*cos(2.0*xi)*(a-b) + sin(2.0*xi)*abs_c + (a+b)*0.5;
-        eig[1] =-0.5*cos(2.0*xi)*(a-b) - sin(2.0*xi)*abs_c + (a+b)*0.5;
+        eigvalue[0] = 0.5*cos(2.0*xi)*(a-b) + sin(2.0*xi)*abs_c + (a+b)*0.5;
+        eigvalue[1] =-0.5*cos(2.0*xi)*(a-b) - sin(2.0*xi)*abs_c + (a+b)*0.5;
 
         //Eigenvectors
-        vec[0] =  exp(-im*arg_c*0.5 ) * cos(xi);
-        vec[1] =  exp( im*arg_c*0.5 ) * sin(xi);
-        vec[2] = -exp(-im*arg_c*0.5 ) * sin(xi);
-        vec[3] =  exp( im*arg_c*0.5 ) * cos(xi);
+        eigvec[0] =  exp(-im*arg_c*0.5 ) * cos(xi);
+        eigvec[1] =  exp( im*arg_c*0.5 ) * sin(xi);
+        eigvec[2] = -exp(-im*arg_c*0.5 ) * sin(xi);
+        eigvec[3] =  exp( im*arg_c*0.5 ) * cos(xi);
     }
 }

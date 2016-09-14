@@ -8,7 +8,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- int check_Hermitian(const Tensor_core<complex<double>,2>& A)
+ int checkHermitian(const TensorCore<complex<double>, 2> &A)
  {
      int L0=A.rank(0); int L1=A.rank(1);
      if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
@@ -54,11 +54,11 @@ namespace tensor_hao
  /****************************************/
  /*Get log(|det|) and det/|det| of matrix*/
  /****************************************/
- void lognorm_phase_determinant(const LUDecomp<complex<double>>& x, complex<double>& lognorm, complex<double>& phase)
+ void lognormPhaseDeterminant(const LUDecomp<complex<double>> &x, complex<double> &lognorm, complex<double> &phase)
  {
      if(x.info>0)
      {
-         cout<<"WARNING!!!! lognorm_phase_determinant function has zero determinant!"<<endl;
+         cout<<"WARNING!!!! lognormPhaseDeterminant function has zero determinant!"<<endl;
          lognorm=complex<double>(-1e300,0.0);
          phase=complex<double>(1.0,0.0);
          return;
@@ -78,10 +78,10 @@ namespace tensor_hao
  /***************************/
  /*Log determinant of matrix*/
  /***************************/
- complex<double> log_determinant(const LUDecomp<complex<double>>& x)
+ complex<double> logDeterminant(const LUDecomp<complex<double>> &x)
  {
      complex<double> log_det,phase;
-     lognorm_phase_determinant(x,log_det,phase);
+     lognormPhaseDeterminant(x, log_det, phase);
      log_det+=log(phase);
      return log_det;
  }
@@ -90,12 +90,12 @@ namespace tensor_hao
  /*******************************/
  /*Diagonal array multipy matrix*/
  /*******************************/
- Tensor_hao<complex<double>,2> D_Multi_Matrix(const Tensor_core<complex<double>,1>& D,const Tensor_core<complex<double>,2>& ph)
+ TensorHao<complex<double>,2> dMultiMatrix(const TensorCore<complex<double>, 1> &D, const TensorCore<complex<double>, 2> &ph)
  {
-     if( D.rank(0) != ph.rank(0) ) {cout<<"D_Multi_Matrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
+     if( D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
 
      int L0 = ph.rank(0); int L1 = ph.rank(1);
-     Tensor_hao<complex<double>,2> ph_new(L0, L1);
+     TensorHao<complex<double>,2> ph_new(L0, L1);
 
      //The order about loop i,j is important
      for(int j=0; j<L1; j++)
@@ -109,10 +109,10 @@ namespace tensor_hao
  /************************************/
  /*Check skew symmetric of the matrix*/
  /************************************/
- int check_skew_symmetric(const Tensor_core<complex<double>,2>& A)
+ int checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
  {
      int L0=A.rank(0); int L1=A.rank(1);
-     if( L0!=L1 ) {cout<<"Input for check_skew_symmetric is not square matrix!"<<endl; exit(1);}
+     if( L0!=L1 ) {cout<<"Input for checkSkewSymmetric is not square matrix!"<<endl; exit(1);}
 
      double error=0; double norm=0;
      for(int j=0; j<L1; j++)
@@ -138,9 +138,9 @@ namespace tensor_hao
  }
 
  /**********************/
- /*Pfaffian of a matrix*/
+ /*pfaffian of a matrix*/
  /**********************/
- complex<double> Pfaffian(Tensor_core<complex<double>,2>& A)
+ complex<double> pfaffian(TensorCore<complex<double>, 2> &A)
  {
     int L0 = A.rank(0); int L1 = A.rank(1);
     if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}

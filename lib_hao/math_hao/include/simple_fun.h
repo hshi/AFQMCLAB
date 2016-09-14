@@ -1,5 +1,5 @@
-#ifndef SIMPLE_FUN_H
-#define SIMPLE_FUN_H
+#ifndef AFQMCLIB_SIMPLE_FUN_H
+#define AFQMCLIB_SIMPLE_FUN_H
 
 #include <iostream>
 #include <vector>
@@ -10,12 +10,12 @@
 /******************************************************/
 /*solve the equation cosh(x)=exp(y), input y, return x*/
 /******************************************************/
-std::complex<double> coshx_eq_expy(double y);
+std::complex<double> sloveCoshxEqExpy(double y);
 
 /******************************************************/
 /*solve the equation cos(x)=exp(y), input y, return x*/
 /******************************************************/
-std::complex<double> cosx_eq_expy(double y);
+std::complex<double> sloveCosxEqExpy(double y);
 
 
 /***************************************************************/
@@ -25,7 +25,7 @@ std::complex<double> cosx_eq_expy(double y);
 /* Output exp of this matrix                                   */
 /* Similiar to diagonalize BCS matrix, see my note for details */
 /***************************************************************/
-void exp_matrix(double& a, double& b, std::complex<double>& c);
+void exp2by2Matrix(double &a, double &b, std::complex<double> &c);
 
 
 /***************************************************************/
@@ -34,6 +34,6 @@ void exp_matrix(double& a, double& b, std::complex<double>& c);
 /* (c , b )                                                    */
 /* Output eigenvalues and eigenvectors                         */
 /***************************************************************/
-void eigen_matrix(double a, double b, std::complex<double> c, double* eig, std::complex<double>* vec);
+void eigen2by2Matrix(double a, double b, std::complex<double> c, double *eigvalue, std::complex<double> *eigvec);
 
 #endif

@@ -14,10 +14,10 @@ namespace tensor_hao
  /* return A^T */
  /**************/
  template <class T>
- Tensor_hao<T,2> trans(const Tensor_core<T,2>& A)
+ TensorHao<T,2> trans(const TensorCore<T,2>& A)
  {
      int L0 = A.rank(0); int L1 = A.rank(1);
-     Tensor_hao<T,2> B(L1, L0);
+     TensorHao<T,2> B(L1, L0);
      for(int i=0; i<L0; i++)
      {
          for(int j=0; j<L1; j++) B(j,i)=A(i,j);
@@ -29,10 +29,10 @@ namespace tensor_hao
  /* return A^H */
  /**************/
  template <class T>
- Tensor_hao<T,2> conjtrans(const Tensor_core<T,2>& A)
+ TensorHao<T,2> conjtrans(const TensorCore<T,2>& A)
  {
      int L0 = A.rank(0); int L1 = A.rank(1);
-     Tensor_hao<T,2> B(L1, L0);
+     TensorHao<T,2> B(L1, L0);
      for(int i=0; i<L0; i++)
      {
          for(int j=0; j<L1; j++) B(j,i)=std::conj( A(i,j) );
@@ -43,7 +43,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- int check_Hermitian(const Tensor_core<std::complex<double>,2>& A);
+ int checkHermitian(const TensorCore<std::complex<double>, 2> &A);
 
  /*******************************************/
  /*LU decomposition of complex double matrix*/
@@ -51,8 +51,8 @@ namespace tensor_hao
  template <class T> class LUDecomp
  {
      public:
-     Tensor_hao<T,2> A;
-     Tensor_hao<int,1> ipiv;
+     TensorHao<T,2> A;
+     TensorHao<int,1> ipiv;
      int info;
 
      LUDecomp() {}
@@ -67,19 +67,19 @@ namespace tensor_hao
  /*Determinant of matrix*/
  /************************/
  std::complex<double> determinant(const LUDecomp<std::complex<double>>& x);
- void lognorm_phase_determinant(const LUDecomp<std::complex<double>>& x, std::complex<double>& lognorm, std::complex<double>& phase);
- std::complex<double> log_determinant(const LUDecomp<std::complex<double>>& x);
+ void lognormPhaseDeterminant(const LUDecomp<std::complex<double>> &x, std::complex<double> &lognorm, std::complex<double> &phase);
+ std::complex<double> logDeterminant(const LUDecomp<std::complex<double>> &x);
 
  /*******************************/
  /*Diagonal array multipy matrix*/
  /*******************************/
- Tensor_hao<std::complex<double>,2> D_Multi_Matrix(const Tensor_core<std::complex<double>,1>& D,const Tensor_core<std::complex<double>,2>& ph);
+ TensorHao<std::complex<double>,2> dMultiMatrix(const TensorCore<std::complex<double>, 1> &D, const TensorCore<std::complex<double>, 2> &ph);
 
  /**********************/
- /*Pfaffian of a matrix*/
+ /*pfaffian of a matrix*/
  /**********************/
- int check_skew_symmetric(const Tensor_core<std::complex<double>,2>& A);
- std::complex<double> Pfaffian(Tensor_core<std::complex<double>,2>& A);
+ int checkSkewSymmetric(const TensorCore<std::complex<double>, 2> &A);
+ std::complex<double> pfaffian(TensorCore<std::complex<double>, 2> &A);
 
 } //end namespace tensor_hao
 

@@ -1,5 +1,5 @@
-#ifndef MATH_CONTAINER_H
-#define MATH_CONTAINER_H
+#ifndef AFQMCLIB_MATH_CONTAINER_H
+#define AFQMCLIB_MATH_CONTAINER_H
 
 /********************************/
 /*Find the index during the sort*/

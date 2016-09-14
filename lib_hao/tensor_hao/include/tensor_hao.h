@@ -8,26 +8,26 @@
 namespace tensor_hao
 {
 
- template<class T = double, int D = 1> class Tensor_hao : public Tensor_core<T, D>
+ template<class T = double, int D = 1> class TensorHao : public TensorCore<T, D>
  {
   public:
      //============
      //CONSTRUCTORS
      //============
 
-     Tensor_hao(void): Tensor_core<T,D>() 
+     TensorHao(void): TensorCore<T,D>()
      {
          for(int i=0; i<D; i++) 
          {
             this->n[i]=0;
             this->n_step[i]=0;
          }
-         //std::cout<<"In Tensor_hao void constructor "<<std::endl;
+         //std::cout<<"In TensorHao void constructor "<<std::endl;
      }
     
      //Variadic template 
      template<typename... Values>
-     explicit Tensor_hao(int input, Values... inputs)
+     explicit TensorHao(int input, Values... inputs)
      {
          int  len = sizeof...(Values);
          int vals[] = {input, inputs...};
@@ -42,10 +42,10 @@ namespace tensor_hao
 
          this->p = new T[this->L];
 
-         //std::cout<<"In Tensor_hao Variadic constructor "<<std::endl;
+         //std::cout<<"In TensorHao Variadic constructor "<<std::endl;
      }
 
-     Tensor_hao(const int* n_ptr)
+     TensorHao(const int* n_ptr)
      {
          std::copy(n_ptr, n_ptr+D, this->n);
 
@@ -55,64 +55,64 @@ namespace tensor_hao
 
          this->p = new T[this->L];
 
-         //std::cout<<"In Tensor_hao pointer constructor "<<std::endl;
+         //std::cout<<"In TensorHao pointer constructor "<<std::endl;
      }
 
-     Tensor_hao(const Tensor_hao<T, D>& x)
+     TensorHao(const TensorHao<T, D>& x)
      {
          copy_deep_constructor(x);
-         //std::cout<<"In Tensor_hao copy constructor."<<std::endl;
+         //std::cout<<"In TensorHao copy constructor."<<std::endl;
      }
 
-     Tensor_hao(Tensor_hao<T, D>&& x)
+     TensorHao(TensorHao<T, D>&& x)
      {
          move_deep_constructor(x);
-         //std::cout<<"In Tensor_hao move constructor."<<std::endl;
+         //std::cout<<"In TensorHao move constructor."<<std::endl;
      }
 
-     Tensor_hao(const Tensor_core<T, D>& x)
+     TensorHao(const TensorCore<T, D>& x)
      {
          copy_deep_constructor(x);
-         //std::cout<<"In Tensor_core copy constructor."<<std::endl;
+         //std::cout<<"In TensorCore copy constructor."<<std::endl;
      }
 
-     //No Tensor_core move constructor
-     //We do not want to move pointer to Tensor_hao_ref
-     //Since Tensor_hao_ref do not own the memory space
+     //No TensorCore move constructor
+     //We do not want to move pointer to TensorHaoRef
+     //Since TensorHaoRef do not own the memory space
 
-     ~Tensor_hao() 
+     ~TensorHao()
      {
          if(this->p) delete[] this->p;
      }
 
-     Tensor_hao<T, D> & operator  = (const Tensor_hao<T, D>& x)
+     TensorHao<T, D> & operator  = (const TensorHao<T, D>& x)
      {
          if(&x!=this) copy_deep_assignment(x);
-         //std::cout<<"In Tensor_hao copy assginment "<<std::endl;
+         //std::cout<<"In TensorHao copy assginment "<<std::endl;
          return *this;
      }
 
-     Tensor_hao<T, D> & operator  = (Tensor_hao<T, D>&& x)
+     TensorHao<T, D> & operator  = (TensorHao<T, D>&& x)
      {
          if(&x!=this) move_deep_assignment(x);
-         //std::cout<<"In Tensor_hao move assginment "<<std::endl;
+         //std::cout<<"In TensorHao move assginment "<<std::endl;
          return *this;
      }
 
-     Tensor_hao<T, D> & operator  = (const Tensor_core<T, D>& x)
+     TensorHao<T, D> & operator  = (const TensorCore<T, D>& x)
      {
          if(&x!=this) copy_deep_assignment(x);
-         //std::cout<<"In Tensor_core copy assginment "<<std::endl;
+         //std::cout<<"In TensorCore copy assginment "<<std::endl;
          return *this;
      }
 
-     Tensor_hao<T, D> & operator  = (const std::initializer_list <T> &args)
+     TensorHao<T, D> & operator  = (const std::initializer_list <T> &args)
      {
          this->copy_list(args);
          return *this;
      }
 
-     Tensor_hao<T, D> & operator  =  (T x) 
+     TensorHao<T, D> & operator  =  (T x)
      { 
          for(int i=0; i<this->L; i++) this->p[i] = x;
          return *this;
@@ -121,7 +121,7 @@ namespace tensor_hao
      //=========
      //FUNCTIONS
      //=========
-     Tensor_hao_ref<T, D-1> operator[] (int i)
+     TensorHaoRef<T, D-1> operator[] (int i)
      {
          if( i > ( this->n[D-1] ) || i<0 )
          {
@@ -129,13 +129,13 @@ namespace tensor_hao
              std::cout<<i<<" "<<this->n[D-1]<<std::endl;
              exit(1);
          }
-         Tensor_hao_ref<T, D-1> A (this->n);
+         TensorHaoRef<T, D-1> A (this->n);
          A.p = this->p + i * this->n_step[D-1];
          return A;
      }
 
   private:
-     void copy_deep_constructor(const Tensor_core<T, D>& x)
+     void copy_deep_constructor(const TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
          std::copy(x.n_step, x.n_step+D, this->n_step);
@@ -145,7 +145,7 @@ namespace tensor_hao
          std::copy(x.p, x.p+(this->L), this->p);
      }
 
-     void move_deep_constructor(Tensor_core<T, D>& x)
+     void move_deep_constructor(TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
          std::copy(x.n_step, x.n_step+D, this->n_step);
@@ -155,7 +155,7 @@ namespace tensor_hao
          x.p = nullptr;
      }
 
-     void copy_deep_assignment(const Tensor_core<T, D>& x)
+     void copy_deep_assignment(const TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
          std::copy(x.n_step, x.n_step+D, this->n_step);
@@ -170,7 +170,7 @@ namespace tensor_hao
          std::copy(x.p, x.p+(this->L), this->p);
      }
 
-     void move_deep_assignment(Tensor_core<T, D>& x)
+     void move_deep_assignment(TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
          std::copy(x.n_step, x.n_step+D, this->n_step);
@@ -182,7 +182,7 @@ namespace tensor_hao
          x.p = p_temp;
      }
 
- }; //end class Tensor_hao
+ }; //end class TensorHao
 
 } //end namespace tensor_hao
 

@@ -20,12 +20,13 @@ int main()
     if(L*L!=L_square) {cout<<"The matrix is not square! "<<L_square<<" "<<L<<endl; exit(1);}
 
     //Point to the vector, write the trace
-    Tensor_hao_ref<complex<double>,2> hermitM(L,L); hermitM.point(vec); check_Hermitian(hermitM);
+    TensorHaoRef<complex<double>,2> hermitM(L,L); hermitM.point(vec);
+    checkHermitian(hermitM);
     cout<<setprecision(16);
     complex<double> TR(0,0); for(int i=0; i<L; i++) TR+=hermitM(i,i); cout<<"Trace matrix is: "<<TR<<endl;
 
     //Diagonal matrix
-    Tensor_hao<double,1> W(L);
+    TensorHao<double,1> W(L);
     eigen_cpu(hermitM, W);
 
     //Write to file
