@@ -108,7 +108,7 @@ namespace tensor_hao
          int vec_size = vec.size();
          if( this->L != vec_size )
          {
-             std::cout<<"Size is not consistent between ref matrix and vector."<<std::endl;
+             std::cout<<"size is not consistent between ref matrix and vector."<<std::endl;
              std::cout<<this->L<<" "<<vec.size()<<std::endl;
              exit(1);
          }

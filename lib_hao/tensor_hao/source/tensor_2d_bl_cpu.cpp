@@ -259,7 +259,7 @@ namespace tensor_hao
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
      {
-         cout<<"Size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
+         cout<<"size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
          exit(1);
      }
 
@@ -288,7 +288,7 @@ namespace tensor_hao
  {
      if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
      {
-         cout<<"Size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
+         cout<<"size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
          exit(1);
      }
 

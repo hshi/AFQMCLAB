@@ -238,7 +238,7 @@ namespace tensor_hao
  template <class T, int D>
  std::ostream& operator<< (std::ostream &out, const TensorCore<T,D>& object)
  {
-     out<<"Size: "<<object.size()<<"\n";
+     out<<"size: "<<object.size()<<"\n";
      int L = object.size(); const T* object_p = object.data();
      for (int i = 0; i<L; ++i) out<<object_p[i]<<" ";
      return out;

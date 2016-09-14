@@ -172,38 +172,38 @@ namespace tensor_hao
 
      inline void operator += (const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator += "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator += "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]+=x.p[i];
      }
 
 
      inline void operator -= (const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator -= "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator -= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]-=x.p[i];
      }
 
      inline void min_add_equal(const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator min_add_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator min_add_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]=x.p[i]-p[i];
      }
 
      inline void operator *= (const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator *= "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator *= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]*=x.p[i];
      }
 
      inline void operator /= (const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator /= "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator /= "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i]/=x.p[i];
      }
 
      inline void inv_div_equal(const TensorCore<T,D>& x)
      {
-         if( L != x.L ) { std::cout<<"Size not consistent in operator inv_div_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
+         if( L != x.L ) { std::cout<<"size not consistent in operator inv_div_equal "<<L<<" "<<x.L<<std::endl; exit(1); }
          for(int i=0; i<L; i++) p[i] = x.p[i]/p[i];
      }
 

@@ -6,106 +6,112 @@ using namespace std;
 
 FFTServer::FFTServer()
 {
-    dimen=1;
-    n=new int[1]; n[0]=1;
-    L=1;
-    inforw =new complex<double>[1];
-    outforw=new complex<double>[1];
-    inback =new complex<double>[1];
-    outback=new complex<double>[1];
-    planforw=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inforw),reinterpret_cast<fftw_complex*>(outforw),
-                           FFTW_FORWARD, FFTW_MEASURE);
-    planback=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inback),reinterpret_cast<fftw_complex*>(outback),
-                           FFTW_BACKWARD,FFTW_MEASURE);
+    dimen=1; n.push_back(1); size=1;
+
+    allocateInOutSpace();
+
+    createPlans();
 }
 
-FFTServer::FFTServer(int Dc, const int* Nc, char format)
+FFTServer::FFTServer(int dimenInput, const vector<int> & nInput, char format)
 {
-    dimen=Dc;
-    n=new int[dimen];
-    if(format=='C') std::reverse_copy(Nc,Nc+dimen,n);  //Column-major: fortran style
-    else if(format=='R') std::copy(Nc,Nc+dimen,n); //Row-major: c style
-    else {cout<<"Do not know the format!!!! "<<format<<endl; exit(1); }
+    setDimenNSizeFromInput(dimenInput, nInput, format);
 
-    L=1; for(int i=0; i<dimen; i++) L*=n[i];
-   
-    inforw =new complex<double>[L];
-    outforw=new complex<double>[L];
-    inback =new complex<double>[L];
-    outback=new complex<double>[L];
-   
-    planforw=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inforw),reinterpret_cast<fftw_complex*>(outforw),
-                           FFTW_FORWARD, FFTW_MEASURE);
-    planback=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inback),reinterpret_cast<fftw_complex*>(outback),
-                           FFTW_BACKWARD,FFTW_MEASURE);
+    allocateInOutSpace();
+
+    createPlans();
 }
 
 
-FFTServer::FFTServer(const FFTServer& x) 
+FFTServer::FFTServer(const FFTServer& x)
 {
-    dimen=x.dimen;
-    n=new int[dimen]; std::copy(x.n,x.n+dimen,n);
-    L=x.L;
-    inforw =new complex<double>[L];
-    outforw=new complex<double>[L];
-    inback =new complex<double>[L];
-    outback=new complex<double>[L];
-    planforw=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inforw),reinterpret_cast<fftw_complex*>(outforw),
-                           FFTW_FORWARD, FFTW_MEASURE);
-    planback=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inback),reinterpret_cast<fftw_complex*>(outback),
-                           FFTW_BACKWARD,FFTW_MEASURE);
+    dimen=x.dimen; n=x.n; size=x.size;
+
+    allocateInOutSpace();
+
+    createPlans();
 }
 
 
 FFTServer::~FFTServer()
 {
-    if(n)       delete[] n;
-    if(inforw)  delete[] inforw;
-    if(outforw) delete[] outforw;
-    if(inback)  delete[] inback;
-    if(outback) delete[] outback; 
-    fftw_destroy_plan(planforw);
-    fftw_destroy_plan(planback);
+    deallocateInOutSpace();
+    destroyPlans();
 }
 
 
 FFTServer& FFTServer::operator  = (const FFTServer& x)
 {
-    dimen=x.dimen;
-    if(n) delete[] n; n=new int[dimen]; std::copy(x.n,x.n+dimen,n);
-    L=x.L;
-    if(inforw)  delete[] inforw;  inforw =new complex<double>[L];
-    if(outforw) delete[] outforw; outforw=new complex<double>[L];
-    if(inback)  delete[] inback;  inback =new complex<double>[L];
-    if(outback) delete[] outback; outback=new complex<double>[L];
-   
-    fftw_destroy_plan(planforw);
-    planforw=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inforw),reinterpret_cast<fftw_complex*>(outforw),
-                           FFTW_FORWARD, FFTW_MEASURE);
-   
-    fftw_destroy_plan(planback);
-    planback=fftw_plan_dft(dimen,n,reinterpret_cast<fftw_complex*>(inback),reinterpret_cast<fftw_complex*>(outback),
-                           FFTW_BACKWARD,FFTW_MEASURE);
-   
+    deallocateInOutSpace();
+    destroyPlans();
+
+    dimen=x.dimen; n=x.n; size=x.size;
+    allocateInOutSpace();
+    createPlans();
+
     return *this;
 }
 
-complex<double>* FFTServer::fourier_forw(const complex<double>* inarray)
+const complex<double> * FFTServer::fourier_forw(const complex<double> *inarray)
 {
-    std::copy(inarray,inarray+L,inforw);
+    std::copy(inarray,inarray+size,inforw);
     fftw_execute(planforw);
     return outforw;
 }
 
-complex<double>* FFTServer::fourier_back(const complex<double>* inarray)
+const complex<double> * FFTServer::fourier_back(const complex<double> *inarray)
 {
-    std::copy(inarray,inarray+L,inback);
+    std::copy(inarray,inarray+size,inback);
     fftw_execute(planback);
     return outback;
 }
 
 int FFTServer::returnDimen() const { return dimen; }
 
-const int* FFTServer::returnN() const { return n; }
+const std::vector<int>& FFTServer::returnN() const { return n; }
 
-int FFTServer::returnSize() const { return L;}
+int FFTServer::returnSize() const { return size;}
+
+void FFTServer::setDimenNSizeFromInput(int dimenInput, const vector<int> &nInput, char format)
+{
+    dimen =dimenInput;
+
+    if(format=='C')      n = vector<int>(nInput.rbegin(), nInput.rend()); //Column-major: fortran style
+    else if(format=='R') n = nInput;                                      //Row-major: c style
+    else {cout<<"Do not know the format!!!! "<<format<<endl; exit(1); }
+
+    size =1;
+    for(int i=0; i < dimen; i++) size *= n[i];
+}
+
+void FFTServer::allocateInOutSpace()
+{
+    inforw =new complex<double>[size];
+    outforw =new complex<double>[size];
+    inback =new complex<double>[size];
+    outback =new complex<double>[size];
+}
+
+void FFTServer::deallocateInOutSpace()
+{
+    if(inforw)  delete[] inforw;
+    if(outforw) delete[] outforw;
+    if(inback)  delete[] inback;
+    if(outback) delete[] outback;
+}
+
+void FFTServer::createPlans()
+{
+    planforw =fftw_plan_dft(dimen, n.data(), reinterpret_cast<fftw_complex*>(inforw), reinterpret_cast<fftw_complex*>
+                            (outforw),
+                            FFTW_FORWARD, FFTW_MEASURE);
+    planback =fftw_plan_dft(dimen, n.data(), reinterpret_cast<fftw_complex*>(inback), reinterpret_cast<fftw_complex*>
+                            (outback),
+                            FFTW_BACKWARD, FFTW_MEASURE);
+}
+
+void FFTServer::destroyPlans()
+{
+    fftw_destroy_plan(planforw);
+    fftw_destroy_plan(planback);
+}
