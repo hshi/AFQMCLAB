@@ -26,7 +26,7 @@ This code depends on fftw, ...
 
             cmake .. -DUSE_MAGMA=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
-- If defualt setting not working, change to different platform.
+- If defualt setting does not work, change to different platform.
 
   It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
 

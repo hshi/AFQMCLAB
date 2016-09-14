@@ -4,70 +4,77 @@
 #include "../include/time_hao.h"
 
 using namespace std;
+struct tm transferSecondToTm (double seconds);
 
+TimerHao::TimerHao():seconds(0),flag(0) {}
 
-Timer_hao::Timer_hao():seconds(0),timing_flag(0) {}
+TimerHao::TimerHao(double secs):seconds(secs),flag(0) {}
 
-Timer_hao::Timer_hao(double secs):seconds(secs),timing_flag(0) {}
+TimerHao::TimerHao(const TimerHao& x):seconds(x.seconds),flag(x.flag),clockInit(x.clockInit),clockEnd(x.clockEnd) {}
 
-Timer_hao::Timer_hao(const Timer_hao& x):seconds(x.seconds),timing_flag(x.timing_flag),clock_init(x.clock_init),clock_end(x.clock_end) {}
+TimerHao::~TimerHao() {}
 
-Timer_hao::~Timer_hao() {}
-
-Timer_hao& Timer_hao::operator  = (const Timer_hao& x)
+TimerHao& TimerHao::operator  = (const TimerHao& x)
 {
     seconds=x.seconds;
-    timing_flag=x.timing_flag;
-    clock_init=x.clock_init;
-    clock_end=x.clock_end;
+    flag=x.flag;
+    clockInit=x.clockInit;
+    clockEnd=x.clockEnd;
     return *this;
 }
 
-void Timer_hao::init()
+double TimerHao::returnSeconds() {return seconds;}
+
+int TimerHao::returnFlag() {return flag;}
+
+void TimerHao::init()
 {
-    if(timing_flag!=0) {cerr<<"ERROR!!! Cannot initial the timer before it is ended!"<<endl; exit(1);}
-    clock_init = clock();
-    timing_flag=1;
+    if(flag!=0) {cerr<<"ERROR!!! Cannot initial the timer before it is ended!"<<endl; exit(1);}
+    clockInit = clock();
+    flag=1;
 }
 
-void Timer_hao::end()
+void TimerHao::end()
 {
-    if(timing_flag!=1) {cout<<"ERROR!!! Cannot end the timer before it is initialized!"<<endl; exit(1);}
-    clock_end = clock();
-    seconds += double(clock_end - clock_init) / CLOCKS_PER_SEC;
-    timing_flag=0;
+    if(flag!=1) {cout<<"ERROR!!! Cannot end the timer before it is initialized!"<<endl; exit(1);}
+    clockEnd = clock();
+    seconds += double(clockEnd - clockInit) / CLOCKS_PER_SEC;
+    flag=0;
 }
 
 
-void Timer_hao::clear()
+void TimerHao::clear()
 {
-    if(timing_flag!=0) {cout<<"ERROR!!! Cannot clear the timer before it is ended!"<<endl; exit(1);}
+    if(flag!=0) {cout<<"ERROR!!! Cannot clear the timer before it is ended!"<<endl; exit(1);}
     seconds=0; //clear the time to zero
 }
 
-void Timer_hao::print_current_time() const
+void TimerHao::print() const
+{
+    if(flag!=0) {cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!";}
+    cout<<setprecision(15);
+    cout<<"Total seconds: "<<seconds<<"\n";
+}
+
+void TimerHao::printFormat() const
+{
+    if(flag!=0) {cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!";}
+    struct tm timeinfo= transferSecondToTm (seconds);
+    cout<<setprecision(15);
+    cout<<"Total seconds: "<<seconds<<"\n";
+    cout<<"Total Hours: "<<seconds/3600.0<<"\n";
+    cout<<"Readable Time: "<<timeinfo.tm_mday<<" days, "<<timeinfo.tm_hour<<" hours, "
+        <<timeinfo.tm_min<<" minutes, "<<timeinfo.tm_sec <<" seconds\n\n";
+}
+
+void TimerHao::printCurrentTime () const
 {
     time_t timer;
     time(&timer);
     cout<<ctime(&timer)<<endl;
 }
 
-void Timer_hao::print_accumulation(int format) const
-{
-    if(timing_flag!=0) {cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!";}
-    struct tm timeinfo=second_to_tm(seconds);
-    cout<<setprecision(15);
-    cout<<"Total seconds: "<<seconds<<"\n";
-    if(format != 0)
-    {
-        cout<<"Total Hours: "<<seconds/3600.0<<"\n";
-        cout<<"Readable Time: "<<timeinfo.tm_mday<<" days, "<<timeinfo.tm_hour<<" hours, "
-            <<timeinfo.tm_min<<" minutes, "<<timeinfo.tm_sec <<" seconds\n\n";
-    }
-}
-
-
-struct tm second_to_tm(double seconds)
+struct tm transferSecondToTm (double seconds)
 {
     struct tm timeinfo; long sec=lround(seconds);
     timeinfo.tm_year =0; timeinfo.tm_mon = 0;

@@ -3,27 +3,29 @@
 
 #include <time.h>
 
-class Timer_hao
+class TimerHao
 {
-   public:
+ private:
     double seconds;
-    int    timing_flag;  //0: Have not start accumulation. 1: In accumulation, between init() and end();
-    clock_t clock_init, clock_end;
-    Timer_hao();
-    Timer_hao(double);
-    Timer_hao(const Timer_hao& );
-    ~Timer_hao();
+    int    flag;  //0: Have not start accumulation. 1: In accumulation, between init() and end();
+    clock_t clockInit, clockEnd;
+
+ public:
+    TimerHao();
+    TimerHao(double);
+    TimerHao(const TimerHao& );
+    ~TimerHao();
    
-    Timer_hao& operator  = (const Timer_hao&);
+    TimerHao& operator  = (const TimerHao&);
+
+    double returnSeconds();
+    int returnFlag();
    
     void init();
     void end();
     void clear();
-    void print_current_time() const;
-    void print_accumulation(int format=0) const; //1: only print seconds, else print all
-
+    void print() const;
+    void printFormat() const;
+    void printCurrentTime () const;
 };
-
-struct tm second_to_tm(double);
-
 #endif
