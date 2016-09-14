@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void calculate_mean_err_between_thread(complex<double> value_thread, complex<double>& mean, double& err)
+void calculateMeanErrorBetweenThread(complex<double> value_thread, complex<double> &mean, double &err)
 {
 #ifdef MPI_HAO
     int size = MPISize();
@@ -28,7 +28,7 @@ void calculate_mean_err_between_thread(complex<double> value_thread, complex<dou
 }
 
 
-void calculate_mean_err_between_thread(int N, const complex<double>* value_thread, complex<double>* mean, double* err)
+void calculateMeanErrorBetweenThread(int N, const complex<double> *value_thread, complex<double> *mean, double *err)
 {
 #ifdef MPI_HAO
     int size = MPISize();
@@ -61,14 +61,14 @@ void calculate_mean_err_between_thread(int N, const complex<double>* value_threa
 }
 
 
-void calculate_mean_err_between_thread(const vector< complex<double> >& value_thread,
-                                             vector< complex<double> >& mean, vector<double>& err)
+void calculateMeanErrorBetweenThread(const vector<complex<double> > &value_thread,
+                                     vector<complex<double> > &mean, vector<double> &err)
 {
     int N_value=value_thread.size(); int N_mean=mean.size(); int N_err=err.size();
 
     if( N_value != N_mean )
     {
-        cout<<"Input mean size is not consistent in calculate_mean_err_between_thread vector! "<<N_value<<" "<<N_mean<<endl;
+        cout<<"Input mean size is not consistent in calculateMeanErrorBetweenThread vector! "<<N_value<<" "<<N_mean<<endl;
         exit(1);
     }
 
@@ -76,10 +76,10 @@ void calculate_mean_err_between_thread(const vector< complex<double> >& value_th
     {
         if (N_value != N_err)
         {
-            cout << "Input err size is not consistent in calculate_mean_err_between_thread vector! " << N_value << " " << N_err << endl;
+            cout << "Input err size is not consistent in calculateMeanErrorBetweenThread vector! " << N_value << " " << N_err << endl;
             exit(1);
         }
     }
 
-    calculate_mean_err_between_thread( N_value, value_thread.data(), mean.data(), err.data() );
+    calculateMeanErrorBetweenThread(N_value, value_thread.data(), mean.data(), err.data());
 }

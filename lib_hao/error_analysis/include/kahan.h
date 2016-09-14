@@ -5,17 +5,20 @@
 
 template<class T> class KahanData
 {
+ private:
+    T sum;
+    T accumulateError;
+
  public:
-    T sum,c;
     /*********************/
     /*PART I: CONSTRUCTOR*/
     /*********************/
     //Void constructor:
-      KahanData(void):sum(0),c(0){}
+      KahanData(void):sum(0),accumulateError(0){}
     //Sum value constructor
-      KahanData(const T& x):sum(x),c(0){}
+      KahanData(const T& x):sum(x),accumulateError(0){}
     //Copy constructor:
-      KahanData(const KahanData<T>& x):sum(x.sum),c(x.c){}
+      KahanData(const KahanData<T>& x):sum(x.sum),accumulateError(x.accumulateError){}
    
     /*********************/
     /*PART II: DESTRUCTOR*/
@@ -24,8 +27,8 @@ template<class T> class KahanData
       ~KahanData(){}
    
     //copy-assigment
-    KahanData<T> operator  = (const T & x) {sum=x; c=0; return *this;}
-    KahanData<T> operator  = (const KahanData<T> & x) {sum=x.sum;c=x.c;return *this;}
+    KahanData<T> operator  = (const T & x) {sum=x; accumulateError=0; return *this;}
+    KahanData<T> operator  = (const KahanData<T> & x) {sum=x.sum;accumulateError=x.accumulateError;return *this;}
    
     //+=
     KahanData<T> operator += (const T& add);
@@ -44,15 +47,7 @@ template<class T> class KahanData
     //              sum = t;
     //    return *this;
     //}
-   
+    T returnSum() { return sum; }
+    T returnAccumulateError() {return accumulateError;}
 };
-
-//cout
-template <class T>
-std::ostream& operator<< (std::ostream &out, const KahanData<T> &x)
-{
-    out<<x.sum<<" "<<x.c;
-    return out;
-}
-
 #endif

@@ -7,9 +7,9 @@ KahanData<T> KahanData<T>::operator += (const T& add)
     //volatile T  y = add-c;        // volatile here is to avoid complier's agressive optimazation
     //volatile T  t = sum+y;        // otherwise, compiler might set c to zero directly
 
-    T  y = add-c;
+    T  y = add-accumulateError;
     T  t = sum+y;
-    c    = (t-sum)-y;
+    accumulateError    = (t-sum)-y;
     sum  = t;
     return *this;
 }

@@ -10,10 +10,10 @@
 //Send mean value to all the thread
 //Only send error bar to main thread
 
-void calculate_mean_err_between_thread(std::complex<double> value_thread, std::complex<double>& mean, double& err);
+void calculateMeanErrorBetweenThread(std::complex<double> value_thread, std::complex<double> &mean, double &err);
 
-void calculate_mean_err_between_thread(int N, const std::complex<double>* value_thread, std::complex<double>* mean, double* err);
+void calculateMeanErrorBetweenThread(int N, const std::complex<double> *value_thread, std::complex<double> *mean, double *err);
 
-void calculate_mean_err_between_thread(const std::vector< std::complex<double> >& value_thread,
-                                             std::vector< std::complex<double> >& mean, std::vector<double>& err);
+void calculateMeanErrorBetweenThread(const std::vector<std::complex<double> > &value_thread,
+                                     std::vector<std::complex<double> > &mean, std::vector<double> &err);
 #endif
