@@ -65,4 +65,5 @@ TEST (KahanData, big_sum)
         //std::cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' ); // means pause in fortran
     }
     EXPECT_DOUBLE_EQ( 499992004.99992, ksum.returnSum() );
+    //cout<<setprecision(20)<<sum_naive<<endl;
 }
