@@ -16,7 +16,7 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> trans(const TensorCore<T,2>& A)
  {
-     int L0 = A.rank(0); int L1 = A.rank(1);
+     int L0 = A.getRank(0); int L1 = A.getRank(1);
      TensorHao<T,2> B(L1, L0);
      for(int i=0; i<L0; i++)
      {
@@ -31,7 +31,7 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> conjtrans(const TensorCore<T,2>& A)
  {
-     int L0 = A.rank(0); int L1 = A.rank(1);
+     int L0 = A.getRank(0); int L1 = A.getRank(1);
      TensorHao<T,2> B(L1, L0);
      for(int i=0; i<L0; i++)
      {

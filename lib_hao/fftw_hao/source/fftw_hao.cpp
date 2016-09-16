@@ -66,11 +66,11 @@ const complex<double> * FFTServer::fourier_back(const complex<double> *inarray)
     return outback;
 }
 
-int FFTServer::returnDimen() const { return dimen; }
+int FFTServer::getDimen() const { return dimen; }
 
-const std::vector<int>& FFTServer::returnN() const { return n; }
+const std::vector<int>& FFTServer::getN() const { return n; }
 
-int FFTServer::returnSize() const { return size;}
+int FFTServer::getSize() const { return size;}
 
 void FFTServer::setDimenNSizeFromInput(int dimenInput, const vector<int> &nInput, char format)
 {

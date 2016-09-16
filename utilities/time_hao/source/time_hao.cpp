@@ -23,9 +23,9 @@ TimerHao& TimerHao::operator  = (const TimerHao& x)
     return *this;
 }
 
-double TimerHao::returnSeconds() {return seconds;}
+double TimerHao::getSeconds() {return seconds;}
 
-int TimerHao::returnFlag() {return flag;}
+int TimerHao::getFlag() {return flag;}
 
 void TimerHao::init()
 {

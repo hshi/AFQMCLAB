@@ -20,7 +20,7 @@ namespace tensor_hao
          for(int i=0; i<D; i++) 
          {
             this->n[i]=0;
-            this->n_step[i]=0;
+            this->nStep[i]=0;
          }
          //std::cout<<"In TensorHao void constructor "<<std::endl;
      }
@@ -36,9 +36,9 @@ namespace tensor_hao
 
          std::copy(vals, vals+D, this->n);
 
-         this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
+         this->nStep[0]=1; for(int i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
 
-         this->L = this->n_step[D-1] * ( this->n[D-1] );
+         this->L = this->nStep[D-1] * ( this->n[D-1] );
 
          this->p = new T[this->L];
 
@@ -49,9 +49,9 @@ namespace tensor_hao
      {
          std::copy(n_ptr, n_ptr+D, this->n);
 
-         this->n_step[0]=1; for(int i=1; i<D; i++) {this->n_step[i] = (this->n_step[i-1]) * (this->n[i-1]);}
+         this->nStep[0]=1; for(int i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
 
-         this->L = this->n_step[D-1] * ( this->n[D-1] );
+         this->L = this->nStep[D-1] * ( this->n[D-1] );
 
          this->p = new T[this->L];
 
@@ -130,7 +130,7 @@ namespace tensor_hao
              exit(1);
          }
          TensorHaoRef<T, D-1> A (this->n);
-         A.p = this->p + i * this->n_step[D-1];
+         A.p = this->p + i * this->nStep[D-1];
          return A;
      }
 
@@ -138,7 +138,7 @@ namespace tensor_hao
      void copy_deep_constructor(const TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
-         std::copy(x.n_step, x.n_step+D, this->n_step);
+         std::copy(x.nStep, x.nStep+D, this->nStep);
          this->L = x.L;
 
          this->p = new T[this->L];
@@ -148,7 +148,7 @@ namespace tensor_hao
      void move_deep_constructor(TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
-         std::copy(x.n_step, x.n_step+D, this->n_step);
+         std::copy(x.nStep, x.nStep+D, this->nStep);
          this->L = x.L;
 
          this->p = x.p;
@@ -158,7 +158,7 @@ namespace tensor_hao
      void copy_deep_assignment(const TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
-         std::copy(x.n_step, x.n_step+D, this->n_step);
+         std::copy(x.nStep, x.nStep+D, this->nStep);
 
          if( this->L != x.L )
          {
@@ -173,7 +173,7 @@ namespace tensor_hao
      void move_deep_assignment(TensorCore<T, D>& x)
      {
          std::copy(x.n,      x.n+D,      this->n     );
-         std::copy(x.n_step, x.n_step+D, this->n_step);
+         std::copy(x.nStep, x.nStep+D, this->nStep);
          this->L = x.L;
 
          //SWAP

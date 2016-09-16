@@ -28,9 +28,9 @@ class FFTServer
     const std::complex<double> * fourier_forw(const std::complex<double> *inarray);
     const std::complex<double> * fourier_back(const std::complex<double> *inarray);
 
-    int returnDimen() const;
-    const std::vector<int>& returnN() const;
-    int returnSize() const;
+    int getDimen() const;
+    const std::vector<int>& getN() const;
+    int getSize() const;
 
  private:
     void setDimenNSizeFromInput(int dimenInput, const std::vector<int> &nInput, char format);

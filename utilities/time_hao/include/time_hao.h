@@ -18,8 +18,8 @@ class TimerHao
    
     TimerHao& operator  = (const TimerHao&);
 
-    double returnSeconds();
-    int returnFlag();
+    double getSeconds();
+    int getFlag();
    
     void init();
     void end();

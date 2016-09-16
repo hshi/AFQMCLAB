@@ -7,23 +7,23 @@ struct tm transferSecondToTm (double seconds);
 TEST (Timer_hao, void_constructor)
 {
     TimerHao timer;
-    EXPECT_EQ( 0, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( 0, timer.returnSeconds() );
+    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( 0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, double_constructor)
 {
     TimerHao timer(3.0);
-    EXPECT_EQ( 0, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( 3.0, timer.returnSeconds() );
+    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, equal_constructor)
 {
     TimerHao timer_init(3.0);
     TimerHao timer = timer_init;
-    EXPECT_EQ( 0, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( 3.0, timer.returnSeconds() );
+    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, equal_assignment)
@@ -31,16 +31,16 @@ TEST (Timer_hao, equal_assignment)
     TimerHao timer_init(3.0);
     TimerHao timer;
     timer = timer_init;
-    EXPECT_EQ( 0, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( 3.0, timer.returnSeconds() );
+    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, init)
 {
     TimerHao timer;
     timer.init();
-    EXPECT_EQ( 1, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( 0.0, timer.returnSeconds() );
+    EXPECT_EQ( 1, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( 0.0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, end)
@@ -55,8 +55,8 @@ TEST (Timer_hao, end)
 
     timer.end();
 
-    EXPECT_EQ( 0, timer.returnFlag() );
-    EXPECT_DOUBLE_EQ( sec, timer.returnSeconds() );
+    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_DOUBLE_EQ( sec, timer.getSeconds() );
 }
 
 TEST (Timer_hao, transferSecondToTm)

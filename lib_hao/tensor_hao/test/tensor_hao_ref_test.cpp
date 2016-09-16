@@ -11,8 +11,8 @@ TEST(Tensor_hao_ref, void_construction)
 
     for (int i = 0; i < 2; ++i)
     {
-        EXPECT_EQ( 0, tensor_ref.rank(i) );
-        EXPECT_EQ( 0, tensor_ref.rank_step(i) );
+        EXPECT_EQ( 0, tensor_ref.getRank(i) );
+        EXPECT_EQ( 0, tensor_ref.getRankStep(i) );
     }
     EXPECT_FALSE( tensor_ref.data() );
     EXPECT_EQ( 0, tensor_ref.size() );
@@ -30,8 +30,8 @@ TEST(Tensor_hao_ref, variadic_construction)
     EXPECT_EQ( size, tensor_ref.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_ref.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_ref.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_ref.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_ref.getRankStep(i) );
     }
 }
 
@@ -48,8 +48,8 @@ TEST(Tensor_hao_ref, pointer_construction)
     EXPECT_EQ( size, tensor_ref.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_ref.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_ref.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_ref.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_ref.getRankStep(i) );
     }
 }
 
@@ -83,8 +83,8 @@ TEST(Tensor_hao_ref, constructor_assginment)
 
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( tensor_a_ref_p3.rank(i), n[i] );
-        EXPECT_EQ( tensor_a_ref_p3.rank_step(i), n_step[i] );
+        EXPECT_EQ(tensor_a_ref_p3.getRank(i), n[i] );
+        EXPECT_EQ(tensor_a_ref_p3.getRankStep(i), n_step[i] );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_a_ref_p0.data() );
 }

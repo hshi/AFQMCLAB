@@ -10,8 +10,8 @@ TEST(Tensor_hao, void_construction)
     TensorHao<double,2>  tensor;
     for (int i = 0; i < 2; ++i)
     {
-        EXPECT_EQ( 0, tensor.rank(i) );
-        EXPECT_EQ( 0, tensor.rank_step(i) );
+        EXPECT_EQ( 0, tensor.getRank(i) );
+        EXPECT_EQ( 0, tensor.getRankStep(i) );
     }
     EXPECT_FALSE( tensor.data() );
     EXPECT_EQ( 0, tensor.size() );
@@ -30,8 +30,8 @@ TEST(Tensor_hao, variadic_construction)
     EXPECT_EQ( size, tensor.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor.rank(i) );
-        EXPECT_EQ( n_step[i], tensor.rank_step(i) );
+        EXPECT_EQ( n[i], tensor.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor.getRankStep(i) );
     }
 }
 
@@ -48,8 +48,8 @@ TEST(Tensor_hao, pointer_constructor)
     EXPECT_EQ( size, tensor.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor.rank(i) );
-        EXPECT_EQ( n_step[i], tensor.rank_step(i) );
+        EXPECT_EQ( n[i], tensor.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor.getRankStep(i) );
     }
 }
 
@@ -69,8 +69,8 @@ TEST(Tensor_hao, copy_constructor)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }
@@ -91,8 +91,8 @@ TEST(Tensor_hao, move_constructor)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }
@@ -114,8 +114,8 @@ TEST(Tensor_hao, copy_ref_constructor)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }
@@ -136,8 +136,8 @@ TEST(Tensor_hao, copy_assignment)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }
@@ -158,8 +158,8 @@ TEST(Tensor_hao, move_assignment)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }
@@ -181,8 +181,8 @@ TEST(Tensor_hao, copy_ref_assignment)
     EXPECT_EQ( size, tensor_b.size() );
     for(int i=0; i<D; i++)
     {
-        EXPECT_EQ( n[i], tensor_b.rank(i) );
-        EXPECT_EQ( n_step[i], tensor_b.rank_step(i) );
+        EXPECT_EQ( n[i], tensor_b.getRank(i) );
+        EXPECT_EQ( n_step[i], tensor_b.getRankStep(i) );
     }
     EXPECT_POINTER_EQ(size, p_value, tensor_b.data() );
 }

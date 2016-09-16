@@ -10,7 +10,7 @@ TEST(Tensor_core, nptr)
 {
     TensorHao<double,5>  tensor(2,3,4,5,6);
     int n_ptr_exact[5] = {2,3,4,5,6};
-    EXPECT_POINTER_EQ( 5, n_ptr_exact, tensor.n_ptr() );
+    EXPECT_POINTER_EQ( 5, n_ptr_exact, tensor.getN() );
 }
 
 TEST(Tensor_core, read_1)

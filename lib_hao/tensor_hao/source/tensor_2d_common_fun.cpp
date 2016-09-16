@@ -10,7 +10,7 @@ namespace tensor_hao
  /*****************************/
  int checkHermitian(const TensorCore<complex<double>, 2> &A)
  {
-     int L0=A.rank(0); int L1=A.rank(1);
+     int L0= A.getRank(0); int L1= A.getRank(1);
      if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
      double error=0; double norm=0;
      for(int j=0; j<L1; j++)
@@ -42,7 +42,7 @@ namespace tensor_hao
      if(x.info>0) return 0;
 
      complex<double> det(1,0);
-     int L=x.ipiv.rank(0);
+     int L= x.ipiv.getRank(0);
      for(int i=0;i<L;i++)
      {
          if(x.ipiv(i)!=(i+1)) det*=(-x.A(i,i));
@@ -65,7 +65,7 @@ namespace tensor_hao
      }
 
      lognorm=0.0; phase=1.0;
-     int L=x.ipiv.rank(0);
+     int L= x.ipiv.getRank(0);
      for(int i=0;i<L;i++)
      {
          lognorm+=log(abs(x.A(i,i)));
@@ -92,9 +92,9 @@ namespace tensor_hao
  /*******************************/
  TensorHao<complex<double>,2> dMultiMatrix(const TensorCore<complex<double>, 1> &D, const TensorCore<complex<double>, 2> &ph)
  {
-     if( D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
+     if(D.getRank(0) != ph.getRank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.getRank(0)!"<<endl; exit(1);}
 
-     int L0 = ph.rank(0); int L1 = ph.rank(1);
+     int L0 = ph.getRank(0); int L1 = ph.getRank(1);
      TensorHao<complex<double>,2> ph_new(L0, L1);
 
      //The order about loop i,j is important
@@ -111,7 +111,7 @@ namespace tensor_hao
  /************************************/
  int checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
  {
-     int L0=A.rank(0); int L1=A.rank(1);
+     int L0= A.getRank(0); int L1= A.getRank(1);
      if( L0!=L1 ) {cout<<"Input for checkSkewSymmetric is not square matrix!"<<endl; exit(1);}
 
      double error=0; double norm=0;
@@ -142,8 +142,8 @@ namespace tensor_hao
  /**********************/
  complex<double> pfaffian(TensorCore<complex<double>, 2> &A)
  {
-    int L0 = A.rank(0); int L1 = A.rank(1);
-    if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}
+    int L0 = A.getRank(0); int L1 = A.getRank(1);
+    if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.getRank(1)!"<<endl; exit(1);}
     return pfaffian_aitken(A.data(), L0, L1);
  }
 

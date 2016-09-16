@@ -15,7 +15,7 @@ namespace tensor_hao
  {
   private:
      int n[D];
-     int n_step[D];
+     int nStep[D];
      int L;
      T* p;
 
@@ -23,24 +23,24 @@ namespace tensor_hao
      ~TensorCore() {}
 
   public:
-     inline const int* n_ptr() const {return n;}
+     inline const int* getN() const {return n;}
 
-     inline int rank(int i) const 
+     inline int getRank(int i) const
      {
          #ifndef NDEBUG
-         if( i >= D || i<0 ) { std::cout<<"Input i for rank() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
+         if( i >= D || i<0 ) { std::cout<<"Input i for getRank() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
          #endif
 
          return n[i];
      }
 
-     inline int rank_step(int i) const 
+     inline int getRankStep(int i) const
      {
          #ifndef NDEBUG
-         if( i >= D || i<0 ) { std::cout<<"Input i for rank_step() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
+         if( i >= D || i<0 ) { std::cout<<"Input i for getRankStep() should be [0, D)!!! "<<i<<" "<<D<<std::endl; exit(1); }
          #endif
 
-         return n_step[i];
+         return nStep[i];
      }
 
 
@@ -88,7 +88,7 @@ namespace tensor_hao
          if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
-         return p[ i0+i1*n_step[1] ]; 
+         return p[ i0+i1*nStep[1] ];
      }
 
      inline T& operator () (int i0, int i1)
@@ -99,7 +99,7 @@ namespace tensor_hao
          if(i1 >= n[1] || i1<0 ) { std::cout<<"i1 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
-         return p[ i0+i1*n_step[1] ];
+         return p[ i0+i1*nStep[1] ];
      }
 
 
@@ -113,7 +113,7 @@ namespace tensor_hao
          if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
-         return p[ i0+i1*n_step[1]+i2*n_step[2] ]; 
+         return p[ i0+i1*nStep[1]+i2*nStep[2] ];
      }
 
      inline T& operator () (int i0, int i1, int i2)
@@ -125,7 +125,7 @@ namespace tensor_hao
          if(i2 >= n[2] || i2<0 ) { std::cout<<"i2 is out of range in TensorCore::operator() !!!"<<std::endl; exit(1); }
          #endif
 
-         return p[ i0+i1*n_step[1]+i2*n_step[2] ];
+         return p[ i0+i1*nStep[1]+i2*nStep[2] ];
      }
 
 
@@ -144,7 +144,7 @@ namespace tensor_hao
          }
          #endif
 
-         int index=0; for(int i=0; i<D; i++) index += vals[i]*n_step[i];
+         int index=0; for(int i=0; i<D; i++) index += vals[i]*nStep[i];
          return p[index];
      }
 
@@ -162,7 +162,7 @@ namespace tensor_hao
          }
          #endif
 
-         int index=0; for(int i=0; i<D; i++) index += vals[i]*n_step[i];
+         int index=0; for(int i=0; i<D; i++) index += vals[i]*nStep[i];
          return p[index];
      }
      //=====================================================================

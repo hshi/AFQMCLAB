@@ -14,12 +14,12 @@ namespace tensor_hao
           char TRANSA, char TRANSB, float alpha, float beta)
  {
      int  M, N, K, LDA, LDB, LDC;
-     M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0):A.rank(1);
-     K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1):A.rank(0);
-     N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1):B.rank(0);
-     LDA=A.rank(0);
-     LDB=B.rank(0);
-     LDC=C.rank(0);
+     M=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(0): A.getRank(1);
+     K=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(1): A.getRank(0);
+     N=(TRANSB=='N' || TRANSB=='n' ) ? B.getRank(1): B.getRank(0);
+     LDA= A.getRank(0);
+     LDB= B.getRank(0);
+     LDC= C.getRank(0);
 
      F77NAME(sgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
@@ -28,12 +28,12 @@ namespace tensor_hao
           char TRANSA, char TRANSB, double alpha, double beta)
  {
      int  M, N, K, LDA, LDB, LDC;
-     M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0):A.rank(1);
-     K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1):A.rank(0);
-     N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1):B.rank(0);
-     LDA=A.rank(0);
-     LDB=B.rank(0);
-     LDC=C.rank(0);
+     M=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(0): A.getRank(1);
+     K=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(1): A.getRank(0);
+     N=(TRANSB=='N' || TRANSB=='n' ) ? B.getRank(1): B.getRank(0);
+     LDA= A.getRank(0);
+     LDB= B.getRank(0);
+     LDC= C.getRank(0);
 
      F77NAME(dgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
@@ -42,12 +42,12 @@ namespace tensor_hao
           char TRANSA, char TRANSB, complex<float> alpha, complex<float> beta)
  {
      int  M, N, K, LDA, LDB, LDC;
-     M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0):A.rank(1);
-     K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1):A.rank(0);
-     N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1):B.rank(0);
-     LDA=A.rank(0);
-     LDB=B.rank(0);
-     LDC=C.rank(0);
+     M=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(0): A.getRank(1);
+     K=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(1): A.getRank(0);
+     N=(TRANSB=='N' || TRANSB=='n' ) ? B.getRank(1): B.getRank(0);
+     LDA= A.getRank(0);
+     LDB= B.getRank(0);
+     LDC= C.getRank(0);
 
      F77NAME(cgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
@@ -56,12 +56,12 @@ namespace tensor_hao
           char TRANSA, char TRANSB, complex<double> alpha, complex<double> beta)
  {
      int  M, N, K, LDA, LDB, LDC;
-     M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0):A.rank(1);
-     K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1):A.rank(0);
-     N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1):B.rank(0);
-     LDA=A.rank(0);
-     LDB=B.rank(0);
-     LDC=C.rank(0);
+     M=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(0): A.getRank(1);
+     K=(TRANSA=='N' || TRANSA=='n' ) ? A.getRank(1): A.getRank(0);
+     N=(TRANSB=='N' || TRANSB=='n' ) ? B.getRank(1): B.getRank(0);
+     LDA= A.getRank(0);
+     LDB= B.getRank(0);
+     LDC= C.getRank(0);
 
      F77NAME(zgemm)(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
@@ -72,9 +72,9 @@ namespace tensor_hao
  /******************************/
  void eigen_cpu(TensorCore<double,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
-     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
-     if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
-     int N=A.rank(0); int info;
+     if(A.getRank(0) != A.getRank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
+     if(A.getRank(0) != W.getRank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
+     int N= A.getRank(0); int info;
 
      double work_test[1]; int iwork_test[1]; int lwork=-1; int liwork=-1;
      F77NAME(dsyevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work_test, &lwork, iwork_test, &liwork ,&info);
@@ -92,9 +92,9 @@ namespace tensor_hao
  /******************************/
  void eigen_cpu(TensorCore<complex<double>,2>& A, TensorCore<double,1>& W, char JOBZ, char UPLO)
  {
-     if( A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
-     if( A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
-     int N=A.rank(0); int info;
+     if(A.getRank(0) != A.getRank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
+     if(A.getRank(0) != W.getRank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
+     int N= A.getRank(0); int info;
 
      complex<double> work_test[1]; double rwork_test[1]; int iwork_test[1];
      int lwork=-1; int lrwork=-1; int liwork=-1;
@@ -112,8 +112,8 @@ namespace tensor_hao
  /******************************************/
  LUDecomp<complex<double>> LUconstruct_cpu(const TensorCore<complex<double>,2>& x)
  {
-     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
-     int N=x.rank(0);
+     if(x.getRank(0) != x.getRank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
+     int N= x.getRank(0);
      LUDecomp<complex<double>> y; y.A=x; y.ipiv=TensorHao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
@@ -123,8 +123,8 @@ namespace tensor_hao
 
  LUDecomp<complex<double>> LUconstruct_cpu(TensorHao<complex<double>,2>&& x)
  {
-     if( x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
-     int N=x.rank(0);
+     if(x.getRank(0) != x.getRank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
+     int N= x.getRank(0);
      LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=TensorHao<int,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
@@ -139,7 +139,7 @@ namespace tensor_hao
  /********************************************************************************************************************/
  void inverse_cpu_utilities(TensorCore<complex<double>,2>& A, const TensorCore<int,1>& ipiv)
  {
-     int N=A.rank(0); int info;
+     int N= A.getRank(0); int info;
 
      int lwork=-1; complex<double> work_test[1];
      F77NAME(zgetri)(&N, A.data(), &N, ipiv.data(), work_test, &lwork, &info);
@@ -169,8 +169,8 @@ namespace tensor_hao
  /*********************************************************/
  void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, TensorHao<complex<double>,2>& M, char TRANS)
  {
-     if( x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
-     int N=M.rank(0); int NRHS=M.rank(1); int info;
+     if(x.A.getRank(0) != M.getRank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
+     int N= M.getRank(0); int NRHS= M.getRank(1); int info;
      F77NAME(zgetrs)(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
      if(info!=0)
      {
@@ -198,7 +198,7 @@ namespace tensor_hao
  /******************************/
  double QRMatrix_cpu(TensorCore<complex<double>,2>& ph)
  {
-     int L=ph.rank(0); int N=ph.rank(1); int info;
+     int L= ph.getRank(0); int N= ph.getRank(1); int info;
      int lwork=-1; complex<double> work_test[1];
      vector<complex<double>> tau(N);
 
@@ -221,9 +221,9 @@ namespace tensor_hao
 
  double QRMatrix_cpu(TensorCore<complex<double>,2>& ph, TensorCore<double,1>& det_list)
  {
-     if( det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
+     if(det_list.getRank(0) != ph.getRank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
 
-     int L=ph.rank(0); int N=ph.rank(1); int info;
+     int L= ph.getRank(0); int N= ph.getRank(1); int info;
      int lwork=-1; complex<double> work_test[1];
      vector<complex<double>> tau(N);
 
@@ -257,13 +257,13 @@ namespace tensor_hao
  //Test in Hurricane, zgesdd is faster.
  void SVDMatrix_cpu(TensorCore<complex<double>,2>& U, TensorCore<double,1>& D, TensorCore<complex<double>,2>& V)
  {
-     if( U.rank(0)!=U.rank(1) || U.rank(1)!=D.rank(0) || D.rank(0)!=V.rank(0) || V.rank(0)!=V.rank(1) )
+     if(U.getRank(0)!= U.getRank(1) || U.getRank(1)!= D.getRank(0) || D.getRank(0)!= V.getRank(0) || V.getRank(0)!= V.getRank(1) )
      {
          cout<<"size is not consistent in SVDMatrix_cpu! Only support square matrix."<<endl;
          exit(1);
      }
 
-     int m=U.rank(0); int n=V.rank(0);
+     int m= U.getRank(0); int n= V.getRank(0);
      char jobz='O'; int lda=m;
      complex<double>* u=nullptr; int ldu=1; int ldv=n;
      complex<double> work_test[1]; int lwork=-1;
@@ -292,7 +292,7 @@ namespace tensor_hao
          exit(1);
      }
 
-     int m=U.rank(0); int n=V.rank(0);
+     int m=U.getRank(0); int n=V.rank(0);
      char jobu='O'; char jobvt='A'; int lda=m;
      complex<double>* u=nullptr; int ldu=1; int ldv=n;
      complex<double> work_test[1]; int lwork=-1;

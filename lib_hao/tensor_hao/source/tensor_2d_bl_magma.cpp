@@ -56,7 +56,7 @@ namespace tensor_hao
           char TRANSA, char TRANSB, double alpha, double beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
-     int BL0 = B.rank(0); int BL1 = B.rank(1);
+     int BL0 = B.rank(0); int BL1 = B.getRank(1);
      int CL0 = C.rank(0); int CL1 = C.rank(1);
 
      magma_int_t M, N, K, LDA, LDB, LDC;

@@ -11,7 +11,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<std::complex<T>, D> conj(const TensorCore<std::complex<T>, D>& A)
  {
-     TensorHao<std::complex<T>, D> B ( A.n_ptr() );
+     TensorHao<std::complex<T>, D> B (A.getN() );
      int L = A.size(); 
      const std::complex<T>* A_p = A.data(); 
            std::complex<T>* B_p = B.data();
@@ -22,7 +22,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<T, D> exp(const TensorCore<T, D>& A)
  {
-     TensorHao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B (A.getN() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -33,7 +33,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<T, D> norm(const TensorCore<T, D>& A)
  {
-     TensorHao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B (A.getN() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -44,7 +44,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<T, D> abs(const TensorCore<T, D>& A)
  {
-     TensorHao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B (A.getN() );
      int L = A.size();
      const T * A_p = A.data();
      T * B_p = B.data();
@@ -55,7 +55,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<T, D> sqrt(const TensorCore<T, D>& A)
  {
-     TensorHao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B (A.getN() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -67,7 +67,7 @@ namespace tensor_hao
  template <class T, int D>
  TensorHao<T, D> operator - (const TensorCore<T, D>& A)
  {
-     TensorHao<T, D> B ( A.n_ptr() );
+     TensorHao<T, D> B (A.getN() );
      int L = A.size();
      const T * A_p = A.data();
            T * B_p = B.data();
@@ -226,8 +226,8 @@ namespace tensor_hao
 
     int flag=0; double abs_eta=std::abs(eta);
 
-    for(int i=0; i<D; i++) { if( A.rank(i) != B.rank(i) ) flag++; }
-    for(int i=0; i<D; i++) { if( A.rank_step(i) != B.rank_step(i) ) flag++; }
+    for(int i=0; i<D; i++) { if(A.getRank(i) != B.getRank(i) ) flag++; }
+    for(int i=0; i<D; i++) { if(A.getRankStep(i) != B.getRankStep(i) ) flag++; }
     if(A.size() != B.size() ) flag++;
     const T* A_p = A.data(); const T* B_p = B.data();
     for(int i=0; i<A.size(); i++) { if( std::abs( A_p[i]- B_p[i] )> abs_eta  ) flag++; }

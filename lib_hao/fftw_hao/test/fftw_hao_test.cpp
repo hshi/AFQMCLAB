@@ -11,9 +11,9 @@ TEST (FFTServer, void_construction)
     int L=1;
     FFTServer fft;
 
-    EXPECT_EQ (dimen, fft.returnDimen() );
-    EXPECT_EQ (n, fft.returnN() );
-    EXPECT_EQ (L, fft.returnSize() );
+    EXPECT_EQ (dimen, fft.getDimen() );
+    EXPECT_EQ (n, fft.getN() );
+    EXPECT_EQ (L, fft.getSize() );
 }
 
 
@@ -24,9 +24,9 @@ TEST (FFTServer, param_construction)
     int L=36;
     FFTServer fft(dimen,n,'R');
 
-    EXPECT_EQ (dimen, fft.returnDimen() );
-    EXPECT_EQ (n, fft.returnN() );
-    EXPECT_EQ (L, fft.returnSize() );
+    EXPECT_EQ (dimen, fft.getDimen() );
+    EXPECT_EQ (n, fft.getN() );
+    EXPECT_EQ (L, fft.getSize() );
 }
 
 
@@ -38,9 +38,9 @@ TEST (FFTServer, equal_construction)
     FFTServer fft_tmp(dimen,n,'R');
     FFTServer fft(fft_tmp);
 
-    EXPECT_EQ (dimen, fft.returnDimen() );
-    EXPECT_EQ (n, fft.returnN() );
-    EXPECT_EQ (L, fft.returnSize() );
+    EXPECT_EQ (dimen, fft.getDimen() );
+    EXPECT_EQ (n, fft.getN() );
+    EXPECT_EQ (L, fft.getSize() );
 }
 
 TEST (FFTServer, equal_assignment)
@@ -51,9 +51,9 @@ TEST (FFTServer, equal_assignment)
     FFTServer fft_tmp(dimen,n, 'R');
     FFTServer fft; fft=fft_tmp;
 
-    EXPECT_EQ (dimen, fft.returnDimen() );
-    EXPECT_EQ (n, fft.returnN() );
-    EXPECT_EQ (L, fft.returnSize() );
+    EXPECT_EQ (dimen, fft.getDimen() );
+    EXPECT_EQ (n, fft.getN() );
+    EXPECT_EQ (L, fft.getSize() );
 }
 
 TEST (FFTServer, four_1D)
