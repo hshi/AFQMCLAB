@@ -5,7 +5,7 @@ This is a library for AFQMC.
 ##Dependence
    - **GoogleTest**
 
-     set `GTEST_ROOT='/PATH/TO/FFTW'`, e.g. `export GTEST_ROOT='/home/boruoshihao/lib/gtest'`
+     set `GTEST_ROOT='/PATH/TO/FFTW'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
 
    - **FFTW**
 
