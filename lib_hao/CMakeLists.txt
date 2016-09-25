@@ -1,5 +1,0 @@
-add_subdirectory(error_analysis)
-add_subdirectory(random_number)
-add_subdirectory(tensor_hao)
-add_subdirectory(fftw_hao)
-add_subdirectory(math_hao)

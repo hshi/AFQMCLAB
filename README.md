@@ -3,8 +3,36 @@
 This is a library for AFQMC.
 
 ##Dependence
+   - **GoogleTest**
 
-This code depends on fftw, ...
+     set `GTEST_ROOT='/PATH/TO/FFTW'`, e.g. `export GTEST_ROOT='/home/boruoshihao/lib/gtest'`
+
+   - **FFTW**
+
+     set `FFTW='/PATH/TO/FFTW'`, e.g. `export FFTW='/opt/fftw'`
+
+   - **LAPACK** and **BLAS**
+
+     - MKL, set `MKL='/PATH/TO/MKL'`, e.g. `export MKL='/opt/intel/mkl'`
+
+     - ACML, set `ACML='/PATH/TO/ACML'`, e.g. `export ACML='/usr/local/acml-5.1.0/'`
+
+     - System LAPACK and BLAS, automatically use FindLAPACK.cmake in cmake system.
+
+   - **SPRNG** and **GMP**
+
+     set `SPRNG='/PATH/TO/SPRNG'`, e.g. `export SPRNG='/home/username/sprng/sprng2.0'`
+
+     set `GMP='/PATH/TO/GMP'`, e.g. `export GMP='/usr/local/gmp-4.3.2'`
+
+
+   - **MPI** (Optional)
+
+   - **MAGMA** (Optional)
+
+     set `MAGMA='/PATH/TO/MAGMA'`, e.g. `export MAGMA='/usr/local/intel64/nehalem/magma-1.3.0'`
+
+     Note: magma need cuda.
 
 ##How to use:
     git clone https://github.com/hshi/AFQMCLIB.git
@@ -58,4 +86,8 @@ This code depends on fftw, ...
 
   //TODO: Test magma in Hurricane.
 
-  //TODO: Add dependent libraries in README.
+  //TODO: ALL LIBALL, COMBINE ALL BASE LIBRARY TOGETHER
+
+  //TODO: ADD OPENMP IN CODE
+
+  //TODO: Add debug flag

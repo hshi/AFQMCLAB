@@ -30,5 +30,7 @@ find_package(fftw REQUIRED)
 
 include(LAPACK_BLAS_ALL)
 
-add_subdirectory(utilities)
-add_subdirectory(lib_hao)
+add_subdirectory(libhao)
+add_subdirectory(lattice)
+add_subdirectory(model)
+add_subdirectory(Lanczos)
