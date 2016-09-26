@@ -8,6 +8,7 @@ set(SOURCE_HEADERS
         include/tensor_hao.h
         include/tensor_mpi.h
         include/blas_lapack_wrap.h
+        include/tensor_1d_bl_cpu.h
         include/tensor_2d_bl_cpu.h
         include/tensor_2d_common_fun.h
         include/tensor_core.h
@@ -15,12 +16,14 @@ set(SOURCE_HEADERS
         include/tensor_hao_ref.h)
 
 set(SOURCE_FILES
+        source/tensor_1d_bl_cpu.cpp
         source/tensor_2d_bl_cpu.cpp
         source/tensor_2d_bl_magma.cpp
         source/tensor_2d_common_fun.cpp
         source/tensor_fill.cpp)
 
 set(SOURCE_TESTS
+        test/tensor_1d_bl_cpu_test.cpp
         test/tensor_2d_bl_cpu_test.cpp
         test/tensor_2d_common_fun_test.cpp
         test/tensor_element_wise_test.cpp

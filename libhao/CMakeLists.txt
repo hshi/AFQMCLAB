@@ -10,7 +10,7 @@ add_subdirectory(tensor_hao)
 add_subdirectory(fftw_hao)
 add_subdirectory(math_hao)
 
-add_library(libhao STATIC
+add_library(libHao STATIC
         $<TARGET_OBJECTS:testHaoObject>
         $<TARGET_OBJECTS:mpiHaoObject>
         $<TARGET_OBJECTS:timeHaoObject>

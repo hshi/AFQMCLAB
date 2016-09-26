@@ -1,20 +1,23 @@
 #For source
-set(SOURCE_HEADERS lanczos.h)
-set(SOURCE_FILES lanczos.cpp)
-set(SOURCE_TESTS lanczosTest.cpp)
+set(SOURCE_HEADERS
+        include/Lanczos.h
+        include/LanczosBasisWf.h)
+set(SOURCE_FILES
+        source/Lanczos.cpp
+        source/LanczosBasisWf.cpp)
+set(SOURCE_TESTS
+        test/LanczosTest.cpp
+        test/LanczosBasisWfTest.cpp)
 
 #For library
-add_library(lanczosHao OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})
+add_library(lanczosHaoObject OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})
+add_library(lanczosHao STATIC $<TARGET_OBJECTS:lanczosHaoObject>)
 
 #For Test
-add_executable(lanczosHaoTest ${SOURCE_HEADERS}
-        $<TARGET_OBJECTS:lanczosHao>
-        ${SOURCE_TESTS} $<TARGET_OBJECTS:mpiHaoObject> $<TARGET_OBJECTS:tensorHaoObject>)
+add_executable(lanczosTest ${SOURCE_HEADERS} ${SOURCE_TESTS} )
 
-target_link_libraries(lanczosHaoTest libgtest-main-hao ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
-        ${lapackblas_libraries} ${magma_cuda_libraries})
+target_link_libraries(lanczosTest lanczosHao libHao ${ext_libraries} libgtest-main-hao)
 
-target_include_directories(lanczosHaoTest PUBLIC ${GTEST_INCLUDE_DIRS}
-        ${lapackblas_include_dirs} ${magma_cuda_include_dirs})
+target_include_directories(lanczosTest PUBLIC ${ext_include_dirs})
 
-add_my_test(lanczosHaoTest lanczosHaoTest)
+add_my_test(lanczosTest lanczosTest)

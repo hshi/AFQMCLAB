@@ -25,6 +25,12 @@ typedef struct
 } BLAS_LAPACK_Complex16;
 #endif
 
+void F77NAME(zcopy)(const int *n, const BLAS_LAPACK_Complex16 *x, const int *incx,
+                    BLAS_LAPACK_Complex16 *y, const int *incy);
+
+double F77NAME(dznrm2) (const int *n, const BLAS_LAPACK_Complex16 *x, const int *incx);
+
+void F77NAME(zscal)(const int *n, const BLAS_LAPACK_Complex16 *a, BLAS_LAPACK_Complex16 *x, const int *incx);
 
 void F77NAME(sgemm)(const char *transa, const char *transb, const int *m, const int *n, const int *k,
            const float *alpha, const float *a, const int *lda, const float *b, const int *ldb,

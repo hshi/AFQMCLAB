@@ -28,7 +28,9 @@ find_package(sprng REQUIRED)
 
 find_package(fftw REQUIRED)
 
-include(LAPACK_BLAS_ALL)
+include(Set_Lapack_Blas)
+
+include(Set_Ext_Libraries)
 
 add_subdirectory(libhao)
 add_subdirectory(lattice)

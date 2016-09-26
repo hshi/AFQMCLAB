@@ -5,7 +5,7 @@
 #ifndef AFQMCLIB_LANCZOS_H
 #define AFQMCLIB_LANCZOS_H
 
-class lanczos {
+class Lanczos {
 
 };
 

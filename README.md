@@ -7,6 +7,12 @@ This is a library for AFQMC.
 
      set `GTEST_ROOT='/PATH/TO/FFTW'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
 
+   - **SPRNG** and **GMP**
+
+     set `SPRNG='/PATH/TO/SPRNG'`, e.g. `export SPRNG='/home/username/sprng/sprng2.0'`
+
+     set `GMP='/PATH/TO/GMP'`, e.g. `export GMP='/usr/local/gmp-4.3.2'`
+
    - **FFTW**
 
      set `FFTW='/PATH/TO/FFTW'`, e.g. `export FFTW='/opt/fftw'`
@@ -19,20 +25,14 @@ This is a library for AFQMC.
 
      - System LAPACK and BLAS, automatically use FindLAPACK.cmake in cmake system.
 
-   - **SPRNG** and **GMP**
-
-     set `SPRNG='/PATH/TO/SPRNG'`, e.g. `export SPRNG='/home/username/sprng/sprng2.0'`
-
-     set `GMP='/PATH/TO/GMP'`, e.g. `export GMP='/usr/local/gmp-4.3.2'`
-
-
-   - **MPI** (Optional)
-
    - **MAGMA** (Optional)
 
      set `MAGMA='/PATH/TO/MAGMA'`, e.g. `export MAGMA='/usr/local/intel64/nehalem/magma-1.3.0'`
 
      Note: magma need cuda.
+
+   - **MPI** (Optional)
+
 
 ##How to use:
     git clone https://github.com/hshi/AFQMCLIB.git
@@ -88,6 +88,6 @@ This is a library for AFQMC.
 
   //TODO: ALL LIBALL, COMBINE ALL BASE LIBRARY TOGETHER
 
-  //TODO: ADD OPENMP IN CODE
+  //TODO: Check MPI + OPENMP conflict. Learn OPENMP IN C++. ADD OPENMP IN CODE
 
   //TODO: Add debug flag
