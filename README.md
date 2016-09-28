@@ -66,27 +66,27 @@ This is a library for AFQMC.
 
             cmake .. -DPLATFORM=platform
 
-- If nothing works for these platforms, set everything manually:
+    - Set everything manually:
 
             cmake .. -DPLATFORM=MANUAL args
 
-  - args only for MANUAL
-      - Set cxx compiler: `-DCMAKE_CXX_COMPILER=mpic++`
-      - (Only if we are using MPI) Set mpi executable: `-DMPIEXEC=mpiexec`
-      - (Only if we are using MPI) Set mpi number of process flag: `-DMPIEXEC_NUMPROC_FLAG=np`
-      - (Only if we are using MPI) Set MPI flag: `-DUSE_MPI=on`
+      - args only for MANUAL
+          - Set cxx compiler: `-DCMAKE_CXX_COMPILER=mpic++`
+          - (Only if we are using MPI) Set mpi executable: `-DMPIEXEC=mpiexec`
+          - (Only if we are using MPI) Set mpi number of process flag: `-DMPIEXEC_NUMPROC_FLAG=np`
+          - (Only if we are using MPI) Set MPI flag: `-DUSE_MPI=on`
 
-  - args for both MANUAL and other platform
-      - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG"`
-      - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
-      - ( Only for system lapack, blas and ACML ), set fortran function nounderscore `-DFORTRAN_NO_UNDERSCORE=on`
-      - Use magma library: `-DUSE_MAGMA=on`
+      - args for both MANUAL and other platform
+          - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG"`
+          - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
+          - ( Only for system lapack, blas and ACML ), set fortran function nounderscore `-DFORTRAN_NO_UNDERSCORE=on`
+          - Use magma library: `-DUSE_MAGMA=on`
 
-  For examples, serial manual looks like:
+      For examples, serial manual looks like:
 
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
-  MPI manual looks like:
+      MPI manual looks like:
 
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
