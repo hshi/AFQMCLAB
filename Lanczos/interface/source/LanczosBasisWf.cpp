@@ -59,6 +59,17 @@ void LanczosBasisWf::normalize()
     scalBlas_cpu(inverseNorm, wf);
 }
 
+complex<double> LanczosBasisWf::calculateOverlapWith(const LanczosBasisWf &wfRight) const
+{
+    return dotcBlas_cpu(wf, wfRight.wf);
+}
+
+void LanczosBasisWf::orthogonalizeWith(const LanczosBasisWf &wfBase)
+{
+    complex<double> minusOverlap = -wfBase.calculateOverlapWith(*this);
+    axpyBlas_cpu(minusOverlap, wfBase.wf, wf);
+}
+
 void LanczosBasisWf::copyDeep(const LanczosBasisWf &x)
 {
     if( wf.size() != x.wf.size() )

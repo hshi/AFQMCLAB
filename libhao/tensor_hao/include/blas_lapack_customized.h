@@ -32,6 +32,9 @@ double F77NAME(dznrm2) (const int *n, const BLAS_LAPACK_Complex16 *x, const int 
 
 void F77NAME(zscal)(const int *n, const BLAS_LAPACK_Complex16 *a, BLAS_LAPACK_Complex16 *x, const int *incx);
 
+void F77NAME(zdotc)(BLAS_LAPACK_Complex16 *pres, const int *n, const BLAS_LAPACK_Complex16 *x, const int *incx,
+                    const BLAS_LAPACK_Complex16 *y, const int *incy);
+
 void F77NAME(sgemm)(const char *transa, const char *transb, const int *m, const int *n, const int *k,
            const float *alpha, const float *a, const int *lda, const float *b, const int *ldb,
            const float *beta, float *c, const int *ldc);

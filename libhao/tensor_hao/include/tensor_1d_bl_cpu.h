@@ -15,6 +15,16 @@ namespace tensor_hao
     std::complex<double> normBlas_cpu(const TensorCore<std::complex<double>, 1> &x, int incx = 1);
 
     void scalBlas_cpu(std::complex<double> a, TensorCore<std::complex<double>, 1> &x, int incx = 1);
+
+    std::complex<double> dotcBlas_cpu(const TensorCore<std::complex<double>, 1> &x,
+                                      const TensorCore<std::complex<double>, 1> &y, int incx = 1, int incy = 1);
+
+    void axpyBlas_cpu(std::complex<double> a, const TensorCore<std::complex<double>, 1> &x,
+                      TensorCore<std::complex<double>, 1> &y, int incx=1, int incy=1);
+
+    void gemvBlas_cpu(const TensorCore<std::complex<double>, 2> & A,
+                      const TensorCore<std::complex<double>, 1> & x, TensorCore<std::complex<double>, 1> &y,
+                      char TRANSA='N', std::complex<double> alpha=1.0, std::complex<double> beta=0.0);
 } //end namespace tensor_hao
 
 #endif

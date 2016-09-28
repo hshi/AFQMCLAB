@@ -42,7 +42,6 @@ This is a library for AFQMC.
     cmake ..
     make
     make test
-    make install
 
 
 ##Tune cmake
@@ -52,13 +51,20 @@ This is a library for AFQMC.
 
 - Use magma library
 
-            cmake .. -DUSE_MAGMA=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DUSE_MAGMA=on
 
-- If defualt setting does not work, change to different platform.
+- Change build type.
 
-  It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
+    - Use cmake type
 
-            cmake .. -DPLATFORM=platform -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DCMAKE_BUILD_TYPE=Debug
+            cmake .. -DCMAKE_BUILD_TYPE=Release
+
+    - Change platform for particlular build type.
+
+      It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
+
+            cmake .. -DPLATFORM=platform
 
 - If nothing works for these platforms, set everything manually:
 
@@ -71,18 +77,18 @@ This is a library for AFQMC.
       - (Only if we are using MPI) Set MPI flag: `-DUSE_MPI=on`
 
   - args for both MANUAL and other platform
-      - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3"`
+      - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG"`
       - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
       - ( Only for system lapack, blas and ACML ), set fortran function nounderscore `-DFORTRAN_NO_UNDERSCORE=on`
       - Use magma library: `-DUSE_MAGMA=on`
 
   For examples, serial manual looks like:
 
-            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
   MPI manual looks like:
 
-            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
   //TODO: Test magma in Hurricane.
 
@@ -90,4 +96,4 @@ This is a library for AFQMC.
 
   //TODO: Check MPI + OPENMP conflict. Learn OPENMP IN C++. ADD OPENMP IN CODE
 
-  //TODO: Add debug flag
+  //TODO: Add debug flag ==> What is NDEBUG?
