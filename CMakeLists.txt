@@ -1,21 +1,21 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(AFQMCLIB  C CXX)
 
-#For find module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-#Set platform
 set(PLATFORM "DEFUALT" CACHE STRING "The platform to be run.")
 include("PLATFORM_${PLATFORM}")
 
-#Set flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#Enable test
 enable_testing()
 
-#Add custom functions
 include(FUNCTION_CUSTOM)
+
+setInt64IfDefineUSE_INT64()
+
+removeDuplicateSubstring(${CMAKE_CXX_FLAGS} CMAKE_CXX_FLAGS)
 
 #Set librarys
 find_package(Threads REQUIRED)
@@ -29,6 +29,8 @@ find_package(sprng REQUIRED)
 find_package(fftw REQUIRED)
 
 include(Set_Lapack_Blas)
+
+include(Set_Openmp)
 
 include(Set_Ext_Libraries)
 

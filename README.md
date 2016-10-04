@@ -92,8 +92,30 @@ This is a library for AFQMC.
 
   //TODO: Test magma in Hurricane.
 
-  //TODO: ALL LIBALL, COMBINE ALL BASE LIBRARY TOGETHER
+  //TODO: MAGMA int64? Update magma bin==> to fully empty!
+
+  //TODO: Change time library, change flag to some type defined value.
+
+  //TODO: MPISUM/MPIBcast only support int32? After question in stack?
+
+  //TODO: FFTW64 bit?
+
+  //TODO: CHANGE CHECK_HERMITION TO THROW ERROR.
 
   //TODO: Check MPI + OPENMP conflict. Learn OPENMP IN C++. ADD OPENMP IN CODE
 
-  //TODO: Add debug flag ==> What is NDEBUG?
+  //TODO: Use different OPENMP FLAG? For lapackblas, fftw, all code?
+
+  //TODO: FFTW with openmp? ==> Do we need to seperate them?
+
+  //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
+
+  //TODO: Use my_flags; my_libraries; my_include; my_defination for all the code.
+
+  //TODO: How to run MPI and OPENMP Hybird job in Hurricane and storm ==> Ask Eric, and test it
+
+  //TODO: USE_INT64 for LAPACK AND BLAS?
+
+  //TODO: Split screen in terminal
+
+  //TODO: Add a resize function in Tensor_Hao, and Wf function in Lanczos.

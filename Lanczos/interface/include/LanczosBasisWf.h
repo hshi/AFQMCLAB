@@ -13,7 +13,7 @@ class LanczosBasisWf
     tensor_hao::TensorHao<std::complex<double>, 1> wf;
  public:
     LanczosBasisWf();
-    LanczosBasisWf(int L);
+    LanczosBasisWf(HAO_INT L);
     LanczosBasisWf(const tensor_hao::TensorHao<std::complex<double>, 1> &wf);
     LanczosBasisWf(tensor_hao::TensorHao<std::complex<double>, 1> &&wf);
     LanczosBasisWf(const LanczosBasisWf &x);

@@ -1,4 +1,3 @@
-#For add test, mpi or serial
 function(add_my_test name executable)
     if (MPIEXEC)
         add_test( NAME ${name} COMMAND ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} 4 ${executable} )
@@ -6,3 +5,16 @@ function(add_my_test name executable)
         add_test( NAME ${name} COMMAND ${executable} )
     endif ()
 endfunction(add_my_test)
+
+function(removeDuplicateSubstring stringIn stringOut)
+    separate_arguments(stringIn)
+    list(REMOVE_DUPLICATES stringIn)
+    string(REPLACE ";" " " stringIn "${stringIn}")
+    set(${stringOut} "${stringIn}" PARENT_SCOPE)
+endfunction()
+
+function(setInt64IfDefineUSE_INT64)
+    if(USE_INT64)
+        add_definitions(-DUSE_INT64)
+    endif()
+endfunction()

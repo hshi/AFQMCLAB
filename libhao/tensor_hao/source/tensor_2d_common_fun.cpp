@@ -8,14 +8,14 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- int checkHermitian(const TensorCore<complex<double>, 2> &A)
+ HAO_INT checkHermitian(const TensorCore<complex<double>, 2> &A)
  {
-     int L0= A.rank(0); int L1= A.rank(1);
+     HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
      double error=0; double norm=0;
-     for(int j=0; j<L1; j++)
+     for(HAO_INT j=0; j<L1; j++)
      {
-         for(int i=j; i<L0; i++)
+         for(HAO_INT i=j; i<L0; i++)
          {
              error+=abs(A(i,j)-conj(A(j,i)));
              norm+=abs(A(i,j));
@@ -42,8 +42,8 @@ namespace tensor_hao
      if(x.info>0) return 0;
 
      complex<double> det(1,0);
-     int L= x.ipiv.rank(0);
-     for(int i=0;i<L;i++)
+     HAO_INT L= x.ipiv.rank(0);
+     for(HAO_INT i=0;i<L;i++)
      {
          if(x.ipiv(i)!=(i+1)) det*=(-x.A(i,i));
          else det*=x.A(i,i);
@@ -65,8 +65,8 @@ namespace tensor_hao
      }
 
      lognorm=0.0; phase=1.0;
-     int L= x.ipiv.rank(0);
-     for(int i=0;i<L;i++)
+     HAO_INT L= x.ipiv.rank(0);
+     for(HAO_INT i=0;i<L;i++)
      {
          lognorm+=log(abs(x.A(i,i)));
          if(x.ipiv(i)!=(i+1)) phase*=(-x.A(i,i)/abs(x.A(i,i)));
@@ -94,13 +94,13 @@ namespace tensor_hao
  {
      if(D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
 
-     int L0 = ph.rank(0); int L1 = ph.rank(1);
+     HAO_INT L0 = ph.rank(0); HAO_INT L1 = ph.rank(1);
      TensorHao<complex<double>,2> ph_new(L0, L1);
 
      //The order about loop i,j is important
-     for(int j=0; j<L1; j++)
+     for(HAO_INT j=0; j<L1; j++)
      {
-         for(int i=0; i<L0; i++) ph_new(i,j)=D(i)*ph(i,j);
+         for(HAO_INT i=0; i<L0; i++) ph_new(i,j)=D(i)*ph(i,j);
      }
 
      return ph_new;
@@ -109,15 +109,15 @@ namespace tensor_hao
  /************************************/
  /*Check skew symmetric of the matrix*/
  /************************************/
- int checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
+ HAO_INT checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
  {
-     int L0= A.rank(0); int L1= A.rank(1);
+     HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for checkSkewSymmetric is not square matrix!"<<endl; exit(1);}
 
      double error=0; double norm=0;
-     for(int j=0; j<L1; j++)
+     for(HAO_INT j=0; j<L1; j++)
      {
-         for(int i=j; i<L0; i++)
+         for(HAO_INT i=j; i<L0; i++)
          {
              error+=abs( A(i,j)+A(j,i) );
              norm+=abs(A(i,j));
@@ -142,7 +142,7 @@ namespace tensor_hao
  /**********************/
  complex<double> pfaffian(TensorCore<complex<double>, 2> &A)
  {
-    int L0 = A.rank(0); int L1 = A.rank(1);
+    HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
     if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}
     return pfaffian_aitken(A.data(), L0, L1);
  }

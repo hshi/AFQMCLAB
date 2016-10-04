@@ -15,15 +15,15 @@ int main()
     while (cin >> re >> im) vec.push_back( complex<double>(re,im) );
 
     //check the square
-    int L_square=vec.size();
-    int L=sqrt(L_square);
+    HAO_INT L_square=vec.size();
+    HAO_INT L=sqrt(L_square);
     if(L*L!=L_square) {cout<<"The matrix is not square! "<<L_square<<" "<<L<<endl; exit(1);}
 
     //Point to the vector, write the trace
     TensorHaoRef<complex<double>,2> hermitM(L,L); hermitM.point(vec);
     checkHermitian(hermitM);
     cout<<setprecision(16);
-    complex<double> TR(0,0); for(int i=0; i<L; i++) TR+=hermitM(i,i); cout<<"Trace matrix is: "<<TR<<endl;
+    complex<double> TR(0,0); for(HAO_INT i=0; i<L; i++) TR+=hermitM(i,i); cout<<"Trace matrix is: "<<TR<<endl;
 
     //Diagonal matrix
     TensorHao<double,1> W(L);
@@ -34,12 +34,12 @@ int main()
 
     file.open("eigenvalues.dat", ios::out|ios::trunc);
     file<<setprecision(16)<<scientific;
-    for(int i=0; i<L; i++) file<<setw(26)<<W(i)<<"\n";
+    for(HAO_INT i=0; i<L; i++) file<<setw(26)<<W(i)<<"\n";
     file.close();
 
     file.open("eigenvectors.dat", ios::out|ios::trunc);
     file<<setprecision(16)<<scientific;
-    for(int i=0; i<L_square; i++) file<<setw(26)<<vec[i].real()
+    for(HAO_INT i=0; i<L_square; i++) file<<setw(26)<<vec[i].real()
                                       <<setw(26)<<vec[i].imag()<<"\n";
     file.close();
 

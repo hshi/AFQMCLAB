@@ -1,14 +1,14 @@
 #include "../include/tensor_1d_bl_cpu.h"
-#include "../include/blas_lapack_wrap.h"
+#include "../../utilities/blas_lapack_wrap.h"
 
 using namespace std;
 
 namespace tensor_hao
 {
     void copyBlas_cpu(const TensorCore<complex<double>, 1>& x, TensorCore<complex<double>,1>& y,
-                      int incx, int incy)
+                      HAO_INT incx, HAO_INT incy)
     {
-        int L = x.size();
+        HAO_INT L = x.size();
         if( L != y.size() )
         {
             cerr<<"Size not consistent in copyBlas_cpu"<<endl; exit(1);
@@ -16,23 +16,23 @@ namespace tensor_hao
         F77NAME(zcopy)(&L, x.data(), &incx, y.data(), &incy);
     }
 
-    complex<double> normBlas_cpu(const TensorCore<complex<double>, 1> &x, int incx)
+    complex<double> normBlas_cpu(const TensorCore<complex<double>, 1> &x, HAO_INT incx)
     {
-        int L = x.size();
+        HAO_INT L = x.size();
         complex<double> normBlas = F77NAME(dznrm2) ( &L , x.data() , &incx );
         return normBlas;
     }
 
-    void scalBlas_cpu(complex<double> a, TensorCore<complex<double>, 1> &x, int incx)
+    void scalBlas_cpu(complex<double> a, TensorCore<complex<double>, 1> &x, HAO_INT incx)
     {
-        int L = x.size();
+        HAO_INT L = x.size();
         F77NAME(zscal) ( &L , &a , x.data() , &incx );
     }
 
     complex<double> dotcBlas_cpu(const TensorCore<complex<double>, 1> &x, const TensorCore<complex<double>, 1> &y,
-                                 int incx, int incy)
+                                 HAO_INT incx, HAO_INT incy)
     {
-        int L = x.size();
+        HAO_INT L = x.size();
         if( L != y.size() )
         {
             cerr<<"Size not consistent in dotcBlas_cpu"<<endl; exit(1);
@@ -43,9 +43,9 @@ namespace tensor_hao
     }
 
     void axpyBlas_cpu(complex<double> a, const TensorCore<complex<double>, 1> &x,
-                      TensorCore<complex<double>, 1> &y, int incx, int incy)
+                      TensorCore<complex<double>, 1> &y, HAO_INT incx, HAO_INT incy)
     {
-        int L = x.size();
+        HAO_INT L = x.size();
         if( L != y.size() )
         {
             cerr<<"Size not consistent in axpyBlas_cpu"<<endl; exit(1);
@@ -57,8 +57,8 @@ namespace tensor_hao
                       const TensorCore<complex<double>, 1> & x, TensorCore<complex<double>, 1> &y,
                       char TRANSA, complex<double> alpha, complex<double> beta)
     {
-        int M = A.rank(0); int N = A.rank(1);
-        int incx=1; int incy=1;
+        HAO_INT M = A.rank(0); HAO_INT N = A.rank(1);
+        HAO_INT incx=1; HAO_INT incy=1;
 
         if(TRANSA=='N' || TRANSA=='n' )
         {

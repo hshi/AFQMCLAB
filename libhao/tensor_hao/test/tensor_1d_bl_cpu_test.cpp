@@ -20,7 +20,7 @@ TEST(Tensor_1d_bl_cpu, normBlas)
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
 
     complex<double> norm_exact(0,0);
-    for(int i = 0; i < x.size() ; ++i)
+    for(HAO_INT i = 0; i < x.size() ; ++i)
     {
         norm_exact += std::norm( x(i) );
     }
@@ -37,7 +37,7 @@ TEST(Tensor_1d_bl_cpu, scaleBlas)
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
     complex<double> scale(2.0, 3.0);
 
-    for(int i = 0; i < x.size() ; ++i)
+    for(HAO_INT i = 0; i < x.size() ; ++i)
     {
         y(i) = scale * x(i);
     }
@@ -53,7 +53,7 @@ TEST(Tensor_1d_bl_cpu, dotcBlas)
     y = { {0.2,0.8},{3.3,4.0},{6.123,3.11},{9.0,3.3},{4.0,5.1},{3.123,4.21} };
 
     complex<double> dotExact(0,0);
-    for(int i = 0; i < x.size(); ++i)
+    for(HAO_INT i = 0; i < x.size(); ++i)
     {
         dotExact += conj( x(i) ) * y(i);
     }
@@ -70,7 +70,7 @@ TEST(Tensor_1d_bl_cpu, axpyBlas_cpu)
     y = { {0.2,0.8},{3.3,4.0},{6.123,3.11},{9.0,3.3},{4.0,5.1},{3.123,4.21} };
     complex<double> a(2.0, 3.0);
 
-    for(int i = 0; i < x.size(); ++i)
+    for(HAO_INT i = 0; i < x.size(); ++i)
     {
         yExact(i) = a * x(i) + y(i);
     }
@@ -87,10 +87,10 @@ TEST(Tensor_1d_bl_cpu, gemvBlas_cpu)
 
     randomFill(A); randomFill(x);
 
-    for(int i = 0; i < A.rank(1); ++i)
+    for(HAO_INT i = 0; i < A.rank(1); ++i)
     {
         yExact(i) = 0.0;
-        for(int j = 0; j < A.rank(0); ++j)
+        for(HAO_INT j = 0; j < A.rank(0); ++j)
         {
             yExact(i) += alpha * A(j,i) * x(j) + beta * y(i);
         }

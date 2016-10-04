@@ -1,5 +1,5 @@
 #include "../include/tensor_2d_bl_cpu.h"
-#include "../include/blas_lapack_wrap.h"
+#include "../../utilities/blas_lapack_wrap.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ namespace tensor_hao
  void gmm_cpu(const TensorCore<float,2>& A, const TensorCore<float,2>& B, TensorCore<float,2>& C,
           char TRANSA, char TRANSB, float alpha, float beta)
  {
-     int  M, N, K, LDA, LDB, LDC;
+     HAO_INT  M, N, K, LDA, LDB, LDC;
      M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0): A.rank(1);
      K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1): A.rank(0);
      N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1): B.rank(0);
@@ -27,7 +27,7 @@ namespace tensor_hao
  void gmm_cpu(const TensorCore<double,2>& A, const TensorCore<double,2>& B, TensorCore<double,2>& C,
           char TRANSA, char TRANSB, double alpha, double beta)
  {
-     int  M, N, K, LDA, LDB, LDC;
+     HAO_INT  M, N, K, LDA, LDB, LDC;
      M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0): A.rank(1);
      K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1): A.rank(0);
      N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1): B.rank(0);
@@ -41,7 +41,7 @@ namespace tensor_hao
  void gmm_cpu(const TensorCore<complex<float>,2>& A, const TensorCore<complex<float>,2>& B, TensorCore<complex<float>,2>& C,
           char TRANSA, char TRANSB, complex<float> alpha, complex<float> beta)
  {
-     int  M, N, K, LDA, LDB, LDC;
+     HAO_INT  M, N, K, LDA, LDB, LDC;
      M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0): A.rank(1);
      K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1): A.rank(0);
      N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1): B.rank(0);
@@ -55,7 +55,7 @@ namespace tensor_hao
  void gmm_cpu(const TensorCore<complex<double>,2>& A, const TensorCore<complex<double>,2>& B, TensorCore<complex<double>,2>& C,
           char TRANSA, char TRANSB, complex<double> alpha, complex<double> beta)
  {
-     int  M, N, K, LDA, LDB, LDC;
+     HAO_INT  M, N, K, LDA, LDB, LDC;
      M=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(0): A.rank(1);
      K=(TRANSA=='N' || TRANSA=='n' ) ? A.rank(1): A.rank(0);
      N=(TRANSB=='N' || TRANSB=='n' ) ? B.rank(1): B.rank(0);
@@ -74,13 +74,13 @@ namespace tensor_hao
  {
      if(A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if(A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
-     int N= A.rank(0); int info;
+     HAO_INT N= A.rank(0); HAO_INT info;
 
-     double work_test[1]; int iwork_test[1]; int lwork=-1; int liwork=-1;
+     double work_test[1]; HAO_INT iwork_test[1]; HAO_INT lwork=-1; HAO_INT liwork=-1;
      F77NAME(dsyevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work_test, &lwork, iwork_test, &liwork ,&info);
 
      lwork=lround(work_test[0]); liwork=iwork_test[0];
-     vector<double> work(lwork); vector<int> iwork(liwork);
+     vector<double> work(lwork); vector<HAO_INT> iwork(liwork);
      F77NAME(dsyevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work.data(), &lwork, iwork.data(), &liwork ,&info);
 
      if(info!=0) {cout<<"Dsyevd failed: info= "<< info<<endl; exit(1);}
@@ -94,14 +94,14 @@ namespace tensor_hao
  {
      if(A.rank(0) != A.rank(1) ) {cout<<"Input for eigen is not square matrix!"<<endl; exit(1);}
      if(A.rank(0) != W.rank(0) ) {cout<<"Input size of W is not consistent with A!"<<endl; exit(1);}
-     int N= A.rank(0); int info;
+     HAO_INT N= A.rank(0); HAO_INT info;
 
-     complex<double> work_test[1]; double rwork_test[1]; int iwork_test[1];
-     int lwork=-1; int lrwork=-1; int liwork=-1;
+     complex<double> work_test[1]; double rwork_test[1]; HAO_INT iwork_test[1];
+     HAO_INT lwork=-1; HAO_INT lrwork=-1; HAO_INT liwork=-1;
      F77NAME(zheevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work_test, &lwork, rwork_test, &lrwork, iwork_test, &liwork ,&info);
 
      lwork=lround(work_test[0].real()); lrwork=lround(rwork_test[0]); liwork=iwork_test[0];
-     vector<complex<double>> work(lwork); vector<double> rwork(lrwork); vector<int> iwork(liwork);
+     vector<complex<double>> work(lwork); vector<double> rwork(lrwork); vector<HAO_INT> iwork(liwork);
      F77NAME(zheevd)(&JOBZ, &UPLO, &N, A.data(), &N, W.data(), work.data(), &lwork, rwork.data(), &lrwork, iwork.data(), &liwork ,&info);
 
      if(info!=0) {cout<<"Zheevd failed: info= "<< info<<endl; exit(1);}
@@ -113,8 +113,8 @@ namespace tensor_hao
  LUDecomp<complex<double>> LUconstruct_cpu(const TensorCore<complex<double>,2>& x)
  {
      if(x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
-     int N= x.rank(0);
-     LUDecomp<complex<double>> y; y.A=x; y.ipiv=TensorHao<int,1>(N);
+     HAO_INT N= x.rank(0);
+     LUDecomp<complex<double>> y; y.A=x; y.ipiv=TensorHao<HAO_INT,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
@@ -124,8 +124,8 @@ namespace tensor_hao
  LUDecomp<complex<double>> LUconstruct_cpu(TensorHao<complex<double>,2>&& x)
  {
      if(x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
-     int N= x.rank(0);
-     LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=TensorHao<int,1>(N);
+     HAO_INT N= x.rank(0);
+     LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=TensorHao<HAO_INT,1>(N);
 
      F77NAME(zgetrf)(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
@@ -137,11 +137,11 @@ namespace tensor_hao
  /*Inverse of matrix: If determinant of the matrix is outof machine precision, inverse should be fine, since it solve*
   *The linear equation, every small value is well defined                                                            */
  /********************************************************************************************************************/
- void inverse_cpu_utilities(TensorCore<complex<double>,2>& A, const TensorCore<int,1>& ipiv)
+ void inverse_cpu_utilities(TensorCore<complex<double>, 2> &A, const TensorCore<HAO_INT, 1> &ipiv)
  {
-     int N= A.rank(0); int info;
+     HAO_INT N= A.rank(0); HAO_INT info;
 
-     int lwork=-1; complex<double> work_test[1];
+     HAO_INT lwork=-1; complex<double> work_test[1];
      F77NAME(zgetri)(&N, A.data(), &N, ipiv.data(), work_test, &lwork, &info);
 
      lwork=lround(work_test[0].real());
@@ -170,7 +170,7 @@ namespace tensor_hao
  void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, TensorHao<complex<double>,2>& M, char TRANS)
  {
      if(x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
-     int N= M.rank(0); int NRHS= M.rank(1); int info;
+     HAO_INT N= M.rank(0); HAO_INT NRHS= M.rank(1); HAO_INT info;
      F77NAME(zgetrs)(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
      if(info!=0)
      {
@@ -198,8 +198,8 @@ namespace tensor_hao
  /******************************/
  double QRMatrix_cpu(TensorCore<complex<double>,2>& ph)
  {
-     int L= ph.rank(0); int N= ph.rank(1); int info;
-     int lwork=-1; complex<double> work_test[1];
+     HAO_INT L= ph.rank(0); HAO_INT N= ph.rank(1); HAO_INT info;
+     HAO_INT lwork=-1; complex<double> work_test[1];
      vector<complex<double>> tau(N);
 
      F77NAME(zgeqrf) (&L, &N, ph.data(), &L, tau.data(), work_test, &lwork, &info);
@@ -209,12 +209,12 @@ namespace tensor_hao
      F77NAME(zgeqrf) (&L, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
      if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
-     complex<double> det={1.0,0.0}; for (int i=0; i<N; i++)  det*=ph(i,i);
+     complex<double> det={1.0,0.0}; for (HAO_INT i=0; i<N; i++)  det*=ph(i,i);
 
      F77NAME(zungqr) (&L, &N, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
      if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
-     if(det.real()<0) {det=-det; for(int i=0; i<L; i++) ph(i,0)=-ph(i,0);}
+     if(det.real()<0) {det=-det; for(HAO_INT i=0; i<L; i++) ph(i,0)=-ph(i,0);}
 
      return det.real();
  }
@@ -223,8 +223,8 @@ namespace tensor_hao
  {
      if(det_list.rank(0) != ph.rank(1) ) {cout<<"det_list size is not consistent with ph! "<<endl; exit(1); }
 
-     int L= ph.rank(0); int N= ph.rank(1); int info;
-     int lwork=-1; complex<double> work_test[1];
+     HAO_INT L= ph.rank(0); HAO_INT N= ph.rank(1); HAO_INT info;
+     HAO_INT lwork=-1; complex<double> work_test[1];
      vector<complex<double>> tau(N);
 
      F77NAME(zgeqrf) (&L, &N, ph.data(), &L, tau.data(), work_test, &lwork, &info);
@@ -235,7 +235,7 @@ namespace tensor_hao
      if(info!=0) {cout<<"QR run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
 
      complex<double> det={1.0,0.0}; 
-     for (int i=0; i<N; i++)  {det_list(i)=ph(i,i).real(); det*=ph(i,i);}
+     for (HAO_INT i=0; i<N; i++)  {det_list(i)=ph(i,i).real(); det*=ph(i,i);}
 
      F77NAME(zungqr) (&L, &N, &N, ph.data(), &L, tau.data(), work.data(), &lwork, &info);
      if(info!=0) {cout<<"Zungqr run is not suceesful: "<<info<<"-th parameter is illegal!"<<endl; exit(1);}
@@ -244,7 +244,7 @@ namespace tensor_hao
      {
         det=-det;
         det_list(0)=-det_list(0);
-        for(int i=0; i<L; i++) ph(i,0)=-ph(i,0);
+        for(HAO_INT i=0; i<L; i++) ph(i,0)=-ph(i,0);
      }
 
      return det.real();
@@ -263,12 +263,12 @@ namespace tensor_hao
          exit(1);
      }
 
-     int m= U.rank(0); int n= V.rank(0);
-     char jobz='O'; int lda=m;
-     complex<double>* u=nullptr; int ldu=1; int ldv=n;
-     complex<double> work_test[1]; int lwork=-1;
-     vector<double> rwork(5*m*m+7*m); vector<int> iwork(8*m);
-     int info;
+     HAO_INT m= U.rank(0); HAO_INT n= V.rank(0);
+     char jobz='O'; HAO_INT lda=m;
+     complex<double>* u=nullptr; HAO_INT ldu=1; HAO_INT ldv=n;
+     complex<double> work_test[1]; HAO_INT lwork=-1;
+     vector<double> rwork(5*m*m+7*m); vector<HAO_INT> iwork(8*m);
+     HAO_INT info;
 
      F77NAME(zgesdd)(&jobz, &m, &n, U.data(), &lda, D.data(), u, &ldu, V.data(), &ldv, work_test, &lwork, rwork.data(), iwork.data(), &info);
 
@@ -292,12 +292,12 @@ namespace tensor_hao
          exit(1);
      }
 
-     int m=U.rank(0); int n=V.rank(0);
-     char jobu='O'; char jobvt='A'; int lda=m;
-     complex<double>* u=nullptr; int ldu=1; int ldv=n;
-     complex<double> work_test[1]; int lwork=-1;
+     HAO_INT m=U.rank(0); HAO_INT n=V.rank(0);
+     char jobu='O'; char jobvt='A'; HAO_INT lda=m;
+     complex<double>* u=nullptr; HAO_INT ldu=1; HAO_INT ldv=n;
+     complex<double> work_test[1]; HAO_INT lwork=-1;
      vector<double> rwork(5*m);
-     int info;
+     HAO_INT info;
 
      F77NAME(zgesvd)(&jobu, &jobvt, &m, &n, U.data(), &lda, D.data(), u, &ldu, V.data(), &ldv, work_test, &lwork, rwork.data(), &info);
 

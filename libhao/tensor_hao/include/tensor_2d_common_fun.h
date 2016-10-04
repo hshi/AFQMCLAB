@@ -16,11 +16,11 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> trans(const TensorCore<T,2>& A)
  {
-     int L0 = A.rank(0); int L1 = A.rank(1);
+     HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
      TensorHao<T,2> B(L1, L0);
-     for(int i=0; i<L0; i++)
+     for(HAO_INT i=0; i<L0; i++)
      {
-         for(int j=0; j<L1; j++) B(j,i)=A(i,j);
+         for(HAO_INT j=0; j<L1; j++) B(j,i)=A(i,j);
      }
      return B;
  }
@@ -31,11 +31,11 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> conjtrans(const TensorCore<T,2>& A)
  {
-     int L0 = A.rank(0); int L1 = A.rank(1);
+     HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
      TensorHao<T,2> B(L1, L0);
-     for(int i=0; i<L0; i++)
+     for(HAO_INT i=0; i<L0; i++)
      {
-         for(int j=0; j<L1; j++) B(j,i)=std::conj( A(i,j) );
+         for(HAO_INT j=0; j<L1; j++) B(j,i)=std::conj( A(i,j) );
      }
      return B;
  }
@@ -43,7 +43,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- int checkHermitian(const TensorCore<std::complex<double>, 2> &A);
+ HAO_INT checkHermitian(const TensorCore<std::complex<double>, 2> &A);
 
  /*******************************************/
  /*LU decomposition of complex double matrix*/
@@ -52,8 +52,8 @@ namespace tensor_hao
  {
      public:
      TensorHao<T,2> A;
-     TensorHao<int,1> ipiv;
-     int info;
+     TensorHao<HAO_INT,1> ipiv;
+     HAO_INT info;
 
      LUDecomp() {}
      LUDecomp(const LUDecomp<T>& x) {A=x.A;ipiv=x.ipiv;info=x.info;}
@@ -78,7 +78,7 @@ namespace tensor_hao
  /**********************/
  /*pfaffian of a matrix*/
  /**********************/
- int checkSkewSymmetric(const TensorCore<std::complex<double>, 2> &A);
+ HAO_INT checkSkewSymmetric(const TensorCore<std::complex<double>, 2> &A);
  std::complex<double> pfaffian(TensorCore<std::complex<double>, 2> &A);
 
 } //end namespace tensor_hao

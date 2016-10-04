@@ -7,9 +7,9 @@
 using namespace std;
 using namespace tensor_hao;
 
-int i_max=3136;
+HAO_INT i_max=3136;
 
-void gmm_float_timing(int M, int N, int K)
+void gmm_float_timing(HAO_INT M, HAO_INT N, HAO_INT K)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<float,2> a(M, K); fill_random(a);
@@ -24,14 +24,14 @@ void gmm_float_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(c_cpu,c_magma,1e-4);  
+    HAO_INT flag=diff(c_cpu,c_magma,1e-4);  
 
     //if(M==3136) 
     //{
     //    TensorHao<float,2> test=c_cpu-c_magma;
-    //    for(int j=0; j<N; j++)
+    //    for(HAO_INT j=0; j<N; j++)
     //    {
-    //        for(int i=0; i<N; i++)
+    //        for(HAO_INT i=0; i<N; i++)
     //        {
     //            if(abs(test(i,j))> 1e-3) cout<<test(i,j)<<endl;
     //        }
@@ -45,13 +45,13 @@ void gmm_float_timing_loop()
 {
     cout<<"Timing gmm float:"<<endl;
     cout<<setw(16)<<"M"<<setw(16)<<"N"<<setw(16)<<"K"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)       gmm_float_timing(i, i, i);
-    for (int i = 1088; i <= i_max; i += 1024) gmm_float_timing(i, i, i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)       gmm_float_timing(i, i, i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024) gmm_float_timing(i, i, i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void gmm_double_timing(int M, int N, int K)
+void gmm_double_timing(HAO_INT M, HAO_INT N, HAO_INT K)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<double,2> a(M, K); fill_random(a);
@@ -66,7 +66,7 @@ void gmm_double_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(c_cpu,c_magma,1e-10);
+    HAO_INT flag=diff(c_cpu,c_magma,1e-10);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -74,14 +74,14 @@ void gmm_double_timing_loop()
 {
     cout<<"Timing gmm double:"<<endl;
     cout<<setw(16)<<"M"<<setw(16)<<"N"<<setw(16)<<"K"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)       gmm_double_timing(i, i, i);
-    for (int i = 1088; i <= i_max; i += 1024) gmm_double_timing(i, i, i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)       gmm_double_timing(i, i, i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024) gmm_double_timing(i, i, i);
     cout<<"\n\n\n"<<endl;
 }
 
 
 
-void gmm_complexfloat_timing(int M, int N, int K)
+void gmm_complexfloat_timing(HAO_INT M, HAO_INT N, HAO_INT K)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<float>,2> a(M, K); fill_random(a);
@@ -96,7 +96,7 @@ void gmm_complexfloat_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(c_cpu,c_magma,1e-4);
+    HAO_INT flag=diff(c_cpu,c_magma,1e-4);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -104,14 +104,14 @@ void gmm_complexfloat_timing_loop()
 {
     cout<<"Timing gmm complexfloat:"<<endl;
     cout<<setw(16)<<"M"<<setw(16)<<"N"<<setw(16)<<"K"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)       gmm_complexfloat_timing(i, i, i);
-    for (int i = 1088; i <= i_max; i += 1024) gmm_complexfloat_timing(i, i, i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)       gmm_complexfloat_timing(i, i, i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024) gmm_complexfloat_timing(i, i, i);
     cout<<"\n\n\n"<<endl;
 }
 
 
 
-void gmm_complexdouble_timing(int M, int N, int K)
+void gmm_complexdouble_timing(HAO_INT M, HAO_INT N, HAO_INT K)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2> a(M, K); fill_random(a);
@@ -126,7 +126,7 @@ void gmm_complexdouble_timing(int M, int N, int K)
     gmm_magma(a,b,c_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(c_cpu,c_magma,1e-10);
+    HAO_INT flag=diff(c_cpu,c_magma,1e-10);
     cout<<setw(16)<<M<<setw(16)<<N<<setw(16)<<K<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -134,13 +134,13 @@ void gmm_complexdouble_timing_loop()
 {
     cout<<"Timing gmm complexdouble:"<<endl;
     cout<<setw(16)<<"M"<<setw(16)<<"N"<<setw(16)<<"K"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)       gmm_complexdouble_timing(i, i, i);
-    for (int i = 1088; i <= i_max; i += 1024) gmm_complexdouble_timing(i, i, i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)       gmm_complexdouble_timing(i, i, i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024) gmm_complexdouble_timing(i, i, i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void eigen_double_timing(int N)
+void eigen_double_timing(HAO_INT N)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<double,2>  a_cpu(N,N), a_magma(N,N);
@@ -148,7 +148,7 @@ void eigen_double_timing(int N)
 
     //Get a real symmetry a_cpu and a_magma
     fill_random(a_cpu);
-    for (int j=0; j<N; j++) {for (int i=j+1; i<N; i++) a_cpu(i,j)=a_cpu(j,i);}
+    for (HAO_INT j=0; j<N; j++) {for (HAO_INT i=j+1; i<N; i++) a_cpu(i,j)=a_cpu(j,i);}
     a_magma=a_cpu;
 
     cpu_time = magma_wtime();
@@ -159,7 +159,7 @@ void eigen_double_timing(int N)
     eigen_magma(a_magma,w_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(w_cpu,w_magma,1e-10);
+    HAO_INT flag=diff(w_cpu,w_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -167,13 +167,13 @@ void eigen_double_timing_loop()
 {
     cout<<"Timing eigen double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 210; i <= 1000; i += 200)     eigen_double_timing(i);
-    for (int i = 1088; i <= i_max; i += 1024)   eigen_double_timing(i);
+    for (HAO_INT i = 210; i <= 1000; i += 200)     eigen_double_timing(i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)   eigen_double_timing(i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void eigen_complexdouble_timing(int N)
+void eigen_complexdouble_timing(HAO_INT N)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2>  a_cpu(N,N), a_magma(N,N);
@@ -181,10 +181,10 @@ void eigen_complexdouble_timing(int N)
 
     //Get a Hermition matrix a_cpu and a_magma
     fill_random(a_cpu); 
-    for (int j=0; j<N; j++)
+    for (HAO_INT j=0; j<N; j++)
     {
         a_cpu(j,j)=a_cpu(j,j).real();
-        for (int i=j+1; i<N; i++) a_cpu(i,j)=conj(a_cpu(j,i));
+        for (HAO_INT i=j+1; i<N; i++) a_cpu(i,j)=conj(a_cpu(j,i));
     }
     a_magma=a_cpu;
     check_Hermitian(a_cpu); 
@@ -197,7 +197,7 @@ void eigen_complexdouble_timing(int N)
     eigen_magma(a_magma,w_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(w_cpu,w_magma,1e-10);
+    HAO_INT flag=diff(w_cpu,w_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -205,12 +205,12 @@ void eigen_complexdouble_timing_loop()
 {
     cout<<"Timing eigen complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 210; i <= 1000; i += 200)     eigen_complexdouble_timing(i);
-    for (int i = 1088; i <= i_max; i += 1024)   eigen_complexdouble_timing(i);
+    for (HAO_INT i = 210; i <= 1000; i += 200)     eigen_complexdouble_timing(i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)   eigen_complexdouble_timing(i);
     cout<<"\n\n\n"<<endl;
 }
 
-void LUconstruct_timing(int N)
+void LUconstruct_timing(HAO_INT N)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2>  X(N,N); fill_random(X);
@@ -223,7 +223,7 @@ void LUconstruct_timing(int N)
     LUDecomp<complex<double>> LU_magma=LUconstruct_magma(X);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(LU_cpu.A, LU_magma.A,1e-10);
+    HAO_INT flag=diff(LU_cpu.A, LU_magma.A,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl; 
 }
 
@@ -231,13 +231,13 @@ void LUconstruct_timing_loop()
 {
     cout<<"Timing LUconstruct complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 16; i <= 1087; i += 128)     LUconstruct_timing(i);
-    for (int i = 1088; i <= i_max; i += 1024)  LUconstruct_timing(i);
+    for (HAO_INT i = 16; i <= 1087; i += 128)     LUconstruct_timing(i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)  LUconstruct_timing(i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void inverse_timing(int N)
+void inverse_timing(HAO_INT N)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2> X(N,N); fill_random(X);
@@ -253,7 +253,7 @@ void inverse_timing(int N)
     A_magma=inverse_magma( LU_magma );
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(A_cpu, A_magma,1e-10);
+    HAO_INT flag=diff(A_cpu, A_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -262,13 +262,13 @@ void inverse_timing_loop()
 {
     cout<<"Timing inverse complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 16; i <= 1087; i += 128)     inverse_timing(i);
-    for (int i = 1088; i <= i_max; i += 1024)  inverse_timing(i);
+    for (HAO_INT i = 16; i <= 1087; i += 128)     inverse_timing(i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)  inverse_timing(i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void solve_lineq_timing(int N, int M)
+void solve_lineq_timing(HAO_INT N, HAO_INT M)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2> X(N,N); fill_random(X);
@@ -285,7 +285,7 @@ void solve_lineq_timing(int N, int M)
     A_magma=solve_lineq_magma( LU_magma , B);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=diff(A_cpu, A_magma,1e-10);
+    HAO_INT flag=diff(A_cpu, A_magma,1e-10);
     cout<<setw(16)<<N<<setw(16)<<M<<setw(16)<<cpu_time<<setw(16)<<magma_time<<setw(16)<<flag<<endl;
 }
 
@@ -294,13 +294,13 @@ void solve_lineq_timing_loop()
 {
     cout<<"Timing solve_lineq complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"M"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)        solve_lineq_timing(i,i);
-    for (int i = 1088; i <= i_max; i += 1024)  solve_lineq_timing(i,i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)        solve_lineq_timing(i,i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)  solve_lineq_timing(i,i);
     cout<<"\n\n\n"<<endl;
 }
 
 
-void QRMatrix_timing(int N, int M)
+void QRMatrix_timing(HAO_INT N, HAO_INT M)
 {
     real_Double_t cpu_time, magma_time;
     double det_cpu,det_magma;
@@ -315,10 +315,10 @@ void QRMatrix_timing(int N, int M)
     det_magma=QRMatrix_magma(ph_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=0; 
-    for(int j=0; j<M; j++)
+    HAO_INT flag=0; 
+    for(HAO_INT j=0; j<M; j++)
     {
-        for(int i=0; i<N; i++) {if(abs(abs(ph_cpu(i,j))-abs(ph_magma(i,j)))>1e-10) flag++;}
+        for(HAO_INT i=0; i<N; i++) {if(abs(abs(ph_cpu(i,j))-abs(ph_magma(i,j)))>1e-10) flag++;}
     }
     if(abs((det_cpu-det_magma)/det_magma)>1e-10) {flag++;}
 
@@ -339,12 +339,12 @@ void QRMatrix_timing_loop()
 {
     cout<<"Timing QRMatrix complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"M"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)        QRMatrix_timing(i,i);
-    for (int i = 1088; i <= i_max; i += 1024)  QRMatrix_timing(i,i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)        QRMatrix_timing(i,i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)  QRMatrix_timing(i,i);
     cout<<"\n\n\n"<<endl;
 }
 
-void SVDMatrix_timing(int N)
+void SVDMatrix_timing(HAO_INT N)
 {
     real_Double_t cpu_time, magma_time;
     TensorHao<complex<double>,2> U_cpu(N,N), U_magma(N,N);
@@ -360,10 +360,10 @@ void SVDMatrix_timing(int N)
     SVDMatrix_magma(U_magma, D_magma, V_magma);
     magma_time = magma_wtime() - magma_time;
 
-    int flag=0;
-    for(int j=0; j<N; j++)
+    HAO_INT flag=0;
+    for(HAO_INT j=0; j<N; j++)
     {
-        for(int i=0; i<N; i++) {if(abs(abs(U_cpu(i,j))-abs(U_magma(i,j)))>1e-10) flag++;}
+        for(HAO_INT i=0; i<N; i++) {if(abs(abs(U_cpu(i,j))-abs(U_magma(i,j)))>1e-10) flag++;}
     }
     flag += diff(D_cpu, D_magma, 1e-10);
 
@@ -374,8 +374,8 @@ void SVDMatrix_timing_loop()
 {
     cout<<"Timing SVDMatrix complex double:"<<endl;
     cout<<setw(16)<<"N"<<setw(16)<<"cpu_time"<<setw(16)<<"magma_time"<<setw(16)<<"flag"<<endl;
-    for (int i = 8; i <= 1087; i *= 2)        SVDMatrix_timing(i);
-    for (int i = 1088; i <= i_max; i += 1024)  SVDMatrix_timing(i);
+    for (HAO_INT i = 8; i <= 1087; i *= 2)        SVDMatrix_timing(i);
+    for (HAO_INT i = 1088; i <= i_max; i += 1024)  SVDMatrix_timing(i);
     cout<<"\n\n\n"<<endl;
 }
 

@@ -16,9 +16,9 @@ add_library(randomNumberHao STATIC $<TARGET_OBJECTS:randomNumberHaoObject>)
 #For Test
 add_executable(randomNumberTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-target_link_libraries(randomNumberTest randomNumberHao mpiHao testHao
-        libgtest-main-hao ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
-        ${sprng_libraries} ${gmp_libraries})
+set(ext_libraries ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${sprng_libraries} ${gmp_libraries})
+list(REMOVE_DUPLICATES ext_libraries)
+target_link_libraries(randomNumberTest randomNumberHao mpiHao testHao libgtest-main-hao ${ext_libraries})
 
 target_include_directories(randomNumberTest PUBLIC ${GTEST_INCLUDE_DIRS})
 

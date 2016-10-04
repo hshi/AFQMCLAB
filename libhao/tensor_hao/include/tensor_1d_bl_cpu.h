@@ -10,17 +10,17 @@
 namespace tensor_hao
 {
     void copyBlas_cpu(const TensorCore<std::complex<double>, 1>& x, TensorCore<std::complex<double>,1>& y,
-                      int incx=1, int incy=1);
+                      HAO_INT incx=1, HAO_INT incy=1);
 
-    std::complex<double> normBlas_cpu(const TensorCore<std::complex<double>, 1> &x, int incx = 1);
+    std::complex<double> normBlas_cpu(const TensorCore<std::complex<double>, 1> &x, HAO_INT incx = 1);
 
-    void scalBlas_cpu(std::complex<double> a, TensorCore<std::complex<double>, 1> &x, int incx = 1);
+    void scalBlas_cpu(std::complex<double> a, TensorCore<std::complex<double>, 1> &x, HAO_INT incx = 1);
 
     std::complex<double> dotcBlas_cpu(const TensorCore<std::complex<double>, 1> &x,
-                                      const TensorCore<std::complex<double>, 1> &y, int incx = 1, int incy = 1);
+                                      const TensorCore<std::complex<double>, 1> &y, HAO_INT incx = 1, HAO_INT incy = 1);
 
     void axpyBlas_cpu(std::complex<double> a, const TensorCore<std::complex<double>, 1> &x,
-                      TensorCore<std::complex<double>, 1> &y, int incx=1, int incy=1);
+                      TensorCore<std::complex<double>, 1> &y, HAO_INT incx=1, HAO_INT incy=1);
 
     void gemvBlas_cpu(const TensorCore<std::complex<double>, 2> & A,
                       const TensorCore<std::complex<double>, 1> & x, TensorCore<std::complex<double>, 1> &y,

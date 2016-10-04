@@ -1,6 +1,6 @@
 set(CMAKE_CXX_COMPILER mpicxx)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -xHOST")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -xHOST -DNDEBUG")
 
 add_definitions(-DMPI_HAO)
 
