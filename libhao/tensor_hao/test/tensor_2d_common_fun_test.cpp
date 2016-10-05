@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdexcept>
 #include "../include/tensor_2d_common_fun.h"
 #include "../include/tensor_2d_bl_cpu.h"
 #include "../include/tensor_2d_bl_magma.h"
@@ -31,7 +32,14 @@ TEST(Tensor_2d_common_fun, Hermitian)
     a = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
           {3.0,-4.0},   {2.0,0.0},    {5.123,3.11},
           {2.123,-3.11},{5.123,-3.11},{3,0.0}     };
-    EXPECT_FALSE (checkHermitian(a) );
+    try
+    {
+        checkHermitian(a);
+    }
+    catch(runtime_error& err)
+    {
+        EXPECT_EQ( "ERROR!!! Matrix is not Hermition!", string(err.what()) );
+    }
 }
 
 TEST(Tensor_2d_common_fun, LUDecomp)
@@ -143,7 +151,15 @@ TEST(Tensor_2d_common_fun, checkSkewSymmetric)
     a = { {0.0,0.0} ,    {3.0,4.0},     {2.123,3.11},
           {-3.0,-4.0},   {0.0,0.0},     {5.123,3.11},
           {-2.123,-3.11},{-5.123,-3.11},{0,0.0}     };
-    EXPECT_FALSE (checkSkewSymmetric(a) );
+
+    try
+    {
+        checkSkewSymmetric(a);
+    }
+    catch(runtime_error& err)
+    {
+        EXPECT_EQ( "ERROR!!! Matrix is not skew symmetric!", string(err.what()) );
+    }
 }
 
 TEST(Tensor_2d_common_fun, pfaffian)

@@ -43,7 +43,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- HAO_INT checkHermitian(const TensorCore<std::complex<double>, 2> &A);
+ void checkHermitian(const TensorCore<std::complex<double>, 2> &A);
 
  /*******************************************/
  /*LU decomposition of complex double matrix*/
@@ -78,7 +78,7 @@ namespace tensor_hao
  /**********************/
  /*pfaffian of a matrix*/
  /**********************/
- HAO_INT checkSkewSymmetric(const TensorCore<std::complex<double>, 2> &A);
+ void checkSkewSymmetric(const TensorCore<std::complex<double>, 2> &A);
  std::complex<double> pfaffian(TensorCore<std::complex<double>, 2> &A);
 
 } //end namespace tensor_hao

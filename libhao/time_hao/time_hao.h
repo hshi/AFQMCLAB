@@ -3,11 +3,17 @@
 
 #include <time.h>
 
+enum class TimerState
+{
+    TIMER_NOT_STARTED,
+    TIMER_IN_ACCUMULATION
+};
+
 class TimerHao
 {
  private:
     double seconds;
-    int    flag;  //0: Have not start accumulation. 1: In accumulation, between init() and end();
+    TimerState state;
     clock_t clockInit, clockEnd;
 
  public:
@@ -17,11 +23,11 @@ class TimerHao
     ~TimerHao();
     TimerHao& operator  = (const TimerHao&);
 
-    double getSeconds();
-    int getFlag();
+    double getSeconds() const;
+    TimerState getState() const;
     void setSeconds(double seconds);
 
-    void init();
+    void start();
     void end();
     void clear();
 

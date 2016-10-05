@@ -8,64 +8,76 @@ using namespace std;
 
 struct tm transferSecondToTm (double seconds);
 
-TimerHao::TimerHao():seconds(0),flag(0) {}
+TimerHao::TimerHao():seconds(0),state(TimerState::TIMER_NOT_STARTED) {}
 
-TimerHao::TimerHao(double secs):seconds(secs),flag(0) {}
+TimerHao::TimerHao(double secs):seconds(secs),state(TimerState::TIMER_NOT_STARTED) {}
 
-TimerHao::TimerHao(const TimerHao& x):seconds(x.seconds),flag(x.flag),clockInit(x.clockInit),clockEnd(x.clockEnd) {}
+TimerHao::TimerHao(const TimerHao& x):seconds(x.seconds),state(x.state),clockInit(x.clockInit),clockEnd(x.clockEnd) {}
 
 TimerHao::~TimerHao() {}
 
 TimerHao& TimerHao::operator  = (const TimerHao& x)
 {
     seconds=x.seconds;
-    flag=x.flag;
+    state=x.state;
     clockInit=x.clockInit;
     clockEnd=x.clockEnd;
     return *this;
 }
 
-double TimerHao::getSeconds() {return seconds;}
+double TimerHao::getSeconds() const {return seconds;}
 
-int TimerHao::getFlag() {return flag;}
+TimerState TimerHao::getState() const {return state;}
 
 void TimerHao::setSeconds(double seconds)
 {
     TimerHao::seconds = seconds;
 }
 
-void TimerHao::init()
+void TimerHao::start()
 {
-    if(flag!=0) { throw runtime_error( "ERROR!!! Cannot initial the timer before it is ended!" ); }
+    if( state != TimerState::TIMER_NOT_STARTED )
+    {
+        throw runtime_error( "ERROR!!! Cannot initial the timer before it is ended!" );
+    }
     clockInit = clock();
-    flag=1;
+    state = TimerState::TIMER_IN_ACCUMULATION;
 }
 
 
 void TimerHao::end()
 {
-    if(flag!=1) { throw runtime_error("ERROR!!! Cannot end the timer before it is initialized!");}
+    if(state != TimerState::TIMER_IN_ACCUMULATION)
+    {
+        throw runtime_error("ERROR!!! Cannot end the timer before it is initialized!");
+    }
     clockEnd = clock();
     seconds += double(clockEnd - clockInit) / CLOCKS_PER_SEC;
-    flag=0;
+    state = TimerState::TIMER_NOT_STARTED;
 }
 
 void TimerHao::clear()
 {
-    seconds=0;
-    flag = 0;
+    seconds = 0.0;
+    state = TimerState::TIMER_NOT_STARTED;
 }
 
 void TimerHao::print() const
 {
-    if(flag!=0) {cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!";}
+    if(state != TimerState::TIMER_NOT_STARTED)
+    {
+        cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!"<<endl;
+    }
     cout<<setprecision(15);
-    cout<<"Total seconds: "<<seconds<<"\n";
+    cout<<"Total seconds: "<<seconds<<endl;
 }
 
 void TimerHao::printFormat() const
 {
-    if(flag!=0) {cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!";}
+    if(state != TimerState::TIMER_NOT_STARTED)
+    {
+        cout<<"WARNING!!! It is still timing, the accumulation will not contain current timing circle!"<<endl;
+    }
     struct tm timeinfo= transferSecondToTm (seconds);
     cout<<setprecision(15);
     cout<<"Total seconds: "<<seconds<<"\n";

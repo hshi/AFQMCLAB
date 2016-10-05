@@ -10,14 +10,14 @@ using namespace std;
 TEST (Timer_hao, void_constructor)
 {
     TimerHao timer;
-    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
     EXPECT_DOUBLE_EQ( 0, timer.getSeconds() );
 }
 
 TEST (Timer_hao, double_constructor)
 {
     TimerHao timer(3.0);
-    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
     EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
@@ -25,7 +25,7 @@ TEST (Timer_hao, equal_constructor)
 {
     TimerHao timer_init(3.0);
     TimerHao timer = timer_init;
-    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
     EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
@@ -34,7 +34,7 @@ TEST (Timer_hao, equal_assignment)
     TimerHao timer_init(3.0);
     TimerHao timer;
     timer = timer_init;
-    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
     EXPECT_DOUBLE_EQ( 3.0, timer.getSeconds() );
 }
 
@@ -48,13 +48,13 @@ TEST(Timer_hao, setSeconds)
 TEST (Timer_hao, init)
 {
     TimerHao timer;
-    timer.init();
-    EXPECT_EQ( 1, timer.getFlag() );
+    timer.start();
+    EXPECT_EQ( TimerState::TIMER_IN_ACCUMULATION, timer.getState() );
     EXPECT_DOUBLE_EQ( 0.0, timer.getSeconds() );
-    EXPECT_THROW( timer.init(), runtime_error );
+    EXPECT_THROW(timer.start(), runtime_error );
     try
     {
-        timer.init();
+        timer.start();
     }
     catch(runtime_error& err)
     {
@@ -66,7 +66,7 @@ TEST (Timer_hao, init)
 TEST (Timer_hao, end)
 {
     TimerHao timer;
-    timer.init();
+    timer.start();
 
     clock_t start_time = clock();
     double sec=0.02;
@@ -75,7 +75,7 @@ TEST (Timer_hao, end)
 
     timer.end();
 
-    EXPECT_EQ( 0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
     EXPECT_DOUBLE_EQ( sec, timer.getSeconds() );
     EXPECT_THROW( timer.end(), runtime_error );
     try
@@ -94,7 +94,7 @@ TEST(Timer_hao, clear)
     timer.setSeconds(2.0);
     timer.clear();
     EXPECT_EQ( 0.0, timer.getSeconds() );
-    EXPECT_EQ( 0.0, timer.getFlag() );
+    EXPECT_EQ( TimerState::TIMER_NOT_STARTED, timer.getState() );
 }
 
 

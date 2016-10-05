@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "../include/tensor_2d_common_fun.h"
 #include "../include/pfaffian_utilities.h"
 
@@ -8,7 +9,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
- HAO_INT checkHermitian(const TensorCore<complex<double>, 2> &A)
+ void checkHermitian(const TensorCore<complex<double>, 2> &A)
  {
      HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
@@ -24,14 +25,8 @@ namespace tensor_hao
      norm/=(A.size()*1.0);
      if(error/norm>1e-12) 
      {
-         cout<<"Warning!!!!!Matrix is not Hermition! "<<error<<" "<<norm<<endl;
-         return 1;
+         throw runtime_error( "ERROR!!! Matrix is not Hermition!" );
      }
-     else
-     {
-         return 0;
-     }
-
  }
 
  /***********************/
@@ -109,7 +104,7 @@ namespace tensor_hao
  /************************************/
  /*Check skew symmetric of the matrix*/
  /************************************/
- HAO_INT checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
+ void checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
  {
      HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for checkSkewSymmetric is not square matrix!"<<endl; exit(1);}
@@ -126,14 +121,9 @@ namespace tensor_hao
 
      norm/=(A.size()*1.0);
 
-     if(error/norm>1e-12) 
+     if(error/norm>1e-12)
      {
-         cout<<"Warning!!!!!Matrix is not skew symmetric! "<<error<<" "<<norm<<endl;
-         return 1;
-     }
-     else
-     {
-         return 0;
+         throw runtime_error( "ERROR!!! Matrix is not skew symmetric!" );
      }
  }
 

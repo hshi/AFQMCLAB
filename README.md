@@ -100,8 +100,6 @@ This is a library for AFQMC.
 
   //TODO: FFTW64 bit?
 
-  //TODO: CHANGE CHECK_HERMITION TO THROW ERROR.
-
   //TODO: Check MPI + OPENMP conflict. Learn OPENMP IN C++. ADD OPENMP IN CODE
 
   //TODO: Use different OPENMP FLAG? For lapackblas, fftw, all code?
