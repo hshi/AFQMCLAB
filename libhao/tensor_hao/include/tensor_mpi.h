@@ -14,21 +14,13 @@ namespace tensor_hao
 {
 
  //WARNING!!! We need to make sure buffer has the same size before call MPIBcast!
- //WARNING!!! IF we are using int64, MPIBcast might have a problem.
 
- template<HAO_INT D>  
- void MPIBcast(TensorCore<double, D> & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD)
+ template<class T, HAO_INT D >
+ void MPIBcast(TensorCore<T, D> & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD)
  {
-     //MPI_Bcast(buffer.data(), buffer.size(), MPI_DOUBLE, root, comm);
-     HAO_INT L = buffer.size();
-     MPIBcast(L, buffer.data(), root, comm);
+     MPIBcast(buffer.size(), buffer.data(), root, comm);
  }
 
- template<HAO_INT D>
- void MPIBcast(TensorCore<std::complex<double>,D> & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD)
- {
-     MPI_Bcast(buffer.data(), buffer.size(), MPI_DOUBLE_COMPLEX, root, comm);
- }
 }
 
 #endif
