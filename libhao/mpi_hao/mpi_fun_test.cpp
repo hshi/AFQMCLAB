@@ -120,6 +120,98 @@ TEST (MPIBcast, complexdouble_pointer)
     EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, b, a);
 }
 
+TEST(MPIAllreduce, double_sum)
+{
+    double i = 2.0;
+    double size = MPISize();
+    double sum;
+    MPIAllreduce(i, sum, MPI_SUM);
+
+    EXPECT_COMPLEXDOUBLE_EQ(i*size, sum);
+}
+
+TEST(MPIAllreduce, complex_double_sum)
+{
+    complex<double> i    ={2.0, 3.0};
+    double size = MPISize();
+    complex<double> sum;
+    MPIAllreduce(i, sum, MPI_SUM);
+
+    EXPECT_COMPLEXDOUBLE_EQ(i*size, sum);
+}
+
+TEST(MPIAllreduce, double_pointer_sum)
+{
+    const int N =10;
+    double s[N] = {}; for(int i=0; i<N; i++) s[i]= i;
+    double expected[N] = {};
+    double actual[N] = {};
+
+    double size = MPISize();
+    for (int i = 0; i < N; ++i)
+    {
+        expected[i] = s[i] * size;
+    }
+
+    MPIAllreduce( N, s, actual, MPI_SUM );
+
+    EXPECT_POINTER_DOUBLE_EQ(N, expected , actual);
+}
+
+TEST(MPIAllreduce, complexdouble_pointer_sum)
+{
+    const int N =10;
+    complex<double> s[N] = {}; for(int i=0; i<N; i++) s[i]= complex<double>(i,i);
+    complex<double> expected[N] = {};
+    complex<double> actual[N] = {};
+
+    double size = MPISize();
+    for (int i = 0; i < N; ++i)
+    {
+        expected[i] = s[i] * size;
+    }
+
+    MPIAllreduce( N, s, actual, MPI_SUM );
+
+    EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, expected , actual);
+}
+
+
+TEST(MPIGather, double)
+{
+    double i=MPIRank();
+    int size = MPISize();
+
+    double actual[size];
+    MPIGather(i,actual);
+
+    double expected[size];
+    for (int j = 0; j < size ; ++j)
+    {
+        expected[j] = j;
+    }
+
+    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(size, expected , actual);
+}
+
+
+TEST(MPIGather, complex_double)
+{
+    complex<double> i( MPIRank()*1.0, MPIRank()*2.0 );
+    int size = MPISize();
+
+    complex<double> actual[size];
+    MPIGather(i,actual);
+
+    complex<double> expected[size];
+    for (int j = 0; j < size ; ++j)
+    {
+        expected[j] = complex<double>( j, j*2.0 );
+    }
+
+    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(size, expected , actual);
+}
+
 TEST(MPISum, int)
 {
     int i    = 2;
@@ -201,7 +293,6 @@ TEST(MPISum, double_pointer)
     if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(N, expected , actual);
 }
 
-
 TEST(MPISum, complexdouble_pointer)
 {
     const int N =10;
@@ -220,41 +311,6 @@ TEST(MPISum, complexdouble_pointer)
     if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, expected , actual);
 }
 
-
-TEST(MPIGather, double)
-{
-    double i=MPIRank();
-    int size = MPISize();
-
-    double actual[size];
-    MPIGather(i,actual);
-
-    double expected[size];
-    for (int j = 0; j < size ; ++j)
-    {
-        expected[j] = j;
-    }
-
-    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(size, expected , actual);
-}
-
-
-TEST(MPIGather, complex_double)
-{
-    complex<double> i( MPIRank()*1.0, MPIRank()*2.0 );
-    int size = MPISize();
-
-    complex<double> actual[size];
-    MPIGather(i,actual);
-
-    complex<double> expected[size];
-    for (int j = 0; j < size ; ++j)
-    {
-        expected[j] = complex<double>( j, j*2.0 );
-    }
-
-    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(size, expected , actual);
-}
 #else
 
 TEST(MPIFun, serial)

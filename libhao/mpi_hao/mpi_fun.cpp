@@ -5,21 +5,45 @@
 #ifdef MPI_HAO
 using namespace std;
 
-void MPIInit(int& argc,char** & argv) {MPI_Init(&argc,&argv);}
+void MPIInit(int& argc,char** & argv)
+{
+    MPI_Init(&argc,&argv);
+}
+
 void MPIInitFunnel(int& argc,char** & argv) 
 {
-    int provided; MPI_Init_thread(&argc,&argv,MPI_THREAD_FUNNELED,&provided);
+    int provided;
+    MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
     if(provided!=MPI_THREAD_FUNNELED)
     {
-        if(MPIRank()==0) std::cout<<"WARNING!!!!The Marchine does not supply MPI_THREAD_FUNNELED, only supply to: "
-                                  <<provided<<"-th level!"<<std::endl;
+        if(MPIRank()==0) cout<<"WARNING!!!!The Marchine does not supply MPI_THREAD_FUNNELED, only supply to: "
+                                  <<provided<<"-th level!"<<endl;
     }
 }
-int MPISize(const MPI_Comm& comm) {int size;MPI_Comm_size(comm, &size);return size;}
-int MPIRank(const MPI_Comm& comm) {int rank;MPI_Comm_rank(comm, &rank);return rank;}
-void MPIBarrier(const MPI_Comm& comm) {MPI_Barrier(comm);}
-void MPIFinalize() {MPI_Finalize();}
 
+int MPISize(const MPI_Comm& comm)
+{
+    int size;
+    MPI_Comm_size(comm, &size);
+    return size;
+}
+
+int MPIRank(const MPI_Comm& comm)
+{
+    int rank;
+    MPI_Comm_rank(comm, &rank);
+    return rank;
+}
+
+void MPIBarrier(const MPI_Comm& comm)
+{
+    MPI_Barrier(comm);
+}
+
+void MPIFinalize()
+{
+    MPI_Finalize();
+}
 
 void MPIBcast(int& buffer, int root, const MPI_Comm& comm )
 {
@@ -62,46 +86,96 @@ void MPIBcast(complex<double>& buffer, int root, const MPI_Comm& comm )
 }
 
 
-void MPIBcast(HAO_INT N, int* buffer, int root, const MPI_Comm& comm )
+void MPIBcast(size_t count, int* buffer, int root, const MPI_Comm& comm )
 {
-    HAO_INT chunkSize = INT_MAX;
-    HAO_INT chunkNumber = (N-1)/chunkSize;
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
     int * bufferPerChunk = buffer;
-    HAO_INT currentChunkSize;
-    for(HAO_INT i = 0; i <= chunkNumber; ++i)
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
     {
-        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
         MPI_Bcast(bufferPerChunk, currentChunkSize, MPI_INT, root, comm);
         bufferPerChunk += currentChunkSize;
     }
 }
 
-void MPIBcast(HAO_INT N, double *buffer, int root, const MPI_Comm &comm)
+void MPIBcast(size_t count, double *buffer, int root, const MPI_Comm &comm)
 {
-    HAO_INT chunkSize = INT_MAX;
-    HAO_INT chunkNumber = (N-1)/chunkSize;
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
     double * bufferPerChunk = buffer;
-    HAO_INT currentChunkSize;
-    for(HAO_INT i = 0; i <= chunkNumber; ++i)
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
     {
-        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
         MPI_Bcast(bufferPerChunk, currentChunkSize, MPI_DOUBLE, root, comm);
         bufferPerChunk += currentChunkSize;
     }
 }
 
-void MPIBcast(HAO_INT N, complex<double>* buffer, int root, const MPI_Comm& comm )
+void MPIBcast(size_t count, complex<double>* buffer, int root, const MPI_Comm& comm )
 {
-    HAO_INT chunkSize = INT_MAX;
-    HAO_INT chunkNumber = (N-1)/chunkSize;
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
     complex<double> * bufferPerChunk = buffer;
-    HAO_INT currentChunkSize;
-    for(HAO_INT i = 0; i <= chunkNumber; ++i)
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
     {
-        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
         MPI_Bcast(bufferPerChunk, currentChunkSize, MPI_DOUBLE_COMPLEX, root, comm);
         bufferPerChunk += currentChunkSize;
     }
+}
+
+void MPIAllreduce(const double &sendbuf, double &recvbuf, MPI_Op op, const MPI_Comm& comm)
+{
+    MPI_Allreduce(&sendbuf, &recvbuf, 1, MPI_DOUBLE, op, comm);
+}
+
+void MPIAllreduce(const complex<double> &sendbuf, complex<double> &recvbuf, MPI_Op op, const MPI_Comm& comm)
+{
+    MPI_Allreduce(&sendbuf, &recvbuf, 1, MPI_DOUBLE_COMPLEX, op, comm);
+}
+
+void MPIAllreduce(size_t count, const double *sendbuf, double *recvbuf, MPI_Op op, const MPI_Comm& comm)
+{
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
+    const double * sendbufPerChunk = sendbuf;
+    double * recvbufPerChunk = recvbuf;
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
+    {
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
+        MPI_Allreduce(sendbufPerChunk, recvbufPerChunk, currentChunkSize, MPI_DOUBLE, op, comm);
+        sendbufPerChunk += currentChunkSize; recvbufPerChunk += currentChunkSize;
+    }
+}
+
+void MPIAllreduce(size_t count, const complex<double> *sendbuf, complex<double> *recvbuf, MPI_Op op, const MPI_Comm& comm)
+{
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
+    const complex<double> * sendbufPerChunk = sendbuf;
+    complex<double> * recvbufPerChunk = recvbuf;
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
+    {
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
+        MPI_Allreduce(sendbufPerChunk, recvbufPerChunk, currentChunkSize, MPI_DOUBLE_COMPLEX, op, comm);
+        sendbufPerChunk += currentChunkSize; recvbufPerChunk += currentChunkSize;
+    }
+}
+
+void MPIGather(const double& sendbuf, double* recvbuf, int root, const MPI_Comm& comm)
+{
+    MPI_Gather(&sendbuf,1,MPI_DOUBLE,recvbuf,1,MPI_DOUBLE,root,comm);
+}
+
+void MPIGather(const complex<double>& sendbuf, complex<double>* recvbuf, int root, const MPI_Comm& comm)
+{
+    MPI_Gather(&sendbuf,1,MPI_DOUBLE_COMPLEX,recvbuf,1,MPI_DOUBLE_COMPLEX,root,comm);
 }
 
 
@@ -152,49 +226,37 @@ complex<double> MPISum(const complex<double>& sendbuf, int root,  const MPI_Comm
     complex<double> recvbuf={0,0};
     MPI_Reduce(&sendbuf, &recvbuf, 1 , MPI_DOUBLE_COMPLEX, MPI_SUM, root, comm);
     return recvbuf;
-} 
+}
 
-void MPISum(HAO_INT N, const double* sendbuf, double* recvbuf, int root, const MPI_Comm& comm)
+void MPISum(size_t count, const double* sendbuf, double* recvbuf, int root, const MPI_Comm& comm)
 {
-    HAO_INT chunkSize = INT_MAX;
-    HAO_INT chunkNumber = (N-1)/chunkSize;
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
     const double * sendbufPerChunk = sendbuf;
     double * recvbufPerChunk = recvbuf;
-    HAO_INT currentChunkSize;
-    for(HAO_INT i = 0; i <= chunkNumber; ++i)
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
     {
-        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
         MPI_Reduce(sendbufPerChunk, recvbufPerChunk, currentChunkSize , MPI_DOUBLE, MPI_SUM, root, comm);
         sendbufPerChunk += currentChunkSize; recvbufPerChunk += currentChunkSize;
     }
 }
 
-void MPISum(HAO_INT N, const complex<double>* sendbuf, complex<double>*recvbuf, int root, const MPI_Comm& comm)
+void MPISum(size_t count, const complex<double>* sendbuf, complex<double>*recvbuf, int root, const MPI_Comm& comm)
 {
-    HAO_INT chunkSize = INT_MAX;
-    HAO_INT chunkNumber = (N-1)/chunkSize;
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
     const complex<double> * sendbufPerChunk = sendbuf;
     complex<double> * recvbufPerChunk = recvbuf;
-    HAO_INT currentChunkSize;
-    for(HAO_INT i = 0; i <= chunkNumber; ++i)
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
     {
-        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
         MPI_Reduce(sendbufPerChunk, recvbufPerChunk, currentChunkSize , MPI_DOUBLE_COMPLEX, MPI_SUM, root, comm);
         sendbufPerChunk += currentChunkSize; recvbufPerChunk += currentChunkSize;
     }
 }
-
-
-void MPIGather(const double& sendbuf, double* recvbuf, int root, const MPI_Comm& comm)
-{
-    MPI_Gather(&sendbuf,1,MPI_DOUBLE,recvbuf,1,MPI_DOUBLE,root,comm);
-}
-
-void MPIGather(const complex<double>& sendbuf, complex<double>* recvbuf, int root, const MPI_Comm& comm)
-{
-    MPI_Gather(&sendbuf,1,MPI_DOUBLE_COMPLEX,recvbuf,1,MPI_DOUBLE_COMPLEX,root,comm);
-}
-
 #else
 void MPIInit(int& argc,char** & argv){return;}
 void MPIInitFunnel(int& argc,char** & argv) {return;}

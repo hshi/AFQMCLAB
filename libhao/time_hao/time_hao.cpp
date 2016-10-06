@@ -49,7 +49,7 @@ void TimerHao::end()
 {
     if(state != TimerState::TIMER_IN_ACCUMULATION)
     {
-        throw runtime_error("ERROR!!! Cannot end the timer before it is initialized!");
+        throw runtime_error("ERROR!!! Cannot end the timer before it is started!");
     }
     clockEnd = clock();
     seconds += double(clockEnd - clockInit) / CLOCKS_PER_SEC;

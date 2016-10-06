@@ -90,8 +90,6 @@ This is a library for AFQMC.
 
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
-  //TODO: Update TensorMPI to use MPIHao
-
   //TODO: Update testHao to use int64
 
   //TODO: Test magma in Hurricane.

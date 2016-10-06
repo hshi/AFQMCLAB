@@ -1,3 +1,4 @@
+#include <climits>
 #include "../include/thread_error_analysis.h"
 
 using namespace std;
@@ -43,17 +44,28 @@ tuple< complex<double>, complex<double> > calculateMeanErrorBetweenThreads(compl
 }
 
 
-vector< complex<double> > calculateMeanBetweenThreads(int N, const complex<double> *valueEachThread)
+vector< complex<double> > calculateMeanBetweenThreads(size_t N, const complex<double> *valueEachThread)
 {
 #ifdef MPI_HAO
     int size = MPISize();
     vector< complex<double> > mean(N);
-    MPI_Allreduce(valueEachThread, mean.data(), N, MPI_DOUBLE_COMPLEX, MPI_SUM, MPI_COMM_WORLD);
-    for(int i=0; i<N; i++) mean[i]/=(size*1.0);
+
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (N-1)/chunkSize;
+    const complex<double> * valueEachThreadPerChunk = valueEachThread;
+    complex<double> * meanPerChunk = mean.data();
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
+    {
+        currentChunkSize = (i == chunkNumber) ? N - chunkSize * chunkNumber : chunkSize;
+        MPI_Allreduce(valueEachThreadPerChunk, meanPerChunk, currentChunkSize, MPI_DOUBLE_COMPLEX, MPI_SUM, MPI_COMM_WORLD);
+        valueEachThreadPerChunk += currentChunkSize; meanPerChunk += currentChunkSize;
+    }
+    for(size_t i=0; i<N; i++) mean[i]/=(size*1.0);
     return mean;
 #else
     vector< complex<double> > mean(N);
-    for(int i=0; i<N; i++)
+    for(size_t i=0; i<N; i++)
     {
         mean[i]=valueEachThread[i];
     }
@@ -61,7 +73,7 @@ vector< complex<double> > calculateMeanBetweenThreads(int N, const complex<doubl
 #endif
 }
 
-vector< complex<double> > calculateVarianceBetweenThreads(int N, const complex<double> *valueEachThread,
+vector< complex<double> > calculateVarianceBetweenThreads(size_t N, const complex<double> *valueEachThread,
                                                           const complex<double> * mean)
 {
 #ifdef MPI_HAO
@@ -70,22 +82,22 @@ vector< complex<double> > calculateVarianceBetweenThreads(int N, const complex<d
     int size = MPISize();
 
     vector< complex<double> > varEachThread(N);
-    for(int i=0; i<N; i++) varEachThread[i]=norm( valueEachThread[i] - mean[i] );
+    for(size_t i=0; i<N; i++) varEachThread[i]=norm( valueEachThread[i] - mean[i] );
     MPI_Reduce(varEachThread.data(), variance.data(), N , MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI_COMM_WORLD);
     if( MPIRank()==0 )
     {
-        for(int i=0; i<N; i++) variance[i] /= ( size*1.0 );
+        for(size_t i=0; i<N; i++) variance[i] /= ( size*1.0 );
     }
     return variance;
 #else
     vector< complex<double> > variance(N);
-    for(int i=0; i<N; i++) variance[i]=0.0;
+    for(size_t i=0; i<N; i++) variance[i]=0.0;
     return variance;
 #endif
 }
 
 
-vector< complex<double> > calculateErrorBetweenThreads(int N, const complex<double> *valueEachThread,
+vector< complex<double> > calculateErrorBetweenThreads(size_t N, const complex<double> *valueEachThread,
                                                        const complex<double> * mean)
 {
     vector< complex<double> > err = calculateVarianceBetweenThreads(N, valueEachThread, mean);
@@ -96,14 +108,14 @@ vector< complex<double> > calculateErrorBetweenThreads(int N, const complex<doub
     {
         if(rank==0)
         {
-            for(int i=0; i<N; i++) err[i]=sqrt( err[i]/(size-1.0) );
+            for(size_t i=0; i<N; i++) err[i]=sqrt( err[i]/(size-1.0) );
         }
     }
     return err;
 }
 
 tuple<  vector< complex<double> >, vector< complex<double> >  >
-calculateMeanErrorBetweenThreads(int N, const complex<double> *valueEachThread)
+calculateMeanErrorBetweenThreads(size_t N, const complex<double> *valueEachThread)
 {
     vector< complex<double > > mean = calculateMeanBetweenThreads( N, valueEachThread );
     vector< complex<double > > err = calculateErrorBetweenThreads( N, valueEachThread, mean.data() );

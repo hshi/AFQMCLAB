@@ -17,13 +17,13 @@ std::complex<double> calculateErrorBetweenThreads(std::complex<double> valueEach
 std::tuple< std::complex<double>, std::complex<double> > calculateMeanErrorBetweenThreads(std::complex<double> valueEachThread);
 
 
-std::vector< std::complex<double> > calculateMeanBetweenThreads(int N, const std::complex<double> *valueEachThread);
-std::vector< std::complex<double> > calculateVarianceBetweenThreads(int N, const std::complex<double> *valueEachThread,
+std::vector< std::complex<double> > calculateMeanBetweenThreads(size_t N, const std::complex<double> *valueEachThread);
+std::vector< std::complex<double> > calculateVarianceBetweenThreads(size_t N, const std::complex<double> *valueEachThread,
                                                                     const std::complex<double> * mean);
-std::vector< std::complex<double> > calculateErrorBetweenThreads(int N, const std::complex<double> *valueEachThread,
+std::vector< std::complex<double> > calculateErrorBetweenThreads(size_t N, const std::complex<double> *valueEachThread,
                                                                  const std::complex<double> * mean);
 std::tuple<  std::vector< std::complex<double> >, std::vector< std::complex<double> >  >
-calculateMeanErrorBetweenThreads(int N, const std::complex<double> *valueEachThread);
+calculateMeanErrorBetweenThreads(size_t N, const std::complex<double> *valueEachThread);
 
 
 std::vector< std::complex<double> > calculateMeanBetweenThreads(const std::vector<std::complex<double> > &valueEachThread);

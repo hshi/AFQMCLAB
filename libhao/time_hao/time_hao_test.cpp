@@ -84,7 +84,7 @@ TEST (Timer_hao, end)
     }
     catch(runtime_error& err)
     {
-        EXPECT_EQ( "ERROR!!! Cannot end the timer before it is initialized!", string(err.what()) );
+        EXPECT_EQ( "ERROR!!! Cannot end the timer before it is started!", string(err.what()) );
     }
 }
 
