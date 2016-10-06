@@ -13,7 +13,6 @@ TEST(Tensor_mpi, MPIBcast_double)
     if( MPIRank() == 0 ) A = A_exact;
 
     MPIBcast(A);
-
     EXPECT_FALSE( diff(A,A_exact,1e-12) );
 }
 

@@ -90,13 +90,15 @@ This is a library for AFQMC.
 
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
+  //TODO: Update TensorMPI to use MPIHao
+
+  //TODO: Update testHao to use int64
+
   //TODO: Test magma in Hurricane.
 
   //TODO: MAGMA int64? Update magma bin==> to fully empty!
 
-  //TODO: Change time library, change flag to some type defined value.
-
-  //TODO: MPISUM/MPIBcast only support int32? After question in stack?
+  //TODO: MPISUM/MPIBcast only support int32? Ask question in stack?
 
   //TODO: FFTW64 bit?
 
@@ -113,7 +115,5 @@ This is a library for AFQMC.
   //TODO: How to run MPI and OPENMP Hybird job in Hurricane and storm ==> Ask Eric, and test it
 
   //TODO: USE_INT64 for LAPACK AND BLAS?
-
-  //TODO: Split screen in terminal
 
   //TODO: Add a resize function in Tensor_Hao, and Wf function in Lanczos.

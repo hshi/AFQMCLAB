@@ -80,41 +80,44 @@ TEST (MPIBcast, complex_double)
 
 TEST (MPIBcast, int_pointer)
 {
-    int a[3] = {};
-    int b[3] = {1, 2, 3};
+    const int N = 16;
+    int a[N] = {};
+    int b[N] = {};  for(int i=0; i<N; i++) b[i]=i;
     if(MPIRank()==0)
     {
-        for(int i=0; i<3; i++) a[i]=b[i];
+        for(int i=0; i<N; i++) a[i]=b[i];
     }
-    MPIBcast(3,a);
+    MPIBcast(N,a);
 
-    EXPECT_POINTER_EQ(3, b, a);
+    EXPECT_POINTER_EQ(N, b, a);
 }
 
 TEST (MPIBcast, double_pointer)
 {
-    double a[3] = {};
-    double b[3] = {1.2, 3.6, 9.8};
+    const int N = 11;
+    double a[N] = {};
+    double b[N] = {};  for(int i=0; i<N; i++) b[i]=i*1.2;
     if(MPIRank()==0)
     {
-        for(int i=0; i<3; i++) a[i]=b[i];
+        for(int i=0; i<N; i++) a[i]=b[i];
     }
-    MPIBcast(3,a);
+    MPIBcast(N,a);
 
-    EXPECT_POINTER_DOUBLE_EQ(3, b, a);
+    EXPECT_POINTER_DOUBLE_EQ(N, b, a);
 }
 
 TEST (MPIBcast, complexdouble_pointer)
 {
-    complex<double> a[3] = {};
-    complex<double> b[3] = { {1.2, 2.3}, {3.6, 7.8}, {9.8, 12.5} };
+    const int N = 7;
+    complex<double> a[N] = {};
+    complex<double> b[N] = {};  for(int i=0; i<N; i++) b[i] = complex<double>(i,i);
     if(MPIRank()==0)
     {
-        for(int i=0; i<3; i++) a[i]=b[i];
+        for(int i=0; i<N; i++) a[i]=b[i];
     }
-    MPIBcast(3,a);
+    MPIBcast(N,a);
 
-    EXPECT_POINTER_COMPLEXDOUBLE_EQ(3, b, a);
+    EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, b, a);
 }
 
 TEST(MPISum, int)
@@ -182,37 +185,39 @@ TEST(MPISum, complex_double)
 
 TEST(MPISum, double_pointer)
 {
-    double s[3] = { 2.22, 3.860, 5.239 };
-    double expected[3] = {};
-    double actual[3] = {};
+    const int N =11;
+    double s[N] = {}; for(int i=0; i<N; i++) s[i]=i*1.2;
+    double expected[N] = {};
+    double actual[N] = {};
 
     double size = MPISize();
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < N; ++i)
     {
         expected[i] = s[i] * size;
     }
 
-    MPISum( 3, s, actual );
+    MPISum( N, s, actual );
 
-    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(3, expected , actual);
+    if( MPIRank()==0 ) EXPECT_POINTER_DOUBLE_EQ(N, expected , actual);
 }
 
 
 TEST(MPISum, complexdouble_pointer)
 {
-    complex<double> s[3] = { {2.2, 3.0}, {3, 8.9}, {5.2, 7.111} };
-    complex<double> expected[3] = {};
-    complex<double> actual[3] = {};
+    const int N =10;
+    complex<double> s[N] = {}; for(int i=0; i<N; i++) s[i]= complex<double>(i,i);
+    complex<double> expected[N] = {};
+    complex<double> actual[N] = {};
 
     double size = MPISize();
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < N; ++i)
     {
         expected[i] = s[i] * size;
     }
 
-    MPISum( 3, s, actual );
+    MPISum( N, s, actual );
 
-    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(3, expected , actual);
+    if( MPIRank()==0 ) EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, expected , actual);
 }
 
 

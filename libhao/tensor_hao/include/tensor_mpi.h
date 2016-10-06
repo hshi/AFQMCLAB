@@ -19,7 +19,9 @@ namespace tensor_hao
  template<HAO_INT D>  
  void MPIBcast(TensorCore<double, D> & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD)
  {
-     MPI_Bcast(buffer.data(), buffer.size(), MPI_DOUBLE, root, comm);
+     //MPI_Bcast(buffer.data(), buffer.size(), MPI_DOUBLE, root, comm);
+     HAO_INT L = buffer.size();
+     MPIBcast(L, buffer.data(), root, comm);
  }
 
  template<HAO_INT D>

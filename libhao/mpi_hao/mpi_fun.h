@@ -5,6 +5,7 @@
 #ifdef MPI_HAO
 #include <mpi.h>
 #include <complex>
+#include "../utilities/Hao_types.h"
 
 void MPIInit(int& argc,char** & argv);
 void MPIInitFunnel(int& argc,char** & argv);
@@ -23,9 +24,9 @@ void MPIBcast(std::complex<float>   & buffer, int root=0,  const MPI_Comm& comm=
 void MPIBcast(std::complex<double>  & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
 
-void MPIBcast(int N,                  int* buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
-void MPIBcast(int N,               double* buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
-void MPIBcast(int N, std::complex<double>* buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+void MPIBcast(HAO_INT N, int *buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+void MPIBcast(HAO_INT N, double *buffer, int root = 0, const MPI_Comm &comm = MPI_COMM_WORLD);
+void MPIBcast(HAO_INT N, std::complex<double> *buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
 int                  MPISum(const int                  & sendbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
 long                 MPISum(const long                 & sendbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
@@ -35,8 +36,8 @@ double               MPISum(const double               & sendbuf, int root=0, co
 std::complex<float>  MPISum(const std::complex<float>  & sendbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
 std::complex<double> MPISum(const std::complex<double> & sendbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
 
-void MPISum(int N, const double* sendbuf, double* recvbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
-void MPISum(int N, const std::complex<double>* sendbuf, std::complex<double>* recvbuf, 
+void MPISum(HAO_INT N, const double* sendbuf, double* recvbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
+void MPISum(HAO_INT N, const std::complex<double>* sendbuf, std::complex<double>* recvbuf, 
                                       int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
 
 void MPIGather(const double& sendbuf, double* recvbuf, int root=0, const MPI_Comm& comm=MPI_COMM_WORLD);
@@ -49,9 +50,9 @@ int MPIRank();
 void MPIBarrier();
 void MPIFinalize();
 template<class T> void MPIBcast(const T & buffer) {}
-template<class T> void MPIBcast(int N, const T* buffer) {}
+template<class T> void MPIBcast(HAO_INT N, const T* buffer) {}
 template<class T> T MPISum(const T & sendbuf) {return sendbuf;}
-template<class T> void MPISum(int N, const T* sendbuf, T* recvbuf) { std::copy(sendbuf, sendbuf+N, recvbuf); }
+template<class T> void MPISum(HAO_INT N, const T* sendbuf, T* recvbuf) { std::copy(sendbuf, sendbuf+N, recvbuf); }
 #endif  //For MPI and Serial 
 
 #endif
