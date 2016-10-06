@@ -8,9 +8,9 @@
 class FFTServer
 {
  private:
-    int  dimen;
+    int dimen;
     std::vector<int> n;
-    int  size;
+    int size;
     std::complex<double>* inforw;
     std::complex<double>* outforw;
     std::complex<double>* inback;
@@ -20,7 +20,8 @@ class FFTServer
 
  public:
     FFTServer();
-    FFTServer(int dimenInput, const std::vector<int>& nInput, char format); //'C' Column-major: fortran style; 'R' Row-major: c
+    FFTServer(int dimenInput, const std::vector<int>& nInput, char format); //'C' Column-major: fortran style;
+                                                                                  //'R' Row-major: c style
     FFTServer(const FFTServer& x);
     ~FFTServer();
    
@@ -30,7 +31,7 @@ class FFTServer
     const std::complex<double> * fourier_back(const std::complex<double> *inarray);
 
     int getDimen() const;
-    const std::vector<int>& getN() const;
+    const std::vector<int >& getN() const;
     int getSize() const;
 
  private:

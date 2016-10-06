@@ -77,7 +77,7 @@ void FFTServer::setDimenNSizeFromInput(int dimenInput, const vector<int> &nInput
     dimen =dimenInput;
 
     if(format=='C')      n = vector<int>(nInput.rbegin(), nInput.rend()); //Column-major: fortran style
-    else if(format=='R') n = nInput;                                      //Row-major: c style
+    else if(format=='R') n = nInput;                                         //Row-major: c style
     else {cout<<"Do not know the format!!!! "<<format<<endl; exit(1); }
 
     size =1;
