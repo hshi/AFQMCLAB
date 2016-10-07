@@ -220,19 +220,19 @@ namespace tensor_hao
      {
          if(end > L) end = L;
          T sum_all = 0;
-         for(int64_t i=begin; i<end; i+=step) sum_all += p[i];
+         for(size_t i=begin; i<end; i+=step) sum_all += p[i];
          return sum_all;
      }
 
      T mean(size_t begin = 0, size_t end = std::numeric_limits<std::size_t>::max(), size_t step = 1) const
      {
          if(end > L) end = L;
-         int64_t number_of_points;
+         size_t number_of_points;
          if( ( (end-begin)%step )==0  ) number_of_points = (end-begin)/step;
          else   number_of_points = (end-begin)/step+1;
 
          T mean_all = 0;
-         for(int64_t i=begin; i<end; i+=step) mean_all += p[i];
+         for(size_t i=begin; i<end; i+=step) mean_all += p[i];
          return mean_all / ( number_of_points * 1.0 );
      }
 
