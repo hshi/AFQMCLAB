@@ -14,7 +14,7 @@ using namespace tensor_hao;
 class realMaterialHamiltionianTest: public ::testing::Test
 {
  public:
-    const int L=5; const int LD = 2*L*L;
+    const size_t L=5; const size_t LD = 2*L*L;
     TensorHao<complex<double>, 3> KTensor;
     TensorHao<complex<double>, 4> PTensor;
     TensorHao<complex<double>, 1> DEigen;

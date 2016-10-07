@@ -13,12 +13,12 @@ TEST(cluster, voidConstructor)
 
 TEST(cluster, LConstructor)
 {
-    int L=9;
+    size_t L=9;
     Cluster cluster(L);
     EXPECT_EQ(L, cluster.getL());
 }
 
-void generateInputForCluster(const string& filename, int L)
+void generateInputForCluster(const string& filename, size_t L)
 {
     int rank = MPIRank();
     if(rank==0)
@@ -42,7 +42,7 @@ TEST(cluster, fileConstructor)
 {
 
     string filename="latt_param.dat";
-    int L=20;
+    size_t L=20;
 
     generateInputForCluster(filename, L);
 
@@ -55,7 +55,7 @@ TEST(cluster, fileConstructor)
 
 TEST(cluster, equalConstructor)
 {
-    int L=9;
+    size_t L=9;
     Cluster clusterBase(L);
     Cluster cluster(clusterBase);
     EXPECT_EQ(L, cluster.getL());
@@ -63,14 +63,14 @@ TEST(cluster, equalConstructor)
 
 TEST(cluster, moveConstructor)
 {
-    int L=9;
+    size_t L=9;
     Cluster cluster = Cluster(L);
     EXPECT_EQ(L, cluster.getL());
 }
 
 TEST(cluster, equalAssignment)
 {
-    int L=9;
+    size_t L=9;
     Cluster clusterBase(L);
     Cluster cluster; cluster = clusterBase;
     EXPECT_EQ(L, cluster.getL());
@@ -78,7 +78,7 @@ TEST(cluster, equalAssignment)
 
 TEST(cluster, moveAssignment)
 {
-    int L=9;
+    size_t L=9;
     Cluster clusterBase(L);
     Cluster cluster; cluster = move( clusterBase );
     EXPECT_EQ(L, cluster.getL());

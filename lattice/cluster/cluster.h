@@ -10,11 +10,11 @@
 class Cluster
 {
  private:
-    int L;
+    size_t L;
 
  public:
     Cluster();
-    Cluster(int L);
+    Cluster(size_t L);
     Cluster(const std::string& filename);
     Cluster(const Cluster &x);
     Cluster(Cluster &&x);
@@ -23,7 +23,7 @@ class Cluster
     Cluster& operator  = (const Cluster& x);
     Cluster& operator  = (Cluster&& x);
 
-    int getL() const;
+    size_t getL() const;
 };
 
 #endif //AFQMCLIB_CLUSTER_H

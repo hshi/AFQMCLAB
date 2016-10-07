@@ -50,12 +50,12 @@ RealMaterialHamiltonian& RealMaterialHamiltonian::operator=(RealMaterialHamilton
     return *this;
 }
 
-int RealMaterialHamiltonian::getBasisSize() const
+size_t RealMaterialHamiltonian::getBasisSize() const
 {
     return basisSize;
 }
 
-int RealMaterialHamiltonian::getInteractionSize() const
+size_t RealMaterialHamiltonian::getInteractionSize() const
 {
     return interactionSize;
 }

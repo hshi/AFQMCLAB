@@ -10,7 +10,7 @@ using namespace std;
 
 Cluster::Cluster() : L(0) {}
 
-Cluster::Cluster(int L) : L(L) {}
+Cluster::Cluster(size_t L) : L(L) {}
 
 Cluster::Cluster(const string& filename)
 {
@@ -45,7 +45,7 @@ Cluster& Cluster::operator  = (Cluster&& x)
     return *this;
 }
 
-int Cluster::getL() const
+size_t Cluster::getL() const
 {
     return L;
 }

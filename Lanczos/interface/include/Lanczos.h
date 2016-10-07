@@ -5,9 +5,10 @@
 #ifndef AFQMCLIB_LANCZOS_H
 #define AFQMCLIB_LANCZOS_H
 
+#include <cstddef>
 class Lanczos
 {
-    int lanczosMatrixSize;
+    size_t lanczosMatrixSize;
  public:
 };
 

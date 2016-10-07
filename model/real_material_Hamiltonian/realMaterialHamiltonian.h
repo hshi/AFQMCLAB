@@ -14,7 +14,7 @@
 //P_{\gamma} = Sum_{i, j, \sigma} p_{i, j, \sigma \gamma} C_{i\sigma}^{\dagger} C_{j\sigma}
 class RealMaterialHamiltonian
 {
-    int basisSize, interactionSize;
+    size_t basisSize, interactionSize;
     tensor_hao::TensorHao< std::complex<double>, 3 > KTensor;
     tensor_hao::TensorHao< std::complex<double>, 4 > PTensor;
     tensor_hao::TensorHao< std::complex<double>, 1 > DEigen;
@@ -28,8 +28,8 @@ class RealMaterialHamiltonian
     RealMaterialHamiltonian& operator=(const RealMaterialHamiltonian& x);
     RealMaterialHamiltonian& operator=(RealMaterialHamiltonian&& x);
 
-    int getBasisSize() const;
-    int getInteractionSize() const;
+    size_t getBasisSize() const;
+    size_t getInteractionSize() const;
     const tensor_hao::TensorHao<std::complex<double>, 3> &getKTensor() const;
     const tensor_hao::TensorHao<std::complex<double>, 4> &getPTensor() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getDEigen() const;

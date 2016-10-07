@@ -11,7 +11,7 @@ LanczosBasisWf::LanczosBasisWf()
 {
 }
 
-LanczosBasisWf::LanczosBasisWf(HAO_INT L)
+LanczosBasisWf::LanczosBasisWf(size_t L)
 {
     wf = TensorHao<complex<double>, 1>(L);
 }
