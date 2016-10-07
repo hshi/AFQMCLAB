@@ -6,7 +6,6 @@ set(SOURCE_HEADERS
         include/tensor_element_wise.h
         include/tensor_hao.h
         include/tensor_mpi.h
-        ../utilities/blas_lapack_wrap.h
         include/tensor_1d_bl_cpu.h
         include/tensor_2d_bl_cpu.h
         include/tensor_2d_common_fun.h

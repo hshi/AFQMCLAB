@@ -186,7 +186,7 @@ TEST ( Tensor_2d_bl_cpu, solve_lineq )
 
 TEST ( Tensor_2d_bl_cpu, QRMatrix )
 {
-    const HAO_INT L0=3; const HAO_INT L1=2;
+    const size_t L0=3; const size_t L1=2;
     TensorHao<complex<double>,2> A(L0,L1), B(L0,L1), A_exact(L0,L1);
     TensorHao<double, 1> det_list(L1);
 
@@ -216,13 +216,13 @@ TEST ( Tensor_2d_bl_cpu, QRMatrix )
 
     EXPECT_DOUBLE_EQ ( det_exact, det_list_M );
 
-    det_list_M=1.0; for(HAO_INT i=0; i<L1; i++) det_list_M*=det_list(i);
+    det_list_M=1.0; for(size_t i=0; i<L1; i++) det_list_M*=det_list(i);
     EXPECT_DOUBLE_EQ ( det_list_M, det );
 }
 
 TEST ( Tensor_2d_bl_cpu, SVDMatrix )
 {
-    const HAO_INT L=3;
+    const size_t L=3;
     TensorHao<complex<double>,2> U_before(L,L), U(L,L), V(L,L);
     TensorHao<double,1> D(L), D_exact(L);
 
@@ -238,7 +238,7 @@ TEST ( Tensor_2d_bl_cpu, SVDMatrix )
 
     TensorHao<complex<double>,1> D_cd(L);
     TensorHao<complex<double>,2> U_back(L,L);
-    for(HAO_INT i=0; i<L; i++) D_cd(i)=D(i);
+    for(size_t i=0; i<L; i++) D_cd(i)=D(i);
 
     gmm_cpu(U, dMultiMatrix(D_cd, V), U_back);
 

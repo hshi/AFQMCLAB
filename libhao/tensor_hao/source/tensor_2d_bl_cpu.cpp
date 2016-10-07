@@ -1,5 +1,5 @@
 #include "../include/tensor_2d_bl_cpu.h"
-#include "../../utilities/blas_lapack_wrap.h"
+#include "../../lapackblas_hao/blas_lapack_wrap.h"
 
 using namespace std;
 

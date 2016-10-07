@@ -9,7 +9,7 @@ TEST(Tensor_hao_ref, void_construction)
 {
     TensorHaoRef<double,2>  tensor_ref;
 
-    for (HAO_INT i = 0; i < 2; ++i)
+    for (size_t i = 0; i < 2; ++i)
     {
         EXPECT_EQ( 0, tensor_ref.rank(i) );
         EXPECT_EQ( 0, tensor_ref.rankStep(i) );
@@ -20,15 +20,15 @@ TEST(Tensor_hao_ref, void_construction)
 
 TEST(Tensor_hao_ref, variadic_construction)
 {
-    const HAO_INT D=3;
+    const size_t D=3;
     TensorHaoRef<double, D>  tensor_ref(3,4,7);
-    HAO_INT size=84;
-    HAO_INT n[D]={3,4,7};
-    HAO_INT n_step[D]={1,3,12};
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
 
     EXPECT_FALSE( tensor_ref.data() );
     EXPECT_EQ( size, tensor_ref.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_ref.rank(i) );
         EXPECT_EQ( n_step[i], tensor_ref.rankStep(i) );
@@ -37,16 +37,16 @@ TEST(Tensor_hao_ref, variadic_construction)
 
 TEST(Tensor_hao_ref, pointer_construction)
 {
-    const HAO_INT D=3;
-    HAO_INT n_ptr[D] = {3,4,7};
+    const size_t D=3;
+    size_t n_ptr[D] = {3,4,7};
     TensorHaoRef<double, D>  tensor_ref(n_ptr);
-    HAO_INT size=84;
-    HAO_INT n[D]={3,4,7};
-    HAO_INT n_step[D]={1,3,12};
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
 
     EXPECT_FALSE( tensor_ref.data() );
     EXPECT_EQ( size, tensor_ref.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_ref.rank(i) );
         EXPECT_EQ( n_step[i], tensor_ref.rankStep(i) );
@@ -69,10 +69,10 @@ TEST(Tensor_hao_ref, constructor_assginment)
 
     tensor_a_ref_p3 = tensor_a; 
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_a_ref_p3.size() );
@@ -81,7 +81,7 @@ TEST(Tensor_hao_ref, constructor_assginment)
     EXPECT_EQ( tensor_a_ref_p2.data(), tensor_a.data() );
     EXPECT_EQ( tensor_a_ref_p3.data(), tensor_a.data() );
 
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ(tensor_a_ref_p3.rank(i), n[i] );
         EXPECT_EQ(tensor_a_ref_p3.rankStep(i), n_step[i] );
@@ -93,7 +93,7 @@ TEST(Tensor_hao_ref, equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
     TensorHaoRef<double,3>  tensor_ref( tensor );
-    HAO_INT L = tensor_ref.size();
+    size_t L = tensor_ref.size();
     tensor_ref=3.0;
 
     vector<double> exact(L, 3.0);
@@ -115,8 +115,8 @@ TEST(Tensor_hao_ref, point)
 TEST(Tensor_hao_ref, slice)
 {
     TensorHaoRef<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size(); vector<double> p(L);
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    size_t L = tensor.size(); vector<double> p(L);
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
     tensor.point(p);
 
     TensorHaoRef<double,2 >  slice = tensor[4];

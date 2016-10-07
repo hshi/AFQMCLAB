@@ -11,12 +11,12 @@ namespace tensor_hao
  /*****************************/
  void checkHermitian(const TensorCore<complex<double>, 2> &A)
  {
-     HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
+     size_t L0= A.rank(0); size_t L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for Hermitian is not square matrix!"<<endl; exit(1);}
      double error=0; double norm=0;
-     for(HAO_INT j=0; j<L1; j++)
+     for(size_t j=0; j<L1; j++)
      {
-         for(HAO_INT i=j; i<L0; i++)
+         for(size_t i=j; i<L0; i++)
          {
              error+=abs(A(i,j)-conj(A(j,i)));
              norm+=abs(A(i,j));
@@ -89,13 +89,13 @@ namespace tensor_hao
  {
      if(D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
 
-     HAO_INT L0 = ph.rank(0); HAO_INT L1 = ph.rank(1);
+     size_t L0 = ph.rank(0); size_t L1 = ph.rank(1);
      TensorHao<complex<double>,2> ph_new(L0, L1);
 
      //The order about loop i,j is important
-     for(HAO_INT j=0; j<L1; j++)
+     for(size_t j=0; j<L1; j++)
      {
-         for(HAO_INT i=0; i<L0; i++) ph_new(i,j)=D(i)*ph(i,j);
+         for(size_t i=0; i<L0; i++) ph_new(i,j)=D(i)*ph(i,j);
      }
 
      return ph_new;
@@ -106,13 +106,13 @@ namespace tensor_hao
  /************************************/
  void checkSkewSymmetric(const TensorCore<complex<double>, 2> &A)
  {
-     HAO_INT L0= A.rank(0); HAO_INT L1= A.rank(1);
+     size_t L0= A.rank(0); size_t L1= A.rank(1);
      if( L0!=L1 ) {cout<<"Input for checkSkewSymmetric is not square matrix!"<<endl; exit(1);}
 
      double error=0; double norm=0;
-     for(HAO_INT j=0; j<L1; j++)
+     for(size_t j=0; j<L1; j++)
      {
-         for(HAO_INT i=j; i<L0; i++)
+         for(size_t i=j; i<L0; i++)
          {
              error+=abs( A(i,j)+A(j,i) );
              norm+=abs(A(i,j));
@@ -132,7 +132,7 @@ namespace tensor_hao
  /**********************/
  complex<double> pfaffian(TensorCore<complex<double>, 2> &A)
  {
-    HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
+    size_t L0 = A.rank(0); size_t L1 = A.rank(1);
     if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}
     return pfaffian_aitken(A.data(), L0, L1);
  }

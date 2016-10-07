@@ -8,7 +8,7 @@ using namespace tensor_hao;
 TEST(Tensor_hao, void_construction)
 {
     TensorHao<double,2>  tensor;
-    for (HAO_INT i = 0; i < 2; ++i)
+    for (size_t i = 0; i < 2; ++i)
     {
         EXPECT_EQ( 0, tensor.rank(i) );
         EXPECT_EQ( 0, tensor.rankStep(i) );
@@ -20,15 +20,15 @@ TEST(Tensor_hao, void_construction)
 
 TEST(Tensor_hao, variadic_construction)
 {
-    const HAO_INT D=3;
+    const size_t D=3;
     TensorHao<double, D>  tensor(3,4,7);
-    HAO_INT size=84;
-    HAO_INT n[D]={3,4,7};
-    HAO_INT n_step[D]={1,3,12};
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
 
     EXPECT_TRUE( tensor.data() );
     EXPECT_EQ( size, tensor.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor.rank(i) );
         EXPECT_EQ( n_step[i], tensor.rankStep(i) );
@@ -37,16 +37,16 @@ TEST(Tensor_hao, variadic_construction)
 
 TEST(Tensor_hao, pointer_constructor)
 {
-    const HAO_INT D=3;
-    HAO_INT n_ptr[D] = {3,4,7};
+    const size_t D=3;
+    size_t n_ptr[D] = {3,4,7};
     TensorHao<double, D>  tensor(n_ptr);
-    HAO_INT size=84;
-    HAO_INT n[D]={3,4,7};
-    HAO_INT n_step[D]={1,3,12};
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
 
     EXPECT_TRUE( tensor.data() );
     EXPECT_EQ( size, tensor.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor.rank(i) );
         EXPECT_EQ( n_step[i], tensor.rankStep(i) );
@@ -60,14 +60,14 @@ TEST(Tensor_hao, copy_constructor)
 
     TensorHao<double,2>  tensor_b( tensor_a );
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -82,14 +82,14 @@ TEST(Tensor_hao, move_constructor)
 
     TensorHao<double,2>  tensor_b( move(tensor_a) );
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -105,14 +105,14 @@ TEST(Tensor_hao, copy_ref_constructor)
 
     TensorHao<double,2>  tensor_b( tensor_a_ref );
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -127,14 +127,14 @@ TEST(Tensor_hao, copy_assignment)
 
     TensorHao<double,2>  tensor_b; tensor_b = tensor_a;
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -149,14 +149,14 @@ TEST(Tensor_hao, move_assignment)
 
     TensorHao<double,2>  tensor_b; tensor_b = move(tensor_a) ;
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -172,14 +172,14 @@ TEST(Tensor_hao, copy_ref_assignment)
 
     TensorHao<double,2>  tensor_b; tensor_b = tensor_a_ref ;
 
-    const HAO_INT size=12;
-    const HAO_INT D=2;
-    HAO_INT n[D]={3,4};
-    HAO_INT n_step[D]={1,3};
+    const size_t size=12;
+    const size_t D=2;
+    size_t n[D]={3,4};
+    size_t n_step[D]={1,3};
     double p_value[size]={1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
     EXPECT_EQ( size, tensor_b.size() );
-    for(HAO_INT i=0; i<D; i++)
+    for(size_t i=0; i<D; i++)
     {
         EXPECT_EQ( n[i], tensor_b.rank(i) );
         EXPECT_EQ( n_step[i], tensor_b.rankStep(i) );
@@ -190,7 +190,7 @@ TEST(Tensor_hao, copy_ref_assignment)
 TEST(Tensor_hao, equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     tensor=3.0;
 
     vector<double> exact(L, 3.0);
@@ -201,8 +201,8 @@ TEST(Tensor_hao, equal_T)
 TEST(Tensor_hao, slice)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size(); double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    size_t L = tensor.size(); double* p = tensor.data();
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
 
     TensorHaoRef<double,2 >  slice = tensor[4];
 

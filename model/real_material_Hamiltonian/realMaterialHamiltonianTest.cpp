@@ -47,19 +47,19 @@ class realMaterialHamiltionianTest: public ::testing::Test
 
             file << setw(26) << PTensor.rank(3) << "\n";
 
-            for(int i = 0; i < KTensor.size(); ++i)
+            for(size_t i = 0; i < KTensor.size(); ++i)
             {
                 data = KTensor.data()[i];
                 file<<setw(26)<<data.real()<<setw(26)<<data.imag()<<"\n";
             }
 
-            for(int i = 0; i < PTensor.size(); ++i)
+            for(size_t i = 0; i < PTensor.size(); ++i)
             {
                 data = PTensor.data()[i];
                 file<<setw(26)<<data.real()<<setw(26)<<data.imag()<<"\n";
             }
 
-            for(int j = 0; j < DEigen.size() ; ++j)
+            for(size_t j = 0; j < DEigen.size() ; ++j)
             {
                 data = DEigen.data()[j];
                 file<<setw(26)<<data.real()<<setw(26)<<data.imag()<<"\n";

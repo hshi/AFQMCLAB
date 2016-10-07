@@ -9,20 +9,20 @@ using namespace tensor_hao;
 TEST(Tensor_core, nptr)
 {
     TensorHao<double,5>  tensor(2,3,4,5,6);
-    HAO_INT n_ptr_exact[5] = {2,3,4,5,6};
+    size_t n_ptr_exact[5] = {2,3,4,5,6};
     EXPECT_POINTER_EQ( 5, n_ptr_exact, tensor.getRank() );
 }
 
 TEST(Tensor_core, read_1)
 {
     TensorHao<double,1>  tensor(3);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
 
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
 
-    HAO_INT count=0;
-    for(HAO_INT k=0; k<3; k++)
+    size_t count=0;
+    for(size_t k=0; k<3; k++)
     {
         EXPECT_EQ( p[count], tensor(k) );
         count++;
@@ -33,18 +33,18 @@ TEST(Tensor_core, read_1)
 TEST(Tensor_core, write_1)
 {
     TensorHao<double,1>  tensor(3);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    HAO_INT count=0;
+    size_t count=0;
 
     count=0;
-    for(HAO_INT k=0; k<3; k++) 
+    for(size_t k=0; k<3; k++) 
     {
         tensor(k) = count*1.0;
         count++;
     }
 
-    for(HAO_INT i=0; i<L; i++) 
+    for(size_t i=0; i<L; i++) 
     {
         EXPECT_EQ( i, p[i] );
     }
@@ -55,15 +55,15 @@ TEST(Tensor_core, write_1)
 TEST(Tensor_core, read_2)
 {
     TensorHao<double,2>  tensor(3,4);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
 
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
 
-    HAO_INT count=0;
-    for(HAO_INT j=0; j<4; j++)
+    size_t count=0;
+    for(size_t j=0; j<4; j++)
     {
-        for(HAO_INT k=0; k<3; k++)
+        for(size_t k=0; k<3; k++)
         {
             EXPECT_EQ( p[count], tensor(k,j) );
             count++;
@@ -74,21 +74,21 @@ TEST(Tensor_core, read_2)
 TEST(Tensor_core, write_2)
 {
     TensorHao<double,2>  tensor(3,4);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    HAO_INT count=0;
+    size_t count=0;
 
     count=0;
-    for(HAO_INT j=0; j<4; j++)
+    for(size_t j=0; j<4; j++)
     {
-        for(HAO_INT k=0; k<3; k++)
+        for(size_t k=0; k<3; k++)
         {
             tensor(k,j) = count*1.0;
             count++;
         }
     }
 
-    for(HAO_INT i=0; i<L; i++)
+    for(size_t i=0; i<L; i++)
     {
         EXPECT_EQ( i, p[i]) ;
     }
@@ -98,17 +98,17 @@ TEST(Tensor_core, write_2)
 TEST(Tensor_core, read_3)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
 
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
 
-    HAO_INT count=0;
-    for(HAO_INT i=0; i<5; i++)
+    size_t count=0;
+    for(size_t i=0; i<5; i++)
     {
-        for(HAO_INT j=0; j<4; j++)
+        for(size_t j=0; j<4; j++)
         {
-            for(HAO_INT k=0; k<3; k++) 
+            for(size_t k=0; k<3; k++) 
             {
                 EXPECT_EQ( p[count], tensor(k,j,i) );
                 count++;
@@ -120,16 +120,16 @@ TEST(Tensor_core, read_3)
 TEST(Tensor_core, write_3)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    HAO_INT count=0;
+    size_t count=0;
 
     count=0;
-    for(HAO_INT i=0; i<5; i++)
+    for(size_t i=0; i<5; i++)
     {
-        for(HAO_INT j=0; j<4; j++)
+        for(size_t j=0; j<4; j++)
         {
-            for(HAO_INT k=0; k<3; k++)
+            for(size_t k=0; k<3; k++)
             {
                 tensor(k,j,i)=count*1.0;
                 count++;
@@ -137,7 +137,7 @@ TEST(Tensor_core, write_3)
         }
     }
 
-    for(HAO_INT i=0; i<L; i++)
+    for(size_t i=0; i<L; i++)
     {
         EXPECT_EQ( i, p[i]) ;
     }
@@ -147,21 +147,21 @@ TEST(Tensor_core, write_3)
 TEST(Tensor_core, read_5)
 {
     TensorHao<double,5>  tensor(3,4,5,6,7);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
 
-    for(HAO_INT i=0; i<L; i++) p[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
 
-    HAO_INT count=0;
-    for(HAO_INT i5=0; i5<7; i5++)
+    size_t count=0;
+    for(size_t i5=0; i5<7; i5++)
     {
-        for(HAO_INT i4=0; i4<6; i4++)
+        for(size_t i4=0; i4<6; i4++)
         {
-            for(HAO_INT i=0; i<5; i++)
+            for(size_t i=0; i<5; i++)
             {
-                for(HAO_INT j=0; j<4; j++)
+                for(size_t j=0; j<4; j++)
                 {
-                    for(HAO_INT k=0; k<3; k++)
+                    for(size_t k=0; k<3; k++)
                     {
                         EXPECT_EQ( p[count], tensor(k,j,i, i4, i5) );
                         count++;
@@ -175,20 +175,20 @@ TEST(Tensor_core, read_5)
 TEST(Tensor_core, write_5)
 {
     TensorHao<double,5>  tensor(3,4,5,6,7);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    HAO_INT count=0;
+    size_t count=0;
 
     count=0;
-    for(HAO_INT i5=0; i5<7; i5++)
+    for(size_t i5=0; i5<7; i5++)
     {
-        for(HAO_INT i4=0; i4<6; i4++)
+        for(size_t i4=0; i4<6; i4++)
         {
-            for(HAO_INT i=0; i<5; i++)
+            for(size_t i=0; i<5; i++)
             {
-                for(HAO_INT j=0; j<4; j++)
+                for(size_t j=0; j<4; j++)
                 {
-                    for(HAO_INT k=0; k<3; k++)
+                    for(size_t k=0; k<3; k++)
                     {
                         tensor(k,j,i,i4,i5) = count*1.0;
                         count++;
@@ -198,7 +198,7 @@ TEST(Tensor_core, write_5)
         }
     }
 
-    for(HAO_INT i=0; i<L; i++)
+    for(size_t i=0; i<L; i++)
     {
         EXPECT_EQ( i, p[i]) ;
     }
@@ -207,18 +207,18 @@ TEST(Tensor_core, write_5)
 TEST(Tensor_core, add_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor+=tensor_b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -227,18 +227,18 @@ TEST(Tensor_core, add_equal_Tensor_core)
 TEST(Tensor_core, minus_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*3.0;
+    for(size_t i=0; i<L; i++) p[i] = i*3.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor-=tensor_b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 2.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 2.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -247,18 +247,18 @@ TEST(Tensor_core, minus_equal_Tensor_core)
 TEST(Tensor_core, min_add_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*3.0;
+    for(size_t i=0; i<L; i++) p[i] = i*3.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor.min_add_equal(tensor_b);
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = - i * 2.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * (-2.0);
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -267,18 +267,18 @@ TEST(Tensor_core, min_add_equal_Tensor_core)
 TEST(Tensor_core, time_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*3.0;
+    for(size_t i=0; i<L; i++) p[i] = i*3.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor*=tensor_b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * i * 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * i * 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -286,18 +286,18 @@ TEST(Tensor_core, time_equal_Tensor_core)
 TEST(Tensor_core, divide_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*3.0;
+    for(size_t i=0; i<L; i++) p[i] = i*3.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor/=tensor_b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -305,18 +305,18 @@ TEST(Tensor_core, divide_equal_Tensor_core)
 TEST(Tensor_core, inv_div_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*3.0;
+    for(size_t i=0; i<L; i++) p[i] = i*3.0;
 
     TensorHao<double,3>  tensor_b(3,4,5);
     double* p_b = tensor_b.data();
-    for(HAO_INT i=0; i<L; i++) p_b[i] = i*1.0;
+    for(size_t i=0; i<L; i++) p_b[i] = i*1.0;
 
     tensor.inv_div_equal(tensor_b);
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = 1.0/3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = 1.0/3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -325,16 +325,16 @@ TEST(Tensor_core, inv_div_equal_Tensor_core)
 TEST(Tensor_core, add_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor+=b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 2.0 + 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 2.0 + 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -342,16 +342,16 @@ TEST(Tensor_core, add_equal_T)
 TEST(Tensor_core, minus_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor-=b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 2.0 - 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 2.0 - 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -359,16 +359,16 @@ TEST(Tensor_core, minus_equal_T)
 TEST(Tensor_core, min_add_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor.min_add_equal(b);
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = -i * 2.0 + 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * (-2.0) + 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -377,16 +377,16 @@ TEST(Tensor_core, min_add_equal_T)
 TEST(Tensor_core, time_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor*=b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 6.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 6.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -394,16 +394,16 @@ TEST(Tensor_core, time_equal_T)
 TEST(Tensor_core, divide_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor/=b;
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = i * 2.0 / 3.0;
+    for (size_t i = 0; i < L; ++i) exact[i] = i * 2.0 / 3.0;
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }
@@ -412,16 +412,16 @@ TEST(Tensor_core, divide_equal_T)
 TEST(Tensor_core, inv_div_equal_T)
 {
     TensorHao<double,3>  tensor(3,4,5);
-    HAO_INT L = tensor.size();
+    size_t L = tensor.size();
     double* p = tensor.data();
-    for(HAO_INT i=0; i<L; i++) p[i] = i*2.0;
+    for(size_t i=0; i<L; i++) p[i] = i*2.0;
 
     double b=3.0;
 
     tensor.inv_div_equal(b);
 
     vector<double> exact(L);
-    for (HAO_INT i = 0; i < L; ++i) exact[i] = 3.0 / ( i * 2.0 );
+    for (size_t i = 0; i < L; ++i) exact[i] = 3.0 / ( i * 2.0 );
 
     EXPECT_POINTER_DOUBLE_EQ( L, exact.data(), tensor.data() );
 }

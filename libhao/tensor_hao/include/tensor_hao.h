@@ -8,12 +8,12 @@
 namespace tensor_hao
 {
 
- template<class T = double, HAO_INT D = 1> class TensorHao : public TensorCore<T, D>
+ template<class T = double, size_t D = 1> class TensorHao : public TensorCore<T, D>
  {
   public:
      TensorHao(void): TensorCore<T,D>()
      {
-         for(HAO_INT i=0; i<D; i++) 
+         for(size_t i=0; i<D; i++) 
          {
             this->n[i]=0;
             this->nStep[i]=0;
@@ -22,16 +22,16 @@ namespace tensor_hao
      }
     
      template<typename... Values>
-     explicit TensorHao(HAO_INT input, Values... inputs)
+     explicit TensorHao(size_t input, Values... inputs)
      {
-         HAO_INT len = sizeof...(Values);
-         HAO_INT vals[] = {input, inputs...};
+         size_t len = sizeof...(Values);
+         size_t vals[] = {input, static_cast<std::size_t>(inputs)...};
 
          if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len+1<<" "<<D<<std::endl; exit(1);}
 
          std::copy(vals, vals+D, this->n);
 
-         this->nStep[0]=1; for(HAO_INT i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
+         this->nStep[0]=1; for(size_t i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
 
          this->L = this->nStep[D-1] * ( this->n[D-1] );
 
@@ -40,11 +40,11 @@ namespace tensor_hao
          //std::cout<<"In TensorHao Variadic constructor "<<std::endl;
      }
 
-     TensorHao(const HAO_INT* n_ptr)
+     TensorHao(const size_t* n_ptr)
      {
          std::copy(n_ptr, n_ptr+D, this->n);
 
-         this->nStep[0]=1; for(HAO_INT i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
+         this->nStep[0]=1; for(size_t i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
 
          this->L = this->nStep[D-1] * ( this->n[D-1] );
 
@@ -109,11 +109,11 @@ namespace tensor_hao
 
      TensorHao<T, D> & operator  =  (T x)
      { 
-         for(HAO_INT i=0; i<this->L; i++) this->p[i] = x;
+         for(size_t i=0; i<this->L; i++) this->p[i] = x;
          return *this;
      }
 
-     TensorHaoRef<T, D-1> operator[] (HAO_INT i)
+     TensorHaoRef<T, D-1> operator[] (size_t i)
      {
          if( i > ( this->n[D-1] ) || i<0 )
          {

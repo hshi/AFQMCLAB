@@ -15,7 +15,7 @@ namespace tensor_hao
 
  //WARNING!!! We need to make sure buffer has the same size before call MPIBcast!
 
- template<class T, HAO_INT D >
+ template<class T, size_t D >
  void MPIBcast(TensorCore<T, D> & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD)
  {
      MPIBcast(buffer.size(), buffer.data(), root, comm);

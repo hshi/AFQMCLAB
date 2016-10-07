@@ -6,6 +6,7 @@
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"
 #include "tensor_element_wise.h"
+#include "../../lapackblas_hao/blas_lapack_wrap.h"
 
 namespace tensor_hao
 {
@@ -16,11 +17,11 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> trans(const TensorCore<T,2>& A)
  {
-     HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
+     size_t L0 = A.rank(0); size_t L1 = A.rank(1);
      TensorHao<T,2> B(L1, L0);
-     for(HAO_INT i=0; i<L0; i++)
+     for(size_t i=0; i<L0; i++)
      {
-         for(HAO_INT j=0; j<L1; j++) B(j,i)=A(i,j);
+         for(size_t j=0; j<L1; j++) B(j,i)=A(i,j);
      }
      return B;
  }
@@ -31,11 +32,11 @@ namespace tensor_hao
  template <class T>
  TensorHao<T,2> conjtrans(const TensorCore<T,2>& A)
  {
-     HAO_INT L0 = A.rank(0); HAO_INT L1 = A.rank(1);
+     size_t L0 = A.rank(0); size_t L1 = A.rank(1);
      TensorHao<T,2> B(L1, L0);
-     for(HAO_INT i=0; i<L0; i++)
+     for(size_t i=0; i<L0; i++)
      {
-         for(HAO_INT j=0; j<L1; j++) B(j,i)=std::conj( A(i,j) );
+         for(size_t j=0; j<L1; j++) B(j,i)=std::conj( A(i,j) );
      }
      return B;
  }

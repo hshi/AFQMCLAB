@@ -34,7 +34,7 @@ void EXPECT_POINTER_DOUBLE_EQ(size_t L, const double *expected, const double *ac
             break;
         }
     }
-    EXPECT_TRUE( results );
+        EXPECT_TRUE( results );
 }
 
 void EXPECT_POINTER_COMPLEXDOUBLE_EQ(size_t L, const complex<double> *expected, const complex<double> *actual)

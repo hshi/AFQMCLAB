@@ -4,8 +4,8 @@ add_subdirectory(mpi_hao)
 add_subdirectory(time_hao)
 
 #First level
-add_subdirectory(error_analysis)
-add_subdirectory(random_number)
+add_subdirectory(erroranalysis_hao)
+add_subdirectory(random_hao)
 add_subdirectory(tensor_hao)
 add_subdirectory(fftw_hao)
 add_subdirectory(math_hao)

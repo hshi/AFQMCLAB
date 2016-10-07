@@ -101,19 +101,19 @@ void RealMaterialHamiltonian::readKTensorPTensorDEigen(ifstream &file)
     {
         double real, imag;
 
-        for(int i = 0; i < KTensor.size(); ++i)
+        for(size_t i = 0; i < KTensor.size(); ++i)
         {
             file >> real >> imag;
             KTensor.data()[i] = complex<double>(real, imag);
         }
 
-        for(int i = 0; i < PTensor.size(); ++i)
+        for(size_t i = 0; i < PTensor.size(); ++i)
         {
             file >> real >> imag;
             PTensor.data()[i] = complex<double>(real, imag);
         }
 
-        for(int i = 0; i < DEigen.size(); ++i)
+        for(size_t i = 0; i < DEigen.size(); ++i)
         {
             file >> real >> imag;
             DEigen.data()[i] = complex<double>(real, imag);

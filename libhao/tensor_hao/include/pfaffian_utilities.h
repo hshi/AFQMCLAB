@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <complex>
-#include "../../utilities/Hao_types.h"
 
 //NOTE: When we loop for T* A, we need to make sure it is continous memory
 //Current code might be slower!
@@ -14,19 +13,19 @@ namespace tensor_hao
  //Input: T* A 
  //         A is a skew symmetric input matrix with dimension NxN, actual space
  //         is LDAxN; We only assumed upper triangular part.
- //       HAO_INT LDA, N 
+ //       size_t LDA, N 
  //         Dimension of matrix A
- //       HAO_INT i1, i2
+ //       size_t i1, i2
  //         the row and columns to be exchanged.
  //
  //Output: T* A
  //         Only the upper triangular part is exchanged.
  template<class T> 
- void exchange_row_columns_skew_matrix(T* A, HAO_INT LDA, HAO_INT N, HAO_INT i1, HAO_INT i2)
+ void exchange_row_columns_skew_matrix(T* A, size_t LDA, size_t N, size_t i1, size_t i2)
  {
      if(i1==i2) return; // No need to exchange
  
-     T tmp; HAO_INT i;
+     T tmp; size_t i;
  
      if(i1>i2) {i=i1; i1=i2; i2=i;}  // make sure i1<i2
  
@@ -48,7 +47,7 @@ namespace tensor_hao
  //Input:  T* A 
  //          A is a skew symmetric input matrix with dimension NxN, actual space
  //          is LDAxN; We only need upper triangular part.
- //        HAO_INT LDA, N 
+ //        size_t LDA, N 
  //          Dimension of matrix A
  //        T epsln
  //          A small number for convergence, e.g. 1+epsln=1
@@ -59,23 +58,23 @@ namespace tensor_hao
  //          We can change the code to contain the transformation matrix in lower triangular part of A
  //          And also return the pivoting matrix.
  template<class T>
- T pfaffian_aitken(T* A, HAO_INT LDA, HAO_INT N, T epsln=0)
+ T pfaffian_aitken(T* A, size_t LDA, size_t N, T epsln=0)
  {
     if( (N%2) == 1) return 0; //odd matrix has zero pfaffian
-    HAO_INT NB=N/2; if (NB==1) return A[LDA]; // 2x2 matrix has A(0,1) pfaffian
+    size_t NB=N/2; if (NB==1) return A[LDA]; // 2x2 matrix has A(0,1) pfaffian
  
        
-    T pf=1; HAO_INT NR,NC,I1,I2; T phas,ss,Atmp;
+    T pf=1; size_t NR,NC,I1,I2; T phas,ss,Atmp;
     T zero=0; auto big=std::abs(zero); 
-    for(HAO_INT IB=0; IB<NB-1; IB++)
+    for(size_t IB=0; IB<NB-1; IB++)
     {
        NR=IB*2; NC=NR+1; // (0,1) element of 2x2 matrix
  
        //Find the big value
        big=0; I1=NR; I2=NC;
-       for(HAO_INT i=NR; i<N-1; i++)
+       for(size_t i=NR; i<N-1; i++)
        {
-          for(HAO_INT j=i+1; j<N; j++)
+          for(size_t j=i+1; j<N; j++)
           {
              if( std::abs( A[i+j*LDA] ) > big ) { big = std::abs( A[i+j*LDA] ); I1 = i; I2 = j; }
           }
@@ -91,9 +90,9 @@ namespace tensor_hao
        if( std::abs(ss) <= std::abs(epsln) ) return 0;
       
        //Updating the Schur complement matrix 
-       for(HAO_INT i=2*IB+2; i<N-1; i++)
+       for(size_t i=2*IB+2; i<N-1; i++)
        {
-          for(HAO_INT j=i+1; j<N; j++)
+          for(size_t j=i+1; j<N; j++)
           {   
              A[i+j*LDA] = A[i+j*LDA] + ( A[NC+i*LDA]*A[NR+j*LDA]-A[NR+i*LDA]*A[NC+j*LDA] ) / ss;
           }
@@ -102,7 +101,7 @@ namespace tensor_hao
        //Swapping       
        if( IB > 0)
        {
-          for(HAO_INT j=0; j<2*IB+2; j++)
+          for(size_t j=0; j<2*IB+2; j++)
           { 
               Atmp = A[NR+j*LDA]; A[NR+j*LDA] = A[I1+j*LDA]; A[I1+j*LDA] = Atmp;
               Atmp = A[NC+j*LDA]; A[NC+j*LDA] = A[I2+j*LDA]; A[I2+j*LDA] = Atmp;
