@@ -1,3 +1,6 @@
+set(HintLibraryPath "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64")
+set(HintIncludePath "$ENV{MKL}/include" "$ENV{MKLHOME}/include")
+
 set(mkl_definitions "")
 set(mkl_flags "")
 
@@ -34,12 +37,12 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "PGI")
 endif()
 
 #Set include directory
-find_path(mkl_include_dirs mkl.h HINTS "$ENV{MKL}/include" "$ENV{MKLHOME}/include")
+find_path(mkl_include_dirs mkl.h HINTS ${HintIncludePath})
 
 #Set libraries
-find_library(lp64_libraries NAMES ${lpb4_name} HINTS "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64")
-find_library(core_libraries NAMES mkl_core HINTS "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64")
-find_library(sequential_libraries NAMES ${sequential_name} HINTS "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64")
+find_library(lp64_libraries NAMES ${lpb4_name} HINTS ${HintLibraryPath})
+find_library(core_libraries NAMES mkl_core HINTS ${HintLibraryPath})
+find_library(sequential_libraries NAMES ${sequential_name} HINTS ${HintLibraryPath})
 
 set(mkl_libraries ${lp64_libraries} ${core_libraries} ${sequential_libraries} m dl pthread)
 

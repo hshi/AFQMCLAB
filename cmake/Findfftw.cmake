@@ -1,6 +1,8 @@
-#Try to find fftw
-find_library(fftw_libraries NAMES libfftw3.a HINTS "$ENV{FFTW}/lib" "$ENV{FFTWHOME}/lib")
-find_path(fftw_include_dirs fftw3.h HINTS "$ENV{FFTW}/include" "$ENV{FFTWHOME}/include")
+set(HintLibraryPath "$ENV{FFTW}/lib" "$ENV{FFTWHOME}/lib")
+set(HintIncludePath "$ENV{FFTW}/include" "$ENV{FFTWHOME}/include")
+
+find_library(fftw_libraries NAMES libfftw3.a HINTS ${HintLibraryPath})
+find_path(fftw_include_dirs fftw3.h HINTS ${HintIncludePath})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(fftw  DEFAULT_MSG

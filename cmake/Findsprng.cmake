@@ -1,6 +1,8 @@
-#Try to find sprng
-find_library(sprng_libraries NAMES libsprng.a HINTS "$ENV{SPRNG}/lib" "$ENV{SPRNGHOME}/lib")
-find_path(sprng_include_dirs sprng.h HINTS "$ENV{SPRNG}/include" "$ENV{SPRNGHOME}/include")
+set(HintLibraryPath "$ENV{SPRNG}/lib" "$ENV{SPRNGHOME}/lib")
+set(HintIncludePath "$ENV{SPRNG}/include" "$ENV{SPRNGHOME}/include")
+
+find_library(sprng_libraries NAMES libsprng.a HINTS ${HintLibraryPath})
+find_path(sprng_include_dirs sprng.h HINTS ${HintIncludePath})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(sprng  DEFAULT_MSG

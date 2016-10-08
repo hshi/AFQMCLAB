@@ -1,6 +1,8 @@
-#Try to find gmp
-find_library(gmp_libraries NAMES libgmp.a HINTS "$ENV{GMP}/lib" "$ENV{GMPHOME}/lib")
-find_path(gmp_include_dirs gmp.h HINTS "$ENV{GMP}/include" "$ENV{GMPHOME}/include")
+set(HintLibraryPath "$ENV{GMP}/lib" "$ENV{GMPHOME}/lib")
+set(HintIncludePath "$ENV{GMP}/include" "$ENV{GMPHOME}/include")
+
+find_library(gmp_libraries NAMES libgmp.a HINTS ${HintLibraryPath})
+find_path(gmp_include_dirs gmp.h HINTS ${HintIncludePath})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(gmp  DEFAULT_MSG
