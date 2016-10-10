@@ -103,11 +103,9 @@ void FFTServer::deallocateInOutSpace()
 void FFTServer::createPlans()
 {
     planforw =fftw_plan_dft(dimen, n.data(), reinterpret_cast<fftw_complex*>(inforw), reinterpret_cast<fftw_complex*>
-                            (outforw),
-                            FFTW_FORWARD, FFTW_MEASURE);
+                            (outforw), FFTW_FORWARD, FFTW_MEASURE);
     planback =fftw_plan_dft(dimen, n.data(), reinterpret_cast<fftw_complex*>(inback), reinterpret_cast<fftw_complex*>
-                            (outback),
-                            FFTW_BACKWARD, FFTW_MEASURE);
+                            (outback), FFTW_BACKWARD, FFTW_MEASURE);
 }
 
 void FFTServer::destroyPlans()

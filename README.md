@@ -79,8 +79,10 @@ This is a library for AFQMC.
       - args for both MANUAL and other platform
           - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG"`
           - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
-          - ( Only for system lapack, blas and ACML ), set fortran function nounderscore `-DFORTRAN_NO_UNDERSCORE=on`
           - Use magma library: `-DUSE_MAGMA=on`
+          - Use 64 bit int for lapack and blas: `-DUSE_INT64=on`
+          - Use openmp for lapack, blas and Lanczos code: `-DUSE_OPENMP=on`
+          - ( Only for system lapack, blas and ACML ), set fortran function nounderscore `-DFORTRAN_NO_UNDERSCORE=on`
 
       For examples, serial manual looks like:
 
@@ -90,28 +92,15 @@ This is a library for AFQMC.
 
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
 
-  //TODO: Check fftw with int64 and openmp ?
+
+##Note:
+
+- `FFTW` wrap does not support 64 bit int and openmp right now.
 
   //TODO: Test magma in Hurricane.
 
   //TODO: MAGMA int64? Update magma bin==> to fully empty!
 
-  //TODO: MPISUM/MPIBcast only support int32? Ask question in stack?
-
-  //TODO: FFTW64 bit?
-
-  //TODO: Check MPI + OPENMP conflict. Learn OPENMP IN C++. ADD OPENMP IN CODE
-
-  //TODO: Use different OPENMP FLAG? For lapackblas, fftw, all code?
-
-  //TODO: FFTW with openmp? ==> Do we need to seperate them?
-
   //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
-
-  //TODO: Use my_flags; my_libraries; my_include; my_defination for all the code.
-
-  //TODO: How to run MPI and OPENMP Hybird job in Hurricane and storm ==> Ask Eric, and test it
-
-  //TODO: USE_INT64 for LAPACK AND BLAS?
 
   //TODO: Add a resize function in Tensor_Hao, and Wf function in Lanczos.
