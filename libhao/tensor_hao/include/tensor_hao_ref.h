@@ -17,34 +17,28 @@ namespace tensor_hao
          {
             this->n[i]=0;
             this->nStep[i]=0;
-         } 
+         }
+         this->L = 0;
          //std::cout<<"In TensorHaoRef void constructor "<<std::endl;
      }
 
      template<typename... Values>
      explicit TensorHaoRef(size_t input, Values... inputs)
      {
-         size_t len = sizeof...(Values);
+         size_t len = sizeof...(Values) + 1;
          size_t vals[] = {input, static_cast<std::size_t>(inputs)...};
 
-         if( (len+1) != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "<<len+1<<" "<<D<<std::endl; exit(1);}
+         if( len != D) {std::cout<<"Length of inputs number is not consistent with template class!!! "
+                                 <<len <<" "<<D<<std::endl; exit(1);}
 
-         std::copy(vals, vals+D, this->n);
-
-         this->nStep[0]=1; for(size_t i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
-
-         this->L = this->nStep[D-1] * ( this->n[D-1] );
+         this->setNNstepL(vals);
 
          this->p = nullptr;
      }
 
      TensorHaoRef(const size_t* n_ptr)
      {
-         std::copy(n_ptr, n_ptr+D, this->n);
-
-         this->nStep[0]=1; for(size_t i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
-
-         this->L = this->nStep[D-1] * ( this->n[D-1] );
+         this->setNNstepL(n_ptr);
 
          this->p = nullptr;
 
@@ -107,17 +101,41 @@ namespace tensor_hao
          this->p=vec.data();
      }
 
-     TensorHaoRef<T, D-1> operator[] (size_t i)
+     template<typename... Values>
+     void resize(size_t input, Values... inputs)
      {
-         if( i > ( this->n[D-1] ) || i<0 )
+         size_t LBackup = this->L;
+
+         size_t len = sizeof...(Values) + 1;
+         size_t vals[] = {input, static_cast<std::size_t>(inputs)...};
+
+         if( len != D)
          {
-             std::cout<<"Slice i not consistent with n[D-1] !!"<<std::endl;
-             std::cout<<i<<" "<<this->n[D-1]<<std::endl;
+             std::cout<<"Length of inputs number is not consistent with template class!!! " <<len <<" "<<D<<std::endl;
              exit(1);
          }
-         TensorHaoRef<T, D-1> A (this->n);
-         A.p = this->p + i * this->nStep[D-1];
-         return A;
+
+         this->setNNstepL(vals);
+
+         if(this->L != LBackup)
+         {
+             std::cout<<"Error! Resize L can not be different with original size in TensorHaoRef!"<<std::endl;
+             exit(1);
+         }
+
+     }
+
+     void resize(const size_t* n_ptr)
+     {
+         size_t LBackup = this->L;
+
+         this->setNNstepL(n_ptr);
+
+         if(this->L != LBackup)
+         {
+             std::cout<<"Error! Resize L can not be different with original size in TensorHaoRef!"<<std::endl;
+             exit(1);
+         }
      }
 
   private:

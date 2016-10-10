@@ -170,6 +170,26 @@ namespace tensor_hao
      //END READ ELEMENTS FOR D=1,2,3,4,5 ....; WRITE OUT 1,2,3 for efficency
      //=====================================================================
 
+     TensorHaoRef<T, D-1> operator[] (size_t i)
+     {
+         if( i > ( this->n[D-1] ) || i<0 )
+         {
+             std::cout<<"Slice i not consistent with n[D-1] !!"<<std::endl;
+             std::cout<<i<<" "<<this->n[D-1]<<std::endl;
+             exit(1);
+         }
+         TensorHaoRef<T, D-1> A (this->n);
+         A.p = this->p + i * this->nStep[D-1];
+         return A;
+     }
+
+     TensorHaoRef<T, 2> reshape(size_t L0, size_t L1)
+     {
+         TensorHaoRef<T, 2> A (L0, L1);
+         if(L0*L1 != L) { std::cout<<"Error! Size not consistent in reshape!"<<std::endl; exit(1); }
+         A.point(p);
+         return A;
+     }
 
      inline void operator += (const TensorCore<T,D>& x)
      {
@@ -238,6 +258,15 @@ namespace tensor_hao
 
 
   protected:
+     void setNNstepL(const size_t* n_ptr)
+     {
+         std::copy(n_ptr, n_ptr+D, this->n);
+
+         this->nStep[0]=1; for(size_t i=1; i<D; i++) {this->nStep[i] = (this->nStep[i-1]) * (this->n[i-1]);}
+
+         this->L = this->nStep[D-1] * ( this->n[D-1] );
+     }
+
      void copy_list(const std::initializer_list <T> &args)
      {
          size_t args_size = args.size();
@@ -258,8 +287,7 @@ namespace tensor_hao
 
   friend class TensorHaoRef<T,D>;
   friend class TensorHao<T,D>;
-  friend class TensorHaoRef<T,D+1>;
-  friend class TensorHao<T,D+1>;
+  friend class TensorCore<T,D+1>;
 
  };  //end class TensorCore
 

@@ -204,6 +204,31 @@ TEST(Tensor_core, write_5)
     }
 }
 
+TEST(Tensor_hao, slice)
+{
+    TensorHao<double,3>  tensor(3,4,5);
+    size_t L = tensor.size(); double* p = tensor.data();
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
+
+    TensorHaoRef<double,2 >  slice = tensor[4];
+
+    EXPECT_EQ( 12, slice.size() );
+    EXPECT_POINTER_EQ(12, tensor.data()+12*4, slice.data() );
+}
+
+TEST(Tensor_core, reshape)
+{
+    TensorHao<double,3>  tensor(3,4,5);
+    size_t L = tensor.size(); double *p = tensor.data();
+    for(size_t i=0; i<L; i++) p[i] = i*1.0;
+
+    TensorHaoRef<double,2 > tensor2D = tensor.reshape(12, 5);
+
+    EXPECT_EQ( 60, tensor2D.size() );
+    EXPECT_POINTER_EQ(60, tensor.data(), tensor2D.data() );
+}
+
+
 TEST(Tensor_core, add_equal_Tensor_core)
 {
     TensorHao<double,3>  tensor(3,4,5);

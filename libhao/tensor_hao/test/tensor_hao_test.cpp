@@ -197,15 +197,40 @@ TEST(Tensor_hao, equal_T)
     EXPECT_POINTER_DOUBLE_EQ(L, exact.data(), tensor.data() );
 }
 
-
-TEST(Tensor_hao, slice)
+TEST(Tensor_hao, resize_Variadic)
 {
-    TensorHao<double,3>  tensor(3,4,5);
-    size_t L = tensor.size(); double* p = tensor.data();
-    for(size_t i=0; i<L; i++) p[i] = i*1.0;
+    const size_t D=3;
+    TensorHao<double, D>  tensor;
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
+    tensor.resize(3, 4, 7);
 
-    TensorHaoRef<double,2 >  slice = tensor[4];
-
-    EXPECT_EQ( 12, slice.size() );
-    EXPECT_POINTER_EQ(12, tensor.data()+12*4, slice.data() );
+    EXPECT_TRUE( tensor.data() );
+    EXPECT_EQ( size, tensor.size() );
+    for(size_t i=0; i<D; i++)
+    {
+        EXPECT_EQ( n[i], tensor.rank(i) );
+        EXPECT_EQ( n_step[i], tensor.rankStep(i) );
+    }
 }
+
+TEST(Tensor_hao, resize_pointer)
+{
+    const size_t D=3;
+    TensorHao<double, D>  tensor;
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
+    tensor.resize(n);
+
+    EXPECT_TRUE( tensor.data() );
+    EXPECT_EQ( size, tensor.size() );
+    for(size_t i=0; i<D; i++)
+    {
+        EXPECT_EQ( n[i], tensor.rank(i) );
+        EXPECT_EQ( n_step[i], tensor.rankStep(i) );
+    }
+}
+
+

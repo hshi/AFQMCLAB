@@ -112,15 +112,36 @@ TEST(Tensor_hao_ref, point)
     EXPECT_EQ( vec.data(), tensor_ref_p.data() );
 }
 
-TEST(Tensor_hao_ref, slice)
+TEST(Tensor_hao_ref, resize_Variadic)
 {
-    TensorHaoRef<double,3>  tensor(3,4,5);
-    size_t L = tensor.size(); vector<double> p(L);
-    for(size_t i=0; i<L; i++) p[i] = i*1.0;
-    tensor.point(p);
+    const size_t D=3;
+    TensorHaoRef<double, D>  tensor(84,1,1);
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
+    tensor.resize(3, 4, 7);
 
-    TensorHaoRef<double,2 >  slice = tensor[4];
+    EXPECT_EQ( size, tensor.size() );
+    for(size_t i=0; i<D; i++)
+    {
+        EXPECT_EQ( n[i], tensor.rank(i) );
+        EXPECT_EQ( n_step[i], tensor.rankStep(i) );
+    }
+}
 
-    EXPECT_EQ( 12, slice.size() );
-    EXPECT_POINTER_EQ(12, tensor.data()+12*4, slice.data() );
+TEST(Tensor_hao_ref, resize_pointer)
+{
+    const size_t D=3;
+    TensorHaoRef<double, D>  tensor(84,1,1);
+    size_t size=84;
+    size_t n[D]={3,4,7};
+    size_t n_step[D]={1,3,12};
+    tensor.resize(n);
+
+    EXPECT_EQ( size, tensor.size() );
+    for(size_t i=0; i<D; i++)
+    {
+        EXPECT_EQ( n[i], tensor.rank(i) );
+        EXPECT_EQ( n_step[i], tensor.rankStep(i) );
+    }
 }
