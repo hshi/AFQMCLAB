@@ -14,4 +14,4 @@ target_link_libraries(realMaterialHamiltonianTest realMaterialHamiltonianHao lib
 
 target_include_directories(realMaterialHamiltonianTest PUBLIC ${ext_include_dirs})
 
-add_my_test(realMaterialHamiltonianTest realMaterialHamiltonianTest)
+add_my_test(realMaterialHamiltonianTest "$<TARGET_FILE:realMaterialHamiltonianTest>")

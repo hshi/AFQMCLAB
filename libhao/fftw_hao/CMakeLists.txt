@@ -19,4 +19,4 @@ target_link_libraries(fftwTest fftwHao mpiHao testHao libgtest-main-hao ${ext_li
 
 target_include_directories(fftwTest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_my_test(fftwTest fftwTest)
+add_my_test(fftwTest "$<TARGET_FILE:fftwTest>")

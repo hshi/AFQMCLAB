@@ -20,4 +20,4 @@ target_link_libraries(lanczosTest lanczosHao libHao ${ext_libraries} libgtest-ma
 
 target_include_directories(lanczosTest PUBLIC ${ext_include_dirs})
 
-add_my_test(lanczosTest lanczosTest)
+add_my_test(lanczosTest "$<TARGET_FILE:lanczosTest>")

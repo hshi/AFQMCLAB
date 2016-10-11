@@ -29,4 +29,4 @@ target_link_libraries(errorAnalysisTest errorAnalysisHao mpiHao testHao
 
 target_include_directories(errorAnalysisTest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_my_test(errorAnalysisTest errorAnalysisTest)
+add_my_test(errorAnalysisTest "$<TARGET_FILE:errorAnalysisTest>")

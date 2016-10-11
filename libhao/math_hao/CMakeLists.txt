@@ -25,4 +25,4 @@ target_link_libraries(mathTest mathHao mpiHao testHao
 
 target_include_directories(mathTest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_my_test(mathTest mathTest)
+add_my_test(mathTest "$<TARGET_FILE:mathTest>")

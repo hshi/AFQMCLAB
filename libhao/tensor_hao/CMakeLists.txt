@@ -54,7 +54,7 @@ target_link_libraries(tensorTest tensorHao mpiHao testHao libgtest-main-hao ${ex
 
 target_include_directories(tensorTest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_my_test(tensorTest tensorTest)
+add_my_test(tensorTest "$<TARGET_FILE:tensorTest>")
 
 #For Timing
 add_executable(tensorTiming ${SOURCE_HEADERS} ${SOURCE_TIMING})

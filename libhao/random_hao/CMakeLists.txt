@@ -22,4 +22,4 @@ target_link_libraries(randomNumberTest randomNumberHao mpiHao testHao libgtest-m
 
 target_include_directories(randomNumberTest PUBLIC ${GTEST_INCLUDE_DIRS})
 
-add_my_test(randomNumberTest randomNumberTest)
+add_my_test(randomNumberTest "$<TARGET_FILE:randomNumberTest>")

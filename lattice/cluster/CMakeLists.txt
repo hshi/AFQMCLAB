@@ -14,4 +14,4 @@ target_link_libraries(clusterTest clusterHao libHao ${ext_libraries} libgtest-ma
 
 target_include_directories(clusterTest PUBLIC ${ext_include_dirs})
 
-add_my_test(clusterTest clusterTest)
+add_my_test(clusterTest "$<TARGET_FILE:clusterTest>")
