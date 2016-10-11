@@ -8,7 +8,7 @@ using namespace std;
 TEST(cluster, voidConstructor)
 {
     Cluster cluster;
-    EXPECT_EQ(0, cluster.getL());
+    EXPECT_EQ( static_cast<size_t>(0), cluster.getL());
 }
 
 TEST(cluster, LConstructor)

@@ -11,11 +11,11 @@ TEST(Tensor_hao_ref, void_construction)
 
     for (size_t i = 0; i < 2; ++i)
     {
-        EXPECT_EQ( 0, tensor_ref.rank(i) );
-        EXPECT_EQ( 0, tensor_ref.rankStep(i) );
+        EXPECT_EQ( static_cast<size_t>(0), tensor_ref.rank(i) );
+        EXPECT_EQ( static_cast<size_t>(0), tensor_ref.rankStep(i) );
     }
     EXPECT_FALSE( tensor_ref.data() );
-    EXPECT_EQ( 0, tensor_ref.size() );
+    EXPECT_EQ( static_cast<size_t>(0), tensor_ref.size() );
 }
 
 TEST(Tensor_hao_ref, variadic_construction)

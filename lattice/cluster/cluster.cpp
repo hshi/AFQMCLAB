@@ -2,6 +2,7 @@
 // Created by boruoshihao on 9/22/16.
 //
 
+#include <iostream>
 #include <fstream>
 #include "cluster.h"
 #include "../../libhao/mpi_hao/mpi_fun.h"

@@ -212,7 +212,7 @@ TEST(Tensor_hao, slice)
 
     TensorHaoRef<double,2 >  slice = tensor[4];
 
-    EXPECT_EQ( 12, slice.size() );
+    EXPECT_EQ( static_cast<size_t>(12), slice.size() );
     EXPECT_POINTER_EQ(12, tensor.data()+12*4, slice.data() );
 }
 
@@ -224,7 +224,7 @@ TEST(Tensor_core, reshape)
 
     TensorHaoRef<double,2 > tensor2D = tensor.reshape(12, 5);
 
-    EXPECT_EQ( 60, tensor2D.size() );
+    EXPECT_EQ( static_cast<size_t>(60), tensor2D.size() );
     EXPECT_POINTER_EQ(60, tensor.data(), tensor2D.data() );
 }
 

@@ -10,11 +10,11 @@ TEST(Tensor_hao, void_construction)
     TensorHao<double,2>  tensor;
     for (size_t i = 0; i < 2; ++i)
     {
-        EXPECT_EQ( 0, tensor.rank(i) );
-        EXPECT_EQ( 0, tensor.rankStep(i) );
+        EXPECT_EQ( static_cast<size_t>(0), tensor.rank(i) );
+        EXPECT_EQ( static_cast<size_t>(0), tensor.rankStep(i) );
     }
     EXPECT_FALSE( tensor.data() );
-    EXPECT_EQ( 0, tensor.size() );
+    EXPECT_EQ( static_cast<size_t>(0), tensor.size() );
 
 }
 

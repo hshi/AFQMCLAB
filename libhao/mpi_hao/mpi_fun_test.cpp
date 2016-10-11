@@ -1,4 +1,3 @@
-#include "gtest/gtest.h"
 #include "mpi_fun.h"
 #include "../test_hao/gtest_custom.h"
 
@@ -39,7 +38,7 @@ TEST (MPIBcast, size_t)
     if(MPIRank()==0) i=2;
     MPIBcast(i);
 
-    EXPECT_EQ (2, i);
+    EXPECT_EQ (static_cast<size_t>(2), i);
 }
 
 TEST (MPIBcast, float)
