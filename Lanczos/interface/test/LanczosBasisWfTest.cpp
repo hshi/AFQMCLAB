@@ -113,3 +113,13 @@ TEST_F(LanczosBasisWfTest, orthogonal)
 
     EXPECT_FALSE( diff(vecOrthogonal, wf.getWf(), 1e-12) );
 }
+
+TEST_F(LanczosBasisWfTest, writeAndRead)
+{
+    string filename = "wf.dat";
+    LanczosBasisWf wf(vec), wfp(L);
+    wf.write(filename);
+    wfp.read(filename);
+    EXPECT_FALSE( diff( wf.getWf(), wfp.getWf(), 1e-12 ) );
+    if(MPIRank()==0) remove( filename.c_str() );
+}

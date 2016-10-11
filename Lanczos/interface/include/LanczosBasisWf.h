@@ -26,8 +26,10 @@ class LanczosBasisWf
     void normalize();
     std::complex<double> calculateOverlapWith(const LanczosBasisWf &wfRight) const;
     void orthogonalizeWith(const LanczosBasisWf &wfBase);
+
+    void read(const std::string& filename);
+    void write(const std::string& filename) const;
     //TODO: add orthonormalizeWith
-    //TODO: read and write
     //TODO: add_equal a * wf
     //TODO: maybe swap?
     //TODO: read note, learn about next ==> careful about 2x2 Lanczos matrix case?
