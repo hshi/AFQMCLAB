@@ -882,9 +882,9 @@ void ztrsm(const char *side, const char *uplo, const char *transa, const char *d
 
 
 
-//===============================
-//FUNTION NAME WITH NO UNDERSCORE
-//===============================
+//============================
+//FUNTION NAME WITH UNDERSCORE
+//============================
 
 /* Upper case declaration */
 

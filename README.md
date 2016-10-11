@@ -73,7 +73,7 @@ This is a library for AFQMC.
       - args only for MANUAL
           - Set cxx compiler: `-DCMAKE_CXX_COMPILER=mpic++`
           - (Only if we are using MPI) Set mpi executable: `-DMPIEXEC=mpiexec`
-          - (Only if we are using MPI) Set mpi number of process flag: `-DMPIEXEC_NUMPROC_FLAG=np`
+          - (Only if we are using MPI) Set mpi number of process flag: `-DMPIEXEC_NUMPROC_FLAG=-np`
           - (Only if we are using MPI) Set MPI flag: `-DUSE_MPI=on`
 
       - args for both MANUAL and other platform
