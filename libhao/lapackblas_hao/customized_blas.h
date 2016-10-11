@@ -412,9 +412,11 @@ void ZGEMM3M(const char *transa, const char *transb, const HAO_INT *m, const HAO
              const HAO_Complex16 *alpha, const HAO_Complex16 *a, const HAO_INT *lda,
              const HAO_Complex16 *b, const HAO_INT *ldb, const HAO_Complex16 *beta,
              HAO_Complex16 *c, const HAO_INT *ldc);
-void ZGEMM3M_BATCH(const char *transa_array, const char *transb_array, const HAO_INT *m_array, const HAO_INT *n_array, const HAO_INT *k_array,
-           const HAO_Complex16 *alpha_array, const HAO_Complex16 **a_array, const HAO_INT *lda_array, const HAO_Complex16 **b_array, const HAO_INT *ldb_array,
-           const HAO_Complex16 *beta_array, HAO_Complex16 **c_array, const HAO_INT *ldc_array, const HAO_INT *group_count, const HAO_INT *group_size);
+void ZGEMM3M_BATCH(const char *transa_array, const char *transb_array, const HAO_INT *m_array, 
+           const HAO_INT *n_array, const HAO_INT *k_array, const HAO_Complex16 *alpha_array, 
+           const HAO_Complex16 **a_array, const HAO_INT *lda_array, const HAO_Complex16 **b_array, 
+           const HAO_INT *ldb_array, const HAO_Complex16 *beta_array, HAO_Complex16 **c_array, 
+           const HAO_INT *ldc_array, const HAO_INT *group_count, const HAO_INT *group_size);
 void ZGEMMT(const char *uplo, const char *transa, const char *transb, const HAO_INT *n, const HAO_INT *k,
             const HAO_Complex16 *alpha, const HAO_Complex16 *a, const HAO_INT *lda,
             const HAO_Complex16 *b, const HAO_INT *ldb, const HAO_Complex16 *beta,
@@ -876,6 +878,7 @@ void ztrmm(const char *side, const char *uplo, const char *transa, const char *d
            const HAO_Complex16 *a, const HAO_INT *lda, HAO_Complex16 *b, const HAO_INT *ldb);
 void ztrsm(const char *side, const char *uplo, const char *transa, const char *diag,
            const HAO_INT *m, const HAO_INT *n, const HAO_Complex16 *alpha,
+           const HAO_Complex16 *a, const HAO_INT *lda, HAO_Complex16 *b, const HAO_INT *ldb);
 
 
 
@@ -1287,9 +1290,11 @@ void ZGEMM3M_(const char *transa, const char *transb, const HAO_INT *m, const HA
              const HAO_Complex16 *alpha, const HAO_Complex16 *a, const HAO_INT *lda,
              const HAO_Complex16 *b, const HAO_INT *ldb, const HAO_Complex16 *beta,
              HAO_Complex16 *c, const HAO_INT *ldc);
-void ZGEMM3M_BATCH_(const char *transa_array, const char *transb_array, const HAO_INT *m_array, const HAO_INT *n_array, const HAO_INT *k_array,
-           const HAO_Complex16 *alpha_array, const HAO_Complex16 **a_array, const HAO_INT *lda_array, const HAO_Complex16 **b_array, const HAO_INT *ldb_array,
-           const HAO_Complex16 *beta_array, HAO_Complex16 **c_array, const HAO_INT *ldc_array, const HAO_INT *group_count, const HAO_INT *group_size);
+void ZGEMM3M_BATCH_(const char *transa_array, const char *transb_array, const HAO_INT *m_array, 
+                    const HAO_INT *n_array, const HAO_INT *k_array,const HAO_Complex16 *alpha_array, 
+                    const HAO_Complex16 **a_array, const HAO_INT *lda_array, const HAO_Complex16 **b_array, 
+                    const HAO_INT *ldb_array, const HAO_Complex16 *beta_array, HAO_Complex16 **c_array, 
+                    const HAO_INT *ldc_array, const HAO_INT *group_count, const HAO_INT *group_size);
 void ZGEMMT_(const char *uplo, const char *transa, const char *transb, const HAO_INT *n, const HAO_INT *k,
             const HAO_Complex16 *alpha, const HAO_Complex16 *a, const HAO_INT *lda,
             const HAO_Complex16 *b, const HAO_INT *ldb, const HAO_Complex16 *beta,
