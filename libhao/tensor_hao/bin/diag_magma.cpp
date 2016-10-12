@@ -8,20 +8,13 @@
 #include "magma.h"
 #endif
 
-
 using namespace std;
 using namespace tensor_hao;
 
 int main()
 {
-    #ifndef USE_MAGMA
-    cout<<"ERROR!!! USE_MAGMA IS NOT DEFINED!"<<endl;
-    exit(1);
-    #endif
-
-    #ifdef USE_MAGMA
+#ifdef USE_MAGMA
     magma_init();
-    #endif
 
     //read data to vec
     vector<complex<double>> vec;
@@ -41,9 +34,7 @@ int main()
 
     //Diagonal matrix
     TensorHao<double,1> W(L);
-    #ifdef USE_MAGMA
     eigen_magma(hermitM, W);
-    #endif
 
     //Write to file
     ofstream file;
@@ -59,9 +50,14 @@ int main()
                                       <<setw(26)<<vec[i].imag()<<"\n";
     file.close();
 
-    #ifdef USE_MAGMA
     magma_finalize();
-    #endif
 
     return 0;
+
+#else
+
+    cout<<"ERROR!!! USE_MAGMA IS NOT DEFINED!"<<endl;
+    return 1;
+
+#endif
 }

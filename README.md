@@ -100,7 +100,8 @@ This is a library for AFQMC.
 
 ##Note:
 
-- `FFTW` wrap does not support 64 bit int and openmp right now.
+- `FFTW` wrap does not support 64 bit int and openmp.
+- `MAGMA` wrap does not support 64 bit int and openmp.
 
   //TODO: Test magma in Hurricane.
   //TODO: Remove magma bin when not define magma
