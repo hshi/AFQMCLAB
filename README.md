@@ -82,7 +82,7 @@ This is a library for AFQMC.
           - Use magma library: `-DUSE_MAGMA=on`
           - Use 64 bit int for lapack and blas: `-DUSE_INT64=on`
           - Use openmp for lapack, blas and Lanczos code: `-DUSE_OPENMP=on`
-          - ( Only for system lapack, blas and ACML ), set fortran function nounderscore
+          - ( Only for system lapack, blas and ACML ), set fortran function no underscore
 
                  `-DFORTRAN_NO_UNDERSCORE=on`
           - ( Only for system lapack, blas and ACML ), set fortran function return void
