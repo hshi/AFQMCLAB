@@ -65,12 +65,12 @@ if(USE_MAGMA)
     set(magma_definitions ${magma_definitions} "-DUSE_MAGMA")
     set(magma_include_dirs ${magma_include_dirs} ${CUDA_INCLUDE_DIRS})
     set(magma_libraries "${magma_libraries}" ${CUDA_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES})
-
-    set(lapackblas_definitions ${lapackblas_definitions} ${magma_definitions})
-    set(lapackblas_include_dirs ${lapackblas_include_dirs} ${magma_include_dirs})
-    set(lapackblas_libraries ${lapackblas_libraries} ${magma_libraries})
 else()
     MESSAGE("-- MAGMA support was disabled.")
 endif()
+
+set(lapackblas_definitions ${lapackblas_definitions} ${magma_definitions})
+set(lapackblas_include_dirs ${lapackblas_include_dirs} ${magma_include_dirs})
+set(lapackblas_libraries ${lapackblas_libraries} ${magma_libraries})
 
 list(REMOVE_DUPLICATES lapackblas_libraries)

@@ -10,7 +10,7 @@ add_library(clusterHao STATIC $<TARGET_OBJECTS:clusterHaoObject>)
 #For Test
 add_executable(clusterTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-target_link_libraries(clusterTest clusterHao libHao ${ext_libraries} libgtest-main-hao)
+target_link_libraries(clusterTest clusterHao libHao libgtest-main-hao ${ext_libraries})
 
 target_include_directories(clusterTest PUBLIC ${ext_include_dirs})
 

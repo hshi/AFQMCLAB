@@ -16,7 +16,7 @@ add_library(lanczosHao STATIC $<TARGET_OBJECTS:lanczosHaoObject>)
 #For Test
 add_executable(lanczosTest ${SOURCE_HEADERS} ${SOURCE_TESTS} )
 
-target_link_libraries(lanczosTest lanczosHao libHao ${ext_libraries} libgtest-main-hao)
+target_link_libraries(lanczosTest lanczosHao libHao libgtest-main-hao ${ext_libraries})
 
 target_include_directories(lanczosTest PUBLIC ${ext_include_dirs})
 

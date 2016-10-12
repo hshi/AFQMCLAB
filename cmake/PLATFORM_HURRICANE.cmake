@@ -7,6 +7,3 @@ set(MPIEXEC mvp2run)
 set(MPIEXEC_NUMPROC_FLAG "-c")
 
 add_definitions(-DMPI_HAO)
-
-
-
