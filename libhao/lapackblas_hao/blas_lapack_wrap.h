@@ -23,8 +23,6 @@
       #define FORTRAN_WRAPPER(x) x##_
   #endif
 
-  #define FORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID
-
 #endif
 
 
