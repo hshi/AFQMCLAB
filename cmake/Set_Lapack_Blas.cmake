@@ -46,10 +46,15 @@ if(NOT findlapackblas)
 endif()
 
 #Usually, Fortran has underscore
-#No need to turn on FORTRAN_NO_UNDERSCORE
 if(FORTRAN_NO_UNDERSCORE)
-    set(lapackblas_definitions "-DDFORTRAN_NO_UNDERSCORE" "${lapackblas_definitions}")
+    set(lapackblas_definitions "-DFORTRAN_NO_UNDERSCORE" "${lapackblas_definitions}")
 endif()
+
+#Usually, Fortran return complex instead of void e.g. zdotc
+if(FORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID)
+    set(lapackblas_definitions "-DFORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID" "${lapackblas_definitions}")
+endif()
+
 
 #For magma library
 if(USE_MAGMA)
