@@ -103,17 +103,8 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-  //TODO: Test magma in Hurricane.
-  //TODO: Remove magma bin when not define magma
-
-  //TODO: MAGMA int64? Update magma bin==> to fully empty!
-
   //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
-
-  //TODO: Add a resize function in Tensor_Hao, and Wf function in Lanczos.
 
   //TODO: Read and Write use HDF5 file?
 
   //TODO: FFTW GURU interface
-
-  //TODO: CHANGE 1D_BL NAME, REMOVE BLAS.

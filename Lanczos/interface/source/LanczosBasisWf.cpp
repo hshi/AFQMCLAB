@@ -20,7 +20,7 @@ LanczosBasisWf::LanczosBasisWf(size_t L)
 LanczosBasisWf::LanczosBasisWf(const TensorHao<complex<double>, 1> &wf)
 {
     LanczosBasisWf::wf = TensorHao<complex<double>, 1>( wf.getRank() );
-    copyBlas_cpu( wf, LanczosBasisWf::wf );
+    copy_cpu(wf, LanczosBasisWf::wf);
 }
 
 LanczosBasisWf::LanczosBasisWf(TensorHao<complex<double>, 1> &&wf) : wf( move(wf) )
@@ -56,19 +56,19 @@ const tensor_hao::TensorHao<std::complex<double>, 1> &LanczosBasisWf::getWf() co
 
 void LanczosBasisWf::normalize()
 {
-    complex<double> inverseNorm = 1.0 / normBlas_cpu(wf);
-    scalBlas_cpu(inverseNorm, wf);
+    complex<double> inverseNorm = 1.0 / norm_cpu(wf);
+    scal_cpu(inverseNorm, wf);
 }
 
 complex<double> LanczosBasisWf::calculateOverlapWith(const LanczosBasisWf &wfRight) const
 {
-    return dotcBlas_cpu(wf, wfRight.wf);
+    return dotc_cpu(wf, wfRight.wf);
 }
 
 void LanczosBasisWf::orthogonalizeWith(const LanczosBasisWf &wfBase)
 {
     complex<double> minusOverlap = -wfBase.calculateOverlapWith(*this);
-    axpyBlas_cpu(minusOverlap, wfBase.wf, wf);
+    axpy_cpu(minusOverlap, wfBase.wf, wf);
 }
 
 void LanczosBasisWf::read(const std::string& filename)
@@ -119,7 +119,7 @@ void LanczosBasisWf::copyDeep(const LanczosBasisWf &x)
         wf = TensorHao<complex<double>, 1>(x.wf.size());
     }
 
-    copyBlas_cpu( x.wf, wf );
+    copy_cpu(x.wf, wf);
 }
 
 void LanczosBasisWf::moveDeep(LanczosBasisWf &x)
