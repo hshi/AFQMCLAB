@@ -4,7 +4,6 @@
 #ifdef USE_MAGMA
 
 #include <vector>
-#include "magma.h"
 #include "tensor_core.h"
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"

@@ -4,6 +4,11 @@
 #include <vector>
 #include "../include/tensor_all.h"
 
+#ifdef USE_MAGMA
+#include "magma.h"
+#endif
+
+
 using namespace std;
 using namespace tensor_hao;
 

@@ -3,6 +3,7 @@
 #include "../include/tensor_2d_bl_cpu.h"
 #include "../include/tensor_2d_bl_magma.h"
 #include "../include/tensor_fill.h"
+#include "magma.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -12,8 +13,8 @@ size_t i_max=3136;
 void gmm_float_timing(size_t M, size_t N, size_t K)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<float,2> a(M, K); fill_random(a);
-    TensorHao<float,2> b(K, N); fill_random(b);
+    TensorHao<float,2> a(M, K); randomFill(a);
+    TensorHao<float,2> b(K, N); randomFill(b);
     TensorHao<float,2> c_cpu(M, N), c_magma(M, N);
 
     cpu_time = magma_wtime();
@@ -54,8 +55,8 @@ void gmm_float_timing_loop()
 void gmm_double_timing(size_t M, size_t N, size_t K)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<double,2> a(M, K); fill_random(a);
-    TensorHao<double,2> b(K, N); fill_random(b);
+    TensorHao<double,2> a(M, K); randomFill(a);
+    TensorHao<double,2> b(K, N); randomFill(b);
     TensorHao<double,2> c_cpu(M, N), c_magma(M, N);
 
     cpu_time = magma_wtime();
@@ -84,8 +85,8 @@ void gmm_double_timing_loop()
 void gmm_complexfloat_timing(size_t M, size_t N, size_t K)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<complex<float>,2> a(M, K); fill_random(a);
-    TensorHao<complex<float>,2> b(K, N); fill_random(b);
+    TensorHao<complex<float>,2> a(M, K); randomFill(a);
+    TensorHao<complex<float>,2> b(K, N); randomFill(b);
     TensorHao<complex<float>,2> c_cpu(M, N), c_magma(M, N);
 
     cpu_time = magma_wtime();
@@ -114,8 +115,8 @@ void gmm_complexfloat_timing_loop()
 void gmm_complexdouble_timing(size_t M, size_t N, size_t K)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<complex<double>,2> a(M, K); fill_random(a);
-    TensorHao<complex<double>,2> b(K, N); fill_random(b);
+    TensorHao<complex<double>,2> a(M, K); randomFill(a);
+    TensorHao<complex<double>,2> b(K, N); randomFill(b);
     TensorHao<complex<double>,2> c_cpu(M, N), c_magma(M, N);
 
     cpu_time = magma_wtime();
@@ -147,7 +148,7 @@ void eigen_double_timing(size_t N)
     TensorHao<double,1>  w_cpu(N),   w_magma(N);
 
     //Get a real symmetry a_cpu and a_magma
-    fill_random(a_cpu);
+    randomFill(a_cpu);
     for (size_t j=0; j<N; j++) {for (size_t i=j+1; i<N; i++) a_cpu(i,j)=a_cpu(j,i);}
     a_magma=a_cpu;
 
@@ -180,14 +181,14 @@ void eigen_complexdouble_timing(size_t N)
     TensorHao<double,1>           w_cpu(N),   w_magma(N);
 
     //Get a Hermition matrix a_cpu and a_magma
-    fill_random(a_cpu); 
+    randomFill(a_cpu); 
     for (size_t j=0; j<N; j++)
     {
         a_cpu(j,j)=a_cpu(j,j).real();
         for (size_t i=j+1; i<N; i++) a_cpu(i,j)=conj(a_cpu(j,i));
     }
     a_magma=a_cpu;
-    check_Hermitian(a_cpu); 
+    checkHermitian(a_cpu); 
 
     cpu_time = magma_wtime();
     eigen_cpu(a_cpu,w_cpu);
@@ -213,7 +214,7 @@ void eigen_complexdouble_timing_loop()
 void LUconstruct_timing(size_t N)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<complex<double>,2>  X(N,N); fill_random(X);
+    TensorHao<complex<double>,2>  X(N,N); randomFill(X);
 
     cpu_time = magma_wtime();
     LUDecomp<complex<double>> LU_cpu=LUconstruct_cpu(X);
@@ -240,7 +241,7 @@ void LUconstruct_timing_loop()
 void inverse_timing(size_t N)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<complex<double>,2> X(N,N); fill_random(X);
+    TensorHao<complex<double>,2> X(N,N); randomFill(X);
     TensorHao<complex<double>,2> A_cpu(N,N), A_magma(N,N);
     LUDecomp<complex<double>> LU_cpu=LUconstruct_cpu(X);
     LUDecomp<complex<double>> LU_magma=LUconstruct_magma(X);
@@ -271,10 +272,10 @@ void inverse_timing_loop()
 void solve_lineq_timing(size_t N, size_t M)
 {
     real_Double_t cpu_time, magma_time;
-    TensorHao<complex<double>,2> X(N,N); fill_random(X);
+    TensorHao<complex<double>,2> X(N,N); randomFill(X);
     LUDecomp<complex<double>> LU_cpu=LUconstruct_cpu(X);
     LUDecomp<complex<double>> LU_magma=LUconstruct_magma(X);
-    TensorHao<complex<double>,2> B(N,M); fill_random(B);
+    TensorHao<complex<double>,2> B(N,M); randomFill(B);
     TensorHao<complex<double>,2> A_cpu(N,M), A_magma(N,M);
 
     cpu_time = magma_wtime();
@@ -305,7 +306,7 @@ void QRMatrix_timing(size_t N, size_t M)
     real_Double_t cpu_time, magma_time;
     double det_cpu,det_magma;
     TensorHao<complex<double>,2> ph_cpu(N,M), ph_magma(N,M);
-    fill_random(ph_cpu); ph_magma=ph_cpu;
+    randomFill(ph_cpu); ph_magma=ph_cpu;
 
     cpu_time = magma_wtime();
     det_cpu=QRMatrix_cpu(ph_cpu);
@@ -350,7 +351,7 @@ void SVDMatrix_timing(size_t N)
     TensorHao<complex<double>,2> U_cpu(N,N), U_magma(N,N);
     TensorHao<complex<double>,2> V_cpu(N,N), V_magma(N,N);
     TensorHao<double,1> D_cpu(N), D_magma(N);
-    fill_random(U_cpu); U_magma=U_cpu;
+    randomFill(U_cpu); U_magma=U_cpu;
 
     cpu_time = magma_wtime();
     SVDMatrix_cpu(U_cpu, D_cpu, V_cpu);

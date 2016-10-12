@@ -21,7 +21,7 @@ add_library(mathHao STATIC $<TARGET_OBJECTS:mathHaoObject>)
 #For Test
 add_executable(mathTest ${SOURCE_HEADERS}  ${SOURCE_TESTS})
 target_link_libraries(mathTest mathHao mpiHao testHao
-        libgtest-main-hao ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        libgtest-main-hao ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${magma_libraries})
 
 target_include_directories(mathTest PUBLIC ${GTEST_INCLUDE_DIRS})
 

@@ -1,6 +1,8 @@
 #ifdef USE_MAGMA
 
-#include "tensor_2d_bl_magma.h"
+#include "../include/tensor_2d_bl_magma.h"
+#include "magma.h"
+#include <cmath> 
 
 using namespace std;
 
@@ -37,7 +39,7 @@ namespace tensor_hao
      // Copy data from host (CPU) to device (GPU)
      magma_ssetmatrix( AL0, AL1, A.data(), AL0, d_A, LDA );
      magma_ssetmatrix( BL0, BL1, B.data(), BL0, d_B, LDB );
-     if( abs(beta)>1e-32 ) magma_ssetmatrix( CL0, CL1, C.data(), CL0, d_C, LDC );
+     if( std::abs(beta)>1e-32 ) magma_ssetmatrix( CL0, CL1, C.data(), CL0, d_C, LDC );
 
      //Call magma_sgemm
      M=( TRANSA=='N' || TRANSA=='n' ) ? AL0:AL1;
@@ -56,7 +58,7 @@ namespace tensor_hao
           char TRANSA, char TRANSB, double alpha, double beta)
  {
      int AL0 = A.rank(0); int AL1 = A.rank(1);
-     int BL0 = B.rank(0); int BL1 = B.getRank(1);
+     int BL0 = B.rank(0); int BL1 = B.rank(1);
      int CL0 = C.rank(0); int CL1 = C.rank(1);
 
      magma_int_t M, N, K, LDA, LDB, LDC;
@@ -74,7 +76,7 @@ namespace tensor_hao
      // Copy data from host (CPU) to device (GPU)
      magma_dsetmatrix( AL0, AL1, A.data(), AL0, d_A, LDA );
      magma_dsetmatrix( BL0, BL1, B.data(), BL0, d_B, LDB );
-     if( abs(beta)>1e-32 ) magma_dsetmatrix( CL0, CL1, C.data(), CL0, d_C, LDC );
+     if( std::abs(beta)>1e-32 ) magma_dsetmatrix( CL0, CL1, C.data(), CL0, d_C, LDC );
 
      //Call magma_sgemm
      M=( TRANSA=='N' || TRANSA=='n' ) ? AL0:AL1;
@@ -111,7 +113,7 @@ namespace tensor_hao
      // Copy data from host (CPU) to device (GPU)
      magma_csetmatrix( AL0, AL1, (magmaFloatComplex* ) A.data(), AL0, d_A, LDA );
      magma_csetmatrix( BL0, BL1, (magmaFloatComplex* ) B.data(), BL0, d_B, LDB );
-     if( abs(beta)>1e-32 ) magma_csetmatrix( CL0, CL1, (magmaFloatComplex* ) C.data(), CL0, d_C, LDC );
+     if( std::abs(beta)>1e-32 ) magma_csetmatrix( CL0, CL1, (magmaFloatComplex* ) C.data(), CL0, d_C, LDC );
 
      //Call magma_sgemm
      M=( TRANSA=='N' || TRANSA=='n' ) ? AL0:AL1;
@@ -148,7 +150,7 @@ namespace tensor_hao
      // Copy data from host (CPU) to device (GPU)
      magma_zsetmatrix( AL0, AL1, (magmaDoubleComplex* ) A.data(), AL0, d_A, LDA );
      magma_zsetmatrix( BL0, BL1, (magmaDoubleComplex* ) B.data(), BL0, d_B, LDB );
-     if( abs(beta)>1e-32 ) magma_zsetmatrix( CL0, CL1, (magmaDoubleComplex* ) C.data(), CL0, d_C, LDC );
+     if( std::abs(beta)>1e-32 ) magma_zsetmatrix( CL0, CL1, (magmaDoubleComplex* ) C.data(), CL0, d_C, LDC );
 
      //Call magma_sgemm
      M=( TRANSA=='N' || TRANSA=='n' ) ? AL0:AL1;
@@ -223,7 +225,7 @@ namespace tensor_hao
 
      //Create LU object
      LUDecomp<complex<double>> y;
-     y.A    = TensorHao< complex<double>, 2 > ( x.n_ptr() );
+     y.A    = TensorHao< complex<double>, 2 > ( x.getRank() );
      y.ipiv = TensorHao<int,1>( x.rank(0) );
 
      //Prepare for zgetrf

@@ -100,7 +100,7 @@ TEST(Tensor_2d_common_fun, lognormPhaseDeterminant)
     EXPECT_COMPLEX_NEAR ( phase_exact,phase);
 
 #ifdef USE_MAGMA
-    lognorm_phase_determinant( LUconstruct_magma(X), lognorm, phase );
+    lognormPhaseDeterminant( LUconstruct_magma(X), lognorm, phase );
     EXPECT_COMPLEX_NEAR ( lognorm_exact, lognorm);
     EXPECT_COMPLEX_NEAR ( phase_exact,phase);
 #endif
@@ -121,7 +121,7 @@ TEST(Tensor_2d_common_fun, logDeterminant)
     EXPECT_COMPLEX_NEAR ( logdet_exact, logdet );
 
 #ifdef USE_MAGMA
-    logdet=log_determinant( LUconstruct_magma(X) );
+    logdet=logDeterminant( LUconstruct_magma(X) );
     EXPECT_COMPLEX_NEAR ( logdet_exact, logdet );
 #endif
 }

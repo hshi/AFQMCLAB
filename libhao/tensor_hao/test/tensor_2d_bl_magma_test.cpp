@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include "../include/tensor_2d_bl_magma.h"
-#include "../../../utilities/test_hao/gtest_custom.h"
+#include "../../test_hao/gtest_custom.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -242,7 +242,7 @@ TEST ( Tensor_2d_bl_magma, SVDMatrix )
     TensorHao<complex<double>,2> U_back(L,L);
     for(int i=0; i<L; i++) D_cd(i)=D(i);
 
-    gmm_magma(U, D_Multi_Matrix(D_cd, V), U_back);
+    gmm_magma(U, dMultiMatrix(D_cd, V), U_back);
 
     EXPECT_FALSE ( diff( D, D_exact, 1e-13 ) );
     EXPECT_FALSE ( diff( U_before, U_back, 1e-13 ) );

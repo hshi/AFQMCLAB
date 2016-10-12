@@ -103,6 +103,7 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp right now.
 
   //TODO: Test magma in Hurricane.
+  //TODO: Remove magma bin when not define magma
 
   //TODO: MAGMA int64? Update magma bin==> to fully empty!
 
@@ -113,3 +114,5 @@ This is a library for AFQMC.
   //TODO: Read and Write use HDF5 file?
 
   //TODO: FFTW GURU interface
+
+  //TODO: CHANGE 1D_BL NAME, REMOVE BLAS.
