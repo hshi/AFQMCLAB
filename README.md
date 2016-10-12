@@ -84,7 +84,7 @@ This is a library for AFQMC.
           - Use openmp for lapack, blas and Lanczos code: `-DUSE_OPENMP=on`
           - ( Only for system lapack, blas and ACML ), set fortran function nounderscore
 
-                  `-DFORTRAN_NO_UNDERSCORE=on`
+                 `-DFORTRAN_NO_UNDERSCORE=on`
           - ( Only for system lapack, blas and ACML ), set fortran function return void
 
                  `-DFORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID=on`
