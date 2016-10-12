@@ -106,3 +106,5 @@ This is a library for AFQMC.
   //TODO: Add a resize function in Tensor_Hao, and Wf function in Lanczos.
 
   //TODO: Read and Write use HDF5 file?
+
+  //TODO: FFTW GURU interface

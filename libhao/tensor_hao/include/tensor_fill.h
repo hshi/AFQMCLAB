@@ -12,28 +12,28 @@ namespace tensor_hao
     void randomFill(TensorCore<float, D> &A)
     {
         HAO_INT itwo = 2; HAO_INT size_A = A.size();
-        F77NAME(slarnv)( &itwo, lapack_ran_ISEED, &size_A, A.data() );
+        slarnv( &itwo, lapack_ran_ISEED, &size_A, A.data() );
     }
 
     template <size_t D>
     void randomFill(TensorCore<double, D> &A)
     {
         HAO_INT itwo = 2; HAO_INT size_A = A.size();
-        F77NAME(dlarnv)( &itwo, lapack_ran_ISEED, &size_A, A.data() );
+        dlarnv( &itwo, lapack_ran_ISEED, &size_A, A.data() );
     }
 
     template <size_t D>
     void randomFill(TensorCore<std::complex<float>, D> &A)
     {
         HAO_INT itwo = 2; HAO_INT size_A = A.size();
-        F77NAME(clarnv)( &itwo, lapack_ran_ISEED, &size_A, A.data() );
+        clarnv( &itwo, lapack_ran_ISEED, &size_A, A.data() );
     }
 
     template <size_t D>
     void randomFill(TensorCore<std::complex<double>, D> &A)
     {
         HAO_INT itwo = 2; HAO_INT size_A = A.size();
-        F77NAME(zlarnv)( &itwo, lapack_ran_ISEED, &size_A, A.data() );
+        zlarnv( &itwo, lapack_ran_ISEED, &size_A, A.data() );
     }
 
 }  //end namespace tensor_hao

@@ -13,20 +13,20 @@ namespace tensor_hao
         {
             cerr<<"Size not consistent in copyBlas_cpu"<<endl; exit(1);
         }
-        F77NAME(zcopy)(&L, x.data(), &inc_x, y.data(), &inc_y);
+        zcopy(&L, x.data(), &inc_x, y.data(), &inc_y);
     }
 
     complex<double> normBlas_cpu(const TensorCore<complex<double>, 1> &x, size_t incx)
     {
         HAO_INT L = x.size(); HAO_INT inc_x = incx;
-        complex<double> normBlas = F77NAME(dznrm2) ( &L , x.data() , &inc_x );
+        complex<double> normBlas = dznrm2 ( &L , x.data() , &inc_x );
         return normBlas;
     }
 
     void scalBlas_cpu(complex<double> a, TensorCore<complex<double>, 1> &x, size_t incx)
     {
         HAO_INT L = x.size(); HAO_INT inc_x = incx;
-        F77NAME(zscal) ( &L , &a , x.data() , &inc_x );
+        zscal ( &L , &a , x.data() , &inc_x );
     }
 
     complex<double> dotcBlas_cpu(const TensorCore<complex<double>, 1> &x, const TensorCore<complex<double>, 1> &y,
@@ -38,7 +38,13 @@ namespace tensor_hao
             cerr<<"Size not consistent in dotcBlas_cpu"<<endl; exit(1);
         }
         complex<double> result;
-        F77NAME(zdotc) (&result, &L, x.data(), &inc_x, y.data(), &inc_y);
+#ifndef FORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID
+        result = zdotc(
+#else
+        zdotc( &result,
+#endif
+        &L, x.data(), &inc_x, y.data(), &inc_y);
+
         return result;
     }
 
@@ -50,7 +56,7 @@ namespace tensor_hao
         {
             cerr<<"Size not consistent in axpyBlas_cpu"<<endl; exit(1);
         }
-        F77NAME(zaxpy) ( &L , &a , x.data() , &inc_x , y.data() , &inc_y );
+        zaxpy ( &L , &a , x.data() , &inc_x , y.data() , &inc_y );
     }
 
     void gemvBlas_cpu(const TensorCore<complex<double>, 2> & A,
@@ -77,7 +83,7 @@ namespace tensor_hao
             }
         }
 
-        F77NAME(zgemv) ( &TRANSA , &M , &N , &alpha , A.data() , &M , x.data() , &inc_x , &beta , y.data() , &inc_y );
+        zgemv ( &TRANSA , &M , &N , &alpha , A.data() , &M , x.data() , &inc_x , &beta , y.data() , &inc_y );
     }
 
 } //end namespace tensor_hao
