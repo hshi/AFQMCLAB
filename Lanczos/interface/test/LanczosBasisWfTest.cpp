@@ -55,6 +55,20 @@ TEST_F(LanczosBasisWfTest, moveConstructor)
     EXPECT_FALSE( wfBase.getWf().data() );
 }
 
+TEST_F(LanczosBasisWfTest, matrixCopyAssignment)
+{
+    LanczosBasisWf wf; wf =vec;
+    EXPECT_FALSE( diff( vec, wf.getWf(), 1e-12 ) );
+}
+
+TEST_F(LanczosBasisWfTest, matrixMoveAssignment)
+{
+    TensorHao<complex<double>, 1> vecTemp(vec);
+    LanczosBasisWf wf; wf = move(vecTemp);
+    EXPECT_FALSE( diff( vec, wf.getWf(), 1e-12 ) );
+    EXPECT_FALSE( vecTemp.data() );
+}
+
 TEST_F(LanczosBasisWfTest, copyAssignment)
 {
     LanczosBasisWf wfBase(vec);
@@ -70,18 +84,32 @@ TEST_F(LanczosBasisWfTest, moveAssignment)
     EXPECT_FALSE( wfBase.getWf().data() );
 }
 
-TEST_F(LanczosBasisWfTest, normalize)
+TEST_F(LanczosBasisWfTest, scale)
 {
     LanczosBasisWf wf(vec);
-    wf.normalize();
+    complex<double> alpha(2.0, 3.0);
+    wf.scale(alpha);
 
-    TensorHao<complex<double>, 1> vecNorm(L);
-    complex<double> inverseNorm(0,0);
-    for(size_t i = 0; i < L; ++i) inverseNorm += std::norm( vec(i) );
-    inverseNorm = 1.0 / sqrt(inverseNorm);
-    for(size_t i = 0; i < L; ++i) vecNorm(i) = vec(i) * inverseNorm;
+    TensorHao<complex<double>, 1> vecExpect = alpha * vec;
 
-    EXPECT_FALSE( diff(vecNorm, wf.getWf(), 1e-12) );
+    EXPECT_FALSE( diff( vecExpect, wf.getWf(), 1e-12) );
+}
+
+TEST_F(LanczosBasisWfTest, addEqual)
+{
+    TensorHao<complex<double>, 1> vecAdd(L); randomFill(vecAdd);
+    LanczosBasisWf wf(vec), wfAdd(vecAdd);
+
+    complex<double> alpha(2.0, 3.0);
+    TensorHao<complex<double>, 1> wfNew(L);
+    for(size_t i = 0; i < L; ++i)
+    {
+        wfNew(i) = vec(i) + alpha * vecAdd(i);
+    }
+
+    wf.addEqual(alpha, wfAdd);
+
+    EXPECT_FALSE( diff(wfNew, wf.getWf(), 1e-12) );
 }
 
 TEST_F(LanczosBasisWfTest, overlap)
@@ -97,22 +125,49 @@ TEST_F(LanczosBasisWfTest, overlap)
     EXPECT_COMPLEXDOUBLE_EQ(overlap_exact, overlap);
 }
 
-TEST_F(LanczosBasisWfTest, orthogonal)
+TEST_F(LanczosBasisWfTest, orthogonalizeWith)
 {
     TensorHao<complex<double>, 1> vecBase(L); randomFill(vecBase);
     LanczosBasisWf wf(vec), wfBase(vecBase);
 
-    complex<double> overlap = wfBase.calculateOverlapWith(wf);
-    TensorHao<complex<double>, 1> vecOrthogonal(L);
-    for(size_t i = 0; i < L; ++i)
-    {
-        vecOrthogonal(i) = vec(i) - overlap * vecBase(i);
-    }
-
+    wfBase.normalize();
     wf.orthogonalizeWith(wfBase);
 
-    EXPECT_FALSE( diff(vecOrthogonal, wf.getWf(), 1e-12) );
+    complex<double> overlapExpect(0.0, 0.0);
+    complex<double> overlapActual = wf.calculateOverlapWith(wfBase);
+    EXPECT_COMPLEX_NEAR( overlapExpect, overlapActual, 1e-12);
 }
+
+TEST_F(LanczosBasisWfTest, normalize)
+{
+    LanczosBasisWf wf(vec);
+
+    double nrm2Expect = sqrt( wf.calculateOverlapWith(wf) ).real();
+    double nrm2Actual = wf.normalize();
+    EXPECT_DOUBLE_EQ( nrm2Expect, nrm2Actual );
+
+    complex<double> overlapExpect(1.0, 0.0);
+    complex<double> overlapActual = wf.calculateOverlapWith(wf);
+    EXPECT_COMPLEX_NEAR( overlapExpect, overlapActual, 1e-12);
+}
+
+TEST_F(LanczosBasisWfTest, orthonormalizeWith)
+{
+    TensorHao<complex<double>, 1> vecBase(L); randomFill(vecBase);
+    LanczosBasisWf wf(vec), wfBase(vecBase);
+
+    wfBase.normalize();
+    wf.orthonormalizeWith(wfBase);
+
+    complex<double> overlapExpect(0.0, 0.0);
+    complex<double> overlapActual = wf.calculateOverlapWith(wfBase);
+    EXPECT_COMPLEX_NEAR( overlapExpect, overlapActual, 1e-12);
+
+    overlapExpect = 1.0;
+    overlapActual = wf.calculateOverlapWith(wf);
+    EXPECT_COMPLEX_NEAR( overlapExpect, overlapActual, 1e-12);
+}
+
 
 TEST_F(LanczosBasisWfTest, writeAndRead)
 {

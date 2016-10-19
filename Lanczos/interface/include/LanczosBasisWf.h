@@ -19,24 +19,29 @@ class LanczosBasisWf
     LanczosBasisWf(const LanczosBasisWf &x);
     LanczosBasisWf(LanczosBasisWf &&x);
 
+    LanczosBasisWf& operator=(const tensor_hao::TensorHao<std::complex<double>, 1> &wf);
+    LanczosBasisWf& operator=(tensor_hao::TensorHao<std::complex<double>, 1> &&wf);
     LanczosBasisWf& operator=(const LanczosBasisWf& x);
     LanczosBasisWf& operator=(LanczosBasisWf&& x);
 
     const tensor_hao::TensorHao<std::complex<double>, 1> &getWf() const;
-    void normalize();
+    tensor_hao::TensorHao<std::complex<double>, 1> &wfRef();
+    size_t size() const;
+    void resize(size_t L);
+
+    void randomFill();
+    void scale(std::complex<double> alpha);
+    void addEqual(std::complex<double> alpha, const LanczosBasisWf &wfAdd);
     std::complex<double> calculateOverlapWith(const LanczosBasisWf &wfRight) const;
     void orthogonalizeWith(const LanczosBasisWf &wfBase);
+    double normalize();
+    void orthonormalizeWith(const LanczosBasisWf &wfBase);
 
     void read(const std::string& filename);
     void write(const std::string& filename) const;
-    //TODO: add orthonormalizeWith
-    //TODO: add_equal a * wf
-    //TODO: maybe swap?
-    //TODO: read note, learn about next ==> careful about 2x2 Lanczos matrix case?
-    //TODO: How about dynamic case?
  private:
-    void copyDeep(const LanczosBasisWf &x);
-    void moveDeep(LanczosBasisWf& x);
+    void copyDeep(const tensor_hao::TensorHao<std::complex<double>, 1> &wf);
+    void moveDeep(tensor_hao::TensorHao<std::complex<double>, 1>& wf);
 };
 
 #endif //AFQMCLIB_LANCZOSBASISWF_H

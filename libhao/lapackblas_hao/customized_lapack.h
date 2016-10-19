@@ -154,6 +154,17 @@ void zgesvd(
     const HAO_INT* lwork,
     double* rwork, HAO_INT* info );
 
+#define dsteqr FORTRAN_WRAPPER(dsteqr)
+void dsteqr(
+    const char* compz,
+    const HAO_INT* n,
+    double* d,
+    double* e,
+    double* z,
+    const HAO_INT* ldz,
+    double* work,
+    HAO_INT* info );
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

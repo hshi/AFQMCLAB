@@ -105,6 +105,6 @@ This is a library for AFQMC.
 
   //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
 
-  //TODO: Read and Write use HDF5 file?
+  //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
   //TODO: FFTW GURU interface

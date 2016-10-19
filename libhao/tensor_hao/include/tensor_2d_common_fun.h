@@ -6,7 +6,7 @@
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"
 #include "tensor_element_wise.h"
-#include "../../lapackblas_hao/blas_lapack_wrap.h"
+#include "../../lapackblas_hao/Hao_types.h"
 
 namespace tensor_hao
 {

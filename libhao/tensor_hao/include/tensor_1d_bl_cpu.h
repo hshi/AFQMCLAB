@@ -12,7 +12,7 @@ namespace tensor_hao
     void copy_cpu(const TensorCore<std::complex<double>, 1> &x, TensorCore<std::complex<double>, 1> &y,
                   size_t incx = 1, size_t incy = 1);
 
-    std::complex<double> norm_cpu(const TensorCore<std::complex<double>, 1> &x, size_t incx = 1);
+    double nrm2_cpu(const TensorCore<std::complex<double>, 1> &x, size_t incx = 1);
 
     void scal_cpu(std::complex<double> a, TensorCore<std::complex<double>, 1> &x, size_t incx = 1);
 

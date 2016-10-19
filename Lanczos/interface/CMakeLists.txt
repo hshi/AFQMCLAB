@@ -1,7 +1,9 @@
 #For source
 set(SOURCE_HEADERS
         include/Lanczos.h
-        include/LanczosBasisWf.h)
+        include/LanczosBasisWf.h
+        include/modelInterface.h
+        include/LanczosExcepts.h)
 set(SOURCE_FILES
         source/Lanczos.cpp
         source/LanczosBasisWf.cpp)

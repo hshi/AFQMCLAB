@@ -16,11 +16,10 @@ namespace tensor_hao
         zcopy(&L, x.data(), &inc_x, y.data(), &inc_y);
     }
 
-    complex<double> norm_cpu(const TensorCore<complex<double>, 1> &x, size_t incx)
+    double nrm2_cpu(const TensorCore<complex<double>, 1> &x, size_t incx)
     {
         HAO_INT L = x.size(); HAO_INT inc_x = incx;
-        complex<double> normBlas = dznrm2 ( &L , x.data() , &inc_x );
-        return normBlas;
+        return dznrm2 ( &L , x.data() , &inc_x );
     }
 
     void scal_cpu(complex<double> a, TensorCore<complex<double>, 1> &x, size_t incx)

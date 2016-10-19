@@ -6,7 +6,7 @@
 using namespace std;
 using namespace tensor_hao;
 
-TEST(Tensor_1d_bl_cpu, copyBlas)
+TEST(Tensor_1d_bl_cpu, copy)
 {
     TensorHao<complex<double>,1> x(6), y(6);
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
@@ -14,24 +14,24 @@ TEST(Tensor_1d_bl_cpu, copyBlas)
     EXPECT_FALSE( diff(x,y, 1e-12) );
 }
 
-TEST(Tensor_1d_bl_cpu, normBlas)
+TEST(Tensor_1d_bl_cpu, nrm2)
 {
     TensorHao<complex<double>,1> x(6);
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
 
-    complex<double> norm_exact(0,0);
+    double nrm2Expect(0);
     for(size_t i = 0; i < x.size() ; ++i)
     {
-        norm_exact += std::norm( x(i) );
+        nrm2Expect += std::norm( x(i) );
     }
-    norm_exact = sqrt( norm_exact);
+    nrm2Expect = sqrt( nrm2Expect);
 
-    complex<double> norm_blas = norm_cpu(x);
+    double nrm2Actual = nrm2_cpu(x);
 
-    EXPECT_COMPLEXDOUBLE_EQ( norm_exact, norm_blas);
+    EXPECT_DOUBLE_EQ( nrm2Expect, nrm2Actual);
 }
 
-TEST(Tensor_1d_bl_cpu, scaleBlas)
+TEST(Tensor_1d_bl_cpu, scale)
 {
     TensorHao<complex<double>,1> x(6), y(6);
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
@@ -46,7 +46,7 @@ TEST(Tensor_1d_bl_cpu, scaleBlas)
     EXPECT_FALSE( diff(x, y, 1e-12) );
 }
 
-TEST(Tensor_1d_bl_cpu, dotcBlas)
+TEST(Tensor_1d_bl_cpu, dotc)
 {
     TensorHao<complex<double>,1> x(6), y(6);
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
@@ -63,7 +63,7 @@ TEST(Tensor_1d_bl_cpu, dotcBlas)
     EXPECT_COMPLEXDOUBLE_EQ(dotExact, dotTest);
 }
 
-TEST(Tensor_1d_bl_cpu, axpy_cpu)
+TEST(Tensor_1d_bl_cpu, axpy)
 {
     TensorHao<complex<double>,1> x(6), y(6), yExact(6);
     x = { {0.0,0.8},{3.0,4.0},{2.123,3.11},{2.0,3.3},{4.0,5.0},{3.123,4.11} };
@@ -79,7 +79,7 @@ TEST(Tensor_1d_bl_cpu, axpy_cpu)
     EXPECT_FALSE( diff(yExact, y, 1e-12));
 }
 
-TEST(Tensor_1d_bl_cpu, gemv_cpu)
+TEST(Tensor_1d_bl_cpu, gemv)
 {
     TensorHao<complex<double>,2> A(6,5);
     TensorHao<complex<double>,1> x(6), y(5), yExact(5);
