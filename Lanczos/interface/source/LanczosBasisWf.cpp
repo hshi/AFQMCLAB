@@ -134,7 +134,8 @@ void LanczosBasisWf::read(const std::string& filename)
             cout << "Error opening file in read main thread!!!";
             exit(1);
         }
-        size_t L = wf.size();
+        size_t L; wf_file>> L;
+        if( L != wf.size() ) wf.resize(L);
         for(size_t i = 0; i < L; i++)
         {
             wf_file >> read_r >> read_i;
@@ -157,7 +158,7 @@ void LanczosBasisWf::write(const std::string& filename) const
             exit(1);
         }
         wf_file<<setprecision(16)<<scientific;
-        size_t L = wf.size();
+        size_t L = wf.size(); wf_file<<L<<"\n";
         for(size_t i=0; i<L; i++) wf_file<<setw(26)<<wf(i).real()<<setw(26)<<wf(i).imag()<<"\n";
         wf_file.close();
     }

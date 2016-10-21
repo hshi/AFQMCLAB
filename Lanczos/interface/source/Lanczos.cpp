@@ -12,210 +12,173 @@ Lanczos::Lanczos(const ModelInterface &modelInterface)
 {
     model = &modelInterface;
     wfSize = model->getWfSize();
+    lanStatus = 'N';
+    reserve(300, 1000);
 }
 
-void Lanczos::randomInitWf()
+double Lanczos::getEigenvalue(size_t eigenIndex) const
 {
+    return eigenvalues[eigenIndex];
+}
+
+const LanczosBasisWf &Lanczos::getEigenstate(size_t eigenIndex) const
+{
+    return eigenstates[eigenIndex];
+}
+
+tuple<const vector<double> &, const vector<double> &> Lanczos::getLanElements() const
+{
+    return forward_as_tuple(lana, lanb );
+}
+
+const LanczosBasisWf &Lanczos::getLanWavefunction(size_t lanIndex) const
+{
+    return lanwfs[lanIndex];
+}
+
+void Lanczos::readEigens(size_t numberOfWaveFunctions)
+{
+    readEigenValues(numberOfWaveFunctions);
+    readEigenStates(numberOfWaveFunctions);
+}
+
+void Lanczos::writeEigens(size_t startIndex) const
+{
+    writeEigenValues(startIndex);
+    writeEigenStates(startIndex);
+}
+
+void Lanczos::readLanMatrix()
+{
+    readLanMatrixStatus();
+    readLanMatrixElements();
+    readLanMatrixWavefunctions();
+}
+
+void Lanczos::writeLanMatrix() const
+{
+    writeLanMatrixStatus();
+    writeLanMatrixElements();
+    writeLanMatrixWavefunctions();
+}
+
+void Lanczos::reserve(size_t targetLanSize, size_t targetEigenSize)
+{
+    lana.reserve(targetLanSize);
+    lanb.reserve(targetLanSize);
+    lanwfs.reserve(targetLanSize);
+    eigenvalues.reserve(targetEigenSize);
+    eigenstates.reserve(targetEigenSize);
+}
+
+void Lanczos::clear()
+{
+    lanStatus = 'N';
+    lana.resize(0);
+    lanb.resize(0);
+    lanwfs.resize(0);
+}
+
+void Lanczos::randomWfInit()
+{
+    cout<<"\nInitial Lanczos matrix by setting wave function randomly."<<endl;
     LanczosBasisWf wfNew(wfSize);
     wfNew.randomFill();
-    eigenstates.push_back( move(wfNew) );
-    projectWaveFunction( eigenstates.back() );
+    if( lanwfs.size() > 0 ) lanwfs[0] = move(wfNew);
+    else lanwfs.push_back( move(wfNew) );
+    initLanczosMatrixFromLanwfsZero();
+    cout<<endl;
 }
 
-void Lanczos::readInitWf(const string &filename)
+void Lanczos::readWfInit(const string &filename)
 {
+    cout<<"\nInitial Lanczos matrix by reading wave function from "<<filename<<" ."<<endl;
     LanczosBasisWf wfNew(wfSize);
     wfNew.read(filename);
-    eigenstates.push_back( move(wfNew) );
-    projectWaveFunction( eigenstates.back() );
-
+    if( lanwfs.size() > 0 ) lanwfs[0] = move(wfNew);
+    else lanwfs.push_back( move(wfNew) );
+    initLanczosMatrixFromLanwfsZero();
+    cout<<endl;
 }
 
-void Lanczos::readConvergedWfs(size_t numberOfWaveFunctions)
+void Lanczos::inputWfInit(LanczosBasisWf &wfNew)
 {
-    string filename;
-    eigenstates.resize(numberOfWaveFunctions);
-    for(size_t i = 0; i < numberOfWaveFunctions; ++i)
-    {
-        filename="eigenstate_" + to_string(i) +".dat";
-        eigenstates[i].resize(wfSize);
-        eigenstates[i].read(filename);
-    }
+    cout<<"\nInitial Lanczos matrix by inputting wave function"<<endl;
+    if( lanwfs.size() > 0 ) lanwfs[0] = move(wfNew);
+    else lanwfs.push_back( move(wfNew) );
+    initLanczosMatrixFromLanwfsZero();
+    cout<<endl;
 }
 
-void Lanczos::writeWf(const string &filename) const
+void Lanczos::readLanInit()
 {
-    const LanczosBasisWf &currentState = eigenstates.back();
-    currentState.write(filename);
-}
-
-void Lanczos::writeAllWfs(size_t startIndex) const
-{
-    string filename;
-    for(size_t i = startIndex; i < eigenstates.size(); ++i)
-    {
-        filename="eigenstate_" + to_string(i) +".dat";
-        eigenstates[i].write(filename);
-    }
+    cout<<"\nInitial Lanczos matrix by reading everything from file. "<<endl;
+    readLanMatrix();
+    cout<<endl;
 }
 
 void Lanczos::findEigen(const size_t L, LanczosParam lanczosParam)
 {
-    eigenstates.reserve( eigenstates.size() + L );
     for(size_t i = 0; i < L; ++i)
     {
-        randomInitWf();
+        randomWfInit();
         FindOneEigen(lanczosParam);
     }
 }
 
+tuple<double, vector<double> > diagonalizeLanczosMatrix(vector<double> a, vector<double> b);
+
 void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 {
-    vector<double> a, b, lanczosMatrixVector;
-    double energy, energyBackup;
+    double energy;
+    vector<double> lanczosMatrixVector;
 
     for(size_t lanIndex = 0; lanIndex < lanczosParam.maxLoop; ++lanIndex)
     {
-        tie( a, b ) = getLanczosMatrix(lanczosParam.matrixSize, lanczosParam.accuracy, lanczosParam.litForProjection);
-        energyBackup = a[0];
+        getLanczosMatrix(lanczosParam.matrixSize-lana.size(), lanczosParam.accuracy,
+                         lanczosParam.litForProjection, lanczosParam.lanwfsFlag);
 
-        if( a.size() == 1 )
-        {
-            cout<<setprecision(16)<<"\nSUCCESS! Find Eigenstate #" << eigenstates.size() <<" : "<<a[0]<<"\n"<<endl;
-            return;
-        }
+        if( lana.size() == 1 ) { saveToEigen(); return; }
 
-        tie( energy, lanczosMatrixVector ) = diagonalizeLanczosMatrix(a, b);
+        tie( energy, lanczosMatrixVector ) = diagonalizeLanczosMatrix(lana, lanb);
 
         cout<<setprecision(16)<<"Variational energy for "<< eigenstates.size()<<" is "<<energy<<endl;
 
-        if( energyBackup < energy )
+        if( lana[0] < energy )
         {
-            if(lanczosParam.convergeFlag == 'E')
-            {
-                cout<<setprecision(16)<<"\nSUCCESS! Find Eigenstate #" << eigenstates.size() <<" : "<<a[0]<<"\n"<< endl;
-                return;
-            }
+            if(lanczosParam.convergeFlag == 'E') { saveToEigen(); return; }
             else if(lanczosParam.convergeFlag == 'W')
             {
                 cout<<"Energy is converged! Wait for the convergence of wave function!"<<endl;
             }
         }
 
-        getNewEigenstate(a, b, lanczosMatrixVector);
+        getNewLanwfsZero(lanczosMatrixVector, lanczosParam.litForProjection, lanczosParam.lanwfsFlag);
     }
 
     throw LanczosNotConverge_error("Lanczos does not converge, increase lanczos maxloop or lanczos matrixSize!");
 }
 
-tuple<vector<double>, vector<double> > Lanczos::getLanczosMatrix(size_t L, double accuracy, double litForProjection)
+tuple<const vector<double> &, const vector<double> &>
+Lanczos::getLanczosMatrix(size_t L, double accuracy, double litForProjection, char wfFlag)
 {
-    wfTwo = eigenstates.back();
+    if( lanStatus == 'N' )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
 
-    vector<double> a, b;
-
-    b.push_back(0);
-
-    for(size_t i = 0; i < (L-1); ++i)
+    if( wfFlag == 'F' )
     {
-        a.push_back( getLanczosDiagonalElement() );
-        b.push_back( getLanczosOffdiagonalElement( a[i], b[i]) );
-
-        recurseWaveFunctions();
-
-        if( abs( b.back() ) < accuracy ) break;
-        if( abs( b.back() ) < litForProjection ) projectWaveFunction(wfTwo);
+        if( lanStatus == 'R' )
+        {
+            cout<<"Error!!! Lanczos Matrix is in Recurse status, can not build full matrix!"<<endl;
+            exit(1);
+        }
+        getLanczosMatrixFull(L, accuracy, litForProjection);
     }
 
-    if( abs( b.back() ) < accuracy ) b.pop_back();
-    else a.push_back( getLanczosDiagonalElement() );
-
-    return make_tuple( move(a),  move(b) );
-}
-
-double Lanczos::getLanczosDiagonalElement()
-{
-    model->applyHToWf(wfTwo, wfThree);
-    complex<double> a = wfThree.calculateOverlapWith(wfTwo);
-    return a.real();
-}
-
-double Lanczos::getLanczosOffdiagonalElement(complex<double> a, complex<double> b)
-{
-    wfThree.addEqual(-a, wfTwo);
-    if( abs(b) > 1e-100 ) wfThree.addEqual(-b, wfOne);
-    return wfThree.normalize();
-}
-
-void Lanczos::recurseWaveFunctions()
-{
-    LanczosBasisWf wfTemp;
-    wfTemp  = move(wfOne);
-    wfOne   = move(wfTwo);
-    wfTwo   = move(wfThree);
-    wfThree = move(wfTemp);
-}
-
-tuple<double, vector<double> > Lanczos::diagonalizeLanczosMatrix(vector<double> a, vector<double> b) const
-{
-    if( a.size() != b.size() )
+    if( wfFlag == 'R' )
     {
-        cerr<<"Input size is not consistent in Lanczos::diagonalizeLanczosMatrix!"<<endl;
-        exit(1);
+        if( lanStatus == 'F' ) changeLanStatusToRecurse();
+        getLanczosMatrixRecurse(L, accuracy, litForProjection);
     }
 
-    HAO_INT L = a.size();
-    HAO_INT lwork = 2*L -2; if( lwork < 1 ) lwork = 1;
-    vector<double> work(lwork);
-    vector<double> fullvector(L*L);
-    char compz = 'I'; HAO_INT info;
-    dsteqr( &compz , &L, a.data() , b.data()+1 , fullvector.data() , &L , work.data() , &info );
-    if( info != 0 )
-    {
-        cerr<<"Dsteqr in Lanczos::diagonalizeLanczosMatrix does not execute well "<<info<<endl;
-        exit(1);
-    }
-
-    double  lowestValue = a[0];
-    vector<double> lowestVector(L);
-    copy( fullvector.data(), fullvector.data()+L, lowestVector.data() );
-
-    return make_tuple( lowestValue,  move( lowestVector ) );
+    return getLanElements();
 }
-
-void Lanczos::getNewEigenstate(const vector<double> &a, const vector<double> &b, const vector<double> &vec)
-{
-    LanczosBasisWf &currentEigenstate = eigenstates.back();
-    wfTwo = currentEigenstate;
-
-    currentEigenstate.scale( vec[0] );
-
-    size_t L = vec.size();
-    for(size_t i = 0; i < (L-1); ++i)
-    {
-        model->applyHToWf(wfTwo, wfThree);
-        getLanczosOffdiagonalElement( a[i], b[i]);
-        currentEigenstate.addEqual( vec[i+1], wfThree );
-        recurseWaveFunctions();
-    }
-    projectWaveFunction(currentEigenstate);
-}
-
-void Lanczos::projectWaveFunction(LanczosBasisWf &wfToProject)
-{
-    size_t L = eigenstates.size()-1;
-    for(size_t i = 0; i < L; ++i)
-    {
-        wfToProject.orthogonalizeWith( eigenstates[i] );
-    }
-
-    model->projectSymmetry( wfToProject );
-
-    double nrm2 = wfToProject.normalize();
-
-    cout<<scientific<<"After projection, the normalized factor is "<<nrm2<<endl;
-}
-
-Lanczos::Lanczos(const Lanczos& x)  {};
-
-Lanczos & Lanczos::operator  = (const Lanczos& x) { return *this; }

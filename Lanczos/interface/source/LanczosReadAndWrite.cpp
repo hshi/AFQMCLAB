@@ -1,0 +1,131 @@
+//
+// Created by boruoshihao on 10/20/16.
+//
+#include <fstream>
+#include "../include/Lanczos.h"
+
+using namespace tensor_hao;
+
+using namespace std;
+
+void Lanczos::readEigenValues(size_t numberOfWaveFunctions)
+{
+    string filename;
+    eigenvalues.resize(numberOfWaveFunctions);
+    ifstream eigenFile;
+    for(size_t i = 0; i < numberOfWaveFunctions; ++i)
+    {
+        filename="eigenvalue_" + to_string(i) +".dat";
+        eigenFile.open(filename, ios::in);
+        if( !eigenFile.is_open() ) { cout << "Error opening file for Eigenvalues !!!"; exit(1); }
+        eigenFile >> eigenvalues[i];
+        eigenFile.close();
+    }
+}
+
+void Lanczos::readEigenStates(size_t numberOfWaveFunctions)
+{
+    string filename;
+    eigenstates.resize(numberOfWaveFunctions);
+    for(size_t i = 0; i < numberOfWaveFunctions; ++i)
+    {
+        filename="eigenstate_" + to_string(i) +".dat";
+        eigenstates[i].read(filename);
+    }
+}
+
+void Lanczos::writeEigenValues(size_t startIndex) const
+{
+    string filename;
+    ofstream eigenFile;
+    for(size_t i = startIndex; i < eigenvalues.size(); ++i)
+    {
+        filename = "eigenvalue_" + to_string(i) + ".dat";
+        eigenFile.open(filename, ios::out | ios::trunc);
+        if( !eigenFile.is_open() )  { cout << "Error opening file for Eigenvalues !!!"; exit(1); }
+        eigenFile<<setprecision(16)<<scientific;
+        eigenFile<<setw(26)<< eigenvalues[i]<<"\n";
+        eigenFile.close();
+    }
+}
+
+void Lanczos::writeEigenStates(size_t startIndex) const
+{
+    string filename;
+    for(size_t i = startIndex; i < eigenstates.size(); ++i)
+    {
+        filename="eigenstate_" + to_string(i) +".dat";
+        eigenstates[i].write(filename);
+    }
+}
+
+void Lanczos::readLanMatrixStatus()
+{
+    string filename = "lanczosMatrixStatus.dat";
+    ifstream file;
+    file.open(filename, ios_base::in);
+    if( !file.is_open() ) { cout << "Error opening file for read lanczosMatrixStatus!!!"; exit(1); }
+    size_t lanSize, lanwfSize;
+    file >> lanSize >> lanwfSize >> lanStatus;
+    file.close();
+
+    lana.resize( lanSize );
+    lanb.resize( lanSize );
+    lanwfs.resize( lanwfSize );
+}
+
+void Lanczos::readLanMatrixElements()
+{
+    string filename = "lanczosMatrixElements.dat";
+    ifstream file;
+    file.open(filename, ios_base::in);
+    if( !file.is_open() ) { cout << "Error opening file for read lanczosMatrixElements!!!"; exit(1); }
+    for(size_t i = 0; i < lana.size(); ++i)
+    {
+        file >> lana[i] >> lanb[i];
+    }
+    file.close();
+}
+
+void Lanczos::readLanMatrixWavefunctions()
+{
+    string filename;
+    for(size_t i = 0; i < lanwfs.size(); ++i)
+    {
+        filename = "lanczosMatrixWf_" + to_string(i) + ".dat";
+        lanwfs[i].read(filename);
+    }
+}
+
+void Lanczos::writeLanMatrixStatus() const
+{
+    string filename = "lanczosMatrixStatus.dat";
+    ofstream file;
+    file.open(filename, ios_base::out | ios_base::trunc);
+    if( !file.is_open() )  { cout << "Error opening file for write lanczosMatrixStatus!!!"; exit(1); }
+    file << setw(26) << lana.size() << setw(26) << lanwfs.size() << setw(26) << lanStatus << "\n";
+    file.close();
+}
+
+void Lanczos::writeLanMatrixElements() const
+{
+    string filename = "lanczosMatrixElements.dat";
+    ofstream file;
+    file.open(filename, ios_base::out | ios_base::trunc);
+    if( !file.is_open() )  { cout << "Error opening file for write lanczosMatrixElements!!!"; exit(1); }
+    file<<setprecision(16)<<scientific;
+    for(size_t i = 0; i < lana.size(); ++i)
+    {
+        file << setw(26) << lana[i] << setw(26) << lanb[i] << "\n";
+    }
+    file.close();
+}
+void Lanczos::writeLanMatrixWavefunctions() const
+{
+    string filename;
+    for(size_t i = 0; i < lanwfs.size(); ++i)
+    {
+        filename = "lanczosMatrixWf_" + to_string(i) + ".dat";
+        lanwfs[i].write(filename);
+    }
+}

@@ -6,6 +6,9 @@ set(SOURCE_HEADERS
         include/LanczosExcepts.h)
 set(SOURCE_FILES
         source/Lanczos.cpp
+        source/LanczosReadAndWrite.cpp
+        source/LanczosUtilities.cpp
+        source/LanczosGenerateMatrix.cpp
         source/LanczosBasisWf.cpp)
 set(SOURCE_TESTS
         test/LanczosTest.cpp
@@ -22,4 +25,4 @@ target_link_libraries(lanczosTest lanczosHao libHao libgtest-main-hao ${ext_libr
 
 target_include_directories(lanczosTest PUBLIC ${ext_include_dirs})
 
-add_my_test(lanczosTest "$<TARGET_FILE:lanczosTest>")
+add_test( NAME lanczosTest COMMAND "$<TARGET_FILE:lanczosTest>")

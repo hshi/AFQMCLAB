@@ -66,7 +66,15 @@ class LanczosTest: public ::testing::Test
 
 TEST_F(LanczosTest, findEigen)
 {
-    cout<<he<<endl;
+    cout<<setprecision(16)<<he<<endl;
     Lanczos lanczos(hmatrix);
-    lanczos.findEigen(5);
+    lanczos.findEigen(1);
 }
+
+//TEST_F(LanczosTest, findOneEigen)
+//{
+//    cout<<he<<endl;
+//    Lanczos lanczos(hmatrix);
+//    lanczos.randomWfInit();
+//    lanczos.FindOneEigen( {10, 1e-10, 'E', 20, 0.01, 'F'} );
+//}
