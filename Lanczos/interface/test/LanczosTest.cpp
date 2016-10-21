@@ -68,7 +68,7 @@ TEST_F(LanczosTest, findEigen)
 {
     cout<<setprecision(16)<<he<<endl;
     Lanczos lanczos(hmatrix);
-    lanczos.findEigen(1);
+    lanczos.findEigen(1, {20, 1e-10, 'E', 100, 0.01, 'F'} );
 }
 
 //TEST_F(LanczosTest, findOneEigen)

@@ -7,6 +7,20 @@ using namespace tensor_hao;
 
 using namespace std;
 
+void Lanczos::prepareLanReturn( char defaultStatus)
+{
+    lanb.pop_back();
+    lanStatus = ( lana.size() < 4 ) ? 'B' : defaultStatus ;
+}
+
+void Lanczos::projectWaveFunctionAndPrintInformation(size_t lanwfsIndex)
+{
+    cout << "\nSmall b " << lanb.back() << ", try to stabilize new wave function:" << endl;
+    double nrm2 = projectWaveFunction( lanwfsIndex );
+    cout<<"After projection, the normalized factor is "<<nrm2<<endl;
+    cout<<endl;
+}
+
 double Lanczos::projectWaveFunction(size_t lanwfsIndex)
 {
     LanczosBasisWf &wf = lanwfs[lanwfsIndex];

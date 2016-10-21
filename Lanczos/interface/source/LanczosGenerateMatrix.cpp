@@ -26,20 +26,14 @@ int Lanczos::getLanczosMatrixFull(size_t L, double accuracy, double litForProjec
     {
         getLanczosOffdiagonalElement( i );
 
-        if( abs( lanb.back() ) < accuracy ) { lanb.pop_back(); return 0; }
-        if( abs( lanb.back() ) < litForProjection )
-        {
-            cout<<"\nSmall b "<<lanb.back()<<", try to stabilize new wave function:"<<endl;
-            double nrm2 = projectWaveFunction( i );
-            cout<<"After projection, the normalized factor is "<<nrm2<<endl;
-            cout<<endl;
-        }
+        if( abs( lanb.back() ) < accuracy ) { prepareLanReturn('F'); return 0; }
+
+        if( abs( lanb.back() ) < litForProjection ) projectWaveFunctionAndPrintInformation(i);
 
         getLanczosDiagonalElement( i );
     }
 
-    if( lana.size() < 4 ) lanStatus = 'B';
-    else lanStatus = 'F';
+    lanStatus = ( lana.size() < 4 ) ? 'B' : 'F' ;
 
     return 1;
 }
@@ -58,20 +52,16 @@ int Lanczos::getLanczosMatrixRecurse(size_t L, double accuracy, double litForPro
 
     if( lana.size() < 3 ) { cout<<"Error!!! In getLanczosMatrixRecurse, we should not have lana.size() < 3 "<<endl; exit(1); }
 
+    if( lanStatus == 'N' || lanStatus == 'F' ) {cout<<"Error!!! lanStatus is not R or B "<<endl; exit(1); }
+
     size_t startIndex = lana.size();
     for(size_t i = startIndex; i < endIndex; ++i)
     {
         getLanczosOffdiagonalElement( 3 );
 
-        if( abs( lanb.back() ) < accuracy ) { lanb.pop_back(); return 0; }
+        if( abs( lanb.back() ) < accuracy ) { prepareLanReturn('R'); return 0; }
 
-        if( abs( lanb.back() ) < litForProjection )
-        {
-            cout<<setprecision(16)<<"\nSmall b "<<lanb.back()<<", try to stabilize new wave function:"<<endl;
-            double nrm2 = projectWaveFunction( 3 );
-            cout<<"After projection, the normalized factor is "<<nrm2<<endl;
-            cout<<endl;
-        }
+        if( abs( lanb.back() ) < litForProjection ) projectWaveFunctionAndPrintInformation(3);
 
         recurseWaveFunctions();
 
@@ -83,10 +73,12 @@ int Lanczos::getLanczosMatrixRecurse(size_t L, double accuracy, double litForPro
     return 1;
 }
 
-void Lanczos::getNewLanwfsZero(const vector<double> &vec, double litForProjection, char wfFlag)
+void Lanczos::getNewLanwfsZero(const vector<double> &vec, double litForProjection)
 {
-    if( wfFlag == 'F' ) getNewLanwfsZeroFull(vec);
-    if( wfFlag == 'R' ) getNewLanwfsZeroRecurse(vec, litForProjection);
+    if( lanStatus == 'N' )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
+
+    if( lanStatus == 'F' || lanStatus =='B' ) getNewLanwfsZeroFull(vec);
+    if( lanStatus == 'R' ) getNewLanwfsZeroRecurse(vec, litForProjection);
 }
 
 void Lanczos::getNewLanwfsZeroFull(const vector<double> &vec)
@@ -121,24 +113,26 @@ void Lanczos::getNewLanwfsZeroRecurseZeroToThree(const vector<double> &vec, doub
 
     getLanczosHtoWf( 1 );
 
-    lanwfs[0].scale( vec[0] );
-
     for(size_t i = 1; i < 3; ++i)
     {
         currentb = getLanczosOrthonormalWf( i, lana[i-1], lanb[i-1] );
 
         if( abs( lanb[i] - currentb ) > 1e-12 )
         {
-            cout<<"Error, Lanczos off diagonal element is not consistent!"<<endl;
+            cout<<setprecision(16)<<"Error!!! Lanczos off diagonal element is not consistent! "
+                <<i<<" "<<lanb[i]<<" "<<currentb<<endl;
             exit(1);
         }
 
         if( abs( lanb[i] ) < litForProjection ) projectWaveFunction( i );
 
-        lanwfs[0].addEqual( vec[i], lanwfs[i] );
 
         getLanczosHtoWf( i+1 );
     }
+
+    lanwfs[0].scale( vec[0] );
+    lanwfs[0].addEqual( vec[1], lanwfs[1] );
+    lanwfs[0].addEqual( vec[2], lanwfs[2] );
 }
 
 void Lanczos::getNewLanwfsZeroRecurseThreeToMatrixSize(const vector<double> &vec, double litForProjection)
@@ -151,7 +145,8 @@ void Lanczos::getNewLanwfsZeroRecurseThreeToMatrixSize(const vector<double> &vec
 
         if( abs( lanb[i] - currentb ) > 1e-12 )
         {
-            cout<<"Error, Lanczos off diagonal element is not consistent!"<<endl;
+            cout<<setprecision(16)<<"Error!!! Lanczos off diagonal element is not consistent! "
+                <<i<<" "<<lanb[i]<<" "<<currentb<<endl;
             exit(1);
         }
 

@@ -62,7 +62,7 @@ class Lanczos
     void initLanczosMatrixFromLanwfsZero();
     int getLanczosMatrixFull(size_t L, double accuracy = 1e-10, double litForProjection = 0.01);
     int getLanczosMatrixRecurse(size_t L, double accuracy = 1e-10, double litForProjection = 0.01);
-    void getNewLanwfsZero(const std::vector<double> &vec, double litForProjection, char wfFlag = 'F');
+    void getNewLanwfsZero(const std::vector<double> &vec, double litForProjection);
     void getNewLanwfsZeroFull(const std::vector<double> &vec);
     void getNewLanwfsZeroRecurse(const std::vector<double> &vec, double litForProjection);
     void getNewLanwfsZeroRecurseZeroToThree(const std::vector<double> &vec, double litForProjection);
@@ -79,6 +79,8 @@ class Lanczos
     void writeLanMatrixElements() const;
     void writeLanMatrixWavefunctions() const;
 
+    void prepareLanReturn(char defaultStatus);
+    void projectWaveFunctionAndPrintInformation(size_t lanwfsIndex);
     double projectWaveFunction(size_t lanwfsIndex);
     void saveToEigen();
     void changeLanStatusToRecurse();

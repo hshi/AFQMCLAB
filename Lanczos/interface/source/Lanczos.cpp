@@ -153,7 +153,7 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
             }
         }
 
-        getNewLanwfsZero(lanczosMatrixVector, lanczosParam.litForProjection, lanczosParam.lanwfsFlag);
+        getNewLanwfsZero(lanczosMatrixVector, lanczosParam.litForProjection);
     }
 
     throw LanczosNotConverge_error("Lanczos does not converge, increase lanczos maxloop or lanczos matrixSize!");
