@@ -44,6 +44,7 @@ class Lanczos
     void writeEigens(size_t startIndex = 0) const ;
     void readLanMatrix();
     void writeLanMatrix() const;
+    void writeLanWavefunction(const std::string &filename, size_t lanIndex=0 ) const;
 
     void reserve(size_t targetLanSize, size_t targetEigenSize);
     void clear();
@@ -94,7 +95,6 @@ class Lanczos
     Lanczos & operator  = (const Lanczos& x);
 };
 
-//TODO: Write Lanwf[0] to the file, for re-run the simulations
 //TODO: Update Test library to a real code ==> Diagonalize a Hermition matrix. ==> Store H_{i,j}
 //TODO: Check wether in R or F in getLanMatrix
 //TODO: CHANGE INIT to reserve, randomwfinit, readwfinit

@@ -68,6 +68,11 @@ void Lanczos::writeLanMatrix() const
     writeLanMatrixWavefunctions();
 }
 
+void Lanczos::writeLanWavefunction(const string &filename, size_t lanIndex) const
+{
+    lanwfs[lanIndex].write(filename);
+}
+
 void Lanczos::reserve(size_t targetLanSize, size_t targetEigenSize)
 {
     lana.reserve(targetLanSize);
@@ -109,7 +114,7 @@ void Lanczos::readWfInit(const string &filename)
 
 void Lanczos::inputWfInit(LanczosBasisWf &wfNew)
 {
-    cout<<"\nInitial Lanczos matrix by inputting wave function"<<endl;
+    cout<<"\nInitial Lanczos matrix by inputting wave function."<<endl;
     if( lanwfs.size() > 0 ) lanwfs[0] = move(wfNew);
     else lanwfs.push_back( move(wfNew) );
     initLanczosMatrixFromLanwfsZero();
@@ -118,7 +123,7 @@ void Lanczos::inputWfInit(LanczosBasisWf &wfNew)
 
 void Lanczos::readLanInit()
 {
-    cout<<"\nInitial Lanczos matrix by reading everything from file. "<<endl;
+    cout<<"\nInitial Lanczos matrix by reading everything from file."<<endl;
     readLanMatrix();
     cout<<endl;
 }
