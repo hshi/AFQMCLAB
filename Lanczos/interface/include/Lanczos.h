@@ -17,7 +17,7 @@ struct LanczosParam
     char convergeFlag;        //'E' or 'W', converge by wave function or energy
     size_t maxLoop;           //The max Lanczos matrix loop
     double litForProjection;  //When b is smaller, we need to project wave function.
-    char lanwfsFlag;              //'R' or 'F', 'R' use recurse wf, 'F' store full Lanczos wf
+    char lanwfsFlag;          //'R' or 'F', 'R' use recurse wf, 'F' store full Lanczos wf
 };
 
 class Lanczos
@@ -34,6 +34,7 @@ class Lanczos
  public:
     Lanczos(const ModelInterface & modelInterface);
 
+    size_t getEigenSize() const;
     double getEigenvalue(size_t eigenIndex) const;
     const LanczosBasisWf& getEigenstate(size_t eigenIndex) const;
     std::tuple<const std::vector<double> &, const std::vector<double> &> getLanElements() const;
@@ -59,7 +60,7 @@ class Lanczos
     getLanczosMatrix(size_t L, double accuracy = 1e-10, double litForProjection = 0.01, char wfFlag = 'F');
 
  private:
-    void initLanczosMatrixFromLanwfsZero();
+    double initLanczosMatrixFromLanwfsZero();
     int getLanczosMatrixFull(size_t L, double accuracy = 1e-10, double litForProjection = 0.01);
     int getLanczosMatrixRecurse(size_t L, double accuracy = 1e-10, double litForProjection = 0.01);
     void getNewLanwfsZero(const std::vector<double> &vec, double litForProjection);
@@ -80,7 +81,7 @@ class Lanczos
     void writeLanMatrixWavefunctions() const;
 
     void prepareLanReturn(char defaultStatus);
-    void projectWaveFunctionAndPrintInformation(size_t lanwfsIndex);
+    void projectWaveFunctionUpdateLanb(size_t lanwfsIndex);
     double projectWaveFunction(size_t lanwfsIndex);
     void saveToEigen();
     void changeLanStatusToRecurse();
@@ -93,6 +94,7 @@ class Lanczos
     Lanczos & operator  = (const Lanczos& x);
 };
 
+//TODO: Write Lanwf[0] to the file, for re-run the simulations
 //TODO: Update Test library to a real code ==> Diagonalize a Hermition matrix. ==> Store H_{i,j}
 //TODO: Check wether in R or F in getLanMatrix
 //TODO: CHANGE INIT to reserve, randomwfinit, readwfinit

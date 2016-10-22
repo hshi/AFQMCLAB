@@ -7,14 +7,16 @@ using namespace tensor_hao;
 
 using namespace std;
 
-void Lanczos::initLanczosMatrixFromLanwfsZero()
+double Lanczos::initLanczosMatrixFromLanwfsZero()
 {
-    projectWaveFunction( 0 );
+    double nrm = projectWaveFunction( 0 );
 
     lanStatus = 'B';
     lana.resize(0); lanb.resize(0);
     lanb.push_back( 0.0 );
     getLanczosDiagonalElement( 0 );
+
+    return nrm;
 }
 
 int Lanczos::getLanczosMatrixFull(size_t L, double accuracy, double litForProjection)
@@ -26,15 +28,14 @@ int Lanczos::getLanczosMatrixFull(size_t L, double accuracy, double litForProjec
     {
         getLanczosOffdiagonalElement( i );
 
-        if( abs( lanb.back() ) < accuracy ) { prepareLanReturn('F'); return 0; }
+        if( abs( lanb.back() ) < litForProjection && abs( lanb.back() ) > accuracy ) projectWaveFunctionUpdateLanb(i);
 
-        if( abs( lanb.back() ) < litForProjection ) projectWaveFunctionAndPrintInformation(i);
+        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn('F'); return 0; }
 
         getLanczosDiagonalElement( i );
     }
 
     lanStatus = ( lana.size() < 4 ) ? 'B' : 'F' ;
-
     return 1;
 }
 
@@ -59,9 +60,9 @@ int Lanczos::getLanczosMatrixRecurse(size_t L, double accuracy, double litForPro
     {
         getLanczosOffdiagonalElement( 3 );
 
-        if( abs( lanb.back() ) < accuracy ) { prepareLanReturn('R'); return 0; }
+        if( abs( lanb.back() ) < litForProjection && abs( lanb.back() ) > accuracy ) projectWaveFunctionUpdateLanb(i);
 
-        if( abs( lanb.back() ) < litForProjection ) projectWaveFunctionAndPrintInformation(3);
+        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn('R'); return 0; }
 
         recurseWaveFunctions();
 
@@ -90,7 +91,9 @@ void Lanczos::getNewLanwfsZeroFull(const vector<double> &vec)
     {
         lanwfs[0].addEqual( vec[i], lanwfs[i] );
     }
-    initLanczosMatrixFromLanwfsZero();
+
+    double nrm = initLanczosMatrixFromLanwfsZero();
+    if( abs(nrm-1.0) > 1e-12  ) {cout<<"Warning!!! EuclideanNorm of New Lanwfs[0] is: "<<nrm<<endl;}
 }
 
 
@@ -104,7 +107,8 @@ void Lanczos::getNewLanwfsZeroRecurse(const vector<double> &vec, double litForPr
 
     getNewLanwfsZeroRecurseThreeToMatrixSize(vec, litForProjection);
 
-    initLanczosMatrixFromLanwfsZero();
+    double nrm = initLanczosMatrixFromLanwfsZero();
+    if( abs(nrm-1.0) > 1e-12  ) {cout<<"Warning!!! EuclideanNorm of New Lanwfs[0] is: "<<nrm<<endl;}
 }
 
 void Lanczos::getNewLanwfsZeroRecurseZeroToThree(const vector<double> &vec, double litForProjection)
@@ -117,15 +121,14 @@ void Lanczos::getNewLanwfsZeroRecurseZeroToThree(const vector<double> &vec, doub
     {
         currentb = getLanczosOrthonormalWf( i, lana[i-1], lanb[i-1] );
 
+        if( abs( currentb ) < litForProjection ) currentb *= projectWaveFunction( i );
+
         if( abs( lanb[i] - currentb ) > 1e-12 )
         {
             cout<<setprecision(16)<<"Error!!! Lanczos off diagonal element is not consistent! "
                 <<i<<" "<<lanb[i]<<" "<<currentb<<endl;
             exit(1);
         }
-
-        if( abs( lanb[i] ) < litForProjection ) projectWaveFunction( i );
-
 
         getLanczosHtoWf( i+1 );
     }
@@ -143,14 +146,14 @@ void Lanczos::getNewLanwfsZeroRecurseThreeToMatrixSize(const vector<double> &vec
     {
         currentb = getLanczosOrthonormalWf( 3, lana[i-1], lanb[i-1] );
 
+        if( abs( currentb ) < litForProjection ) currentb *= projectWaveFunction( 3 );
+
         if( abs( lanb[i] - currentb ) > 1e-12 )
         {
             cout<<setprecision(16)<<"Error!!! Lanczos off diagonal element is not consistent! "
                 <<i<<" "<<lanb[i]<<" "<<currentb<<endl;
             exit(1);
         }
-
-        if( abs( lanb[i] ) < litForProjection ) projectWaveFunction( 3 );
 
         lanwfs[0].addEqual( vec[i], lanwfs[3] );
 

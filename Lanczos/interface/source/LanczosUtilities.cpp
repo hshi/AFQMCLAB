@@ -7,18 +7,20 @@ using namespace tensor_hao;
 
 using namespace std;
 
-void Lanczos::prepareLanReturn( char defaultStatus)
+void Lanczos::prepareLanReturn( char defaultStatus )
 {
     lanb.pop_back();
     lanStatus = ( lana.size() < 4 ) ? 'B' : defaultStatus ;
 }
 
-void Lanczos::projectWaveFunctionAndPrintInformation(size_t lanwfsIndex)
+void Lanczos::projectWaveFunctionUpdateLanb(size_t lanwfsIndex)
 {
     cout << "\nSmall b " << lanb.back() << ", try to stabilize new wave function:" << endl;
     double nrm2 = projectWaveFunction( lanwfsIndex );
     cout<<"After projection, the normalized factor is "<<nrm2<<endl;
     cout<<endl;
+
+    lanb.back() *= nrm2;
 }
 
 double Lanczos::projectWaveFunction(size_t lanwfsIndex)
@@ -42,11 +44,11 @@ double Lanczos::projectWaveFunction(size_t lanwfsIndex)
 
 void Lanczos::saveToEigen()
 {
+    cout<<setprecision(16)<<"\nSUCCESS! Find Eigenstate #" << eigenstates.size() <<" : "<<lana[0]<<"\n"<<endl;
     lanStatus = 'N';
     eigenvalues.push_back( lana[0] );
     eigenstates.push_back( move(lanwfs[0]) );
     lanwfs[0] = LanczosBasisWf();
-    cout<<setprecision(16)<<"\nSUCCESS! Find Eigenstate #" << eigenstates.size() <<" : "<<lana[0]<<"\n"<<endl;
 }
 
 void Lanczos::changeLanStatusToRecurse()

@@ -122,7 +122,7 @@ TEST_F(LanczosBasisWfTest, overlap)
     {
         overlap_exact += conj( vec(i) ) * vecRightSide(i);
     }
-    EXPECT_COMPLEXDOUBLE_EQ(overlap_exact, overlap);
+    EXPECT_COMPLEX_NEAR(overlap_exact, overlap, 1e-11);
 }
 
 TEST_F(LanczosBasisWfTest, orthogonalizeWith)

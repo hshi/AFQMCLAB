@@ -66,8 +66,12 @@ void Lanczos::readLanMatrixStatus()
     file.open(filename, ios_base::in);
     if( !file.is_open() ) { cout << "Error opening file for read lanczosMatrixStatus!!!"; exit(1); }
     size_t lanSize, lanwfSize;
-    file >> lanSize >> lanwfSize >> lanStatus;
+    file >> lanSize >> lanStatus;
     file.close();
+
+    if( lanStatus == 'N' ) return;
+    if( lanStatus == 'F' || lanStatus == 'B' ) lanwfSize = lanSize + 1;
+    if( lanStatus == 'R' ) lanwfSize = 4;
 
     lana.resize( lanSize );
     lanb.resize( lanSize );
@@ -103,7 +107,7 @@ void Lanczos::writeLanMatrixStatus() const
     ofstream file;
     file.open(filename, ios_base::out | ios_base::trunc);
     if( !file.is_open() )  { cout << "Error opening file for write lanczosMatrixStatus!!!"; exit(1); }
-    file << setw(26) << lana.size() << setw(26) << lanwfs.size() << setw(26) << lanStatus << "\n";
+    file << setw(26) << lana.size() << setw(26) << lanStatus << "\n";
     file.close();
 }
 
@@ -120,10 +124,16 @@ void Lanczos::writeLanMatrixElements() const
     }
     file.close();
 }
+
 void Lanczos::writeLanMatrixWavefunctions() const
 {
+    size_t lanwfSize;
+    if( lanStatus == 'N' ) return;
+    if( lanStatus == 'F' || lanStatus == 'B' ) lanwfSize = lana.size() + 1;
+    if( lanStatus == 'R' ) lanwfSize = 4;
+
     string filename;
-    for(size_t i = 0; i < lanwfs.size(); ++i)
+    for(size_t i = 0; i < lanwfSize; ++i)
     {
         filename = "lanczosMatrixWf_" + to_string(i) + ".dat";
         lanwfs[i].write(filename);

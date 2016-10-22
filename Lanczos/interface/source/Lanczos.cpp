@@ -16,6 +16,11 @@ Lanczos::Lanczos(const ModelInterface &modelInterface)
     reserve(300, 1000);
 }
 
+size_t Lanczos::getEigenSize() const
+{
+    return eigenvalues.size();
+}
+
 double Lanczos::getEigenvalue(size_t eigenIndex) const
 {
     return eigenvalues[eigenIndex];
@@ -57,6 +62,7 @@ void Lanczos::readLanMatrix()
 
 void Lanczos::writeLanMatrix() const
 {
+    if( lanStatus == 'N' ) return;
     writeLanMatrixStatus();
     writeLanMatrixElements();
     writeLanMatrixWavefunctions();
@@ -130,6 +136,7 @@ tuple<double, vector<double> > diagonalizeLanczosMatrix(vector<double> a, vector
 
 void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 {
+    double energyBackup = 1e100;
     double energy;
     vector<double> lanczosMatrixVector;
 
@@ -142,9 +149,9 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 
         tie( energy, lanczosMatrixVector ) = diagonalizeLanczosMatrix(lana, lanb);
 
-        cout<<setprecision(16)<<"Variational energy for "<< eigenstates.size()<<" is "<<energy<<endl;
+        cout<<setprecision(16)<<"Variational energy for #"<< eigenstates.size()<<" is "<<energy<<endl;
 
-        if( lana[0] < energy )
+        if( lana[0] < energy || energyBackup < energy )
         {
             if(lanczosParam.convergeFlag == 'E') { saveToEigen(); return; }
             else if(lanczosParam.convergeFlag == 'W')
@@ -152,8 +159,17 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
                 cout<<"Energy is converged! Wait for the convergence of wave function!"<<endl;
             }
         }
+        energyBackup = energy;
 
         getNewLanwfsZero(lanczosMatrixVector, lanczosParam.litForProjection);
+
+        if( abs( lana[0]-energy ) / abs(energy) > 1e-8 )
+        {
+            cout<<"Error!!! New lanwfs[0] does not have the same energy with variational energy! "
+                <<lana[0]<<" "<<lana[0]-energy<<" "<<abs( lana[0]-energy )/abs(energy)<<endl;
+            throw LanczosLoseAccuracy_error
+                ("Lanczos loses accuracy, please decrease matrixSize or litForProjection, or add more symmetry!");
+        }
     }
 
     throw LanczosNotConverge_error("Lanczos does not converge, increase lanczos maxloop or lanczos matrixSize!");
@@ -163,6 +179,8 @@ tuple<const vector<double> &, const vector<double> &>
 Lanczos::getLanczosMatrix(size_t L, double accuracy, double litForProjection, char wfFlag)
 {
     if( lanStatus == 'N' )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
+
+    if( L + lana.size() + eigenvalues.size() > wfSize ) L = wfSize - lana.size() - eigenvalues.size();
 
     if( wfFlag == 'F' )
     {

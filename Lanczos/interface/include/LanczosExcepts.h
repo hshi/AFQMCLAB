@@ -9,10 +9,22 @@
 #include<stdexcept>
 #include<string>
 
-class LanczosNotConverge_error: public std::runtime_error
+class Lanczos_error: public std::runtime_error
 {
  public:
-    explicit LanczosNotConverge_error (const std::string& what_arg): runtime_error(what_arg) {};
+    explicit Lanczos_error (const std::string& what_arg): runtime_error(what_arg) {};
+};
+
+class LanczosNotConverge_error: public Lanczos_error
+{
+ public:
+    explicit LanczosNotConverge_error (const std::string& what_arg): Lanczos_error(what_arg) {};
+};
+
+class LanczosLoseAccuracy_error: public Lanczos_error
+{
+ public:
+    explicit LanczosLoseAccuracy_error (const std::string& what_arg): Lanczos_error(what_arg) {};
 };
 
 #endif //AFQMCLIB_LANCZOSEXCEPT_H
