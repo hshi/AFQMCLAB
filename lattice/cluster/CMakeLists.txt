@@ -1,7 +1,7 @@
 #For source
 set(SOURCE_HEADERS cluster.h)
 set(SOURCE_FILES cluster.cpp)
-set(SOURCE_TESTS cluster_test.cpp)
+set(SOURCE_TESTS clusterTest.cpp)
 
 #For library
 add_library(clusterHaoObject OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})

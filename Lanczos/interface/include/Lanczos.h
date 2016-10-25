@@ -8,17 +8,8 @@
 #include <cstddef>
 #include <tuple>
 #include "LanczosExcepts.h"
+#include "LanczosParam.h"
 #include "modelInterface.h"
-
-struct LanczosParam
-{
-    size_t matrixSize;        //Lanczos matrix size
-    double accuracy;          //when new b smaller than accuracy, converge
-    char convergeFlag;        //'E' or 'W', converge by wave function or energy
-    size_t maxLoop;           //The max Lanczos matrix loop
-    double litForProjection;  //When b is smaller, we need to project wave function.
-    char lanwfsFlag;          //'R' or 'F', 'R' use recurse wf, 'F' store full Lanczos wf
-};
 
 class Lanczos
 {
@@ -96,18 +87,6 @@ class Lanczos
 };
 
 //TODO: Update Test library to a real code ==> Diagonalize a Hermition matrix. ==> Store H_{i,j}
-//TODO: Check wether in R or F in getLanMatrix
-//TODO: CHANGE INIT to reserve, randomwfinit, readwfinit
-//TODO: Use diagonalize Lanczos Matrix to get second initial state.
-//TODO: PRINT inside getLanczosMatrixRecurse to see logical correct or not?
-//TODO: In recurse, stable with wf before.
-//TODO: Lanczos prepare==> Reserve eigenstate and LanWf to better efficiency
-//TODO: Set wfOne, wfTwo ... into vector<LanczosBasisWf> lanczosWfs
-//TODO: Add eigenvalues
-//TODO: Whether we need to vary lanM or not?
-//TODO: Do we need to project symmetry in getNewLanwfsZero?
-//TODO: CHECK LANM size=2 case
-//TODO: Show how to use lan.init(1000, 2000);
 
 //TODO: WRITE EXAMPLES ABOUT HOW TO USE THE CODE:
 //FindOneEigen() need init
