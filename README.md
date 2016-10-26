@@ -103,6 +103,10 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Should everything use lapack blas? Equal? Copy?
+
+  //TODO: Update lapack and blas 1D for all dimension.
+
   //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
 
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.

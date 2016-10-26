@@ -1,1 +1,2 @@
-add_subdirectory(matrix)
+add_subdirectory(fullMatrix)
+add_subdirectory(sparseMatrix)

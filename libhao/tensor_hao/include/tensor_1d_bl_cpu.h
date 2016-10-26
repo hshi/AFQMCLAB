@@ -6,11 +6,21 @@
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"
 #include "tensor_element_wise.h"
+#include "../../lapackblas_hao/blas_lapack_wrap.h"
 
 namespace tensor_hao
 {
-    void copy_cpu(const TensorCore<std::complex<double>, 1> &x, TensorCore<std::complex<double>, 1> &y,
-                  size_t incx = 1, size_t incy = 1);
+    template <size_t D =1 >
+    void copy_cpu(const TensorCore<std::complex<double>, D> &x, TensorCore<std::complex<double>, D> &y,
+                  size_t incx = 1, size_t incy = 1)
+    {
+        HAO_INT L = x.size(); HAO_INT inc_x = incx; HAO_INT inc_y = incy;
+        if( x.size() != y.size() )
+        {
+            std::cerr<<"Size not consistent in copy_cpu"<<std::endl; exit(1);
+        }
+        zcopy(&L, x.data(), &inc_x, y.data(), &inc_y);
+    }
 
     double nrm2_cpu(const TensorCore<std::complex<double>, 1> &x, size_t incx = 1);
 

@@ -82,17 +82,9 @@ class Lanczos
     double getLanczosOrthonormalWf(size_t i, double a, double b);
     void getLanczosDiagonalElement(size_t i);
     void getLanczosOffdiagonalElement(size_t i);
+
     Lanczos(const Lanczos& x);
     Lanczos & operator  = (const Lanczos& x);
 };
 
-//TODO: Update Test library to a real code ==> Diagonalize a Hermition matrix. ==> Store H_{i,j}
-
-//TODO: WRITE EXAMPLES ABOUT HOW TO USE THE CODE:
-//FindOneEigen() need init
-//FIndEigen does not need init
-//randomWfInit(); FindOneEigen();
-//findEigen(5);
-//readConvergedWfs(2); findEigen(6);
-//readConvergedWfs(2); readWfInit("NAME"); FindOneEigen();
 #endif //AFQMCLIB_LANCZOS_H

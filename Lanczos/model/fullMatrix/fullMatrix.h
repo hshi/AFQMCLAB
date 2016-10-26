@@ -12,16 +12,20 @@ class FullMatrix : public ModelInterface
 {
     tensor_hao::TensorHao<std::complex<double>, 2> Hm;
  public:
+    FullMatrix();
+    FullMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &HmIn);
+    FullMatrix(tensor_hao::TensorHao<std::complex<double>, 2> &&HmIn);
 
     const tensor_hao::TensorHao<std::complex<double>, 2> &getHm() const;
-
-    void resize(size_t L);
+    void read(const std::string &filename);
+    void write(const std::string &filename) const;
 
     virtual size_t getWfSize() const;
-
     virtual void applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
 
-    virtual void projectSymmetry(LanczosBasisWf &wf) const;
+ private:
+    FullMatrix(const FullMatrix& x);
+    FullMatrix & operator  = (const FullMatrix& x);
 };
 
 #endif //AFQMCLIB_FULLMATRIX_H

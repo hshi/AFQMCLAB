@@ -5,17 +5,6 @@ using namespace std;
 
 namespace tensor_hao
 {
-    void copy_cpu(const TensorCore<complex<double>, 1> &x, TensorCore<complex<double>, 1> &y,
-                  size_t incx, size_t incy)
-    {
-        HAO_INT L = x.size(); HAO_INT inc_x = incx; HAO_INT inc_y = incy;
-        if( x.size() != y.size() )
-        {
-            cerr<<"Size not consistent in copy_cpu"<<endl; exit(1);
-        }
-        zcopy(&L, x.data(), &inc_x, y.data(), &inc_y);
-    }
-
     double nrm2_cpu(const TensorCore<complex<double>, 1> &x, size_t incx)
     {
         HAO_INT L = x.size(); HAO_INT inc_x = incx;
