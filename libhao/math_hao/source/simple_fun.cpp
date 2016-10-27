@@ -132,3 +132,15 @@ void eigen2by2Matrix(double a, double b, complex<double> c, double *eigvalue, co
         eigvec[3] =  exp( im*arg_c*0.5 ) * cos(xi);
     }
 }
+
+size_t binomialCoeff(size_t n, size_t k)
+{
+    if( k > n ) { cout<<"Error!!! k should be small or equal than n!"<<endl; exit(1); }
+
+    vector<size_t> C(k+1); C[0] = 1;
+    for (size_t i = 1; i <= n; i++)
+    {
+        for (size_t j = min(i, k); j > 0; j--) C[j] = C[j] + C[j-1];
+    }
+    return C[k];
+}

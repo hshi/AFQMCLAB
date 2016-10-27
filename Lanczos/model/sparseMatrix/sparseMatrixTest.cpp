@@ -75,9 +75,10 @@ TEST_F(lanczosModelSparseMatrixTest, moveConstructor)
 
 TEST_F(lanczosModelSparseMatrixTest, readWrite)
 {
+    string filename = "sparseMatrix.dat";
     SparseMatrix smp( L, Hm ), sm;
-    smp.write("sparseMatrix.dat");
-    sm.read("sparseMatrix.dat");
+    smp.write(filename);
+    sm.read(filename);
 
     EXPECT_EQ( L, sm.getWfSize() );
     vector<SparseElement> smHm = sm.getHm();
@@ -87,6 +88,8 @@ TEST_F(lanczosModelSparseMatrixTest, readWrite)
         EXPECT_EQ( Hm[i].j, smHm[i].j );
         EXPECT_COMPLEXDOUBLE_EQ( Hm[i].h, smHm[i].h );
     }
+
+    remove( filename.c_str() );
 }
 
 TEST_F(lanczosModelSparseMatrixTest, lanczos)

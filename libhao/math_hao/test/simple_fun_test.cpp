@@ -113,3 +113,14 @@ TEST (simple_fun, eigen2by2Matrix)
         EXPECT_COMPLEX_NEAR ( c*vec[2]+b*vec[3], eig[1]*vec[3] );
     }
 }
+
+TEST(simple_fun, binomialCoeff)
+{
+    EXPECT_EQ( 1,  binomialCoeff(5, 0) );
+    EXPECT_EQ( 5,  binomialCoeff(5, 1) );
+    EXPECT_EQ( 10, binomialCoeff(5, 2) );
+    EXPECT_EQ( 10, binomialCoeff(5, 3) );
+    EXPECT_EQ( 5,  binomialCoeff(5, 4) );
+    EXPECT_EQ( 1,  binomialCoeff(5, 5) );
+    EXPECT_EQ( 601080390, binomialCoeff(32, 16) );
+}

@@ -52,9 +52,11 @@ TEST_F(lanczosModelFullMatrixTest, moveConstructor)
 
 TEST_F(lanczosModelFullMatrixTest, readWrite)
 {
-    FullMatrix fm( Hm ); fm.write("fullMatrix.dat");
-    FullMatrix fmNew; fmNew.read("fullMatrix.dat");
+    string filename = "fullMatrix.dat";
+    FullMatrix fm( Hm ); fm.write(filename);
+    FullMatrix fmNew; fmNew.read(filename);
     EXPECT_FALSE( diff( fm.getHm(), fmNew.getHm(), 1e-12 ) );
+    remove( filename.c_str() );
 }
 
 TEST_F(lanczosModelFullMatrixTest, applyHToWf)

@@ -20,6 +20,7 @@ class SparseMatrix : public ModelInterface
     size_t matrixRank;
     std::vector<SparseElement> Hm;
  public:
+    //TODO: ADD READ CONSTRUCTION
     SparseMatrix();
     SparseMatrix(size_t  L, const std::vector<SparseElement> &HmIn);
     SparseMatrix(size_t  L, std::vector<SparseElement> &&HmIn);
