@@ -34,35 +34,35 @@ void RealMaterial::read(const std::string &filename)
     }
 
     file >> vecSize;
-    if( upup.size() != vecSize )  upup.resize( vecSize );
+    if( upUp.size() != vecSize )  upUp.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)
     {
         file >> i >> j >> k >> l >> real >> imag;
-        upup[m] = { i, j, k, l, complex<double>(real, imag) };
+        upUp[m] = { i, j, k, l, complex<double>(real, imag) };
     }
 
     file >> vecSize;
-    if( updn.size() != vecSize )  updn.resize( vecSize );
+    if( upDn.size() != vecSize )  upDn.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)
     {
         file >> i >> j >> k >> l >> real >> imag;
-        updn[m] = { i, j, k, l, complex<double>(real, imag) };
+        upDn[m] = { i, j, k, l, complex<double>(real, imag) };
     }
 
     file >> vecSize;
-    if( dnup.size() != vecSize )  dnup.resize( vecSize );
+    if( dnUp.size() != vecSize )  dnUp.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)
     {
         file >> i >> j >> k >> l >> real >> imag;
-        dnup[m] = { i, j, k, l, complex<double>(real, imag) };
+        dnUp[m] = { i, j, k, l, complex<double>(real, imag) };
     }
 
     file >> vecSize;
-    if( dndn.size() != vecSize )  dndn.resize( vecSize );
+    if( dnDn.size() != vecSize )  dnDn.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)
     {
         file >> i >> j >> k >> l >> real >> imag;
-        dndn[m] = { i, j, k, l, complex<double>(real, imag) };
+        dnDn[m] = { i, j, k, l, complex<double>(real, imag) };
     }
 
     file.close();
@@ -90,36 +90,36 @@ void RealMaterial::write(const std::string &filename)
              << setw(26) << dn[m].K.real() << setw(26) << dn[m].K.imag() << "\n";
     }
 
-    file<<setw(26)<<upup.size()<<"\n";
-    for(size_t m = 0; m < upup.size(); ++m)
+    file<<setw(26)<<upUp.size()<<"\n";
+    for(size_t m = 0; m < upUp.size(); ++m)
     {
-        file << setw(26) << upup[m].i << setw(26) << upup[m].j
-             << setw(26) << upup[m].k << setw(26) << upup[m].l
-             << setw(26) << upup[m].V.real() << setw(26) << upup[m].V.imag() << "\n";
+        file << setw(26) << upUp[m].i << setw(26) << upUp[m].j
+             << setw(26) << upUp[m].k << setw(26) << upUp[m].l
+             << setw(26) << upUp[m].V.real() << setw(26) << upUp[m].V.imag() << "\n";
     }
 
-    file<<setw(26)<<updn.size()<<"\n";
-    for(size_t m = 0; m < updn.size(); ++m)
+    file<<setw(26)<<upDn.size()<<"\n";
+    for(size_t m = 0; m < upDn.size(); ++m)
     {
-        file << setw(26) << updn[m].i << setw(26) << updn[m].j
-             << setw(26) << updn[m].k << setw(26) << updn[m].l
-             << setw(26) << updn[m].V.real() << setw(26) << updn[m].V.imag() << "\n";
+        file << setw(26) << upDn[m].i << setw(26) << upDn[m].j
+             << setw(26) << upDn[m].k << setw(26) << upDn[m].l
+             << setw(26) << upDn[m].V.real() << setw(26) << upDn[m].V.imag() << "\n";
     }
 
-    file<<setw(26)<<dnup.size()<<"\n";
-    for(size_t m = 0; m < dnup.size(); ++m)
+    file<<setw(26)<<dnUp.size()<<"\n";
+    for(size_t m = 0; m < dnUp.size(); ++m)
     {
-        file << setw(26) << dnup[m].i << setw(26) << dnup[m].j
-             << setw(26) << dnup[m].k << setw(26) << dnup[m].l
-             << setw(26) << dnup[m].V.real() << setw(26) << dnup[m].V.imag() << "\n";
+        file << setw(26) << dnUp[m].i << setw(26) << dnUp[m].j
+             << setw(26) << dnUp[m].k << setw(26) << dnUp[m].l
+             << setw(26) << dnUp[m].V.real() << setw(26) << dnUp[m].V.imag() << "\n";
     }
 
-    file<<setw(26)<<dndn.size()<<"\n";
-    for(size_t m = 0; m < dndn.size(); ++m)
+    file<<setw(26)<<dnDn.size()<<"\n";
+    for(size_t m = 0; m < dnDn.size(); ++m)
     {
-        file << setw(26) << dndn[m].i << setw(26) << dndn[m].j
-             << setw(26) << dndn[m].k << setw(26) << dndn[m].l
-             << setw(26) << dndn[m].V.real() << setw(26) << dndn[m].V.imag() << "\n";
+        file << setw(26) << dnDn[m].i << setw(26) << dnDn[m].j
+             << setw(26) << dnDn[m].k << setw(26) << dnDn[m].l
+             << setw(26) << dnDn[m].V.real() << setw(26) << dnDn[m].V.imag() << "\n";
     }
     file.close();
 }

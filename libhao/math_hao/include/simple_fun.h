@@ -36,6 +36,9 @@ void exp2by2Matrix(double &a, double &b, std::complex<double> &c);
 /***************************************************************/
 void eigen2by2Matrix(double a, double b, std::complex<double> c, double *eigvalue, std::complex<double> *eigvec);
 
-
+/************************************/
+/*Input n, k, Output: Binomial(n, k)*/
+/************************************/
 size_t binomialCoeff(size_t n, size_t k);
+
 #endif

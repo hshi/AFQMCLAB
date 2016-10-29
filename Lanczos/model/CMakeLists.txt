@@ -1,3 +1,4 @@
+add_subdirectory(lanczosBasis)
 add_subdirectory(fullMatrix)
 add_subdirectory(sparseMatrix)
 add_subdirectory(realMaterial)

@@ -7,6 +7,7 @@
 
 #include "../../interface/include/modelInterface.h"
 #include "../../interface/include/LanczosBasisWf.h"
+#include "../lanczosBasis/lanczosBasis.h"
 
 struct OneBody
 {
@@ -28,8 +29,10 @@ class RealMaterial : public ModelInterface
 {
     size_t L, Nup, Ndn;
     std::vector<OneBody> up, dn;
-    std::vector<TwoBody> upup,updn,dnup,dndn;
-    tensor_hao::TensorHao< size_t, 2 > table;
+    std::vector<TwoBody> upUp,upDn,dnUp,dnDn;
+
+    size_t NHilbert, NHilbertUp, NHilbertDn;
+    tensor_hao::TensorHao< TableElement, 3 > tableUp, tableDn;
  public:
     RealMaterial();
     RealMaterial(size_t L, size_t Nup, size_t Ndn);
@@ -56,6 +59,13 @@ class RealMaterial : public ModelInterface
 
     void read(const std::string &filename);
     void write(const std::string &filename);
+
+    void resizeTable();
+ private:
+    void setSizeofHilbertSpace();
+
+    RealMaterial(const RealMaterial& x);
+    RealMaterial & operator  = (const RealMaterial& x);
 };
 
 #endif //AFQMCLIB_REALMATERIAL_H

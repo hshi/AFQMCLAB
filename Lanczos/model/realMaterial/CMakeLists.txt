@@ -1,6 +1,6 @@
 #For source
 set(SOURCE_HEADERS realMaterial.h)
-set(SOURCE_FILES realMaterial.cpp realMaterialReadWrite.cpp)
+set(SOURCE_FILES realMaterial.cpp realMaterialReadWrite.cpp realMaterialTable.cpp)
 set(SOURCE_TESTS realMaterialTest.cpp)
 
 #For library
