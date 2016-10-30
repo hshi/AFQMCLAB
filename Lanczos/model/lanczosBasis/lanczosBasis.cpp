@@ -73,7 +73,7 @@ size_t LanczosBasis::getIndexFromPosition(const size_t *position)
     return count;
 }
 
-TableElement LanczosBasis::getInfoByCidaggerCj(size_t i, size_t j)
+TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
 {
     if( i == j )
     {

@@ -34,13 +34,12 @@ class LanczosBasis
     size_t getNumberOfParticle() const;
     const size_t * getPositionOfParticle() const;
     inline size_t  binomial(size_t n, size_t k) const { return binomialTable[ k + n * (numberOfParticle +1 ) ]; }
-    inline size_t& binomial(size_t n, size_t k)       { return binomialTable[ k + n * (numberOfParticle +1 ) ]; }
-
+    inline size_t &binomial(size_t n, size_t k)       { return binomialTable[ k + n * (numberOfParticle +1 ) ]; }
     void init();
     int next();
     size_t getIndexFromPosition(const size_t *position);
 
-    TableElement getInfoByCidaggerCj(size_t i, size_t j);
+    TableElement getInfoByCiDaggerCj(size_t i, size_t j);
 
  private:
     void linkStackOrHeap();
@@ -48,7 +47,6 @@ class LanczosBasis
 
     LanczosBasis(const LanczosBasis& x);
     LanczosBasis & operator  = (const LanczosBasis& x);
-
 };
 
 #endif //AFQMCLIB_LANCZOSBASIS_H
