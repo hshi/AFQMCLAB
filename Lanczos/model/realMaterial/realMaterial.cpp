@@ -7,8 +7,9 @@
 using namespace std;
 using namespace tensor_hao;
 
-RealMaterial::RealMaterial(): L(0), Nup(0), Ndn(0) { setSizeofHilbertSpace(); }
-RealMaterial::RealMaterial(size_t L, size_t Nup, size_t Ndn): L(L), Nup(Nup), Ndn(Ndn) { setSizeofHilbertSpace(); }
+RealMaterial::RealMaterial(): L(0), Nup(0), Ndn(0) { setFromLNupNdn(); }
+RealMaterial::RealMaterial(size_t L, size_t Nup, size_t Ndn): L(L), Nup(Nup), Ndn(Ndn) { setFromLNupNdn(); }
+RealMaterial::RealMaterial(const std::string &filename) { read(filename); }
 
 size_t RealMaterial::getL() const    { return L;   }
 size_t RealMaterial::getNup() const  { return Nup; }
@@ -19,10 +20,10 @@ const std::vector<TwoBody> &RealMaterial::getUpup() const { return upUp; }
 const std::vector<TwoBody> &RealMaterial::getUpdn() const { return upDn; }
 const std::vector<TwoBody> &RealMaterial::getDnup() const { return dnUp; }
 const std::vector<TwoBody> &RealMaterial::getDndn() const { return dnDn; }
+size_t RealMaterial::getWfSize()   const { return NHilbert;   }
+size_t RealMaterial::getNHilbertUp() const { return NHilbertUp; }
+size_t RealMaterial::getNHilbertDn() const { return NHilbertDn; }
 
-void RealMaterial::setL(size_t L)     { RealMaterial::L = L; }
-void RealMaterial::setNup(size_t Nup) { RealMaterial::Nup = Nup; }
-void RealMaterial::setNdn(size_t Ndn) { RealMaterial::Ndn = Ndn; }
 void RealMaterial::setUp(const vector<OneBody> &up)     { RealMaterial::up = up; }
 void RealMaterial::setDn(const vector<OneBody> &dn)     { RealMaterial::dn = dn; }
 void RealMaterial::setUpup(const vector<TwoBody> &upup) { RealMaterial::upUp = upup; }

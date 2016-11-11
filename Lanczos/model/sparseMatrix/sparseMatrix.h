@@ -1,33 +1,36 @@
 //
 // Created by boruoshihao on 10/26/16.
 //
-
 #ifndef AFQMCLIB_SPARSEMATRIX_H
 #define AFQMCLIB_SPARSEMATRIX_H
 
 #include "../../interface/include/modelInterface.h"
 #include "../../interface/include/LanczosBasisWf.h"
 
-struct SparseElement
-{
-    size_t i;
-    size_t j;
-    std::complex<double> h;
-};
+//Use Compressed Row Storage (CRS) for sparse matrix, see reference below.
+//http://netlib.org/linalg/html_templates/node91.html
+//http://www.netlib.org/utk/people/JackDongarra/etemplates/node382.html
 
 class SparseMatrix : public ModelInterface
 {
-    size_t matrixRank;
-    std::vector<SparseElement> Hm;
+    tensor_hao::TensorHao<std::complex<double>, 1> values;
+    tensor_hao::TensorHao<size_t, 1> columnIndex, rowPointer;
  public:
-    //TODO: ADD READ CONSTRUCTION
-    SparseMatrix();
-    SparseMatrix(size_t  L, const std::vector<SparseElement> &HmIn);
-    SparseMatrix(size_t  L, std::vector<SparseElement> &&HmIn);
+    SparseMatrix(const tensor_hao::TensorHao<std::complex<double>, 1> &values,
+                 const tensor_hao::TensorHao<size_t, 1> &columnIndex,
+                 const tensor_hao::TensorHao<size_t, 1> &rowPointer);
+    SparseMatrix(tensor_hao::TensorHao<std::complex<double>, 1> &&values,
+                 tensor_hao::TensorHao<size_t, 1> &&columnIndex,
+                 tensor_hao::TensorHao<size_t, 1> &&rowPointer);
+    SparseMatrix(const std::string & filename);
 
-    const std::vector<SparseElement> &getHm() const;
+    const tensor_hao::TensorHao<std::complex<double>, 1> &getValues() const;
+    const tensor_hao::TensorHao<size_t, 1> &getColumnIndex() const;
+    const tensor_hao::TensorHao<size_t, 1> &getRowPointer() const;
+
     void read(const std::string &filename);
     void write(const std::string &filename) const;
+    void check() const;
 
     virtual size_t getWfSize() const;
     virtual void applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;

@@ -12,23 +12,66 @@ using namespace tensor_hao;
 class lanczosModelSparseMatrixTest: public ::testing::Test
 {
  public:
-    const size_t L = 30;
-    vector<SparseElement> Hm;
-    TensorHao<double,1> Hv;
+    size_t L = 30;
+    size_t nonZeroSize;
+
+    TensorHao<complex<double>, 2 > Hv;
+    TensorHao<double,1> Hd;
+
+    TensorHao<complex<double>, 1> values;
+    TensorHao<size_t, 1> columnIndex,rowPointer;
+
     lanczosModelSparseMatrixTest( )
     {
-        TensorHao<complex<double>, 2 > matrix(L,L);
-        randomFill(matrix); matrix += conjtrans(matrix);
+        createHvGetNonZeroSize();
+
+        fillValuesColumnRow();
+
+        getHdAndHv();
+    }
+
+    void createHvGetNonZeroSize()
+    {
+        Hv.resize(L,L);
+        randomFill(Hv);
+        Hv += conjtrans(Hv);
+
+        nonZeroSize = 0;
         for(size_t i = 0; i < L; ++i)
         {
             for(size_t j = 0; j < L; ++j)
             {
-                if( abs( matrix(i,j) ) > 0.5  ) Hm.push_back( { i,j, matrix(i,j) } );
-                else matrix(i,j)=0.0;
+                if( abs( Hv(i,j) ) > 0.5  ) nonZeroSize++;
+                else Hv(i,j)=0.0;
             }
         }
+    }
 
-        Hv.resize(L); eigen_cpu( matrix, Hv);
+    void fillValuesColumnRow()
+    {
+        values.resize(nonZeroSize); columnIndex.resize(nonZeroSize); rowPointer.resize(L+1);
+
+        size_t valuesIndex=0;
+        rowPointer(0) = 0;
+        for(size_t i = 0; i < L; ++i)
+        {
+            for(size_t j = 0; j < L; ++j)
+            {
+                if(abs( Hv(i, j) ) > 1e-12  )
+                {
+                    values(valuesIndex ) = Hv(i, j);
+                    columnIndex(valuesIndex) = j;
+                    valuesIndex++;
+                }
+            }
+            rowPointer(i + 1) = valuesIndex;
+        }
+    }
+
+    void getHdAndHv()
+    {
+        Hd.resize(L);
+        eigen_cpu(Hv, Hd);
     }
 
     ~lanczosModelSparseMatrixTest( )
@@ -36,66 +79,54 @@ class lanczosModelSparseMatrixTest: public ::testing::Test
     }
 };
 
-TEST_F(lanczosModelSparseMatrixTest, voidConstructor)
-{
-    SparseMatrix sm;
-    EXPECT_EQ( 0, sm.getWfSize() );
-    EXPECT_EQ( 0, sm.getHm().size() );
-}
-
 TEST_F(lanczosModelSparseMatrixTest, copyConstructor)
 {
-    SparseMatrix sm(L, Hm);
+    SparseMatrix sm(values, columnIndex, rowPointer);
 
     EXPECT_EQ( L, sm.getWfSize() );
-    vector<SparseElement> smHm = sm.getHm();
-    for(size_t i = 0; i < smHm.size(); ++i)
-    {
-        EXPECT_EQ( Hm[i].i, smHm[i].i );
-        EXPECT_EQ( Hm[i].j, smHm[i].j );
-        EXPECT_COMPLEXDOUBLE_EQ( Hm[i].h, smHm[i].h );
-    }
+    EXPECT_FALSE( diff(values, sm.getValues(), 1e-12) );
+    EXPECT_FALSE( diff(columnIndex, sm.getColumnIndex(), 1e-12) );
+    EXPECT_FALSE( diff(rowPointer, sm.getRowPointer(), 1e-12) );
+
 }
 
 TEST_F(lanczosModelSparseMatrixTest, moveConstructor)
 {
-    vector<SparseElement> HmTemp(Hm);
-    SparseMatrix sm( L, move(HmTemp) );
+    TensorHao<complex<double>, 1> v(values);
+    TensorHao<size_t, 1> c(columnIndex),r(rowPointer);
+    SparseMatrix sm( move(v), move(c), move(r) );
 
-    EXPECT_FALSE( HmTemp.data() );
+    EXPECT_FALSE( v.data() );
+    EXPECT_FALSE( c.data() );
+    EXPECT_FALSE( r.data() );
+
     EXPECT_EQ( L, sm.getWfSize() );
-    vector<SparseElement> smHm = sm.getHm();
-    for(size_t i = 0; i < smHm.size(); ++i)
-    {
-        EXPECT_EQ( Hm[i].i, smHm[i].i );
-        EXPECT_EQ( Hm[i].j, smHm[i].j );
-        EXPECT_COMPLEXDOUBLE_EQ( Hm[i].h, smHm[i].h );
-    }
+    EXPECT_FALSE( diff(values, sm.getValues(), 1e-12) );
+    EXPECT_FALSE( diff(columnIndex, sm.getColumnIndex(), 1e-12) );
+    EXPECT_FALSE( diff(rowPointer, sm.getRowPointer(), 1e-12) );
 }
 
 TEST_F(lanczosModelSparseMatrixTest, readWrite)
 {
     string filename = "sparseMatrix.dat";
-    SparseMatrix smp( L, Hm ), sm;
+    SparseMatrix smp(values, columnIndex, rowPointer);
     smp.write(filename);
-    sm.read(filename);
 
+    SparseMatrix sm(filename);
     EXPECT_EQ( L, sm.getWfSize() );
-    vector<SparseElement> smHm = sm.getHm();
-    for(size_t i = 0; i < smHm.size(); ++i)
-    {
-        EXPECT_EQ( Hm[i].i, smHm[i].i );
-        EXPECT_EQ( Hm[i].j, smHm[i].j );
-        EXPECT_COMPLEXDOUBLE_EQ( Hm[i].h, smHm[i].h );
-    }
+    EXPECT_FALSE( diff(values, sm.getValues(), 1e-12) );
+    EXPECT_FALSE( diff(columnIndex, sm.getColumnIndex(), 1e-12) );
+    EXPECT_FALSE( diff(rowPointer, sm.getRowPointer(), 1e-12) );
 
     remove( filename.c_str() );
 }
 
 TEST_F(lanczosModelSparseMatrixTest, lanczos)
 {
-    SparseMatrix sm(L, Hm); Lanczos lan( sm );
-    lan.findEigen(1);
+    SparseMatrix sm(values, columnIndex, rowPointer);
+    Lanczos lan( sm );
+    lan.findEigen(2);
 
-    EXPECT_NEAR( Hv(0), lan.getEigenvalue(0), 1e-10 );
+    EXPECT_NEAR( Hd(0), lan.getEigenvalue(0), 1e-10 );
+    EXPECT_NEAR( Hd(1), lan.getEigenvalue(1), 1e-10 );
 }

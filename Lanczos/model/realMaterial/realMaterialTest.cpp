@@ -3,6 +3,7 @@
 //
 #include "../../../libhao/test_hao/gtest_custom.h"
 #include "../../interface/include/Lanczos.h"
+#include "../../../libhao/math_hao/include/simple_fun.h"
 #include "realMaterial.h"
 
 using namespace std;
@@ -13,6 +14,9 @@ TEST(realMaterialTest, voidConstruction)
     EXPECT_EQ( 0, H.getL()   );
     EXPECT_EQ( 0, H.getNup() );
     EXPECT_EQ( 0, H.getNdn() );
+    EXPECT_EQ( 1, H.getWfSize() );
+    EXPECT_EQ( 1, H.getNHilbertUp() );
+    EXPECT_EQ( 1, H.getNHilbertDn() );
 }
 
 TEST(realMaterialTest, LNupNdnConstruction)
@@ -22,6 +26,9 @@ TEST(realMaterialTest, LNupNdnConstruction)
     EXPECT_EQ( L,   H.getL()   );
     EXPECT_EQ( Nup, H.getNup() );
     EXPECT_EQ( Ndn, H.getNdn() );
+    EXPECT_EQ( binomialCoeff(L,Nup) * binomialCoeff(L,Ndn), H.getWfSize() );
+    EXPECT_EQ( binomialCoeff(L,Nup), H.getNHilbertUp() );
+    EXPECT_EQ( binomialCoeff(L,Ndn), H.getNHilbertDn() );
 }
 
 TEST(realMaterialTest, readWrite)
@@ -37,16 +44,19 @@ TEST(realMaterialTest, readWrite)
     for(size_t i = 0; i < dnup.size(); ++i) dnup[i] = { i, i-1, i-7, i-8, complex<double>(i-4, i-5)  };
     for(size_t i = 0; i < dndn.size(); ++i) dndn[i] = { i, i-6, i-7, i-8, complex<double>(i-9, i-10) };
 
-    RealMaterial H(L, Nup, Ndn), HNew;
+    RealMaterial H(L, Nup, Ndn);
     H.setUp(up); H.setDn(dn); H.setUpup(upup); H.setUpdn(updn); H.setDnup(dnup); H.setDndn(dndn);
 
     string filename = "realMaterial.dat";
     H.write(filename);
-    HNew.read(filename);
 
+    RealMaterial HNew(filename);
     EXPECT_EQ( L,   HNew.getL()   );
     EXPECT_EQ( Nup, HNew.getNup() );
     EXPECT_EQ( Ndn, HNew.getNdn() );
+    EXPECT_EQ( binomialCoeff(L,Nup) * binomialCoeff(L,Ndn), HNew.getWfSize() );
+    EXPECT_EQ( binomialCoeff(L,Nup), HNew.getNHilbertUp() );
+    EXPECT_EQ( binomialCoeff(L,Ndn), HNew.getNHilbertDn() );
 
     for(size_t m = 0; m < up.size(); ++m)
     {

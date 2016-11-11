@@ -36,6 +36,7 @@ class RealMaterial : public ModelInterface
  public:
     RealMaterial();
     RealMaterial(size_t L, size_t Nup, size_t Ndn);
+    RealMaterial(const std::string &filename);
 
     size_t getL() const;
     size_t getNup() const;
@@ -46,10 +47,10 @@ class RealMaterial : public ModelInterface
     const std::vector<TwoBody> &getUpdn() const;
     const std::vector<TwoBody> &getDnup() const;
     const std::vector<TwoBody> &getDndn() const;
+    virtual size_t getWfSize() const;
+    size_t getNHilbertUp() const;
+    size_t getNHilbertDn() const;
 
-    void setL(size_t L);
-    void setNup(size_t Nup);
-    void setNdn(size_t Ndn);
     void setUp(const std::vector<OneBody> &up);
     void setDn(const std::vector<OneBody> &dn);
     void setUpup(const std::vector<TwoBody> &upup);
@@ -60,9 +61,13 @@ class RealMaterial : public ModelInterface
     void read(const std::string &filename);
     void write(const std::string &filename);
 
-    void resizeTable();
+    virtual void applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
+
  private:
-    void setSizeofHilbertSpace();
+    void setFromLNupNdn();
+    void setNHilbertUpAndTableUp(LanczosBasis &lanBasisUp);
+    void setNHilbertDnAndTableDn(LanczosBasis &lanBasisDn);
+    void printMemoryInfo();
 
     RealMaterial(const RealMaterial& x);
     RealMaterial & operator  = (const RealMaterial& x);

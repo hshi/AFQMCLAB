@@ -17,6 +17,8 @@ void RealMaterial::read(const std::string &filename)
     if( !file.is_open() ) { cout << "Error opening file for RealMaterial::read!!!"; exit(1); }
     file >> L >> Nup >> Ndn;
 
+    setFromLNupNdn();
+
     file >> vecSize;
     if( up.size() != vecSize )  up.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)

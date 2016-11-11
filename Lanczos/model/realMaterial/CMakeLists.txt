@@ -1,6 +1,6 @@
 #For source
 set(SOURCE_HEADERS realMaterial.h)
-set(SOURCE_FILES realMaterial.cpp realMaterialReadWrite.cpp realMaterialTable.cpp)
+set(SOURCE_FILES realMaterial.cpp realMaterialReadWrite.cpp realMaterialSetup.cpp realMaterialOperation.cpp)
 set(SOURCE_TESTS realMaterialTest.cpp)
 
 #For library
@@ -11,7 +11,7 @@ add_library(lanczosModelRealMaterialHao STATIC $<TARGET_OBJECTS:lanczosModelReal
 add_executable(lanczosModelRealMaterialTest ${SOURCE_HEADERS} ${SOURCE_TESTS} )
 
 target_link_libraries(lanczosModelRealMaterialTest
-        lanczosModelRealMaterialHao lanczosInterfaceHao libHao libgtest-main-hao ${ext_libraries})
+        lanczosModelRealMaterialHao lanczosBasisHao lanczosInterfaceHao libHao libgtest-main-hao ${ext_libraries})
 
 target_include_directories(lanczosModelRealMaterialTest PUBLIC ${ext_include_dirs})
 
