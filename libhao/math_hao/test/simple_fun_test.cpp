@@ -116,11 +116,11 @@ TEST (simple_fun, eigen2by2Matrix)
 
 TEST(simple_fun, binomialCoeff)
 {
-    EXPECT_EQ( 1,  binomialCoeff(5, 0) );
-    EXPECT_EQ( 5,  binomialCoeff(5, 1) );
-    EXPECT_EQ( 10, binomialCoeff(5, 2) );
-    EXPECT_EQ( 10, binomialCoeff(5, 3) );
-    EXPECT_EQ( 5,  binomialCoeff(5, 4) );
-    EXPECT_EQ( 1,  binomialCoeff(5, 5) );
-    EXPECT_EQ( 601080390, binomialCoeff(32, 16) );
+    EXPECT_EQ( static_cast<size_t>(1),  binomialCoeff(5, 0) );
+    EXPECT_EQ( static_cast<size_t>(5),  binomialCoeff(5, 1) );
+    EXPECT_EQ( static_cast<size_t>(10), binomialCoeff(5, 2) );
+    EXPECT_EQ( static_cast<size_t>(10), binomialCoeff(5, 3) );
+    EXPECT_EQ( static_cast<size_t>(5),  binomialCoeff(5, 4) );
+    EXPECT_EQ( static_cast<size_t>(1),  binomialCoeff(5, 5) );
+    EXPECT_EQ( static_cast<size_t>(601080390), binomialCoeff(32, 16) );
 }

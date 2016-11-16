@@ -17,7 +17,7 @@ TEST(LanczosBasis, binomial)
     {
         for(size_t j = 0; j < N; ++j)
         {
-            if( j > i ) EXPECT_EQ( 0, lanBasis.binomial(i,j) );
+            if( j > i ) EXPECT_EQ( static_cast<size_t>(0), lanBasis.binomial(i,j) );
             else EXPECT_EQ( binomialCoeff(i,j), lanBasis.binomial(i,j) );
         }
     }

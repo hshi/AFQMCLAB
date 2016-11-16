@@ -131,6 +131,7 @@ void Lanczos::writeLanMatrixWavefunctions() const
     if( lanStatus == 'N' ) return;
     if( lanStatus == 'F' || lanStatus == 'B' ) lanwfSize = lana.size() + 1;
     if( lanStatus == 'R' ) lanwfSize = 4;
+    else { cout<<"Error!!! Do not know lanStatus status!"<<endl; exit(1); }
 
     string filename;
     for(size_t i = 0; i < lanwfSize; ++i)
