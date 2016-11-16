@@ -87,7 +87,6 @@ TEST_F(lanczosModelSparseMatrixTest, copyConstructor)
     EXPECT_FALSE( diff(values, sm.getValues(), 1e-12) );
     EXPECT_FALSE( diff(columnIndex, sm.getColumnIndex(), 1e-12) );
     EXPECT_FALSE( diff(rowPointer, sm.getRowPointer(), 1e-12) );
-
 }
 
 TEST_F(lanczosModelSparseMatrixTest, moveConstructor)
@@ -125,8 +124,7 @@ TEST_F(lanczosModelSparseMatrixTest, lanczos)
 {
     SparseMatrix sm(values, columnIndex, rowPointer);
     Lanczos lan( sm );
-    lan.findEigen(2);
+    lan.findEigen(1);
 
     EXPECT_NEAR( Hd(0), lan.getEigenvalue(0), 1e-10 );
-    EXPECT_NEAR( Hd(1), lan.getEigenvalue(1), 1e-10 );
 }

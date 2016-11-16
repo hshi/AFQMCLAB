@@ -12,10 +12,9 @@ class FullMatrix : public ModelInterface
 {
     tensor_hao::TensorHao<std::complex<double>, 2> Hm;
  public:
-    //TODO: ADD READ CONSTRUCTION
-    FullMatrix();
     FullMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &HmIn);
     FullMatrix(tensor_hao::TensorHao<std::complex<double>, 2> &&HmIn);
+    FullMatrix(const std::string &filename);
 
     const tensor_hao::TensorHao<std::complex<double>, 2> &getHm() const;
     void read(const std::string &filename);

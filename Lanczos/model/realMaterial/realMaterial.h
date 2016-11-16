@@ -9,6 +9,12 @@
 #include "../../interface/include/LanczosBasisWf.h"
 #include "../lanczosBasis/lanczosBasis.h"
 
+//TODO:: Ask Mario for a realistic materials for exact soultion? To write a test code.
+//TODO:: Test warning in Hurricane?
+//TODO:: How to use my library?
+//TODO:: Check which openmp is faster? Static or dynamic
+//TODO:: Check " collapse(2) " faster or not?
+
 struct OneBody
 {
     size_t i;
@@ -29,12 +35,11 @@ class RealMaterial : public ModelInterface
 {
     size_t L, Nup, Ndn;
     std::vector<OneBody> up, dn;
-    std::vector<TwoBody> upUp,upDn,dnUp,dnDn;
+    std::vector<TwoBody> upUp,upDn,dnDn;
 
     size_t NHilbert, NHilbertUp, NHilbertDn;
     tensor_hao::TensorHao< TableElement, 3 > tableUp, tableDn;
  public:
-    RealMaterial();
     RealMaterial(size_t L, size_t Nup, size_t Ndn);
     RealMaterial(const std::string &filename);
 
@@ -43,25 +48,36 @@ class RealMaterial : public ModelInterface
     size_t getNdn() const;
     const std::vector<OneBody> &getUp() const;
     const std::vector<OneBody> &getDn() const;
-    const std::vector<TwoBody> &getUpup() const;
-    const std::vector<TwoBody> &getUpdn() const;
-    const std::vector<TwoBody> &getDnup() const;
-    const std::vector<TwoBody> &getDndn() const;
+    const std::vector<TwoBody> &getUpUp() const;
+    const std::vector<TwoBody> &getUpDn() const;
+    const std::vector<TwoBody> &getDnDn() const;
     virtual size_t getWfSize() const;
     size_t getNHilbertUp() const;
     size_t getNHilbertDn() const;
 
     void setUp(const std::vector<OneBody> &up);
     void setDn(const std::vector<OneBody> &dn);
-    void setUpup(const std::vector<TwoBody> &upup);
-    void setUpdn(const std::vector<TwoBody> &updn);
-    void setDnup(const std::vector<TwoBody> &dnup);
-    void setDndn(const std::vector<TwoBody> &dndn);
+    void setUpUp(const std::vector<TwoBody> &upUp);
+    void setUpDn(const std::vector<TwoBody> &upDn);
+    void setDnDn(const std::vector<TwoBody> &dnDn);
 
     void read(const std::string &filename);
     void write(const std::string &filename);
 
     virtual void applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
+    void applyKToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
+    void applyVToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
+    void applySiSjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applySziSzjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applySplusiSminusjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyDiDaggerDjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyCiupDaggerCjupToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyCidnDaggerCjdnToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                            const std::vector<OneBody> &up, const std::vector<OneBody> &dn,
+                            const std::vector<TwoBody> &upUp, const std::vector<TwoBody> &upDn,
+                            const std::vector<TwoBody> &dnDn ) const;
 
  private:
     void setFromLNupNdn();

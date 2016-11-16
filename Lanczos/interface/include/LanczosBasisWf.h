@@ -21,6 +21,7 @@ class LanczosBasisWf
 
     LanczosBasisWf& operator=(const tensor_hao::TensorHao<std::complex<double>, 1> &wf);
     LanczosBasisWf& operator=(tensor_hao::TensorHao<std::complex<double>, 1> &&wf);
+    LanczosBasisWf& operator=(std::complex<double> x);
     LanczosBasisWf& operator=(const LanczosBasisWf& x);
     LanczosBasisWf& operator=(LanczosBasisWf&& x);
 

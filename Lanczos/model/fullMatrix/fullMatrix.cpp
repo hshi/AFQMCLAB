@@ -8,8 +8,6 @@
 using namespace std;
 using namespace tensor_hao;
 
-FullMatrix::FullMatrix()  { }
-
 FullMatrix::FullMatrix(const TensorHao<complex<double>, 2> &HmIn)
 {
     Hm.resize( HmIn.getRank() );
@@ -19,6 +17,11 @@ FullMatrix::FullMatrix(const TensorHao<complex<double>, 2> &HmIn)
 FullMatrix::FullMatrix(TensorHao<complex<double>, 2> &&HmIn)
 {
     Hm = move( HmIn );
+}
+
+FullMatrix::FullMatrix(const std::string &filename)
+{
+    read(filename);
 }
 
 const TensorHao<complex<double>, 2> &FullMatrix::getHm() const
@@ -33,6 +36,7 @@ void FullMatrix::read(const string &filename)
     ifstream file;
     file.open(filename, ios::in);
     if( !file.is_open() ) { cout << "Error opening file for FullMatrix::read!!!"; exit(1); }
+
     file>>fileSize;
     size_t L = sqrt(fileSize);
     if( L*L != fileSize ) { cout<<"Error!!! File size does not fit into a sqare matrix."<<endl; exit(1); }

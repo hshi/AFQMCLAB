@@ -70,14 +70,14 @@ TEST(LanczosBasis, getInfoByC2DaggerC2)
     LanczosBasis lanBasis(L, N);
 
     size_t indexExact[10] = {0,1,2,3,4,5,6,7,8,9};
-    double coeExact[10]={1,0,1,1,0,1,1,0,0,1};
+    int coeExact[10]={1,0,1,1,0,1,1,0,0,1};
     TableElement info;
     size_t NHilbert = lanBasis.binomial(L, N);
     for(size_t i = 0; i < NHilbert; ++i)
     {
         info = lanBasis.getInfoByCiDaggerCj(2, 2);
         EXPECT_EQ(indexExact[i], info.index);
-        EXPECT_DOUBLE_EQ(coeExact[i], info.coefficient);
+        EXPECT_EQ(coeExact[i], info.coefficient);
         lanBasis.next();
     }
 }
@@ -88,14 +88,14 @@ TEST(LanczosBasis, getInfoByC4DaggerC4)
     LanczosBasis lanBasis(L, N);
 
     size_t indexExact[10] = {0,1,2,3,4,5,6,7,8,9};
-    double coeExact[10]={0,0,0,0,1,1,1,1,1,1};
+    int coeExact[10]={0,0,0,0,1,1,1,1,1,1};
     TableElement info;
     size_t NHilbert = lanBasis.binomial(L, N);
     for(size_t i = 0; i < NHilbert; ++i)
     {
         info = lanBasis.getInfoByCiDaggerCj(4, 4);
         EXPECT_EQ(indexExact[i], info.index);
-        EXPECT_DOUBLE_EQ(coeExact[i], info.coefficient);
+        EXPECT_EQ(coeExact[i], info.coefficient);
         lanBasis.next();
     }
 }
@@ -106,14 +106,14 @@ TEST(LanczosBasis, getInfoByC1DaggerC3)
     LanczosBasis lanBasis(L, N);
 
     size_t indexExact[10] = {0,1,0,3,4,5,6,4,8,6};
-    double coeExact[10] ={0,0,-1,0,0,0,0,1,0,-1};
+    int coeExact[10] ={0,0,-1,0,0,0,0,1,0,-1};
     TableElement info;
     size_t NHilbert = lanBasis.binomial(L, N);
     for(size_t i = 0; i < NHilbert; ++i)
     {
         info = lanBasis.getInfoByCiDaggerCj(1, 3);
         EXPECT_EQ(indexExact[i], info.index);
-        EXPECT_DOUBLE_EQ(coeExact[i], info.coefficient);
+        EXPECT_EQ(coeExact[i], info.coefficient);
         lanBasis.next();
     }
 }
@@ -124,14 +124,14 @@ TEST(LanczosBasis, getInfoByC3DaggerC0)
     LanczosBasis lanBasis(L, N);
 
     size_t indexExact[10] = {3,1,2,3,8,9,6,7,8,9};
-    double coeExact[10] ={1,0,0,0,-1,-1,0,0,0,0};
+    int coeExact[10] ={1,0,0,0,-1,-1,0,0,0,0};
     TableElement info;
     size_t NHilbert = lanBasis.binomial(L, N);
     for(size_t i = 0; i < NHilbert; ++i)
     {
         info = lanBasis.getInfoByCiDaggerCj(3, 0);
         EXPECT_EQ(indexExact[i], info.index);
-        EXPECT_DOUBLE_EQ(coeExact[i], info.coefficient);
+        EXPECT_EQ(coeExact[i], info.coefficient);
         lanBasis.next();
     }
 }
@@ -158,7 +158,7 @@ TEST(LanczosBasis, diagonalizeOneBodyMatrix)
             for(size_t j = 0; j < L; ++j)
             {
                 element = lanBasis.getInfoByCiDaggerCj(i,j);
-                HvManyBody( element.index, k ) += element.coefficient * H0(i,j);
+                HvManyBody( element.index, k ) += element.coefficient * 1.0 * H0(i,j);
             }
         }
         lanBasis.next();

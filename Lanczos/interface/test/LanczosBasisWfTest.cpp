@@ -69,6 +69,15 @@ TEST_F(LanczosBasisWfTest, matrixMoveAssignment)
     EXPECT_FALSE( vecTemp.data() );
 }
 
+TEST_F(LanczosBasisWfTest, scaleCopyAssignment)
+{
+    TensorHao<complex<double>, 1> vecScale(L);
+    vecScale = complex<double>(2.0, 3.0);
+
+    LanczosBasisWf wf(L); wf = complex<double>(2.0, 3.0);
+    EXPECT_FALSE( diff( vecScale, wf.getWf(), 1e-12 ) );
+}
+
 TEST_F(LanczosBasisWfTest, copyAssignment)
 {
     LanczosBasisWf wfBase(vec);

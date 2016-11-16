@@ -49,6 +49,18 @@ LanczosBasisWf& LanczosBasisWf::operator=(TensorHao<complex<double>, 1> &&wf)
     return *this;
 }
 
+LanczosBasisWf &LanczosBasisWf::operator=(std::complex<double> x)
+{
+    size_t wfSize = wf.size();
+
+#pragma omp parallel for
+    for(size_t i = 0; i < wfSize; ++i)
+    {
+        wf(i) = x;
+    }
+    return *this;
+}
+
 LanczosBasisWf& LanczosBasisWf::operator=(const LanczosBasisWf& x)
 {
     copyDeep(x.wf);

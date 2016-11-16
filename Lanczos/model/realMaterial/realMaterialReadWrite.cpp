@@ -52,14 +52,6 @@ void RealMaterial::read(const std::string &filename)
     }
 
     file >> vecSize;
-    if( dnUp.size() != vecSize )  dnUp.resize( vecSize );
-    for(size_t m = 0; m < vecSize; ++m)
-    {
-        file >> i >> j >> k >> l >> real >> imag;
-        dnUp[m] = { i, j, k, l, complex<double>(real, imag) };
-    }
-
-    file >> vecSize;
     if( dnDn.size() != vecSize )  dnDn.resize( vecSize );
     for(size_t m = 0; m < vecSize; ++m)
     {
@@ -106,14 +98,6 @@ void RealMaterial::write(const std::string &filename)
         file << setw(26) << upDn[m].i << setw(26) << upDn[m].j
              << setw(26) << upDn[m].k << setw(26) << upDn[m].l
              << setw(26) << upDn[m].V.real() << setw(26) << upDn[m].V.imag() << "\n";
-    }
-
-    file<<setw(26)<<dnUp.size()<<"\n";
-    for(size_t m = 0; m < dnUp.size(); ++m)
-    {
-        file << setw(26) << dnUp[m].i << setw(26) << dnUp[m].j
-             << setw(26) << dnUp[m].k << setw(26) << dnUp[m].l
-             << setw(26) << dnUp[m].V.real() << setw(26) << dnUp[m].V.imag() << "\n";
     }
 
     file<<setw(26)<<dnDn.size()<<"\n";

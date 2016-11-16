@@ -77,11 +77,11 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
 {
     if( i == j )
     {
-        for(size_t k = 0; k < numberOfParticle; ++k)  { if( positionOfParticle[k] == i ) return {index, 1.0}; }
-        return {index, 0.0};
+        for(size_t k = 0; k < numberOfParticle; ++k)  { if( positionOfParticle[k] == i ) return {index, 1}; }
+        return {index, 0};
     }
 
-    for(size_t k = 0; k < numberOfParticle; ++k) { if( positionOfParticle[k] == i ) return {index, 0.0}; }
+    for(size_t k = 0; k < numberOfParticle; ++k) { if( positionOfParticle[k] == i ) return {index, 0}; }
 
     size_t destroyedParticle(numberOfParticle);
     for(size_t k = 0; k < numberOfParticle; ++k)
@@ -113,7 +113,7 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
             }
         }
         indexNew += binomial( i, createdParticle );
-        return {indexNew, coe*1.0};
+        return {indexNew, coe};
     }
     else if( i< j )
     {
@@ -132,7 +132,7 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
             }
         }
         indexNew += binomial( i, createdParticle+1 );
-        return {indexNew, coe*1.0};
+        return {indexNew, coe};
     }
     else
     {

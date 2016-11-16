@@ -11,7 +11,7 @@
 struct TableElement
 {
     size_t index;
-    double coefficient;
+    int coefficient;
 };
 
 class LanczosBasis
