@@ -142,7 +142,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
     size_t numUp, numDn, numNew;
     TableElement tableElementOne, tableElementTwo;
 
-    #pragma omp parallel for schedule(dynamic) private(numUp, numDn, numNew, tableElementOne, tableElementTwo)
+    #pragma omp parallel for private(numUp, numDn, numNew, tableElementOne, tableElementTwo)
     for(size_t num = 0; num < NHilbert; ++num)
     {
         vecNew(num) = 0;

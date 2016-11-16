@@ -14,7 +14,7 @@
 //TODO:: How to use my library?
 //TODO:: Check which openmp is faster? Static or dynamic
 //TODO:: Check " collapse(2) " faster or not?
-
+//TODO:: Check MPI+OPENMP? Submit a ticket?
 struct OneBody
 {
     size_t i;
