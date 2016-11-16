@@ -2,6 +2,16 @@ set(HintLibraryPath "$ENV{ACML}/lib64" "$ENV{ACML}/lib" "$ENV{ACMLHOME}/lib64" "
 set(HintIncludePath "$ENV{ACML}/include" "$ENV{ACMLHOME}/include")
 
 if(USE_OPENMP)
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        set(acml_flags "-fopenmp")
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+        set(acml_flags "-qopenmp")
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "PGI")
+        set(acml_flags "-mp -pgf90libs")
+    endif()
+endif()
+
+if(USE_OPENMP)
     set(acml_name libacml_mp.a)
 else()
     set(acml_name libacml.a)
