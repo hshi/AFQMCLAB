@@ -10,11 +10,9 @@
 #include "../lanczosBasis/lanczosBasis.h"
 
 //TODO:: Ask Mario for a realistic materials for exact soultion? To write a test code.
-//TODO:: Test warning in Hurricane?
+//TODO:: Hurricane did not pass the test
 //TODO:: How to use my library?
-//TODO:: Check which openmp is faster? Static or dynamic
-//TODO:: Check " collapse(2) " faster or not?
-//TODO:: Check MPI+OPENMP? Submit a ticket?
+//TODO:: Check MPI+OPENMP? Submit a ticket?  Diag has in mvp2run problem
 struct OneBody
 {
     size_t i;
@@ -72,8 +70,8 @@ class RealMaterial : public ModelInterface
     void applySplusiSminusjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyDiDaggerDjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
-    void applyCiupDaggerCjupToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
-    void applyCidnDaggerCjdnToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyCupiDaggerCupjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+    void applyCdniDaggerCdnjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
                             const std::vector<OneBody> &up, const std::vector<OneBody> &dn,
                             const std::vector<TwoBody> &upUp, const std::vector<TwoBody> &upDn,

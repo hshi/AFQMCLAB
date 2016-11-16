@@ -112,7 +112,7 @@ void RealMaterial::applyDiDaggerDjToWf(const LanczosBasisWf &wf, LanczosBasisWf 
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
 }
 
-void RealMaterial::applyCiupDaggerCjupToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
+void RealMaterial::applyCupiDaggerCupjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
     vector<OneBody> up, dn;
     vector<TwoBody> upUp,upDn,dnDn;
@@ -121,7 +121,7 @@ void RealMaterial::applyCiupDaggerCjupToWf(const LanczosBasisWf &wf, LanczosBasi
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
 }
 
-void RealMaterial::applyCidnDaggerCjdnToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
+void RealMaterial::applyCdniDaggerCdnjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
     vector<OneBody> up, dn;
     vector<TwoBody> upUp,upDn,dnDn;

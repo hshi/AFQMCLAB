@@ -92,7 +92,7 @@ TEST(realMaterialTest, readWrite)
     }
 }
 
-TEST(realMaterialTest, Lanczos)
+TEST(realMaterialTest, LanczosOneBody)
 {
     size_t L(6), Nup(2),Ndn(3);
     TensorHao<complex<double>, 2> H0Up(L,L); randomFill(H0Up); H0Up += conjtrans(H0Up);
@@ -117,4 +117,195 @@ TEST(realMaterialTest, Lanczos)
     Lanczos lan(H);
     lan.findEigen(1);
     EXPECT_NEAR( E_exact , lan.getEigenvalue(0), 1e-10 );
+}
+
+
+class realMaterialHubbardTest: public ::testing::Test
+{
+ public:
+    size_t L=4, Nup=2, Ndn=3;
+    vector<OneBody> up, dn;
+    vector<TwoBody> upDn;
+
+    realMaterialHubbardTest( )
+    {
+        up.push_back( {0, 3, {-0.309016994374947, 0.951056516295154} } );
+        up.push_back( {0, 1, {-0.309016994374947,-0.951056516295154} } );
+        up.push_back( {1, 2, {-0.309016994374947,-0.951056516295154} } );
+        up.push_back( {1, 0, {-0.309016994374947, 0.951056516295154} } );
+        up.push_back( {2, 3, {-0.309016994374947,-0.951056516295154} } );
+        up.push_back( {2, 1, {-0.309016994374947, 0.951056516295154} } );
+        up.push_back( {3, 0, {-0.309016994374947,-0.951056516295154} } );
+        up.push_back( {3, 2, {-0.309016994374947, 0.951056516295154} } );
+        dn = up;
+        upDn.push_back( {0,0,0,0,4} );
+        upDn.push_back( {1,1,1,1,4} );
+        upDn.push_back( {2,2,2,2,4} );
+        upDn.push_back( {3,3,3,3,4} );
+    }
+
+    ~realMaterialHubbardTest( )
+    {
+    }
+};
+
+TEST_F(realMaterialHubbardTest, energy)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+    double E_exact = 0.877119735524673;
+    EXPECT_NEAR( E_exact , lan.getEigenvalue(0), 1e-10 );
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applyKToWf(wf0, wfPrime);
+    complex<double> K = wf0.calculateOverlapWith(wfPrime);
+    complex<double> K_Exact(-3.87084415356266, 0);
+    EXPECT_COMPLEX_NEAR( K_Exact , K, 1e-10 );
+
+    H.applyVToWf(wf0, wfPrime);
+    complex<double> V = wf0.calculateOverlapWith(wfPrime);
+    complex<double> V_Exact(4.74796388908733, 0);
+    EXPECT_COMPLEX_NEAR( V_Exact , V, 1e-10 );
+}
+
+TEST_F(realMaterialHubbardTest, spinCorrelation)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applySiSjToWf(wf0, wfPrime, 0, 0);
+    complex<double> S0S0 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> S0S0_Exact(0.49237839, 0);
+    EXPECT_COMPLEX_NEAR( S0S0 , S0S0_Exact, 1e-8 );
+
+    H.applySiSjToWf(wf0, wfPrime, 0, 1);
+    complex<double> S0S1 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> S0S1_Exact(-0.13413708, 0);
+    EXPECT_COMPLEX_NEAR( S0S1 , S0S1_Exact, 1e-8 );
+}
+
+TEST_F(realMaterialHubbardTest, spinZCorrelation)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applySziSzjToWf(wf0, wfPrime, 0, 0);
+    complex<double> Sz0Sz0 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> Sz0Sz0_Exact(0.16412613, 0);
+    EXPECT_COMPLEX_NEAR( Sz0Sz0 , Sz0Sz0_Exact, 1e-8 );
+
+    H.applySziSzjToWf(wf0, wfPrime, 0, 1);
+    complex<double> Sz0Sz1 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> Sz0Sz1_Exact(-0.04471236, 0);
+    EXPECT_COMPLEX_NEAR( Sz0Sz1 , Sz0Sz1_Exact, 1e-8 );
+}
+
+TEST_F(realMaterialHubbardTest, SplusSminusCorrelation)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applySplusiSminusjToWf(wf0, wfPrime, 0, 0);
+    complex<double> Sp0Sm0 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> Sp0Sm0_Exact(0.2032522570, 0);
+    EXPECT_COMPLEX_NEAR( Sp0Sm0 , Sp0Sm0_Exact, 1e-8 );
+
+
+    H.applySplusiSminusjToWf(wf0, wfPrime, 0, 1);
+    complex<double> Sp0Sm1 = wf0.calculateOverlapWith(wfPrime);
+    double Sp0Sm1Real_Exact(-0.08942472);
+    EXPECT_NEAR( Sp0Sm1.real() , Sp0Sm1Real_Exact, 1e-8 );
+}
+
+TEST_F(realMaterialHubbardTest, NNCorrelation)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applyNiNjToWf(wf0, wfPrime, 0, 0);
+    complex<double> N0N0 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> N0N0_Exact(1.8434954861, 0);
+    EXPECT_COMPLEX_NEAR( N0N0 , N0N0_Exact, 1e-8 );
+
+    H.applyNiNjToWf(wf0, wfPrime, 0, 1);
+    complex<double> N0N1 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> N0N1_Exact(0, 0);
+    LanczosBasisWf wfPrimePrime = lan.getLanWavefunction(1);
+
+    H.applyCupiDaggerCupjToWf(wf0, wfPrimePrime, 1, 1);
+    H.applyCupiDaggerCupjToWf(wfPrimePrime, wfPrime, 0, 0);
+    N0N1_Exact += wf0.calculateOverlapWith(wfPrime);
+
+    H.applyCdniDaggerCdnjToWf(wf0, wfPrimePrime, 1, 1);
+    H.applyCdniDaggerCdnjToWf(wfPrimePrime, wfPrime, 0, 0);
+    N0N1_Exact += wf0.calculateOverlapWith(wfPrime);
+
+    H.applyCdniDaggerCdnjToWf(wf0, wfPrimePrime, 1, 1);
+    H.applyCupiDaggerCupjToWf(wfPrimePrime, wfPrime, 0, 0);
+    N0N1_Exact += wf0.calculateOverlapWith(wfPrime);
+
+    H.applyCdniDaggerCdnjToWf(wf0, wfPrimePrime, 0, 0);
+    H.applyCupiDaggerCupjToWf(wfPrimePrime, wfPrime, 1, 1);
+    N0N1_Exact += wf0.calculateOverlapWith(wfPrime);
+
+    EXPECT_COMPLEX_NEAR( N0N1 , N0N1_Exact, 1e-8 );
+}
+
+TEST_F(realMaterialHubbardTest, DDCorrelation)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applyDiDaggerDjToWf(wf0, wfPrime, 0, 0);
+    complex<double> D0D0 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> D0D0_exact(0.2967477430, 0);
+    EXPECT_COMPLEX_NEAR( D0D0 , D0D0_exact, 1e-8 );
+
+    H.applyDiDaggerDjToWf(wf0, wfPrime, 0, 1);
+    complex<double> D0D1 = wf0.calculateOverlapWith(wfPrime);
+    double D0D1Real_exact(-0.0231103600);
+    EXPECT_NEAR( D0D1.real(), D0D1Real_exact, 1e-8 );
+}
+
+TEST_F(realMaterialHubbardTest, GreenFunction)
+{
+    RealMaterial H(L, Nup, Ndn); H.setUp(up); H.setDn(dn); H.setUpDn(upDn);
+    Lanczos lan(H);
+    lan.findEigen(1);
+
+    const LanczosBasisWf & wf0 = lan.getEigenstate(0);
+    LanczosBasisWf wfPrime = lan.getLanWavefunction(0);
+
+    H.applyCupiDaggerCupjToWf(wf0, wfPrime, 0, 1);
+    complex<double> Cup0Cup1 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> Cup0Cup1_exact(0.215766341130938, -0.225593142085703);
+    EXPECT_COMPLEX_NEAR( Cup0Cup1 , Cup0Cup1_exact, 1e-8 );
+
+    H.applyCdniDaggerCdnjToWf(wf0, wfPrime, 0, 1);
+    complex<double> Cdn0Cdn1 = wf0.calculateOverlapWith(wfPrime);
+    complex<double> Cdn0Cdn1_exact(0.007097970056088223, -0.210749654045575);
+    EXPECT_COMPLEX_NEAR( Cdn0Cdn1 , Cdn0Cdn1_exact, 1e-8 );
 }
