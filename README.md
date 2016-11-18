@@ -2,6 +2,8 @@
 
 This is a library for AFQMC.
 
+All rights reserved. Please do not distribute the program, or any of its parts, without explicit consent of the author.
+
 ##Dependence
    - **GoogleTest**
 
@@ -34,14 +36,26 @@ This is a library for AFQMC.
    - **MPI** (Optional)
 
 
-##How to use:
+##How to install:
     git clone https://github.com/hshi/AFQMCLIB.git
     cd AFQMCLIB
     mkdir build
     cd build
-    cmake ..
+    cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
     make
     make test
+    make install
+
+##How to use
+
+Frist set path to AFQMC_DIR, e.g.
+
+    export AFQMC_DIR='/where/to/install/AFQMC'
+or
+
+    setenv AFQMC_DIR /where/to/install/AFQMC
+
+Then see tutorials for detail examples.
 
 
 ##Tune cmake
@@ -105,8 +119,6 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-
-   //TODO: Copy cmake in AFQMCLIB to install directory. Check Where to put AFQMCConfig.cmake.in
 
   //TODO: Change bin in tensor_hao for fix size, install bin
 
