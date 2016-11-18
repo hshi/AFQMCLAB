@@ -77,15 +77,17 @@ This is a library for AFQMC.
           - (Only if we are using MPI) Set MPI flag: `-DUSE_MPI=on`
 
       - args for both MANUAL and other platform
-          - Set cxx flags: `-DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG"`
+          - Set cxx flags: ` -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" `
           - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
           - Use magma library: `-DUSE_MAGMA=on`
           - Use 64 bit int for lapack and blas: `-DUSE_INT64=on`
           - Use openmp for lapack, blas and Lanczos code: `-DUSE_OPENMP=on`
-          - ( Only for system lapack, blas and ACML ), set fortran function no underscore
+          - ( Same with cxx flags ) Set external flags: `-DEXT_FLAGS:STRING="-Wall -O3 -DNDEBUG" `
+          - ( For unusual machines ) Set external definitions: ` -DEXT_DEFINITIONS:LIST="-DSPECAIL" `
+          - ( Only for system lapack, blas and ACML ) Set fortran function no underscore
 
                  `-DFORTRAN_NO_UNDERSCORE=on`
-          - ( Only for system lapack, blas and ACML ), set fortran function return void
+          - ( Only for system lapack, blas and ACML ) Set fortran function return void
 
                  `-DFORTRAN_COMPLEX_FUNCTIONS_RETURN_VOID=on`
 
@@ -103,6 +105,8 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+
+   //TODO: Copy cmake in AFQMCLIB to install directory. Check Where to put AFQMCConfig.cmake.in
 
   //TODO: Change bin in tensor_hao for fix size, install bin
 

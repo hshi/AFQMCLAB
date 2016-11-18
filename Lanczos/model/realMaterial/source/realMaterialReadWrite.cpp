@@ -3,7 +3,7 @@
 //
 
 #include <fstream>
-#include "realMaterial.h"
+#include "../include/realMaterial.h"
 
 using namespace std;
 using namespace tensor_hao;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(AFQMCLIB  C CXX)
+project(AFQMCLIB C CXX)
 
 set(AFQMC_MAJOR_VERSION 0)
 set(AFQMC_MINOR_VERSION 1)
@@ -18,10 +18,6 @@ enable_testing()
 
 include(FUNCTION_CUSTOM)
 
-setInt64IfDefineUSE_INT64()
-
-removeDuplicateSubstring(${CMAKE_CXX_FLAGS} CMAKE_CXX_FLAGS)
-
 #Set librarys
 find_package(Threads REQUIRED)
 
@@ -35,7 +31,7 @@ find_package(fftw REQUIRED)
 
 include(Set_Lapack_Blas)
 
-include(Set_Openmp)
+include(Set_Openmp_int64)
 
 include(Set_Ext_Libraries)
 

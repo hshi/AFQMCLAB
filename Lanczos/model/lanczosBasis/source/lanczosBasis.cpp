@@ -3,7 +3,7 @@
 //
 #include <algorithm>
 #include <iostream>
-#include "lanczosBasis.h"
+#include "../include/lanczosBasis.h"
 
 using namespace std;
 

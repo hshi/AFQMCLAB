@@ -2,7 +2,7 @@
 // Created by boruoshihao on 10/26/16.
 //
 #include <fstream>
-#include "sparseMatrix.h"
+#include "../include/sparseMatrix.h"
 
 using namespace std;
 using namespace tensor_hao;

@@ -7,3 +7,7 @@ if(USE_OPENMP)
         set(openmp_flags "-mp -pgf90libs")
     endif()
 endif()
+
+if(USE_INT64)
+    set(int64_definitions "-DUSE_INT64")
+endif()

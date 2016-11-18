@@ -1,12 +1,35 @@
-# - Config file for the AFQMC package
+# Config file for the AFQMC package
 # It defines the following variables
-#  AFQMC_INCLUDE_DIRS - include directories for FooBar
-#  AFMQC_LIBRARIES    - libraries to link against
-#  LIBHAO_LIBRARIES    - libraries to link against
+#   AFQMC_COMPILER              - compiler for AFQMC
+#   AFQMC_MPIEXEC               - mpi executable for AFQMC
+#   AFQMC_MPIEXEC_NUMPROC_FLAG  - mpi number of process flag for AFQMC
+#   AFQMC_FLAGS                 - compiler flags for AFQMC
+#   AFQMC_DEFINITIONS           - definition for AFQMC
+#   AFQMC_INCLUDE_DIRS          - include directories for AFQMC
+#   AFQMC_LIBRARIES             - libraries to link against
+#   LIBHAO_LIBRARIES            - libraries to link against
 
 get_filename_component(AFQMC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
 
-include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
+set(AFQMC_COMPILER @CMAKE_CXX_COMPILER@)
 
-set(LIBHAO_LIBRARIES libHao)
-set(AFMQC_LIBRARIES libHao)
+set(AFQMC_MPIEXEC @MPIEXEC@ )
+
+set(AFQMC_MPIEXEC_NUMPROC_FLAG @MPIEXEC_NUMPROC_FLAG@ )
+
+set(AFQMC_FLAGS "@CMAKE_CXX_FLAGS@")
+
+set(AFQMC_DEFINITIONS @EXT_DEFINITIONS@)
+
+set(AFQMC_INCLUDE_DIRS @EXT_INCLUDE_DIRS@ ${AFQMC_CMAKE_DIR}/../include)
+
+set(AFQMC_LIBRARIES @EXT_LIBRARIES@)
+
+include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
+set(LIBHAO_LIBRARIES libHao @EXT_LIBRARIES@)
+
+set(AFQMC_LIBRARIES libHao ${AFQMC_LIBRARIES})
+
+if(AFQMC_FOUND)
+  MESSAGE ("-- In order to find AFQMC, please define AFQMC, AFQMC='/path/to/AFQMC' ")
+endif()

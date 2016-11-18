@@ -10,8 +10,6 @@ add_library(realMaterialHamiltonianHao STATIC $<TARGET_OBJECTS:realMaterialHamil
 #For Test
 add_executable(realMaterialHamiltonianTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-target_link_libraries(realMaterialHamiltonianTest realMaterialHamiltonianHao libHao libgtest-main-hao ${ext_libraries})
-
-target_include_directories(realMaterialHamiltonianTest PUBLIC ${ext_include_dirs})
+target_link_libraries(realMaterialHamiltonianTest realMaterialHamiltonianHao libHao libgtest-main-hao ${EXT_LIBRARIES})
 
 add_my_test(realMaterialHamiltonianTest "$<TARGET_FILE:realMaterialHamiltonianTest>")

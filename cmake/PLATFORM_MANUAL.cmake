@@ -1,4 +1,4 @@
 #For definitions
 if(USE_MPI)
-    add_definitions (-DMPI_HAO)
+    set(EXT_DEFINITIONS "-DMPI_HAO" ${EXT_DEFINITIONS})
 endif()

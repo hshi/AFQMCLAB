@@ -4,8 +4,8 @@
 #ifndef AFQMCLIB_SPARSEMATRIX_H
 #define AFQMCLIB_SPARSEMATRIX_H
 
-#include "../../interface/include/modelInterface.h"
-#include "../../interface/include/LanczosBasisWf.h"
+#include "../../../interface/include/modelInterface.h"
+#include "../../../interface/include/LanczosBasisWf.h"
 
 //Use Compressed Row Storage (CRS) for sparse matrix, see reference below.
 //http://netlib.org/linalg/html_templates/node91.html

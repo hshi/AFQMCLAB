@@ -11,11 +11,6 @@ set(SOURCE_TESTS
 
 add_executable(tensorTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-set(ext_libraries ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${lapackblas_libraries})
-list(REMOVE_DUPLICATES ext_libraries)
-
-target_link_libraries(tensorTest tensorHao mpiHao testHao libgtest-main-hao ${ext_libraries})
-
-target_include_directories(tensorTest PUBLIC ${GTEST_INCLUDE_DIRS})
+target_link_libraries(tensorTest tensorHao mpiHao testHao libgtest-main-hao ${EXT_LIBRARIES})
 
 add_my_test(tensorTest "$<TARGET_FILE:tensorTest>")

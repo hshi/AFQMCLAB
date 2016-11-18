@@ -5,9 +5,9 @@
 #ifndef AFQMCLIB_REALMATERIAL_H
 #define AFQMCLIB_REALMATERIAL_H
 
-#include "../../interface/include/modelInterface.h"
-#include "../../interface/include/LanczosBasisWf.h"
-#include "../lanczosBasis/lanczosBasis.h"
+#include "../../../interface/include/modelInterface.h"
+#include "../../../interface/include/LanczosBasisWf.h"
+#include "../../lanczosBasis/include/lanczosBasis.h"
 
 //TODO:: How to use my library?
 struct OneBody

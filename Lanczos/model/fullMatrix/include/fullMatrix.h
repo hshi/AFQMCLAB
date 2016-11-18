@@ -5,8 +5,8 @@
 #ifndef AFQMCLIB_FULLMATRIX_H
 #define AFQMCLIB_FULLMATRIX_H
 
-#include "../../interface/include/modelInterface.h"
-#include "../../interface/include/LanczosBasisWf.h"
+#include "../../../interface/include/modelInterface.h"
+#include "../../../interface/include/LanczosBasisWf.h"
 
 class FullMatrix : public ModelInterface
 {

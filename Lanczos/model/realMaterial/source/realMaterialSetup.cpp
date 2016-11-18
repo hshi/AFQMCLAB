@@ -2,7 +2,7 @@
 // Created by boruoshihao on 10/28/16.
 //
 
-#include "realMaterial.h"
+#include "../include/realMaterial.h"
 
 using namespace std;
 using namespace tensor_hao;

@@ -3,7 +3,7 @@
 //
 
 #include <fstream>
-#include "fullMatrix.h"
+#include "../include/fullMatrix.h"
 
 using namespace std;
 using namespace tensor_hao;

@@ -12,11 +12,6 @@ set(SOURCE_HEADERS
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_fill.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_hao_ref.h)
 
-add_definitions(${lapackblas_definitions})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${lapackblas_flags}")
-removeDuplicateSubstring(${CMAKE_CXX_FLAGS} CMAKE_CXX_FLAGS)
-include_directories(${lapackblas_include_dirs})
-
 add_subdirectory(include)
 add_subdirectory(source)
 add_subdirectory(test)

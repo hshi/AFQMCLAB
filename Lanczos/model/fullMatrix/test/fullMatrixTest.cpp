@@ -1,6 +1,6 @@
-#include "../../../libhao/testHao/gtest_custom.h"
-#include "../../interface/include/Lanczos.h"
-#include "fullMatrix.h"
+#include "../../../../libhao/testHao/gtest_custom.h"
+#include "../../../interface/include/Lanczos.h"
+#include "../include/fullMatrix.h"
 
 using namespace std;
 using namespace tensor_hao;
