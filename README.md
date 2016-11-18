@@ -103,6 +103,9 @@ This is a library for AFQMC.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+
+  //TODO: Change bin in tensor_hao for fix size, install bin
+
   //TODO: Should everything use lapack blas? Equal? Copy?
 
   //TODO: Update lapack and blas 1D for all dimension.

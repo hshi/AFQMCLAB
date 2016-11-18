@@ -1,7 +1,7 @@
 #include <fstream>
 #include "cluster.h"
-#include "../../libhao/test_hao/gtest_custom.h"
-#include "../../libhao/mpi_hao/mpi_fun.h"
+#include "../../libhao/testHao/gtest_custom.h"
+#include "../../libhao/mpiHao/include/mpi_fun.h"
 
 using namespace std;
 

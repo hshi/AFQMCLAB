@@ -1,7 +1,7 @@
 //
 // Created by boruoshihao on 9/24/16.
 //
-#include "../../../libhao/test_hao/gtest_custom.h"
+#include "../../../libhao/testHao/gtest_custom.h"
 #include "../include/Lanczos.h"
 #include "../include/modelInterface.h"
 

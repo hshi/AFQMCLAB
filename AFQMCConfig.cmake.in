@@ -1,0 +1,12 @@
+# - Config file for the AFQMC package
+# It defines the following variables
+#  AFQMC_INCLUDE_DIRS - include directories for FooBar
+#  AFMQC_LIBRARIES    - libraries to link against
+#  LIBHAO_LIBRARIES    - libraries to link against
+
+get_filename_component(AFQMC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
+
+include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
+
+set(LIBHAO_LIBRARIES libHao)
+set(AFMQC_LIBRARIES libHao)

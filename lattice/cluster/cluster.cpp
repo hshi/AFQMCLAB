@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "cluster.h"
-#include "../../libhao/mpi_hao/mpi_fun.h"
+#include "../../libhao/mpiHao/include/mpi_fun.h"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "../../../libhao/test_hao/gtest_custom.h"
+#include "../../../libhao/testHao/gtest_custom.h"
 #include "../../interface/include/Lanczos.h"
 #include "fullMatrix.h"
 

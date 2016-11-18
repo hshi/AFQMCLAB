@@ -2,7 +2,7 @@
 // Created by boruoshihao on 9/22/16.
 //
 #include <fstream>
-#include "../../libhao/tensor_hao/include/tensor_all.h"
+#include "../../libhao/tensorHao/include/tensor_all.h"
 #include "realMaterialHamiltonian.h"
 
 using namespace std;

@@ -1,9 +1,9 @@
 //
 // Created by boruoshihao on 10/27/16.
 //
-#include "../../../libhao/test_hao/gtest_custom.h"
+#include "../../../libhao/testHao/gtest_custom.h"
 #include "../../interface/include/Lanczos.h"
-#include "../../../libhao/math_hao/include/simple_fun.h"
+#include "../../../libhao/mathHao/include/simple_fun.h"
 #include "realMaterial.h"
 
 using namespace std;

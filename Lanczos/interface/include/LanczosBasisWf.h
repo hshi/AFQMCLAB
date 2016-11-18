@@ -6,7 +6,7 @@
 #define AFQMCLIB_LANCZOSBASISWF_H
 
 #include <complex>
-#include "../../../libhao/tensor_hao/include/tensor_all.h"
+#include "../../../libhao/tensorHao/include/tensor_all.h"
 
 class LanczosBasisWf
 {

@@ -1,0 +1,24 @@
+set(SOURCE_HEADERS
+        ${CMAKE_CURRENT_LIST_DIR}/include/pfaffian_utilities.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_2d_bl_magma.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_all.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_element_wise.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_hao.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_mpi.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_1d_bl_cpu.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_2d_bl_cpu.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_2d_common_fun.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_core.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_fill.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_hao_ref.h)
+
+add_definitions(${lapackblas_definitions})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${lapackblas_flags}")
+removeDuplicateSubstring(${CMAKE_CXX_FLAGS} CMAKE_CXX_FLAGS)
+include_directories(${lapackblas_include_dirs})
+
+add_subdirectory(include)
+add_subdirectory(source)
+add_subdirectory(test)
+add_subdirectory(bin)
+add_subdirectory(timing)

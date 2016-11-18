@@ -1,14 +1,15 @@
 #Base level, can be used for everything
-add_subdirectory(test_hao)
-add_subdirectory(mpi_hao)
-add_subdirectory(time_hao)
+add_subdirectory(testHao)
+add_subdirectory(mpiHao)
+add_subdirectory(timeHao)
 
 #First level
-add_subdirectory(erroranalysis_hao)
-add_subdirectory(random_hao)
-add_subdirectory(tensor_hao)
-add_subdirectory(fftw_hao)
-add_subdirectory(math_hao)
+add_subdirectory(erroranalysisHao)
+add_subdirectory(randomHao)
+add_subdirectory(tensorHao)
+add_subdirectory(fftwHao)
+add_subdirectory(mathHao)
+add_subdirectory(lapackblasHao)
 
 add_library(libHao STATIC
         $<TARGET_OBJECTS:testHaoObject>
@@ -20,3 +21,8 @@ add_library(libHao STATIC
         $<TARGET_OBJECTS:fftwHaoObject>
         $<TARGET_OBJECTS:mathHaoObject>
         )
+install(TARGETS libHao DESTINATION lib EXPORT libHaoTargets)
+install(EXPORT libHaoTargets DESTINATION cmake)
+
+file(RELATIVE_PATH relativeDirectorPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
+install(FILES libhao.h DESTINATION "include/${relativeDirectorPath}")

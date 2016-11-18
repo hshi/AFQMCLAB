@@ -9,10 +9,7 @@
 #include "../../interface/include/LanczosBasisWf.h"
 #include "../lanczosBasis/lanczosBasis.h"
 
-//TODO:: Ask Mario for a realistic materials for exact soultion? To write a test code.
-//TODO:: Hurricane did not pass the test
 //TODO:: How to use my library?
-//TODO:: Check MPI+OPENMP? Submit a ticket?  Diag has in mvp2run problem
 struct OneBody
 {
     size_t i;

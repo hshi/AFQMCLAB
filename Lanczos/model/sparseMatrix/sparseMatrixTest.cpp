@@ -2,7 +2,7 @@
 // Created by boruoshihao on 10/26/16.
 //
 
-#include "../../../libhao/test_hao/gtest_custom.h"
+#include "../../../libhao/testHao/gtest_custom.h"
 #include "../../interface/include/Lanczos.h"
 #include "sparseMatrix.h"
 
