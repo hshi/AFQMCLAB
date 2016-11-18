@@ -30,6 +30,4 @@ set(LIBHAO_LIBRARIES libHao @EXT_LIBRARIES@)
 
 set(AFQMC_LIBRARIES libHao ${AFQMC_LIBRARIES})
 
-if(AFQMC_FOUND)
-  MESSAGE ("-- In order to find AFQMC, please define AFQMC, AFQMC='/path/to/AFQMC' ")
-endif()
+MESSAGE ("-- Find AFQMC in ${AFQMC_DIR}.")

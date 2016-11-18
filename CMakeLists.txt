@@ -48,3 +48,5 @@ install(FILES "${PROJECT_BINARY_DIR}/AFQMCConfig.cmake" DESTINATION cmake)
 
 configure_file(AFQMCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/AFQMCConfigVersion.cmake" @ONLY)
 install(FILES "${PROJECT_BINARY_DIR}/AFQMCConfigVersion.cmake" DESTINATION cmake)
+
+install(DIRECTORY cmake DESTINATION cmake)
