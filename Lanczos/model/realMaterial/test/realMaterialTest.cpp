@@ -2,7 +2,7 @@
 // Created by boruoshihao on 10/27/16.
 //
 #include "../../../../libhao/testHao/gtest_custom.h"
-#include "../../../interface/include/Lanczos.h"
+#include "../../../interface/include/LanczosInterface.h"
 #include "../../../../libhao/mathHao/include/simple_fun.h"
 #include "../include/realMaterial.h"
 

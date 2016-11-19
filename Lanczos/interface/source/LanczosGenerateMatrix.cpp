@@ -1,7 +1,7 @@
 //
 // Created by boruoshihao on 10/21/16.
 //
-#include "../include/Lanczos.h"
+#include "../include/LanczosInterface.h"
 
 using namespace tensor_hao;
 

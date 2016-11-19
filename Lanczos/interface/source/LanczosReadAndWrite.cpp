@@ -2,7 +2,7 @@
 // Created by boruoshihao on 10/20/16.
 //
 #include <fstream>
-#include "../include/Lanczos.h"
+#include "../include/LanczosInterface.h"
 
 using namespace tensor_hao;
 

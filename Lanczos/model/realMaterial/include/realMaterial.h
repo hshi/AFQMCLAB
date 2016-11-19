@@ -9,7 +9,8 @@
 #include "../../../interface/include/LanczosBasisWf.h"
 #include "../../lanczosBasis/include/lanczosBasis.h"
 
-//TODO:: How to use my library?
+//TODO: SET up, dn, upup, updn,dnup to TensorHaoRef, link to stack or heap, check speed?
+
 struct OneBody
 {
     size_t i;

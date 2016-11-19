@@ -8,6 +8,7 @@
 #   AFQMC_INCLUDE_DIRS          - include directories for AFQMC
 #   AFQMC_LIBRARIES             - libraries to link against
 #   LIBHAO_LIBRARIES            - libraries to link against
+#   LANCZOS_LIBRARIES           - libraries to link against
 
 get_filename_component(AFQMC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
 
@@ -23,11 +24,19 @@ set(AFQMC_DEFINITIONS @EXT_DEFINITIONS@)
 
 set(AFQMC_INCLUDE_DIRS @EXT_INCLUDE_DIRS@ ${AFQMC_CMAKE_DIR}/../include)
 
-set(AFQMC_LIBRARIES @EXT_LIBRARIES@)
+set(DEPENDENCE_LIBRARIES @EXT_LIBRARIES@)
 
 include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
-set(LIBHAO_LIBRARIES libHao @EXT_LIBRARIES@)
+set(LIBHAO_LIBRARIES libHao ${DEPENDENCE_LIBRARIES})
 
-set(AFQMC_LIBRARIES libHao ${AFQMC_LIBRARIES})
+include("${AFQMC_CMAKE_DIR}/lanczosTargets.cmake")
+set(LANCZOS_LIBRARIES lanczos libHao ${DEPENDENCE_LIBRARIES})
 
-MESSAGE ("-- Find AFQMC in ${AFQMC_DIR}.")
+set(AFQMC_LIBRARIES lanczos libHao ${DEPENDENCE_LIBRARIES})
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(afqmc  DEFAULT_MSG
+                                  AFQMC_LIBRARIES AFQMC_INCLUDE_DIRS)
+if(NOT AFQMC_FOUND)
+  MESSAGE ("-- In order to find mkl, please define AFQMC_DIR ='/path/to/AFQMC' ")
+endif()

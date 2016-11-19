@@ -1,5 +1,5 @@
 set(SOURCE_FILES
-        Lanczos.cpp
+        LanczosInterface.cpp
         LanczosReadAndWrite.cpp
         LanczosUtilities.cpp
         LanczosGenerateMatrix.cpp

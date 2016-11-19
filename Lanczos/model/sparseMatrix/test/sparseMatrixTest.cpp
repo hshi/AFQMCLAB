@@ -3,7 +3,7 @@
 //
 
 #include "../../../../libhao/testHao/gtest_custom.h"
-#include "../../../interface/include/Lanczos.h"
+#include "../../../interface/include/LanczosInterface.h"
 #include "../include/sparseMatrix.h"
 
 using namespace std;

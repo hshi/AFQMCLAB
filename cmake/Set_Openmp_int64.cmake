@@ -1,4 +1,5 @@
 if(USE_OPENMP)
+    set(openmp_definitions "-DUSE_OPENMP")
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         set(openmp_flags "-fopenmp")
     elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")

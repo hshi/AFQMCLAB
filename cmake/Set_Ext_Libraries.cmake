@@ -15,6 +15,7 @@ set(EXT_FLAGS "${lapackblas_flags} ${EXT_FLAGS}")
 set(EXT_INCLUDE_DIRS ${lapackblas_include_dirs} ${EXT_INCLUDE_DIRS})
 set(EXT_LIBRARIES ${lapackblas_libraries} ${EXT_LIBRARIES})
 
+set(EXT_DEFINITIONS ${openmp_definitions} ${EXT_DEFINITIONS})
 set(EXT_FLAGS "${openmp_flags} ${EXT_FLAGS}")
 
 set(EXT_DEFINITIONS ${int64_definitions} ${EXT_DEFINITIONS})
