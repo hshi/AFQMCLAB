@@ -9,9 +9,12 @@
 #include "../../../interface/include/LanczosBasisWf.h"
 #include "../../lanczosBasis/include/lanczosBasis.h"
 
-class SpinlessFermions
+class SpinlessFermions : public ModelInterface
 {
-
+    size_t L, N;
+    std::vector<LanOneBody> K;
+    std::vector<LanTwoBody> V;
+    size_t Nhilbert;
 };
 
 #endif //AFQMCLIB_SPINLESSFERMIONS_H

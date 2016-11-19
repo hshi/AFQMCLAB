@@ -2,8 +2,8 @@
 // Created by boruoshihao on 11/19/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSOPERATOR_H
-#define AFQMCLIB_LANCZOSOPERATOR_H
+#ifndef AFQMCLIB_LANCZOSOPERATORS_H
+#define AFQMCLIB_LANCZOSOPERATORS_H
 
 struct LanOneBody
 {

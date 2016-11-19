@@ -10,5 +10,6 @@
 #include "model/sparseMatrix/include/sparseMatrix.h"
 #include "model/lanczosBasis/include/lanczosBasis.h"
 #include "model/realMaterial/include/realMaterial.h"
+#include "model/spinlessFermions/include/SpinlessFermions.h"
 
 #endif //AFQMCLIB_LANCZOS_H

@@ -7,6 +7,7 @@ add_library(lanczos STATIC
         $<TARGET_OBJECTS:lanczosModelSparseMatrixHaoObject>
         $<TARGET_OBJECTS:lanczosBasisHaoObject>
         $<TARGET_OBJECTS:lanczosModelRealMaterialHaoObject>
+        $<TARGET_OBJECTS:lanczosModelSpinlessFermionsHaoObject>
         )
 install(TARGETS lanczos DESTINATION lib EXPORT lanczosTargets)
 install(EXPORT lanczosTargets DESTINATION cmake)
