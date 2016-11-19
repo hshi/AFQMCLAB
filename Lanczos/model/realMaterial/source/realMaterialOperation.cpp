@@ -14,20 +14,20 @@ void RealMaterial::applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) c
 
 void RealMaterial::applyKToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
 {
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
 }
 
 void RealMaterial::applyVToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
 {
-    vector<OneBody> up, dn;
+    vector<LanOneBody> up, dn;
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
 }
 
 void RealMaterial::applySiSjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     if( i== j )
     {
@@ -50,8 +50,8 @@ void RealMaterial::applySiSjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew
 
 void RealMaterial::applySziSzjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     if( i== j )
     {
@@ -72,8 +72,8 @@ void RealMaterial::applySziSzjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfN
 
 void RealMaterial::applySplusiSminusjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     if( i== j ) up.push_back( {i, i, 1.0} );
     upDn.push_back( {i,j,j,i,-1.0} );
@@ -83,8 +83,8 @@ void RealMaterial::applySplusiSminusjToWf(const LanczosBasisWf &wf, LanczosBasis
 
 void RealMaterial::applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     if( i== j )
     {
@@ -105,8 +105,8 @@ void RealMaterial::applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew
 
 void RealMaterial::applyDiDaggerDjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     upDn.push_back( {i,j,i,j, 1.0} );
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
@@ -114,8 +114,8 @@ void RealMaterial::applyDiDaggerDjToWf(const LanczosBasisWf &wf, LanczosBasisWf 
 
 void RealMaterial::applyCupiDaggerCupjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     up.push_back( {i,j, 1.0} );
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
@@ -123,17 +123,17 @@ void RealMaterial::applyCupiDaggerCupjToWf(const LanczosBasisWf &wf, LanczosBasi
 
 void RealMaterial::applyCdniDaggerCdnjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
 {
-    vector<OneBody> up, dn;
-    vector<TwoBody> upUp,upDn,dnDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upUp,upDn,dnDn;
 
     dn.push_back( {i,j, 1.0} );
     applyOperatorsToWf(wf, wfNew, up, dn, upUp, upDn, dnDn);
 }
 
 void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
-                                      const vector<OneBody> &up, const vector<OneBody> &dn,
-                                      const vector<TwoBody> &upUp, const vector<TwoBody> &upDn,
-                                      const vector<TwoBody> &dnDn) const
+                                      const vector<LanOneBody> &up, const vector<LanOneBody> &dn,
+                                      const vector<LanTwoBody> &upUp, const vector<LanTwoBody> &upDn,
+                                      const vector<LanTwoBody> &dnDn) const
 {
     if( wfNew.size() != wf.size() ) wfNew.resize( wf.size() );
     const TensorHao<complex<double>, 1> & vec = wf.getWf();
@@ -149,7 +149,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
 
         numDn = num/NHilbertUp;
         numUp = num -numDn*NHilbertUp;
-        for( const OneBody& oneBody : up )
+        for( const LanOneBody& oneBody : up )
         {
             tableElementOne = tableUp( oneBody.j, oneBody.i, numUp );
             if( tableElementOne.coefficient != 0 )
@@ -159,7 +159,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
             }
         }
 
-        for( const OneBody& oneBody : dn )
+        for( const LanOneBody& oneBody : dn )
         {
             tableElementOne = tableDn( oneBody.j, oneBody.i, numDn );
             if( tableElementOne.coefficient != 0 )
@@ -169,7 +169,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
             }
         }
 
-        for( const TwoBody& twoBody : upUp )
+        for( const LanTwoBody& twoBody : upUp )
         {
             tableElementOne = tableUp( twoBody.j, twoBody.i, numUp );
             if( tableElementOne.coefficient != 0 )
@@ -184,7 +184,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
             }
         }
 
-        for( const TwoBody& twoBody : upDn )
+        for( const LanTwoBody& twoBody : upDn )
         {
             tableElementOne = tableUp( twoBody.j, twoBody.i, numUp );
             if( tableElementOne.coefficient != 0 )
@@ -199,7 +199,7 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
             }
         }
 
-        for( const TwoBody& twoBody : dnDn )
+        for( const LanTwoBody& twoBody : dnDn )
         {
             tableElementOne = tableDn( twoBody.j, twoBody.i, numDn );
             if( tableElementOne.coefficient != 0 )

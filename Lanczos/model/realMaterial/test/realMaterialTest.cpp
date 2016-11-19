@@ -24,8 +24,8 @@ TEST(realMaterialTest, LNupNdnConstruction)
 TEST(realMaterialTest, readWrite)
 {
     size_t L(10), Nup(5), Ndn(6);
-    vector<OneBody> up(8), dn(3);
-    vector<TwoBody> upup(4),updn(5),dndn(7);
+    vector<LanOneBody> up(8), dn(3);
+    vector<LanTwoBody> upup(4),updn(5),dndn(7);
 
     for(size_t i = 0; i < up.size(); ++i)   up[i]   = { i, i+1, complex<double>(i+2, i+3) };
     for(size_t i = 0; i < dn.size(); ++i)   dn[i]   = { i, i-1, complex<double>(i-2, i-3) };
@@ -98,7 +98,7 @@ TEST(realMaterialTest, LanczosOneBody)
     TensorHao<complex<double>, 2> H0Up(L,L); randomFill(H0Up); H0Up += conjtrans(H0Up);
     TensorHao<complex<double>, 2> H0Dn(L,L); randomFill(H0Dn); H0Dn += conjtrans(H0Dn);
 
-    vector<OneBody> up, dn;
+    vector<LanOneBody> up, dn;
     for(size_t i = 0; i < L; ++i)
     {
         for(size_t j = 0; j < L; ++j)
@@ -124,8 +124,8 @@ class realMaterialHubbardTest: public ::testing::Test
 {
  public:
     size_t L=4, Nup=2, Ndn=3;
-    vector<OneBody> up, dn;
-    vector<TwoBody> upDn;
+    vector<LanOneBody> up, dn;
+    vector<LanTwoBody> upDn;
 
     realMaterialHubbardTest( )
     {

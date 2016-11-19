@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include "../../../../libhao/tensorHao/include/tensor_all.h"
+#include "lanczosOperators.h"
 
 struct TableElement
 {

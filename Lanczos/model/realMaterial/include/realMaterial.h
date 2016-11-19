@@ -9,29 +9,11 @@
 #include "../../../interface/include/LanczosBasisWf.h"
 #include "../../lanczosBasis/include/lanczosBasis.h"
 
-//TODO: SET up, dn, upup, updn,dnup to TensorHaoRef, link to stack or heap, check speed?
-
-struct OneBody
-{
-    size_t i;
-    size_t j;
-    std::complex<double> K;
-};
-
-struct TwoBody
-{
-    size_t i;
-    size_t j;
-    size_t k;
-    size_t l;
-    std::complex<double> V;
-};
-
 class RealMaterial : public ModelInterface
 {
     size_t L, Nup, Ndn;
-    std::vector<OneBody> up, dn;
-    std::vector<TwoBody> upUp,upDn,dnDn;
+    std::vector<LanOneBody> up, dn;
+    std::vector<LanTwoBody> upUp,upDn,dnDn;
 
     size_t NHilbert, NHilbertUp, NHilbertDn;
     tensor_hao::TensorHao< TableElement, 3 > tableUp, tableDn;
@@ -42,20 +24,20 @@ class RealMaterial : public ModelInterface
     size_t getL() const;
     size_t getNup() const;
     size_t getNdn() const;
-    const std::vector<OneBody> &getUp() const;
-    const std::vector<OneBody> &getDn() const;
-    const std::vector<TwoBody> &getUpUp() const;
-    const std::vector<TwoBody> &getUpDn() const;
-    const std::vector<TwoBody> &getDnDn() const;
+    const std::vector<LanOneBody> &getUp() const;
+    const std::vector<LanOneBody> &getDn() const;
+    const std::vector<LanTwoBody> &getUpUp() const;
+    const std::vector<LanTwoBody> &getUpDn() const;
+    const std::vector<LanTwoBody> &getDnDn() const;
     virtual size_t getWfSize() const;
     size_t getNHilbertUp() const;
     size_t getNHilbertDn() const;
 
-    void setUp(const std::vector<OneBody> &up);
-    void setDn(const std::vector<OneBody> &dn);
-    void setUpUp(const std::vector<TwoBody> &upUp);
-    void setUpDn(const std::vector<TwoBody> &upDn);
-    void setDnDn(const std::vector<TwoBody> &dnDn);
+    void setUp(const std::vector<LanOneBody> &up);
+    void setDn(const std::vector<LanOneBody> &dn);
+    void setUpUp(const std::vector<LanTwoBody> &upUp);
+    void setUpDn(const std::vector<LanTwoBody> &upDn);
+    void setDnDn(const std::vector<LanTwoBody> &dnDn);
 
     void read(const std::string &filename);
     void write(const std::string &filename);
@@ -71,9 +53,9 @@ class RealMaterial : public ModelInterface
     void applyCupiDaggerCupjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyCdniDaggerCdnjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
-                            const std::vector<OneBody> &up, const std::vector<OneBody> &dn,
-                            const std::vector<TwoBody> &upUp, const std::vector<TwoBody> &upDn,
-                            const std::vector<TwoBody> &dnDn ) const;
+                            const std::vector<LanOneBody> &up, const std::vector<LanOneBody> &dn,
+                            const std::vector<LanTwoBody> &upUp, const std::vector<LanTwoBody> &upDn,
+                            const std::vector<LanTwoBody> &dnDn ) const;
 
  private:
     void setFromLNupNdn();

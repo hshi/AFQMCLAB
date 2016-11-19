@@ -5,7 +5,12 @@
 #ifndef AFQMCLIB_SPINLESSFERMIONS_H
 #define AFQMCLIB_SPINLESSFERMIONS_H
 
-class SpinlessFermions {
+#include "../../../interface/include/modelInterface.h"
+#include "../../../interface/include/LanczosBasisWf.h"
+#include "../../lanczosBasis/include/lanczosBasis.h"
+
+class SpinlessFermions
+{
 
 };
 
