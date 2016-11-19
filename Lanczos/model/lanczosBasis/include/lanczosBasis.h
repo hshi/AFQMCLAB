@@ -6,7 +6,7 @@
 #define AFQMCLIB_LANCZOSBASIS_H
 
 #include <cstddef>
-#include <vector>
+#include "../../../../libhao/tensorHao/include/tensor_all.h"
 
 struct TableElement
 {
@@ -16,33 +16,28 @@ struct TableElement
 
 class LanczosBasis
 {
-    const static size_t maxParticleInStack =32;
-    const static size_t maxBinomialInStack=800;
-
     size_t sizeOfBasis, numberOfParticle, index;
-    size_t *positionOfParticle, *emptyPositionForParticle, *tempPositionOfParticle, *binomialTable;
 
-    size_t positionOfParticleStack[maxParticleInStack], emptyPositionForParticleStack[maxParticleInStack];
-    size_t tempPositionOfParticleStack[maxParticleInStack], binomialTableStack[maxBinomialInStack];
-    std::vector<size_t> positionOfParticleHeap, emptyPositionForParticleHeap;
-    std::vector<size_t> tempPositionOfParticleHeap, binomialTableHeap;
+    tensor_hao::TensorHao<size_t,1> positionOfParticle,emptyPositionForParticle;
+    tensor_hao::TensorHao<size_t,1> tempPositionOfParticle;
+    tensor_hao::TensorHao<size_t,2> binomialTable;
 
  public:
     LanczosBasis(size_t L, size_t N);
 
     size_t getSizeOfBasis() const;
     size_t getNumberOfParticle() const;
-    const size_t * getPositionOfParticle() const;
-    inline size_t  binomial(size_t n, size_t k) const { return binomialTable[ k + n * (numberOfParticle +1 ) ]; }
-    inline size_t &binomial(size_t n, size_t k)       { return binomialTable[ k + n * (numberOfParticle +1 ) ]; }
+    size_t getIndex() const;
+    const tensor_hao::TensorHao<size_t,1> &getPositionOfParticle() const;
+    const tensor_hao::TensorHao<size_t,2> &getBinomialTable() const;
+
     void init();
     int next();
-    size_t getIndexFromPosition(const size_t *position);
+    size_t getIndexFromPosition(const tensor_hao::TensorHao<size_t,1> &position);
 
     TableElement getInfoByCiDaggerCj(size_t i, size_t j);
-
  private:
-    void linkStackOrHeap();
+    void setPositions();
     void setBinomialTable();
 
     LanczosBasis(const LanczosBasis& x);

@@ -22,7 +22,8 @@ void RealMaterial::setFromLNupNdn()
 
 void RealMaterial::setNHilbertUpAndTableUp(LanczosBasis &lanBasisUp)
 {
-    NHilbertUp = lanBasisUp.binomial(L, Nup);
+    auto & binomialTable = lanBasisUp.getBinomialTable();
+    NHilbertUp = binomialTable(L, Nup);
     tableUp.resize(L, L, NHilbertUp);
 
     for(size_t k = 0; k < NHilbertUp; ++k)
@@ -40,7 +41,8 @@ void RealMaterial::setNHilbertUpAndTableUp(LanczosBasis &lanBasisUp)
 
 void RealMaterial::setNHilbertDnAndTableDn(LanczosBasis &lanBasisDn)
 {
-    NHilbertDn = lanBasisDn.binomial(L, Ndn);
+    auto & binomialTable = lanBasisDn.getBinomialTable();
+    NHilbertDn = binomialTable(L, Ndn);
     tableDn.resize(L, L, NHilbertDn);
 
     for(size_t k = 0; k < NHilbertDn; ++k)
