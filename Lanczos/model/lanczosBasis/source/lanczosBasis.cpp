@@ -24,6 +24,8 @@ size_t LanczosBasis::getIndex() const { return index; }
 
 const TensorHao<size_t,1> &LanczosBasis::getPositionOfParticle() const { return positionOfParticle; }
 
+const TensorHao<size_t, 1> &LanczosBasis::getEmptyPositionForParticle() const { return emptyPositionForParticle; }
+
 const TensorHao<size_t,2> &LanczosBasis::getBinomialTable() const { return binomialTable; }
 
 void LanczosBasis::init()
@@ -35,6 +37,38 @@ void LanczosBasis::init()
         emptyPositionForParticle(i) = 0;
     }
     emptyPositionForParticle(numberOfParticle-1) = sizeOfBasis - numberOfParticle;
+}
+
+void LanczosBasis::reSet(size_t index)
+{
+    LanczosBasis::index = index;
+
+    for(int positionIndex = sizeOfBasis-1; positionIndex > -1 ; --positionIndex)
+    {
+       if( binomialTable( positionIndex, numberOfParticle ) <= index )
+       {
+           index -= binomialTable( positionIndex, numberOfParticle );
+           positionOfParticle( numberOfParticle-1 ) = positionIndex;
+           emptyPositionForParticle( numberOfParticle-1 ) = sizeOfBasis - positionIndex - 1;
+           break;
+       }
+    }
+
+    for(int particleIndex = numberOfParticle-2; particleIndex > -1 ; --particleIndex)
+    {
+        for(int positionIndex = positionOfParticle(particleIndex+1)-1; positionIndex > -1 ; --positionIndex)
+        {
+            if( binomialTable( positionIndex, particleIndex+1 ) <= index )
+            {
+                index -= binomialTable( positionIndex, particleIndex+1 );
+                positionOfParticle( particleIndex ) = positionIndex;
+                emptyPositionForParticle( particleIndex ) = positionOfParticle(particleIndex+1) - positionIndex - 1;
+                break;
+            }
+        }
+    }
+
+    if(index != 0 ) { cout<<"Error!!! Index is not zero after get positions!"<<endl; exit(1); }
 }
 
 int LanczosBasis::next()

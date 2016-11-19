@@ -29,10 +29,12 @@ class LanczosBasis
     size_t getNumberOfParticle() const;
     size_t getIndex() const;
     const tensor_hao::TensorHao<size_t,1> &getPositionOfParticle() const;
+    const tensor_hao::TensorHao<size_t, 1> &getEmptyPositionForParticle() const;
     const tensor_hao::TensorHao<size_t,2> &getBinomialTable() const;
 
     void init();
     int next();
+    void reSet(size_t index);
     size_t getIndexFromPosition(const tensor_hao::TensorHao<size_t,1> &position);
 
     TableElement getInfoByCiDaggerCj(size_t i, size_t j);
