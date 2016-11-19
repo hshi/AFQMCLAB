@@ -40,6 +40,27 @@ TEST(LanczosBasis, nextAndGetIndexFromPosition)
     }
 }
 
+TEST(LanczosBasis, reSet)
+{
+    size_t L(10), N(5);
+    LanczosBasis lanBasis(L, N), lanBasisExact(L,N);
+    auto &binomialTable = lanBasis.getBinomialTable();
+    auto &pp = lanBasis.getPositionOfParticle();
+    auto &epp = lanBasis.getEmptyPositionForParticle();
+
+    size_t NHilbert = binomialTable(L, N);
+    for(size_t i = 0; i < NHilbert; ++i)
+    {
+        lanBasis.reSet(i);
+
+        EXPECT_EQ( i, lanBasis.getIndex() );
+        EXPECT_FALSE( diff( lanBasisExact.getPositionOfParticle(), pp, 1e-12) );
+        EXPECT_FALSE( diff( lanBasisExact.getEmptyPositionForParticle(), epp, 1e-12) );
+
+        lanBasisExact.next();
+    }
+}
+
 TEST(LanczosBasis, getInfoByC2DaggerC2)
 {
     size_t L(5), N(3);

@@ -43,26 +43,19 @@ void LanczosBasis::reSet(size_t index)
 {
     LanczosBasis::index = index;
 
-    for(int positionIndex = sizeOfBasis-1; positionIndex > -1 ; --positionIndex)
+    int lastPosition = sizeOfBasis;
+    for(int particleIndex = numberOfParticle-1; particleIndex > -1 ; --particleIndex)
     {
-       if( binomialTable( positionIndex, numberOfParticle ) <= index )
-       {
-           index -= binomialTable( positionIndex, numberOfParticle );
-           positionOfParticle( numberOfParticle-1 ) = positionIndex;
-           emptyPositionForParticle( numberOfParticle-1 ) = sizeOfBasis - positionIndex - 1;
-           break;
-       }
-    }
-
-    for(int particleIndex = numberOfParticle-2; particleIndex > -1 ; --particleIndex)
-    {
-        for(int positionIndex = positionOfParticle(particleIndex+1)-1; positionIndex > -1 ; --positionIndex)
+        for(int positionIndex = lastPosition-1; positionIndex > -1 ; --positionIndex)
         {
             if( binomialTable( positionIndex, particleIndex+1 ) <= index )
             {
-                index -= binomialTable( positionIndex, particleIndex+1 );
                 positionOfParticle( particleIndex ) = positionIndex;
-                emptyPositionForParticle( particleIndex ) = positionOfParticle(particleIndex+1) - positionIndex - 1;
+                emptyPositionForParticle( particleIndex ) = lastPosition - positionIndex - 1;
+
+                index -= binomialTable( positionIndex, particleIndex+1 );
+                lastPosition = positionIndex;
+
                 break;
             }
         }
