@@ -119,11 +119,6 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-
-  //TODO: How set c++ stack memory? stack memory size?
-  //TODO: Check stack v.s. heap, faster or not? Use stack for real meaterial and spinless model?
-  //TODO: Binomial table in LanczosBasis? Only set one?
-
   //TODO: Change bin in tensor_hao for fix size, install bin
 
   //TODO: Should everything use lapack blas? Equal? Copy?

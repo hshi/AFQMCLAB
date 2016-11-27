@@ -8,7 +8,7 @@
 using namespace std;
 using namespace tensor_hao;
 
-TEST(LanczosBasis, binomial)
+TEST(LanczosBasisTest, binomial)
 {
     size_t L(10), N(5);
     LanczosBasis lanBasis(L, N);
@@ -23,7 +23,7 @@ TEST(LanczosBasis, binomial)
     }
 }
 
-TEST(LanczosBasis, nextAndGetIndexFromPosition)
+TEST(LanczosBasisTest, nextAndGetIndexFromPosition)
 {
     size_t L(10), N(5);
     LanczosBasis lanBasis(L, N);
@@ -40,7 +40,7 @@ TEST(LanczosBasis, nextAndGetIndexFromPosition)
     }
 }
 
-TEST(LanczosBasis, reSet)
+TEST(LanczosBasisTest, reSet)
 {
     size_t L(10), N(5);
     LanczosBasis lanBasis(L, N), lanBasisExact(L,N);
@@ -61,7 +61,7 @@ TEST(LanczosBasis, reSet)
     }
 }
 
-TEST(LanczosBasis, getInfoByC2DaggerC2)
+TEST(LanczosBasisTest, getInfoByC2DaggerC2)
 {
     size_t L(5), N(3);
     LanczosBasis lanBasis(L, N);
@@ -80,7 +80,7 @@ TEST(LanczosBasis, getInfoByC2DaggerC2)
     }
 }
 
-TEST(LanczosBasis, getInfoByC4DaggerC4)
+TEST(LanczosBasisTest, getInfoByC4DaggerC4)
 {
     size_t L(5), N(3);
     LanczosBasis lanBasis(L, N);
@@ -99,7 +99,7 @@ TEST(LanczosBasis, getInfoByC4DaggerC4)
     }
 }
 
-TEST(LanczosBasis, getInfoByC1DaggerC3)
+TEST(LanczosBasisTest, getInfoByC1DaggerC3)
 {
     size_t L(5), N(3);
     LanczosBasis lanBasis(L, N);
@@ -118,7 +118,7 @@ TEST(LanczosBasis, getInfoByC1DaggerC3)
     }
 }
 
-TEST(LanczosBasis, getInfoByC3DaggerC0)
+TEST(LanczosBasisTest, getInfoByC3DaggerC0)
 {
     size_t L(5), N(3);
     LanczosBasis lanBasis(L, N);
@@ -137,7 +137,7 @@ TEST(LanczosBasis, getInfoByC3DaggerC0)
     }
 }
 
-TEST(LanczosBasis, diagonalizeOneBodyMatrix)
+TEST(LanczosBasisTest, diagonalizeOneBodyMatrix)
 {
     size_t L(10), N(5);
     TensorHao<complex<double>, 2> H0(L,L); randomFill(H0); H0 += conjtrans(H0);
@@ -169,4 +169,45 @@ TEST(LanczosBasis, diagonalizeOneBodyMatrix)
     eigen_cpu(HvManyBody, HeManyBody);
 
     EXPECT_DOUBLE_EQ( energyExact, HeManyBody(0) );
+}
+
+TEST(LanczosBasisTest, getInfoByCiDaggerCjCkDaggerCl)
+{
+    size_t L(5), N(3);
+
+    LanczosBasis lanBasis(L,N), lanTemp(L, N);
+    auto &binomialTable = lanBasis.getBinomialTable();
+    size_t NHilbert = binomialTable(L, N);
+    TableElement element, elementExact; int coe;
+    for(size_t m = 0; m < NHilbert; ++m)
+    {
+        for(size_t i = 0; i < L; ++i)
+        {
+            for(size_t j = 0; j < L; ++j)
+            {
+                for(size_t k = 0; k < L; ++k)
+                {
+                    for(size_t l = 0; l < L; ++l)
+                    {
+                        element = lanBasis.getInfoByCiDaggerCjCkDaggerCl(i, j, k, l);
+
+                        elementExact = lanBasis.getInfoByCiDaggerCj(k, l);
+                        coe =  elementExact.coefficient;
+                        if( coe != 0 )
+                        {
+                            lanTemp.reSet( elementExact.index );
+                            elementExact = lanTemp.getInfoByCiDaggerCj(i,j);
+                            elementExact.coefficient *= coe;
+                        }
+
+                        EXPECT_EQ(element.coefficient, elementExact.coefficient);
+                        if( element.coefficient != 0 ) EXPECT_EQ(element.index, elementExact.index);
+                    }
+                }
+            }
+        }
+
+        lanBasis.next();
+
+    }
 }

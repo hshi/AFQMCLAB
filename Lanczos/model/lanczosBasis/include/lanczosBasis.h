@@ -39,9 +39,12 @@ class LanczosBasis
     size_t getIndexFromPosition(const tensor_hao::TensorHao<size_t,1> &position);
 
     TableElement getInfoByCiDaggerCj(size_t i, size_t j);
+    TableElement getInfoByCiDaggerCjCkDaggerCl(size_t i, size_t j, size_t k, size_t l);
+
  private:
     void setPositions();
     void setBinomialTable();
+    int applyCiDaggerCj(size_t i, size_t j, tensor_hao::TensorHao<size_t, 1> &positionInOut);
 
     LanczosBasis(const LanczosBasis& x);
     LanczosBasis & operator  = (const LanczosBasis& x);

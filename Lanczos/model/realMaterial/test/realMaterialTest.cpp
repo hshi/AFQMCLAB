@@ -90,6 +90,8 @@ TEST(realMaterialTest, readWrite)
         EXPECT_EQ( dndn[m].l, HNew.getDnDn()[m].l);
         EXPECT_COMPLEXDOUBLE_EQ( dndn[m].V, HNew.getDnDn()[m].V);
     }
+
+    remove( filename.c_str() );
 }
 
 TEST(realMaterialTest, LanczosOneBody)

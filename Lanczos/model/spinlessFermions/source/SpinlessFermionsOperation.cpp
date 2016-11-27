@@ -1,0 +1,68 @@
+//
+// Created by boruoshihao on 11/19/16.
+//
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
+
+#include "../include/SpinlessFermions.h"
+
+using namespace std;
+using namespace tensor_hao;
+
+void SpinlessFermions::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                          const std::vector<LanOneBody> &K,
+                                          const std::vector<LanTwoBody> &V) const
+{
+    if( wfNew.size() != wf.size() ) wfNew.resize( wf.size() );
+    const TensorHao<complex<double>, 1> & vec = wf.getWf();
+    TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
+
+    #pragma omp parallel
+    {
+        #ifdef USE_OPENMP
+        size_t threadRank = omp_get_thread_num();
+        size_t threadSize = omp_get_num_threads();
+        #else
+        size_t threadRank = 0;
+        size_t threadSize = 1;
+        #endif
+
+        size_t sizeEachThread = ( Nhilbert - 1 ) / threadSize + 1;
+        size_t initIndex = sizeEachThread * threadRank;
+        size_t endIndex = sizeEachThread * (threadRank + 1);
+
+        if( initIndex > Nhilbert) initIndex = Nhilbert;
+        if( endIndex > Nhilbert ) endIndex = Nhilbert;
+
+        LanczosBasis lanBasis(L, N);
+        if( initIndex < Nhilbert ) lanBasis.reSet( initIndex );
+
+        TableElement tableElement;
+        for(size_t num = initIndex; num < endIndex; ++num)
+        {
+            vecNew(num) = 0;
+
+            for( const LanOneBody& oneBody : K )
+            {
+                tableElement = lanBasis.getInfoByCiDaggerCj(oneBody.j, oneBody.i);
+                if( tableElement.coefficient != 0 )
+                {
+                    vecNew(num) += tableElement.coefficient * 1.0 * oneBody.K *  vec(tableElement.index);
+                }
+            }
+
+            for( const LanTwoBody& twoBody : V )
+            {
+                tableElement = lanBasis.getInfoByCiDaggerCjCkDaggerCl(twoBody.l, twoBody.k, twoBody.j, twoBody.i);
+                if( tableElement.coefficient != 0 )
+                {
+                    vecNew(num) += tableElement.coefficient * 1.0 * twoBody.V *  vec(tableElement.index);
+                }
+            }
+
+            lanBasis.next();
+        }
+
+    }
+}

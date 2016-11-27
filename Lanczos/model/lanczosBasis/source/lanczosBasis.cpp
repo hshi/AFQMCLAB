@@ -39,31 +39,6 @@ void LanczosBasis::init()
     emptyPositionForParticle(numberOfParticle-1) = sizeOfBasis - numberOfParticle;
 }
 
-void LanczosBasis::reSet(size_t index)
-{
-    LanczosBasis::index = index;
-
-    int lastPosition = sizeOfBasis;
-    for(int particleIndex = numberOfParticle-1; particleIndex > -1 ; --particleIndex)
-    {
-        for(int positionIndex = lastPosition-1; positionIndex > -1 ; --positionIndex)
-        {
-            if( binomialTable( positionIndex, particleIndex+1 ) <= index )
-            {
-                positionOfParticle( particleIndex ) = positionIndex;
-                emptyPositionForParticle( particleIndex ) = lastPosition - positionIndex - 1;
-
-                index -= binomialTable( positionIndex, particleIndex+1 );
-                lastPosition = positionIndex;
-
-                break;
-            }
-        }
-    }
-
-    if(index != 0 ) { cout<<"Error!!! Index is not zero after get positions!"<<endl; exit(1); }
-}
-
 int LanczosBasis::next()
 {
     for(size_t i = 0; i < numberOfParticle; ++i)
@@ -95,12 +70,37 @@ int LanczosBasis::next()
     return 1;
 }
 
+void LanczosBasis::reSet(size_t index)
+{
+    LanczosBasis::index = index;
+
+    int lastPosition = sizeOfBasis;
+    for(int particleIndex = numberOfParticle-1; particleIndex > -1 ; --particleIndex)
+    {
+        for(int positionIndex = lastPosition-1; positionIndex > -1 ; --positionIndex)
+        {
+            if( binomialTable( positionIndex, particleIndex+1 ) <= index )
+            {
+                positionOfParticle( particleIndex ) = positionIndex;
+                emptyPositionForParticle( particleIndex ) = lastPosition - positionIndex - 1;
+
+                index -= binomialTable( positionIndex, particleIndex+1 );
+                lastPosition = positionIndex;
+
+                break;
+            }
+        }
+    }
+
+    if(index != 0 ) { cout<<"Error!!! Index is not zero after get positions!"<<endl; exit(1); }
+}
+
 size_t LanczosBasis::getIndexFromPosition(const TensorHao<size_t,1> &position)
 {
     size_t count = 0;
     for(size_t i = 0; i < numberOfParticle ; ++i)
     {
-        count += binomialTable( positionOfParticle(i), i+1 );
+        count += binomialTable( position(i), i+1 );
     }
     return count;
 }
@@ -126,7 +126,7 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
     }
     if( destroyedParticle == numberOfParticle ) return {index, 0};
 
-    int coe(1); size_t indexNew(index); size_t createdParticle;
+    int coe; size_t indexNew(index); size_t createdParticle;
 
     if( i> j )
     {
@@ -135,7 +135,6 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
         {
             if( positionOfParticle(createdParticle) < i )
             {
-                coe *= (-1);
                 indexNew -= binomialTable( positionOfParticle(createdParticle), createdParticle+1 );
                 indexNew += binomialTable( positionOfParticle(createdParticle), createdParticle );
             }
@@ -145,6 +144,8 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
             }
         }
         indexNew += binomialTable( i, createdParticle );
+        coe = createdParticle - destroyedParticle - 1;
+        coe = pow(-1, coe);
         return {indexNew, coe};
     }
     else if( i< j )
@@ -154,7 +155,6 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
         {
             if( positionOfParticle(createdParticle-1) > i )
             {
-                coe *= (-1);
                 indexNew -= binomialTable( positionOfParticle(createdParticle-1), createdParticle );
                 indexNew += binomialTable( positionOfParticle(createdParticle-1), createdParticle+1 );
             }
@@ -164,12 +164,83 @@ TableElement LanczosBasis::getInfoByCiDaggerCj(size_t i, size_t j)
             }
         }
         indexNew += binomialTable( i, createdParticle+1 );
+        coe = destroyedParticle - createdParticle;
+        coe = pow(-1, coe);
         return {indexNew, coe};
     }
     else
     {
         cout<<"Error!!! We should not reach here!"<<endl; exit(1);
     }
+}
+
+TableElement LanczosBasis::getInfoByCiDaggerCjCkDaggerCl(size_t i, size_t j, size_t k, size_t l)
+{
+    // CiDaggerCj nk
+    if( k == l )
+    {
+        for(size_t m = 0; m < numberOfParticle; ++m)
+        {
+            if( positionOfParticle(m) == k ) return getInfoByCiDaggerCj(i, j);
+        }
+        return {index, 0};
+    }
+
+    // k != l
+    // CiDaggerCl CkCkDagger
+    if( j == k )
+    {
+        for(size_t m = 0; m < numberOfParticle; ++m)
+        {
+            if( positionOfParticle(m) == k ) return {index, 0};
+        }
+        return getInfoByCiDaggerCj(i, l);
+    }
+
+    // k != l , k != j
+    //-CiDaggerCkDagger CjCl
+    if( j == l ) return {index, 0};
+    if( i == k ) return {index, 0};
+
+    // k != l, k != j, k != i, j != l
+    // CkDaggerCl ni
+    if( i == j )
+    {
+        for(size_t m = 0; m < numberOfParticle; ++m)
+        {
+            if( positionOfParticle(m) == i ) return getInfoByCiDaggerCj(k, l);
+        }
+        return {index, 0};
+    }
+
+    // k != l, k != j, k != i, j != l, j != i
+    // -CkDaggerCj ni
+    if( i == l )
+    {
+        for(size_t m = 0; m < numberOfParticle; ++m)
+        {
+            if( positionOfParticle(m) == i )
+            {
+                TableElement element = getInfoByCiDaggerCj(k, j);
+                element.coefficient *= -1;
+                return element;
+            }
+        }
+        return {index, 0};
+    }
+
+    // k != l, k != j, k != i, j != l, j != i, i != l
+    // Apply Twice to get new TableElement
+    // CiDaggerCj CkDaggerCl
+    tempPositionOfParticle = positionOfParticle;
+    int coe = applyCiDaggerCj(k, l, tempPositionOfParticle);
+    if(coe == 0 ) return {index, 0};
+
+    coe *= applyCiDaggerCj(i, j, tempPositionOfParticle);
+    if(coe == 0 ) return {index, 0};
+
+    size_t num = getIndexFromPosition( tempPositionOfParticle );
+    return {num, coe};
 }
 
 void LanczosBasis::setPositions()
@@ -192,6 +263,67 @@ void LanczosBasis::setBinomialTable()
             else binomialTable(j,i) = binomialTable(j-1, i-1) + binomialTable(j-1,i);
         }
     }
+}
+
+int LanczosBasis::applyCiDaggerCj(size_t i, size_t j, TensorHao<size_t, 1> &positionInOut)
+{
+    if( i == j )
+    {
+        for(size_t k = 0; k < numberOfParticle; ++k)  { if( positionInOut(k) == i ) return 1; }
+        return 0;
+    }
+
+    for(size_t k = 0; k < numberOfParticle; ++k) { if( positionInOut(k) == i ) return 0; }
+
+    size_t destroyedParticle(numberOfParticle);
+    for(size_t k = 0; k < numberOfParticle; ++k)
+    {
+        if( positionInOut(k) == j )
+        {
+            destroyedParticle = k;
+            break;
+        }
+    }
+    if( destroyedParticle == numberOfParticle ) return 0;
+
+    int exchangeNumber; size_t createdParticle;
+    if( i> j )
+    {
+        for(createdParticle = destroyedParticle + 1; createdParticle < numberOfParticle; ++createdParticle)
+        {
+            if( positionInOut(createdParticle) < i )
+            {
+                positionInOut(createdParticle-1) = positionInOut(createdParticle);
+            }
+            else
+            {
+                break;
+            }
+        }
+        positionInOut(createdParticle-1) = i;
+        exchangeNumber = createdParticle - destroyedParticle - 1;
+    }
+    else if( i< j )
+    {
+        for(createdParticle = destroyedParticle; createdParticle >0; --createdParticle)
+        {
+            if( positionInOut(createdParticle-1) > i )
+            {
+                positionInOut(createdParticle) = positionInOut(createdParticle-1);
+            }
+            else
+            {
+                break;
+            }
+        }
+        positionInOut(createdParticle) = i;
+        exchangeNumber = destroyedParticle - createdParticle;
+    }
+    else
+    {
+        cout<<"Error!!! We should not reach here!"<<endl; exit(1);
+    }
+    return pow(-1, exchangeNumber);
 }
 
 LanczosBasis::LanczosBasis(const LanczosBasis &x) {}
