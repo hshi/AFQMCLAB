@@ -36,7 +36,7 @@ tuple<const vector<double> &, const vector<double> &> Lanczos::getLanElements() 
     return forward_as_tuple(lana, lanb );
 }
 
-const LanczosBasisWf &Lanczos::getLanWavefunction(size_t lanIndex) const
+LanczosBasisWf & Lanczos::getLanWavefunction(size_t lanIndex)
 {
     return lanwfs[lanIndex];
 }

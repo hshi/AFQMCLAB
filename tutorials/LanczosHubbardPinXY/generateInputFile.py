@@ -3,14 +3,14 @@ import os
 sys.path.append( os.environ['AFQMC_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
-latt_n   = [3,4]
-ktwist   = [0.12,0.36]
+latt_n   = [2,4]
+ktwist   = [0.0,0.0]
 t1       = 1.0
 U        = 4.0
-mu       = 0 #2.0
-hz       = 0 #1.87246
-hpin     = 0 #2.0
-Ntot     = 4
+mu       = 2.0
+hz       = 2.49652
+hpin     = 1.0
+Ntot     = 8
 
 #Set lattice information
 latt = Latt_class( latt_n )
@@ -33,4 +33,21 @@ for i in range( len(K_value) ):
 f.write( '{:16d} \n'.format( latt.L ) )
 for i in range( latt.L ):
     f.write( '{:16d} {:16d} {:16d} {:16d} {:26.18e} {:26.18e} \n'.format(i, i, i+latt.L, i+latt.L, U, 0) )
+f.close()
+
+
+matrixSize       = 20           #Lanczos matrix size
+accuracy         = 1E-10        #when new b smaller than accuracy, converge
+convergeFlag     = 'E'          #'E' or 'W', converge by wave function or energy
+maxLoop          = 100          #The max Lanczos matrix loop
+litForProjection = 0.01         #When b is smaller, we need to project wave function.
+lanwfsFlag       = 'F'          #'R' or 'F', 'R' use recurse wf, 'F' store full Lanczos wf
+
+f = open("lanczos_param", 'w')
+f.write( '{:16d} \n'.format(matrixSize) )
+f.write( '{:26.18e} \n'.format(accuracy)   )
+f.write( '{:>16} \n'.format(convergeFlag))
+f.write( '{:16d} \n'.format(maxLoop) )
+f.write( '{:26.18e} \n'.format(litForProjection)   )
+f.write( '{:>16} \n'.format(lanwfsFlag)   )
 f.close()

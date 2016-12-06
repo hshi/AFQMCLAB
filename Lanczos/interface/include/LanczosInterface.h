@@ -29,7 +29,7 @@ class Lanczos
     double getEigenvalue(size_t eigenIndex) const;
     const LanczosBasisWf& getEigenstate(size_t eigenIndex) const;
     std::tuple<const std::vector<double> &, const std::vector<double> &> getLanElements() const;
-    const LanczosBasisWf& getLanWavefunction(size_t lanIndex) const;
+    LanczosBasisWf & getLanWavefunction(size_t lanIndex);
 
     void readEigens(size_t numberOfWaveFunctions = 1);
     void writeEigens(size_t startIndex = 0) const ;
