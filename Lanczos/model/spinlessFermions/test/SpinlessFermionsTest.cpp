@@ -48,3 +48,28 @@ TEST(SpinlessFermionsTest, readWrite)
 
     remove( filename.c_str() );
 }
+
+TEST(SpinlessFermionsTest, LanczosOneBody)
+{
+    size_t L(10), N(5);
+    TensorHao<complex<double>, 2> H0(L,L); randomFill(H0); H0 += conjtrans(H0);
+
+    TensorHao<complex<double>, 2> Hv(H0);
+    TensorHao<double ,1> He(L);
+    eigen_cpu(Hv, He);
+    double energyExact = He.sum(0, N, 1);
+
+    vector<LanOneBody> K;
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = 0; j < L; ++j)
+        {
+            K.push_back( {j,i, H0(j,i) } );
+        }
+    }
+    SpinlessFermions HSpinless(L, N); HSpinless.setK(K);
+
+    Lanczos lan(HSpinless);
+    lan.findEigen(1);
+    EXPECT_NEAR( energyExact , lan.getEigenvalue(0), 1e-10 );
+}

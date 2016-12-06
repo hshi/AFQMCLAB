@@ -10,6 +10,41 @@
 using namespace std;
 using namespace tensor_hao;
 
+void SpinlessFermions::applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
+{
+    applyOperatorsToWf(wf, wfNew, K, V);
+}
+
+void SpinlessFermions::applyKToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
+{
+    vector<LanTwoBody> V;
+    applyOperatorsToWf(wf, wfNew, K, V);
+}
+
+void SpinlessFermions::applyVToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
+{
+    vector<LanOneBody> K;
+    applyOperatorsToWf(wf, wfNew, K, V);
+}
+
+void SpinlessFermions::applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
+{
+    vector<LanOneBody> K;
+    vector<LanTwoBody> V;
+
+    V.push_back( {i, i, j, j, 1.0} );
+    applyOperatorsToWf(wf, wfNew, K, V);
+}
+
+void SpinlessFermions::applyCiDaggerCjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const
+{
+    vector<LanOneBody> K;
+    vector<LanTwoBody> V;
+    K.push_back( {i, j, 1.0} );
+
+    applyOperatorsToWf(wf, wfNew, K, V);
+}
+
 void SpinlessFermions::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
                                           const std::vector<LanOneBody> &K,
                                           const std::vector<LanTwoBody> &V) const

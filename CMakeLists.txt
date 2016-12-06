@@ -39,6 +39,7 @@ add_subdirectory(libhao)
 add_subdirectory(Lanczos)
 add_subdirectory(lattice)
 add_subdirectory(model)
+add_subdirectory(scripts)
 
 file(RELATIVE_PATH relativeDirectorPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
 install(FILES afqmc.h DESTINATION "include/${relativeDirectorPath}")
