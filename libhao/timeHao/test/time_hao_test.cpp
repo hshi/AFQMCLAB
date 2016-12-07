@@ -69,7 +69,7 @@ TEST (Timer_hao, end)
     timer.start();
 
     clock_t start_time = clock();
-    double sec=0.02;
+    double sec=1;
     clock_t end_time = sec * CLOCKS_PER_SEC + start_time;
     while(clock() < end_time);
 

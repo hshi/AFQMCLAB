@@ -3,6 +3,10 @@
 
 #include <time.h>
 
+//Switch clock_t back to time_t
+//clock() function does not work fine for openmp case
+//However time function only distinguish up to 1 second!
+
 enum class TimerState
 {
     TIMER_NOT_STARTED,
@@ -14,7 +18,7 @@ class TimerHao
  private:
     double seconds;
     TimerState state;
-    clock_t clockInit, clockEnd;
+    time_t timerInit, timerEnd;
 
  public:
     TimerHao();

@@ -12,7 +12,7 @@ TimerHao::TimerHao():seconds(0),state(TimerState::TIMER_NOT_STARTED) {}
 
 TimerHao::TimerHao(double secs):seconds(secs),state(TimerState::TIMER_NOT_STARTED) {}
 
-TimerHao::TimerHao(const TimerHao& x):seconds(x.seconds),state(x.state),clockInit(x.clockInit),clockEnd(x.clockEnd) {}
+TimerHao::TimerHao(const TimerHao& x):seconds(x.seconds),state(x.state),timerInit(x.timerInit),timerEnd(x.timerEnd) {}
 
 TimerHao::~TimerHao() {}
 
@@ -20,8 +20,8 @@ TimerHao& TimerHao::operator  = (const TimerHao& x)
 {
     seconds=x.seconds;
     state=x.state;
-    clockInit=x.clockInit;
-    clockEnd=x.clockEnd;
+    timerInit=x.timerInit;
+    timerEnd=x.timerEnd;
     return *this;
 }
 
@@ -40,19 +40,19 @@ void TimerHao::start()
     {
         throw runtime_error( "ERROR!!! Cannot initial the timer before it is ended!" );
     }
-    clockInit = clock();
+    time(&timerInit);
     state = TimerState::TIMER_IN_ACCUMULATION;
 }
 
 
 void TimerHao::end()
 {
-    if(state != TimerState::TIMER_IN_ACCUMULATION)
+    if( state != TimerState::TIMER_IN_ACCUMULATION )
     {
         throw runtime_error("ERROR!!! Cannot end the timer before it is started!");
     }
-    clockEnd = clock();
-    seconds += double(clockEnd - clockInit) / CLOCKS_PER_SEC;
+    time(&timerEnd);
+    seconds+=difftime(timerEnd,timerInit);
     state = TimerState::TIMER_NOT_STARTED;
 }
 
