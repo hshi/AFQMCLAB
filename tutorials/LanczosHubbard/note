@@ -1,1 +1,4 @@
 The code take ~ 23 minutes for 4x4 half-filling Hubbard model on one bridge note with 24 cores.
+
+Bridge RSM nodes: HPE Apollo 2000s, with 2 Intel Xeon E5-2695 v3 CPUs (14 cores per CPU), 128GB RAM and 8TB on-node
+storage.
