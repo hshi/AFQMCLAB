@@ -124,7 +124,7 @@ TEST_F(LanczosTest, findOneEigenReadWfInit)
     LanczosBasisWf wf( hmatrix.getWfSize() ); wf.randomFill(); wf.write(filename);
     lanczos.readWfInit(filename);
     lanczos.FindOneEigen();
-    EXPECT_DOUBLE_EQ( he(0),lanczos.getEigenvalue(0) );
+    EXPECT_NEAR( he(0),lanczos.getEigenvalue(0), 1e-10);
     remove( filename.c_str() );
 }
 

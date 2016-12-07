@@ -68,10 +68,12 @@ TEST (Timer_hao, end)
     TimerHao timer;
     timer.start();
 
-    clock_t start_time = clock();
+//    clock_t start_time = clock();
+//    double sec=1;
+//    clock_t end_time = sec * CLOCKS_PER_SEC + start_time;
+//    while(clock() < end_time);
     double sec=1;
-    clock_t end_time = sec * CLOCKS_PER_SEC + start_time;
-    while(clock() < end_time);
+    sleep(sec);
 
     timer.end();
 
