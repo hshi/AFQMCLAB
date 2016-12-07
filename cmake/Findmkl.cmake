@@ -1,5 +1,5 @@
-set(HintLibraryPath "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64")
-set(HintIncludePath "$ENV{MKL}/include" "$ENV{MKLHOME}/include")
+set(HintLibraryPath "$ENV{MKL}/lib/intel64" "$ENV{MKLHOME}/lib/intel64" "$ENV{MKLROOT}/lib/intel64")
+set(HintIncludePath "$ENV{MKL}/include" "$ENV{MKLHOME}/include" "$ENV{MKLROOT}/include")
 
 set(mkl_definitions "")
 set(mkl_flags "")
