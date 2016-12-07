@@ -119,7 +119,7 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-  //TODO: Compare with fortran code? Check 4x4 half-filling speed? Test in Fast computer? Bridge?
+  //TODO: Compare with fortran code? Bridge?
 
   //TODO: Read Lin Table?
 
