@@ -5,7 +5,7 @@
 #ifndef AFQMCLIB_LANCZOS_H
 #define AFQMCLIB_LANCZOS_H
 
-#include "interface/include/LanczosInterface.h"
+#include "interface/include/LanczosInterfaceAll.h"
 #include "model/fullMatrix/include/fullMatrix.h"
 #include "model/sparseMatrix/include/sparseMatrix.h"
 #include "model/lanczosBasis/include/lanczosBasis.h"

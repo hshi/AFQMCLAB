@@ -1,4 +1,4 @@
-set(SOURCE_TESTS LanczosTest.cpp LanczosBasisWfTest.cpp)
+set(SOURCE_TESTS Hmatrix.h Hmatrix.cpp LanczosTest.cpp LanczosBasisWfTest.cpp measureBasedOnLanMatrixTest.cpp)
 
 add_executable(lanczosInterfaceTest ${SOURCE_HEADERS} ${SOURCE_TESTS} )
 

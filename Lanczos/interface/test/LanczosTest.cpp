@@ -3,46 +3,10 @@
 //
 #include "../../../libhao/testHao/gtest_custom.h"
 #include "../include/LanczosInterface.h"
-#include "../include/modelInterface.h"
+#include "Hmatrix.h"
 
 using namespace std;
 using namespace tensor_hao;
-
-class Hmatrix : public ModelInterface
-{
-    TensorHao<complex<double>, 2> Hm;
- public:
-
-    const TensorHao<complex<double>, 2> &getHm() const
-    {
-        return Hm;
-    }
-
-    void resize(size_t L)
-    {
-        Hm.resize(L, L);
-        randomFill(Hm);
-        auto HmDagger = conjtrans(Hm);
-        Hm += HmDagger;
-        checkHermitian(Hm);
-    }
-
-    virtual size_t getWfSize() const
-    {
-        return Hm.rank(0);
-    };
-
-    virtual void applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const
-    {
-        if( wfNew.size() != wf.size() ) wfNew.resize( wf.size() );
-        gemv_cpu( Hm, wf.getWf(), wfNew.wfRef() );
-    };
-
-    virtual void projectSymmetry(LanczosBasisWf &wf) const
-    {
-    };
-};
-
 
 class LanczosTest: public ::testing::Test
 {
@@ -164,7 +128,7 @@ TEST_F(LanczosTest, getLanczosMatrix)
     wfOne = wfBase;
     lanczos.inputWfInit( wfOne );
     vector<double> a,b;
-    tie(a, b) = lanczos.getLanczosMatrix(11, 1e-10, 0.01, 'F');
+    tie(a, b) = lanczos.getLanczosMatrix(11, 1e-10, 0.01, 'F');  //Use Copy for a,b
 
     Lanczos lanczosNew(hmatrix);
     wfTwo = wfBase;
@@ -172,7 +136,7 @@ TEST_F(LanczosTest, getLanczosMatrix)
     lanczos.getLanczosMatrix(5, 1e-10, 0.01, 'F');
     lanczos.writeLanMatrix();
     lanczosNew.readLanMatrix();
-    auto lanabNew = lanczosNew.getLanczosMatrix(6, 1e-10, 0.01, 'F');
+    auto lanabNew = lanczosNew.getLanczosMatrix(6, 1e-10, 0.01, 'F'); //Always reference
 
     for(size_t i = 0; i < a.size(); ++i)
     {

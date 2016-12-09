@@ -23,8 +23,10 @@ class Lanczos
     std::vector<LanczosBasisWf> eigenstates;
 
  public:
+    Lanczos();
     Lanczos(const ModelInterface & modelInterface);
 
+    void set(const ModelInterface & modelInterface);
     size_t getEigenSize() const;
     double getEigenvalue(size_t eigenIndex) const;
     const LanczosBasisWf& getEigenstate(size_t eigenIndex) const;

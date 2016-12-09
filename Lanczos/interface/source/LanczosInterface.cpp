@@ -8,8 +8,19 @@ using namespace tensor_hao;
 
 using namespace std;
 
+Lanczos::Lanczos()  {}
+
 Lanczos::Lanczos(const ModelInterface &modelInterface)
 {
+    model = &modelInterface;
+    wfSize = model->getWfSize();
+    lanStatus = 'N';
+    reserve(300, 1000);
+}
+
+void Lanczos::set(const ModelInterface &modelInterface)
+{
+    clear();
     model = &modelInterface;
     wfSize = model->getWfSize();
     lanStatus = 'N';
@@ -88,6 +99,8 @@ void Lanczos::clear()
     lana.resize(0);
     lanb.resize(0);
     lanwfs.resize(0);
+    eigenvalues.resize(0);
+    eigenstates.resize(0);
 }
 
 void Lanczos::randomWfInit()
@@ -147,6 +160,12 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 
     for(size_t lanIndex = 0; lanIndex < lanczosParam.maxLoop; ++lanIndex)
     {
+        if( lanczosParam.matrixSize < lana.size() )
+        {
+            cout<<"Error, lana.size is bigger than target matrixSize!"<<endl;
+            exit(1);
+        }
+
         getLanczosMatrix(lanczosParam.matrixSize-lana.size(), lanczosParam.accuracy,
                          lanczosParam.litForProjection, lanczosParam.lanwfsFlag);
 
