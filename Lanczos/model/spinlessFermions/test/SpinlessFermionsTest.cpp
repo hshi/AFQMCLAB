@@ -76,7 +76,7 @@ TEST(SpinlessFermionsTest, LanczosOneBody)
 
 TEST(SpinlessFermionsTest, applyCreationOperatorsToWf)
 {
-    size_t L(10), N(5);
+    size_t L(10), N(3);
     size_t NHilbert = binomialCoeff(L, N);
     SpinlessFermions HSpinless(L, N);
 
@@ -121,6 +121,7 @@ TEST(SpinlessFermionsTest, applyAnnihilationOperatorsToWf)
             C[0].i = j; HSpinless.applyAnnihilationOperatorsToWf(wfRight, wfRightTemp, C);
             C[0].i = i; HSpinless.applyAnnihilationOperatorsToWf(wfLeft, wfLeftTemp, C);
             overlap = wfLeftTemp.calculateOverlapWith(wfRightTemp);
+
             EXPECT_COMPLEX_NEAR( overlapExact, overlap, 1e-12 * abs(overlap) );
         }
     }

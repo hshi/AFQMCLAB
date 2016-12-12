@@ -243,6 +243,31 @@ TableElement LanczosBasis::getInfoByCiDaggerCjCkDaggerCl(size_t i, size_t j, siz
     return {num, coe};
 }
 
+TableElement LanczosBasis::getInfoByCi(size_t i)
+{
+    size_t destroyedParticle(numberOfParticle);
+    for(size_t k = 0; k < numberOfParticle; ++k)
+    {
+        if( positionOfParticle(k) == i ) { destroyedParticle = k; break; }
+    }
+    if( destroyedParticle == numberOfParticle ) return {0, 0};
+
+    int coe = destroyedParticle; coe = pow(-1, coe);
+
+    size_t count = 0;
+    for(size_t k = 0; k < destroyedParticle; ++k)
+    {
+        count += binomialTable( positionOfParticle(k), k+1 );
+    }
+    for(size_t k = destroyedParticle+1; k < numberOfParticle ; ++k)
+    {
+        count += binomialTable( positionOfParticle(k), k );
+    }
+
+    return {count, coe};
+}
+
+
 TableElement LanczosBasis::getInfoByCiDagger(size_t i)
 {
     for(size_t k = 0; k < numberOfParticle; ++k) { if( positionOfParticle(k) == i ) return {0, 0}; }
@@ -255,18 +280,18 @@ TableElement LanczosBasis::getInfoByCiDagger(size_t i)
 
     int coe = createdParticle; coe = pow(-1, coe);
 
-    size_t num = 0;
+    size_t count = 0;
     for(size_t k = 0; k < createdParticle ; ++k)
     {
-        num += positionOfParticle( positionOfParticle(k), k+1 );
+        count += binomialTable( positionOfParticle(k), k+1 );
     }
-    num += positionOfParticle(i, createdParticle+1);
-    for(size_t k = createdParticle+1; k < numberOfParticle ; ++k)
+    count += binomialTable(i, createdParticle+1);
+    for(size_t k = createdParticle; k < numberOfParticle ; ++k)
     {
-        num += positionOfParticle( positionOfParticle(k), k+2 );
+        count += binomialTable( positionOfParticle(k), k+2 );
     }
 
-    return {num, coe};
+    return {count, coe};
 }
 
 void LanczosBasis::setPositions()
@@ -278,11 +303,11 @@ void LanczosBasis::setPositions()
 
 void LanczosBasis::setBinomialTable()
 {
-    binomialTable.resize( sizeOfBasis+1, numberOfParticle+1 );
+    binomialTable.resize( sizeOfBasis+1, numberOfParticle+2 );
 
-    for(size_t j = 0; j <= sizeOfBasis; j++)
+    for(size_t j = 0; j < sizeOfBasis+1; j++)
     {
-        for(size_t i = 0; i <= numberOfParticle; i++)
+        for(size_t i = 0; i < numberOfParticle+2; i++)
         {
             if ( i>j ) binomialTable(j,i)=0;
             else if (i == 0 || i == j) binomialTable(j, i) =1;

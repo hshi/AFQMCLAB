@@ -133,31 +133,17 @@ void SpinlessFermions::applyCreationOperatorsToWf(const LanczosBasisWf &wf, Lanc
         LanczosBasis lanBasis(L, N+1);
         if( initIndex < NewHilbert ) lanBasis.reSet( initIndex );
 
-        LanczosBasis lanBasisPrime(L,N);
-        TensorHao<size_t,1> positionOfParticlePrime(N);
-        size_t destroyedParticle, numPrime;
+        TableElement tableElement;
         for(size_t num = initIndex; num < endIndex; ++num)
         {
             vecNew(num) = 0;
 
             for( const LanOneOperator& oneOperator : C )
             {
-                const TensorHao<size_t,1> & positionOfParticle = lanBasis.getPositionOfParticle();
-
-                destroyedParticle = N+1;
-                for(size_t k = 0; k < (N + 1); ++k)
+                tableElement = lanBasis.getInfoByCi( oneOperator.i );
+                if( tableElement.coefficient != 0 )
                 {
-                    if( oneOperator.i == positionOfParticle(k) ) { destroyedParticle = k; break; }
-                }
-
-                if( destroyedParticle != ( N+1 ) )
-                {
-                    for(size_t k = 0; k < destroyedParticle; ++k)
-                        positionOfParticlePrime(k) = positionOfParticle(k);
-                    for(size_t k = destroyedParticle+1; k < (N+1) ; ++k)
-                        positionOfParticlePrime(k-1) = positionOfParticle(k);
-                    numPrime = lanBasisPrime.getIndexFromPosition(positionOfParticlePrime);
-                    vecNew(num) += pow(-1.0, destroyedParticle) * oneOperator.C * vec( numPrime ) ;
+                    vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(tableElement.index);
                 }
             }
 
@@ -195,42 +181,18 @@ void SpinlessFermions::applyAnnihilationOperatorsToWf(const LanczosBasisWf &wf, 
         LanczosBasis lanBasis(L, N-1);
         if( initIndex < NewHilbert ) lanBasis.reSet( initIndex );
 
-        LanczosBasis lanBasisPrime(L,N);
-        TensorHao<size_t,1> positionOfParticlePrime(N);
-        size_t createdParticle, numPrime, existFlag;
+        TableElement tableElement;
         for(size_t num = initIndex; num < endIndex; ++num)
         {
             vecNew(num) = 0;
 
             for( const LanOneOperator& oneOperator : C )
             {
-                const TensorHao<size_t,1> & positionOfParticle = lanBasis.getPositionOfParticle();
-
-                existFlag = 0;
-                for(size_t k = 0; k < (N - 1); ++k)
+                tableElement = lanBasis.getInfoByCiDagger( oneOperator.i );
+                if( tableElement.coefficient != 0 )
                 {
-                    if( oneOperator.i == positionOfParticle(k) ) { existFlag = 1; break; }
+                    vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(tableElement.index);
                 }
-
-                if( existFlag == 0 )
-                {
-                    createdParticle = N-1;
-                    for(size_t k = 0; k < (N - 1); ++k)
-                    {
-                        if( oneOperator.i < positionOfParticle(k) ) { createdParticle = k; break; }
-                    }
-
-                    positionOfParticlePrime(createdParticle) = oneOperator.i;
-                    for(size_t k = 0; k < createdParticle; ++k)
-                        positionOfParticlePrime(k) = positionOfParticle(k);
-                    for(size_t k = createdParticle+1; k < N ; ++k)
-                        positionOfParticlePrime(k) = positionOfParticle(k-1);
-
-                    numPrime = lanBasisPrime.getIndexFromPosition(positionOfParticlePrime);
-
-                    vecNew(num) += pow(-1.0, createdParticle) * oneOperator.C * vec( numPrime ) ;
-                }
-
             }
 
             lanBasis.next();
