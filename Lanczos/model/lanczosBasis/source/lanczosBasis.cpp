@@ -243,6 +243,32 @@ TableElement LanczosBasis::getInfoByCiDaggerCjCkDaggerCl(size_t i, size_t j, siz
     return {num, coe};
 }
 
+TableElement LanczosBasis::getInfoByCiDagger(size_t i)
+{
+    for(size_t k = 0; k < numberOfParticle; ++k) { if( positionOfParticle(k) == i ) return {0, 0}; }
+
+    size_t createdParticle = numberOfParticle;
+    for(size_t k = 0; k < numberOfParticle; ++k)
+    {
+        if( i < positionOfParticle(k) ) { createdParticle = k; break; }
+    }
+
+    int coe = createdParticle; coe = pow(-1, coe);
+
+    size_t num = 0;
+    for(size_t k = 0; k < createdParticle ; ++k)
+    {
+        num += positionOfParticle( positionOfParticle(k), k+1 );
+    }
+    num += positionOfParticle(i, createdParticle+1);
+    for(size_t k = createdParticle+1; k < numberOfParticle ; ++k)
+    {
+        num += positionOfParticle( positionOfParticle(k), k+2 );
+    }
+
+    return {num, coe};
+}
+
 void LanczosBasis::setPositions()
 {
     positionOfParticle.resize( numberOfParticle );

@@ -35,9 +35,16 @@ class SpinlessFermions : public ModelInterface
     void applyVToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) const;
     void applyNiNjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
     void applyCiDaggerCjToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew, size_t i, size_t j) const;
+
     void applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
                             const std::vector<LanOneBody> &K,
                             const std::vector<LanTwoBody> &V) const;
+
+    void applyCreationOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                    const std::vector<LanOneOperator> &C) const;
+    void applyAnnihilationOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                    const std::vector<LanOneOperator> &C) const;
+
 
  private:
     void printMemoryInfo();

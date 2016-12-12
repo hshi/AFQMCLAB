@@ -73,3 +73,55 @@ TEST(SpinlessFermionsTest, LanczosOneBody)
     lan.findEigen(1);
     EXPECT_NEAR( energyExact , lan.getEigenvalue(0), 1e-10 );
 }
+
+TEST(SpinlessFermionsTest, applyCreationOperatorsToWf)
+{
+    size_t L(10), N(5);
+    size_t NHilbert = binomialCoeff(L, N);
+    SpinlessFermions HSpinless(L, N);
+
+    LanczosBasisWf wfLeft(NHilbert), wfRight(NHilbert), wfRightTemp, wfLeftTemp;
+    randomFill( wfLeft.wfRef() ); randomFill( wfRight.wfRef() );
+
+    vector<LanOneOperator> C(1); C[0].C = 1.0;
+    complex<double> overlapExact, overlap;
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = i+1; j < L; ++j)
+        {
+            HSpinless.applyCiDaggerCjToWf(wfRight, wfRightTemp, i, j);
+            overlapExact = - wfLeft.calculateOverlapWith(wfRightTemp);
+
+            C[0].i = i; HSpinless.applyCreationOperatorsToWf(wfRight, wfRightTemp, C);
+            C[0].i = j; HSpinless.applyCreationOperatorsToWf(wfLeft, wfLeftTemp, C);
+            overlap = wfLeftTemp.calculateOverlapWith(wfRightTemp);
+            EXPECT_COMPLEX_NEAR( overlapExact, overlap, 1e-12 * abs(overlap) );
+        }
+    }
+}
+
+TEST(SpinlessFermionsTest, applyAnnihilationOperatorsToWf)
+{
+    size_t L(10), N(5);
+    size_t NHilbert = binomialCoeff(L, N);
+    SpinlessFermions HSpinless(L, N);
+
+    LanczosBasisWf wfLeft(NHilbert), wfRight(NHilbert), wfRightTemp, wfLeftTemp;
+    randomFill( wfLeft.wfRef() ); randomFill( wfRight.wfRef() );
+
+    vector<LanOneOperator> C(1); C[0].C = 1.0;
+    complex<double> overlapExact, overlap;
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = i; j < L; ++j)
+        {
+            HSpinless.applyCiDaggerCjToWf(wfRight, wfRightTemp, i, j);
+            overlapExact = wfLeft.calculateOverlapWith(wfRightTemp);
+
+            C[0].i = j; HSpinless.applyAnnihilationOperatorsToWf(wfRight, wfRightTemp, C);
+            C[0].i = i; HSpinless.applyAnnihilationOperatorsToWf(wfLeft, wfLeftTemp, C);
+            overlap = wfLeftTemp.calculateOverlapWith(wfRightTemp);
+            EXPECT_COMPLEX_NEAR( overlapExact, overlap, 1e-12 * abs(overlap) );
+        }
+    }
+}

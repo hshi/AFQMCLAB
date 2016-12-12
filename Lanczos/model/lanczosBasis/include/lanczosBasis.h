@@ -40,6 +40,7 @@ class LanczosBasis
 
     TableElement getInfoByCiDaggerCj(size_t i, size_t j);
     TableElement getInfoByCiDaggerCjCkDaggerCl(size_t i, size_t j, size_t k, size_t l);
+    TableElement getInfoByCiDagger(size_t i);
 
  private:
     void setPositions();

@@ -21,4 +21,10 @@ struct LanTwoBody
     std::complex<double> V;
 };
 
+struct LanOneOperator
+{
+    size_t i;
+    std::complex<double> C;
+};
+
 #endif //AFQMCLIB_LANCZOSOPERATOR_H
