@@ -121,6 +121,33 @@ TEST(realMaterialTest, LanczosOneBody)
     EXPECT_NEAR( E_exact , lan.getEigenvalue(0), 1e-10 );
 }
 
+TEST(realMaterialTest, applyCDaggerUpToWf)
+{
+    size_t L(6), Nup(2),Ndn(3);
+    RealMaterial H(L, Nup, Ndn);
+
+    size_t NHilbert = H.getWfSize();
+    LanczosBasisWf wfLeft(NHilbert), wfRight(NHilbert), wfRightTemp, wfLeftTemp;
+    randomFill( wfLeft.wfRef() ); randomFill( wfRight.wfRef() );
+
+
+    vector<LanOneOperator> C(1); C[0].C = 1.0;
+    complex<double> overlapExact, overlap;
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = i+1; j < L; ++j)
+        {
+            H.applyCupiDaggerCupjToWf(wfRight, wfRightTemp, i, j);
+            overlapExact =  - wfLeft.calculateOverlapWith(wfRightTemp);
+
+            C[0].i = i; H.applyCupDaggerToWf(wfRight, wfRightTemp, C);
+            C[0].i = j; H.applyCupDaggerToWf(wfLeft, wfLeftTemp, C);
+            overlap = wfLeftTemp.calculateOverlapWith(wfRightTemp);
+
+            EXPECT_COMPLEX_NEAR( overlapExact, overlap, 1e-12 * abs(overlap) );
+        }
+    }
+}
 
 class realMaterialHubbardTest: public ::testing::Test
 {

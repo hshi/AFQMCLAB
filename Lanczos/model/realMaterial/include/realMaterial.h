@@ -57,6 +57,8 @@ class RealMaterial : public ModelInterface
                             const std::vector<LanTwoBody> &upUp, const std::vector<LanTwoBody> &upDn,
                             const std::vector<LanTwoBody> &dnDn ) const;
 
+    void applyCupDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                            const std::vector<LanOneOperator> &Cup) const;
  private:
     void setFromLNupNdn();
     void setNHilbertUpAndTableUp(LanczosBasis &lanBasisUp);

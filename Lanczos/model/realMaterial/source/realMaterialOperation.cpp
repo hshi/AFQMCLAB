@@ -1,8 +1,12 @@
 //
 // Created by boruoshihao on 10/30/16.
 //
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
 
 #include "../include/realMaterial.h"
+#include "../../../../libhao/mathHao/include/simple_fun.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -211,6 +215,48 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
                     vecNew(num) += tableElementOne.coefficient * tableElementTwo.coefficient * 1.0
                                    * twoBody.V * vec(numNew);
                 }
+            }
+        }
+    }
+}
+
+void RealMaterial::applyCupDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                      const std::vector<LanOneOperator> &Cup) const
+{
+    size_t NewHilbertUp = binomialCoeff(L, Nup+1);
+    size_t NewHilbertDn = NHilbertDn;
+    size_t NewHilbert   = NewHilbertUp * NewHilbertDn;
+
+    if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
+    const TensorHao<complex<double>, 1> & vec = wf.getWf();
+    TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
+
+    TensorHao< TableElement, 2 > tableCup(L, NewHilbertUp);
+    LanczosBasis lanBasisUp(L, Nup+1);
+    for(size_t k = 0; k < NewHilbertUp; ++k)
+    {
+        for(size_t i = 0; i < L; ++i) tableCup(i, k) = lanBasisUp.getInfoByCi(i);
+        lanBasisUp.next();
+    }
+
+    size_t numUp, numDn, numNew;
+    TableElement tableElement;
+    #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+    for(size_t num = 0; num < NewHilbert; ++num)
+    {
+        vecNew(num) = 0;
+
+        numDn = num / NewHilbertUp;
+        numUp = num - numDn * NewHilbertUp;
+
+        for( const LanOneOperator& oneOperator : Cup )
+        {
+            tableElement = tableCup(oneOperator.i, numUp);
+            numNew = tableElement.index + numDn * NHilbertUp;
+
+            if( tableElement.coefficient != 0 )
+            {
+                vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(numNew);
             }
         }
     }

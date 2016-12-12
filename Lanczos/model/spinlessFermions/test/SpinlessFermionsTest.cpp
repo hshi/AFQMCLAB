@@ -113,7 +113,7 @@ TEST(SpinlessFermionsTest, applyAnnihilationOperatorsToWf)
     complex<double> overlapExact, overlap;
     for(size_t i = 0; i < L; ++i)
     {
-        for(size_t j = i; j < L; ++j)
+        for(size_t j = 0; j < L; ++j)
         {
             HSpinless.applyCiDaggerCjToWf(wfRight, wfRightTemp, i, j);
             overlapExact = wfLeft.calculateOverlapWith(wfRightTemp);
