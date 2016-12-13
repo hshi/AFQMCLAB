@@ -119,6 +119,10 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Add write file library, benchmark with Ettore's data, imaginary time and spectral function.
+
+  //TODO: Check bin for other files
+
   //TODO: Change bin in tensor_hao for fix size, install bin
 
   //TODO: Should everything use lapack blas? Equal? Copy?

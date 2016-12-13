@@ -1,4 +1,4 @@
-set(SOURCE_TESTS kahan_test.cpp serialErrorAnalysisTest.cpp thread_error_analysis_test.cpp)
+set(SOURCE_TESTS kahan_test.cpp serialErrorAnalysisTest.cpp threadErrorAnalysisTest.cpp)
 
 add_executable(errorAnalysisTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
