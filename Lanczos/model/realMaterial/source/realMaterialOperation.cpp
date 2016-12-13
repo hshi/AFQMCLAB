@@ -220,6 +220,90 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
     }
 }
 
+void RealMaterial::applyCupToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                const std::vector<LanOneOperator> &Cup) const
+{
+    size_t NewHilbertUp = binomialCoeff(L, Nup-1);
+    size_t NewHilbertDn = NHilbertDn;
+    size_t NewHilbert   = NewHilbertUp * NewHilbertDn;
+
+    if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
+    const TensorHao<complex<double>, 1> & vec = wf.getWf();
+    TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
+
+    TensorHao< TableElement, 2 > tableCup(L, NewHilbertUp);
+    LanczosBasis lanBasisUp(L, Nup-1);
+    for(size_t k = 0; k < NewHilbertUp; ++k)
+    {
+        for(size_t i = 0; i < L; ++i) tableCup(i, k) = lanBasisUp.getInfoByCiDagger(i);
+        lanBasisUp.next();
+    }
+
+    size_t numUp, numDn, numNew;
+    TableElement tableElement;
+    #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+    for(size_t num = 0; num < NewHilbert; ++num)
+    {
+        vecNew(num) = 0;
+
+        numDn = num / NewHilbertUp;
+        numUp = num - numDn * NewHilbertUp;
+
+        for( const LanOneOperator& oneOperator : Cup )
+        {
+            tableElement = tableCup(oneOperator.i, numUp);
+            numNew = tableElement.index + numDn * NHilbertUp;
+
+            if( tableElement.coefficient != 0 )
+            {
+                vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(numNew);
+            }
+        }
+    }
+}
+
+void RealMaterial::applyCdnToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                const std::vector<LanOneOperator> &Cdn) const
+{
+    size_t NewHilbertUp = NHilbertUp;
+    size_t NewHilbertDn = binomialCoeff(L, Ndn-1);
+    size_t NewHilbert   = NewHilbertUp * NewHilbertDn;
+
+    if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
+    const TensorHao<complex<double>, 1> & vec = wf.getWf();
+    TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
+
+    TensorHao< TableElement, 2 > tableCdn(L, NewHilbertDn);
+    LanczosBasis lanBasisDn(L, Ndn-1);
+    for(size_t k = 0; k < NewHilbertDn; ++k)
+    {
+        for(size_t i = 0; i < L; ++i) tableCdn(i, k) = lanBasisDn.getInfoByCiDagger(i);
+        lanBasisDn.next();
+    }
+
+    size_t numUp, numDn, numNew;
+    TableElement tableElement;
+    #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+    for(size_t num = 0; num < NewHilbert; ++num)
+    {
+        vecNew(num) = 0;
+
+        numDn = num / NewHilbertUp;
+        numUp = num - numDn * NewHilbertUp;
+
+        for( const LanOneOperator& oneOperator : Cdn )
+        {
+            tableElement = tableCdn(oneOperator.i, numDn);
+            numNew = numUp + tableElement.index * NHilbertUp;
+
+            if( tableElement.coefficient != 0 )
+            {
+                vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(numNew);
+            }
+        }
+    }
+}
+
 void RealMaterial::applyCupDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
                                       const std::vector<LanOneOperator> &Cup) const
 {
@@ -253,6 +337,48 @@ void RealMaterial::applyCupDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &
         {
             tableElement = tableCup(oneOperator.i, numUp);
             numNew = tableElement.index + numDn * NHilbertUp;
+
+            if( tableElement.coefficient != 0 )
+            {
+                vecNew(num) += tableElement.coefficient * 1.0 * oneOperator.C *  vec(numNew);
+            }
+        }
+    }
+}
+
+void RealMaterial::applyCdnDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
+                                      const std::vector<LanOneOperator> &Cdn) const
+{
+    size_t NewHilbertUp = NHilbertUp;
+    size_t NewHilbertDn = binomialCoeff(L, Ndn+1);
+    size_t NewHilbert   = NewHilbertUp * NewHilbertDn;
+
+    if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
+    const TensorHao<complex<double>, 1> & vec = wf.getWf();
+    TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
+
+    TensorHao< TableElement, 2 > tableCdn(L, NewHilbertDn);
+    LanczosBasis lanBasisDn(L, Ndn+1);
+    for(size_t k = 0; k < NewHilbertDn; ++k)
+    {
+        for(size_t i = 0; i < L; ++i) tableCdn(i, k) = lanBasisDn.getInfoByCi(i);
+        lanBasisDn.next();
+    }
+
+    size_t numUp, numDn, numNew;
+    TableElement tableElement;
+    #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+    for(size_t num = 0; num < NewHilbert; ++num)
+    {
+        vecNew(num) = 0;
+
+        numDn = num / NewHilbertUp;
+        numUp = num - numDn * NewHilbertUp;
+
+        for( const LanOneOperator& oneOperator : Cdn )
+        {
+            tableElement = tableCdn(oneOperator.i, numDn);
+            numNew = numUp + tableElement.index * NHilbertUp;
 
             if( tableElement.coefficient != 0 )
             {
