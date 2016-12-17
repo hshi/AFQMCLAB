@@ -39,8 +39,8 @@ void diagonalizeTriagonalMatrixGetEigenvalueAndOneRowOfEigenvector(vector<double
     for(HAO_INT i = 0; i < L; ++i) b[i] = fullvector[i*L];
 }
 
-vector<double> MeasureBasedOnLanMatrix::returnExpMinusTauModel(vector<double> tau, size_t L,
-                                                               double accuracy, double litForProjection, char wfFlag)
+TensorHao<double,1> MeasureBasedOnLanMatrix::returnExpMinusTauModel(const TensorHao<double,1> &tau, size_t L,
+                                                                    double accuracy, double litForProjection, char wfFlag)
 {
     auto lanabTuple = lan.getLanElements();
     const vector<double> &lana = get<0>(lanabTuple);
@@ -70,21 +70,21 @@ vector<double> MeasureBasedOnLanMatrix::returnExpMinusTauModel(vector<double> ta
     for(size_t j = 0; j < abSize; ++j) b[j] = b[j] * b[j] * wfNorm * wfNorm;
 
     size_t tauSize = tau.size();
-    vector<double> expMinusTauModel( tauSize );
+    TensorHao<double, 1> expMinusTauModel( tauSize );
     for(size_t i = 0; i < tauSize; ++i)
     {
-        expMinusTauModel[i] = 0.0;
+        expMinusTauModel(i) = 0.0;
         for(size_t j = 0; j < abSize; ++j)
         {
-            expMinusTauModel[i] += exp( -tau[i] * a[j]  ) * b[j];
+            expMinusTauModel(i) += exp( -tau(i) * a[j]  ) * b[j];
         }
     }
 
     return expMinusTauModel;
 }
 
-vector<double> MeasureBasedOnLanMatrix::returnSpectralFunction(vector<double> omega, size_t L,
-                                                               double accuracy, double litForProjection, char wfFlag)
+TensorHao<double,1> MeasureBasedOnLanMatrix::returnSpectralFunction(const TensorHao<double,1> &omega, size_t L,
+                                                                    double accuracy, double litForProjection, char wfFlag)
 {
     auto lanabTuple = lan.getLanElements();
     const vector<double> &lana = get<0>(lanabTuple);
@@ -111,20 +111,20 @@ vector<double> MeasureBasedOnLanMatrix::returnSpectralFunction(vector<double> om
 
     size_t omegaSize = omega.size();
     size_t aSize = a.size();
-    vector<double> spectralFunction( omegaSize );
+    TensorHao<double> spectralFunction( omegaSize );
     vector<double> PE(aSize+1), QE(aSize+1);
     for(size_t i = 0; i < omegaSize; ++i)
     {
         PE[0] = 1.0;
-        PE[1] = ( omega[i] - a[0] ) / b[1];
+        PE[1] = ( omega(i) - a[0] ) / b[1];
         QE[0] = 0;
         QE[1] = 1;
         for(size_t j = 2; j < aSize+1; ++j)
         {
-            PE[j] = ( ( omega[i] - a[j-1] )* PE[j-1] - b[j-1]*PE[j-2] ) / b[j];
-            QE[j] = ( ( omega[i] - a[j-1] )* QE[j-1] - b[j-1]*QE[j-2] ) / b[j];
+            PE[j] = ( ( omega(i) - a[j-1] )* PE[j-1] - b[j-1]*PE[j-2] ) / b[j];
+            QE[j] = ( ( omega(i) - a[j-1] )* QE[j-1] - b[j-1]*QE[j-2] ) / b[j];
         }
-        spectralFunction[i] = QE[aSize] / ( b[1]*PE[aSize] ) * wfNorm * wfNorm;
+        spectralFunction(i) = QE[aSize] / ( b[1]*PE[aSize] ) * wfNorm * wfNorm;
     }
 
     return spectralFunction;
