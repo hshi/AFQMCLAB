@@ -121,14 +121,6 @@ Then see tutorials for detail examples.
 
   //TODO: Add read and write file library, benchmark with Ettore's data, imaginary time and spectral function.
 
-  //TODO: Change bin in tensor_hao for fix size, install bin
-
-  //TODO: Should everything use lapack blas? Equal? Copy?
-
-  //TODO: Update lapack and blas 1D for all dimension.
-
-  //TODO: Lanczos: meausre dynamic correlation function exp(-b H) = 1 -b H -bb/2 *H*H. transfer particles from N to N+1,and N+1 to N
-
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
   //TODO: FFTW GURU interface

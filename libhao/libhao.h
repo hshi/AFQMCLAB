@@ -16,4 +16,6 @@
 #include "mathHao/include/math_container.h"
 #include "lapackblasHao/blas_lapack_wrap.h"
 
+#include "readWriteHao/include/readWriteHao.h"
+
 #endif //AFQMCLIB_LIBHAO_H
