@@ -20,6 +20,12 @@ class RealMaterial : public ModelInterface
  public:
     RealMaterial(size_t L, size_t Nup, size_t Ndn);
     RealMaterial(const std::string &filename);
+    RealMaterial(const RealMaterial& x);
+    RealMaterial(RealMaterial &&x);
+    RealMaterial & operator  = (const RealMaterial& x);
+    RealMaterial & operator  = (RealMaterial &&x);
+
+    RealMaterial generateNewModel(size_t L, size_t Nup, size_t Ndn);
 
     size_t getL() const;
     size_t getNup() const;
@@ -69,8 +75,8 @@ class RealMaterial : public ModelInterface
     void setNHilbertDnAndTableDn(LanczosBasis &lanBasisDn);
     void printMemoryInfo();
 
-    RealMaterial(const RealMaterial& x);
-    RealMaterial & operator  = (const RealMaterial& x);
+    void copy_deep(const RealMaterial& x);
+    void move_deep(RealMaterial& x);
 };
 
 #endif //AFQMCLIB_REALMATERIAL_H

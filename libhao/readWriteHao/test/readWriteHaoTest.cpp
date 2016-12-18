@@ -15,7 +15,10 @@ TEST(readWriteHaoTest, checkFile)
     removeFile(filename);
     EXPECT_FALSE( checkFile(filename) );
 
+    MPIBarrier();
     if( MPIRank() == 0 ) system("touch readWriteTest.dat");
+    MPIBarrier();
+
     EXPECT_TRUE( checkFile(filename) );
     removeFile(filename);
 }

@@ -18,8 +18,8 @@ class MeasureBasedOnLanMatrix
     tensor_hao::TensorHao<double, 1> returnExpMinusTauModel(const tensor_hao::TensorHao<double,1> &tau, size_t L,
                                                             double accuracy = 1e-10, double litForProjection = 0.01, char wfFlag = 'F');
 
-    tensor_hao::TensorHao<double, 1> returnSpectralFunction(const tensor_hao::TensorHao<double,1> &omega, size_t L,
-                                                            double accuracy = 1e-10, double litForProjection = 0.01, char wfFlag = 'F');
+    tensor_hao::TensorHao<std::complex<double>, 1> returnGreenFunction(const tensor_hao::TensorHao<std::complex<double>, 1> &omega, size_t L,
+                                                                       double accuracy = 1e-10, double litForProjection = 0.01, char wfFlag = 'F');
 
     double getWfNorm() const;
 

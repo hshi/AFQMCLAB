@@ -83,8 +83,8 @@ TensorHao<double,1> MeasureBasedOnLanMatrix::returnExpMinusTauModel(const Tensor
     return expMinusTauModel;
 }
 
-TensorHao<double,1> MeasureBasedOnLanMatrix::returnSpectralFunction(const TensorHao<double,1> &omega, size_t L,
-                                                                    double accuracy, double litForProjection, char wfFlag)
+TensorHao<complex<double>,1> MeasureBasedOnLanMatrix::returnGreenFunction(const TensorHao<complex<double>, 1> &omega, size_t L,
+                                                                          double accuracy, double litForProjection, char wfFlag)
 {
     auto lanabTuple = lan.getLanElements();
     const vector<double> &lana = get<0>(lanabTuple);
@@ -111,8 +111,8 @@ TensorHao<double,1> MeasureBasedOnLanMatrix::returnSpectralFunction(const Tensor
 
     size_t omegaSize = omega.size();
     size_t aSize = a.size();
-    TensorHao<double> spectralFunction( omegaSize );
-    vector<double> PE(aSize+1), QE(aSize+1);
+    TensorHao<complex<double>,1> greenFunction( omegaSize );
+    vector<complex<double>> PE(aSize+1), QE(aSize+1);
     for(size_t i = 0; i < omegaSize; ++i)
     {
         PE[0] = 1.0;
@@ -124,10 +124,10 @@ TensorHao<double,1> MeasureBasedOnLanMatrix::returnSpectralFunction(const Tensor
             PE[j] = ( ( omega(i) - a[j-1] )* PE[j-1] - b[j-1]*PE[j-2] ) / b[j];
             QE[j] = ( ( omega(i) - a[j-1] )* QE[j-1] - b[j-1]*QE[j-2] ) / b[j];
         }
-        spectralFunction(i) = QE[aSize] / ( b[1]*PE[aSize] ) * wfNorm * wfNorm;
+        greenFunction(i) = QE[aSize] / ( b[1]*PE[aSize] ) * wfNorm * wfNorm;
     }
 
-    return spectralFunction;
+    return greenFunction;
 }
 
 double MeasureBasedOnLanMatrix::getWfNorm() const

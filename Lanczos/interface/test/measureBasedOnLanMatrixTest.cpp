@@ -45,34 +45,34 @@ TEST(measureBasedOnLanMatrixTest, returnExpMinusTauModel)
     }
 }
 
-TEST(measureBasedOnLanMatrixTest, returnSpectralFunction)
+TEST(measureBasedOnLanMatrixTest, returnGreenFunction)
 {
     //Set parameters
     size_t L = 10;
     Hmatrix hmatrix; hmatrix.resize(L);
     LanczosBasisWf wf(L); wf.randomFill();
-    TensorHao<double,1> omega(3); omega = {0, 1, 2 };
+    TensorHao<complex<double>,1> omega(3); omega = { {0,1}, {1,2}, {2,3} };
 
     //To be tested
     MeasureBasedOnLanMatrix meas(hmatrix, wf);
-    TensorHao<double,1> spectralFunction = meas.returnSpectralFunction(omega, L);
+    TensorHao<complex<double>,1> greenFunction = meas.returnGreenFunction(omega, L);
 
     //Get exact solution
     auto lanabTuple = meas.getLanElements();
     const vector<double> &lana = get<0>(lanabTuple);
     const vector<double> &lanb = get<1>(lanabTuple);
-    TensorHao<double,1> spectralFunction_Exact( omega.size() );
+    TensorHao<complex<double>,1> greenFunction_Exact( omega.size() );
     for(size_t i = 0; i < omega.size(); ++i)
     {
         TensorHao<complex<double>,2> hm(L,L); hm = complex<double>(0,0);
         for(size_t j = 0; j < L; ++j) { hm(j, j) = omega(i) - lana[j]; }
         for(size_t j = 1; j < L; ++j) { hm(j, j-1) = -lanb[j]; hm(j-1, j) = -lanb[j]; }
         hm = inverse_cpu( LUconstruct_cpu( hm ) );
-        spectralFunction_Exact(i) = hm(0,0).real() * meas.getWfNorm() * meas.getWfNorm();
+        greenFunction_Exact(i) = hm(0,0) * meas.getWfNorm() * meas.getWfNorm();
     }
 
     for(size_t i = 0; i < omega.size(); ++i)
     {
-        EXPECT_NEAR( spectralFunction(i) , spectralFunction_Exact(i), 1e-12* abs(spectralFunction(i)) );
+        EXPECT_COMPLEX_NEAR( greenFunction(i) , greenFunction_Exact(i), 1e-12* abs(greenFunction(i)) );
     }
 }

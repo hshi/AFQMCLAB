@@ -17,7 +17,9 @@ bool checkFile(const std::string &filename)
 void removeFile(const std::string &filename)
 {
     string command = "rm -rf " + filename;
+    MPIBarrier();
     if( MPIRank()==0 ) system( command.c_str() );
+    MPIBarrier();
 }
 
 void writeFile(double data, const std::string &filename)
