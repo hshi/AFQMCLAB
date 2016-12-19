@@ -13,9 +13,9 @@ void measureExpMinusTauModel(MeasureBasedOnLanMatrix &meas)
 
 void measureSpectralFunction(MeasureBasedOnLanMatrix &meas)
 {
-    TensorHao<double,1> omega(100);
-    for(size_t j = 0; j < omega.size() ; ++j) omega(j) = 0.2*j - 20.0;
-    TensorHao<double,1> spectral = meas.returnGreenFunction(omega, 100);
+    TensorHao<complex<double>,1> omega(100);
+    for(size_t j = 0; j < omega.size() ; ++j) omega(j) = complex<double>(0.2*j-20.0, 0.2);
+    TensorHao<complex<double>,1> spectral = meas.returnGreenFunction(omega, 100);
     writeFile(omega.size(), omega.data(), spectral.data(), "spectral.dat" );
 }
 
