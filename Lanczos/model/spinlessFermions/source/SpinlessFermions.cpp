@@ -18,6 +18,22 @@ SpinlessFermions::SpinlessFermions(const string &filename)
     printMemoryInfo();
 }
 
+SpinlessFermions::SpinlessFermions(const SpinlessFermions &x) { copy_deep(x); }
+
+SpinlessFermions::SpinlessFermions(SpinlessFermions &&x) { move_deep(x); }
+
+SpinlessFermions &SpinlessFermions::operator=(const SpinlessFermions &x) { copy_deep(x); return *this; }
+
+SpinlessFermions &SpinlessFermions::operator=(SpinlessFermions &&x) { move_deep(x); return *this; }
+
+SpinlessFermions SpinlessFermions::generateNewModel(size_t L, size_t N)
+{
+    SpinlessFermions H(L, N);
+    H.setK(K); H.setV(V);
+    return H;
+}
+
+
 size_t SpinlessFermions::getL() const { return L; }
 
 size_t SpinlessFermions::getN() const { return N; }
@@ -43,6 +59,20 @@ void SpinlessFermions::printMemoryInfo()
     cout<<endl;
 }
 
-SpinlessFermions::SpinlessFermions(const SpinlessFermions &x) { }
+void SpinlessFermions::copy_deep(const SpinlessFermions &x)
+{
+    L = x.L;
+    N = x.N;
+    K = x.K;
+    V = x.V;
+    Nhilbert = x.Nhilbert;
+}
 
-SpinlessFermions &SpinlessFermions::operator=(const SpinlessFermions &x) { return *this; }
+void SpinlessFermions::move_deep(SpinlessFermions &x)
+{
+    L = x.L;
+    N = x.N;
+    K = move( x.K );
+    V = move( x.V );
+    Nhilbert = x.Nhilbert;
+}

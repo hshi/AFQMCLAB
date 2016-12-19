@@ -18,6 +18,12 @@ class SpinlessFermions : public ModelInterface
  public:
     SpinlessFermions(size_t L, size_t N);
     SpinlessFermions(const std::string &filename);
+    SpinlessFermions(const SpinlessFermions& x);
+    SpinlessFermions(SpinlessFermions && x);
+    SpinlessFermions & operator  = (const SpinlessFermions& x);
+    SpinlessFermions & operator  = (SpinlessFermions&& x);
+
+    SpinlessFermions generateNewModel(size_t L, size_t N);
 
     size_t getL() const;
     size_t getN() const;
@@ -48,8 +54,8 @@ class SpinlessFermions : public ModelInterface
 
  private:
     void printMemoryInfo();
-    SpinlessFermions(const SpinlessFermions& x);
-    SpinlessFermions & operator  = (const SpinlessFermions& x);
+    void copy_deep(const SpinlessFermions& x);
+    void move_deep(SpinlessFermions& x);
 };
 
 #endif //AFQMCLIB_SPINLESSFERMIONS_H

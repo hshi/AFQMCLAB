@@ -119,9 +119,11 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-  //TODO: Check spectral function name, do the samething for spinless model.
+  //TODO: Write a better tutorial code for spectral function.
 
-  //TODO: Add read and write file library, benchmark with Ettore's data, imaginary time and spectral function.
+  //TODO: Add supercubic library.
+
+  //TODO: Benchmark with Ettore's data, imaginary time and spectral function.
 
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
