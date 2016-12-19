@@ -8,13 +8,13 @@
 using namespace std;
 using namespace tensor_hao;
 
-bool checkFile(const std::string &filename)
+bool checkFile(const string &filename)
 {
     struct stat buffer;
     return (stat (filename.c_str(), &buffer) == 0);
 }
 
-void removeFile(const std::string &filename)
+void removeFile(const string &filename)
 {
     string command = "rm -rf " + filename;
     MPIBarrier();
@@ -22,7 +22,7 @@ void removeFile(const std::string &filename)
     MPIBarrier();
 }
 
-void writeFile(double data, const std::string &filename)
+void writeFile(double data, const string &filename)
 {
     ofstream file;
     file.open(filename, ios::out|ios::app);
@@ -32,7 +32,7 @@ void writeFile(double data, const std::string &filename)
     file.close();
 }
 
-void readFile(double data, const std::string &filename)
+void readFile(double &data, const string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
@@ -41,7 +41,7 @@ void readFile(double data, const std::string &filename)
     file.close();
 }
 
-void writeFile(size_t L, const double *data, const std::string &filename)
+void writeFile(size_t L, const double *data, const string &filename)
 {
     ofstream file;
     file.open(filename, ios::out|ios::app);
@@ -51,7 +51,7 @@ void writeFile(size_t L, const double *data, const std::string &filename)
     file.close();
 }
 
-void readFile(size_t L, double *data, const std::string &filename)
+void readFile(size_t L, double *data, const string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
@@ -60,7 +60,7 @@ void readFile(size_t L, double *data, const std::string &filename)
     file.close();
 }
 
-void writeFile(size_t L, const double *dataOne, const double *dataTwo, const std::string &filename)
+void writeFile(size_t L, const double *dataOne, const double *dataTwo, const string &filename)
 {
     ofstream file;
     file.open(filename, ios::out|ios::app);
@@ -70,11 +70,77 @@ void writeFile(size_t L, const double *dataOne, const double *dataTwo, const std
     file.close();
 }
 
-void readFile(size_t L, double *dataOne, double *dataTwo, const std::string &filename)
+void readFile(size_t L, double *dataOne, double *dataTwo, const string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
     if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
     for(size_t i = 0; i < L; ++i) file>>dataOne[i]>>dataTwo[i];
+    file.close();
+}
+
+void writeFile(complex<double> data, const string &filename)
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::app);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file<<setprecision(16)<<scientific;
+    file<<setw(26)<<data.real()<<setw(26)<<data.imag()<<"\n";
+    file.close();
+}
+
+void readFile(complex<double> &data, const string &filename)
+{
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    double real, imag;
+    file >> real >> imag;
+    data = complex<double>(real, imag);
+    file.close();
+}
+
+void writeFile(size_t L, const complex<double> *data, const string &filename)
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::app);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file<<setprecision(16)<<scientific;
+    for(size_t i = 0; i < L; ++i) file<<setw(26)<<data[i].real()<<setw(26)<<data[i].imag()<<"\n";
+    file.close();
+}
+
+void readFile(size_t L, complex<double> *data, const string &filename)
+{
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    double real, imag;
+    for(size_t i = 0; i < L; ++i) { file>>real>>imag; data[i] = complex<double>(real, imag); }
+    file.close();
+}
+
+void writeFile(size_t L, const complex<double> *dataOne, const complex<double> *dataTwo, const string &filename)
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::app);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file<<setprecision(16)<<scientific;
+    for(size_t i = 0; i < L; ++i) file<<setw(26)<<dataOne[i].real()<<setw(26)<<dataOne[i].imag()
+                                      <<setw(26)<<dataTwo[i].real()<<setw(26)<<dataTwo[i].imag()<<"\n";
+    file.close();
+}
+
+void readFile(size_t L, complex<double> *dataOne, complex<double> *dataTwo, const string &filename)
+{
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    double real, imag;
+    for(size_t i = 0; i < L; ++i)
+    {
+        file>>real>>imag; dataOne[i] = complex<double>(real, imag);
+        file>>real>>imag; dataTwo[i] = complex<double>(real, imag);
+    }
     file.close();
 }
