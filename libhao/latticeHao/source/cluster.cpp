@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include <fstream>
-#include "cluster.h"
-#include "../../libhao/mpiHao/include/mpi_fun.h"
+#include "../include/cluster.h"
+#include "../../mpiHao/include/mpi_fun.h"
+#include "../../readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 
@@ -15,15 +15,7 @@ Cluster::Cluster(size_t L) : L(L) {}
 
 Cluster::Cluster(const string& filename)
 {
-    int rank = MPIRank();
-    if(rank==0)
-    {
-        ifstream latt_file;
-        latt_file.open(filename,ios::in);
-        if ( ! latt_file.is_open() ) { cout<<"Error opening file!!!"<<endl;  exit(1); }
-        latt_file>>L;
-        latt_file.close();
-    }
+    if( MPIRank() == 0 ) readFile(L, filename);
     MPIBcast(L);
     MPIBarrier();
 }

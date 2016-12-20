@@ -21,7 +21,7 @@ class FFTServer
  public:
     FFTServer();
     FFTServer(int dimenInput, const std::vector<int>& nInput, char format); //'C' Column-major: fortran style;
-                                                                                  //'R' Row-major: c style
+                                                                            // 'R' Row-major: c style
     FFTServer(const FFTServer& x);
     ~FFTServer();
    

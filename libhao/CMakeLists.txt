@@ -10,9 +10,10 @@ add_subdirectory(tensorHao)
 add_subdirectory(fftwHao)
 add_subdirectory(mathHao)
 add_subdirectory(lapackblasHao)
+add_subdirectory(readWriteHao)
 
 #Second level
-add_subdirectory(readWriteHao)
+add_subdirectory(latticeHao)
 
 add_library(libHao STATIC
         $<TARGET_OBJECTS:testHaoObject>
@@ -24,6 +25,7 @@ add_library(libHao STATIC
         $<TARGET_OBJECTS:fftwHaoObject>
         $<TARGET_OBJECTS:mathHaoObject>
         $<TARGET_OBJECTS:readWriteHaoObject>
+        $<TARGET_OBJECTS:latticeHaoObject>
         )
 install(TARGETS libHao DESTINATION lib EXPORT libHaoTargets)
 install(EXPORT libHaoTargets DESTINATION cmake)

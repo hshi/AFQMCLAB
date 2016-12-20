@@ -37,7 +37,6 @@ include(Set_Ext_Libraries)
 
 add_subdirectory(libhao)
 add_subdirectory(Lanczos)
-add_subdirectory(lattice)
 add_subdirectory(model)
 add_subdirectory(scripts)
 

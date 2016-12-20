@@ -7,7 +7,6 @@
 #include "../../testHao/gtest_custom.h"
 
 using namespace std;
-using namespace tensor_hao;
 
 TEST(readWriteHaoTest, checkFile)
 {
@@ -21,6 +20,17 @@ TEST(readWriteHaoTest, checkFile)
 
     EXPECT_TRUE( checkFile(filename) );
     removeFile(filename);
+}
+
+TEST(readWriteHaoTest, readWriteSize_t)
+{
+    string filename = "readWriteTest.dat";
+    size_t a, b;
+    a = 6;
+    writeFile(a, filename);
+    readFile(b, filename);
+    removeFile(filename);
+    EXPECT_EQ(a, b);
 }
 
 TEST(readWriteHaoTest, readWriteDouble)

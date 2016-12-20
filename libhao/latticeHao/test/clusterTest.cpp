@@ -1,7 +1,8 @@
 #include <fstream>
-#include "cluster.h"
-#include "../../libhao/testHao/gtest_custom.h"
-#include "../../libhao/mpiHao/include/mpi_fun.h"
+#include "../include/cluster.h"
+#include "../../testHao/gtest_custom.h"
+#include "../../mpiHao/include/mpi_fun.h"
+#include "../../readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 
@@ -18,37 +19,15 @@ TEST(cluster, LConstructor)
     EXPECT_EQ(L, cluster.getL());
 }
 
-void generateInputForCluster(const string& filename, size_t L)
-{
-    int rank = MPIRank();
-    if(rank==0)
-    {
-        ofstream file;
-        file.open(filename, ios::out|ios::trunc);
-        file<<L<<"\n";
-        file.close();
-    }
-    MPIBarrier();
-}
-
-void removeInputFilenameForCluster(const string &filename)
-{
-    int rank = MPIRank();
-    if(rank==0) remove( filename.c_str() );
-    MPIBarrier();
-}
-
 TEST(cluster, fileConstructor)
 {
 
     string filename="latt_param.dat";
     size_t L=20;
 
-    generateInputForCluster(filename, L);
-
+    writeFile(L, filename); MPIBarrier();
     Cluster cluster(filename);
-
-    removeInputFilenameForCluster(filename);
+    removeFile(filename);
 
     EXPECT_EQ( L, cluster.getL() );
 }

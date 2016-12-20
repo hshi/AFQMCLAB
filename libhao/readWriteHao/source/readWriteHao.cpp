@@ -3,10 +3,10 @@
 //
 #include <sys/stat.h>
 #include <fstream>
+#include <iomanip>
 #include "../include/readWriteHao.h"
 
 using namespace std;
-using namespace tensor_hao;
 
 bool checkFile(const string &filename)
 {
@@ -20,6 +20,25 @@ void removeFile(const string &filename)
     MPIBarrier();
     if( MPIRank()==0 ) system( command.c_str() );
     MPIBarrier();
+}
+
+void writeFile(size_t data, const std::string &filename)
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::app);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file<<setprecision(16)<<scientific;
+    file<<setw(26)<<data<<"\n";
+    file.close();
+}
+
+void readFile(size_t &data, const std::string &filename)
+{
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file >> data;
+    file.close();
 }
 
 void writeFile(double data, const string &filename)

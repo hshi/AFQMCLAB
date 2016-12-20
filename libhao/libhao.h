@@ -15,7 +15,8 @@
 #include "fftwHao/include/fftw_hao.h"
 #include "mathHao/include/math_container.h"
 #include "lapackblasHao/blas_lapack_wrap.h"
-
 #include "readWriteHao/include/readWriteHao.h"
+
+#include "latticeHao/include/latticeAll.h"
 
 #endif //AFQMCLIB_LIBHAO_H
