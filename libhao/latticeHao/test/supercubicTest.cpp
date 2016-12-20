@@ -195,3 +195,68 @@ TEST(supercubicTest, inverse)
     EXPECT_EQ(latt.inverse(10), 5);
     EXPECT_EQ(latt.inverse(11), 4);
 }
+
+TEST(supercubicTest, getNearestNeighborHopping)
+{
+    TensorHao<int,1> n(2); n = {3,4};
+    Supercubic latt(n);
+
+    TensorHao<double,1> k(2); k={0.01, 0.02};
+    double t1 = 1.0;
+
+    TensorHao<size_t, 1> sit_i, sit_j;
+    TensorHao<complex<double>, 1> hop;
+
+    tie(sit_i, sit_j, hop) = getNearestNeighborHopping(latt, t1, k);
+
+    size_t Nhop = sit_i.size();
+    TensorHao<size_t, 1> sit_i_Exact(Nhop), sit_j_Exact(Nhop);
+    TensorHao<complex<double>, 1> hopExact(4);
+    sit_i_Exact = {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7,
+                   8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11};
+    sit_j_Exact = {2, 1, 9, 3, 0, 2, 10, 4, 1, 0, 11, 5, 5, 4, 0, 6, 3, 5, 1, 7, 4, 3, 2, 8, 8, 7, 3, 9, 6, 8, 4,
+                   10, 7, 6, 5, 11, 11, 10, 6, 0, 9, 11, 7, 1, 10, 9, 8, 2};
+    hopExact = { {-0.9997806834748455, 0.02094241988335696}, {-0.9997806834748455, -0.02094241988335696},
+                 {-0.9995065603657316, 0.03141075907812829}, {-0.9995065603657316, -0.03141075907812829} };
+
+    EXPECT_FALSE( diff(sit_i, sit_i_Exact, 0.0) );
+    EXPECT_FALSE( diff(sit_j, sit_j_Exact, 0.0) );
+    for(size_t i = 0; i < Nhop; ++i)
+    {
+        EXPECT_COMPLEXDOUBLE_EQ( hop(i), hopExact(i%4) );
+    }
+}
+
+TEST(supercubicTest, getNearestNeighborDispersion)
+{
+    TensorHao<int, 1> n(2); n = {3, 4};
+    Supercubic latt(n);
+
+    TensorHao<double, 1> k(2); k = {0.01, 0.02};
+    double t1 = 1.0;
+
+    TensorHao<double, 1> dispersion = getNearestNeighborDispersion(latt, t1, k);
+    TensorHao<double, 1> dispersionExact( latt.getL() );
+    dispersionExact = {-3.998574487681154, -0.9629591019852031, -1.035505772528031, -1.9367398487934344, 1.0988755369025167,
+                       1.0263288663596886, -0.0005482462182277992, 3.0350671394777233, 2.9625204689348954, -2.0623828851059467,
+                       0.9732325005900042, 0.9006858300471763};
+
+    EXPECT_FALSE( diff( dispersion, dispersionExact, 1e-12 ) );
+}
+
+TEST(supercubicTest, getContinuousDispersion)
+{
+    TensorHao<int, 1> n(2); n = {3, 4};
+    Supercubic latt(n);
+
+    TensorHao<double, 1> k(2); k = {0.01, 0.02};
+    double t1 = 1.0;
+
+    TensorHao<double, 1> dispersion = getContinuousDispersion(latt, t1, k);
+    TensorHao<double, 1> dispersionExact( latt.getL() );
+    dispersionExact = {0.00142560952460168, 4.475646271351777, 4.300186637554638, 2.5675227538078347, 7.041743415635009,
+                       6.86628378183787, 9.673637922592183, 14.147858584419357, 13.972398950622217, 2.370130665786049,
+                       6.844351327613224, 6.668891693816085};
+
+    EXPECT_FALSE( diff( dispersion, dispersionExact, 1e-12 ) );
+}

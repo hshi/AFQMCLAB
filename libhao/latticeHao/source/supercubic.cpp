@@ -147,3 +147,83 @@ void Supercubic::move_deep(Supercubic &x)
     n = move( x. n );
     L = x.L;
 }
+
+tuple<TensorHao<size_t, 1>, TensorHao<size_t, 1>, TensorHao<complex<double>, 1> >
+getNearestNeighborHopping(const Supercubic &latt, double t1, const TensorHao<double, 1> &k)
+{
+    size_t dimen = latt.getDimen(); size_t L = latt.getL(); const TensorHao<int, 1> &n = latt.getN();
+    complex<double> Xi(0,1);
+    double PI = 3.14159265358979324;
+
+    size_t Nhop = 2*L*dimen;
+    TensorHao<size_t, 1> sit_i(Nhop), sit_j(Nhop);
+    TensorHao<complex<double>, 1> hop(Nhop);
+
+    TensorHao<int,1> coor_i, coor_j; size_t hopIndex(0);
+    for(size_t lattIndex = 0; lattIndex < L; ++lattIndex)
+    {
+        coor_i = latt.coor( lattIndex );
+        for(size_t dimenIndex = 0; dimenIndex < dimen; ++dimenIndex)
+        {
+            for(int direction = -1; direction <2 ; direction+=2)
+            {
+                coor_j =  coor_i;
+                coor_j(dimenIndex) =  latt.bound( coor_i(dimenIndex) + direction, n(dimenIndex) );
+
+                sit_i( hopIndex ) = lattIndex;
+                sit_j( hopIndex ) = latt.index( coor_j );
+                hop( hopIndex ) = -t1*exp( direction * 1.0 * Xi* k(dimenIndex)*2.0*PI/( n(dimenIndex)*1.0 ) );
+
+                hopIndex++;
+            }
+        }
+    }
+
+    return make_tuple( move(sit_i),  move(sit_j), move(hop) );
+}
+
+TensorHao<double, 1> getNearestNeighborDispersion(const Supercubic &latt, double t1, const TensorHao<double, 1> &k)
+{
+    size_t dimen = latt.getDimen(); size_t L = latt.getL(); const TensorHao<int, 1> &n = latt.getN();
+    double PI = 3.14159265358979324;
+
+    double ek;
+    TensorHao<int,1> kcoor;
+    TensorHao<double, 1> dispersion(L);
+
+    for(size_t i = 0; i < L; ++i)
+    {
+        kcoor = latt.coor(i);
+        ek = 0.0;
+        for(size_t j = 0; j < dimen; ++j)
+        {
+            ek += cos( ( kcoor(j)+k(j) ) * 2.0 * PI / n(j)  );
+        }
+        dispersion(i) = -2.0 * t1 * ek;
+    }
+    return dispersion;
+}
+
+TensorHao<double, 1> getContinuousDispersion(const Supercubic &latt, double t1, const TensorHao<double, 1> &k)
+{
+    size_t dimen = latt.getDimen(); size_t L = latt.getL(); const TensorHao<int, 1> &n = latt.getN();
+    double PI = 3.14159265358979324;
+
+    double ek, km;
+    TensorHao<int,1> kcoor;
+    TensorHao<double, 1> dispersion(L);
+
+    for(size_t i = 0; i < L; ++i)
+    {
+        kcoor = latt.coor(i);
+        ek = 0.0;
+        for(size_t j = 0; j < dimen; ++j)
+        {
+            km = ( kcoor(j)+k(j) ) * 2.0 * PI / n(j);
+            if( km >= PI ) km -= 2.0*PI;
+            ek += km * km;
+        }
+        dispersion(i) = t1 * ek;
+    }
+    return dispersion;
+}

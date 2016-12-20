@@ -46,4 +46,12 @@ class Supercubic
     void move_deep(Supercubic& x);
 };
 
+std::tuple< tensor_hao::TensorHao<size_t , 1> , tensor_hao::TensorHao<size_t , 1> , tensor_hao::TensorHao<std::complex<double>, 1>  >
+getNearestNeighborHopping(const Supercubic &latt, double t1, const tensor_hao::TensorHao<double, 1> &k);
+
+tensor_hao::TensorHao<double, 1> getNearestNeighborDispersion(const Supercubic &latt, double t1,
+                                                              const tensor_hao::TensorHao<double, 1> &k);
+
+tensor_hao::TensorHao<double, 1> getContinuousDispersion(const Supercubic &latt, double t1,
+                                                         const tensor_hao::TensorHao<double, 1> &k);
 #endif //AFQMCLIB_SUPERCUBIC_H
