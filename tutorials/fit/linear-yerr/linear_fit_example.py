@@ -1,5 +1,6 @@
+import os
 import numpy as np
-import sys; sys.path.append("/home/boruoshihao/fit/python") # Path about the fit src code
+import sys; sys.path.append( os.environ['AFQMC_DIR']+"/scripts/fit" )
 from fit_linear_yerr import *
 
 x,y,dy=np.loadtxt("data", dtype=np.float64,skiprows=0,unpack=True)
