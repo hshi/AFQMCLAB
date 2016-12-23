@@ -11,6 +11,6 @@ set(SOURCE_TESTS
 
 add_executable(tensorTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-target_link_libraries(tensorTest tensorHao mpiHao testHao libgtest-main-hao ${EXT_LIBRARIES})
+target_link_libraries(tensorTest tensorHao mpiHao testHao gtest_main_hao ${EXT_LIBRARIES})
 
 add_my_test(tensorTest "$<TARGET_FILE:tensorTest>")

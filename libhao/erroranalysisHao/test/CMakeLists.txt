@@ -2,6 +2,6 @@ set(SOURCE_TESTS kahan_test.cpp serialErrorAnalysisTest.cpp threadErrorAnalysisT
 
 add_executable(errorAnalysisTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
-target_link_libraries(errorAnalysisTest errorAnalysisHao mpiHao testHao libgtest-main-hao ${EXT_LIBRARIES})
+target_link_libraries(errorAnalysisTest errorAnalysisHao mpiHao testHao gtest_main_hao ${EXT_LIBRARIES})
 
 add_my_test(errorAnalysisTest "$<TARGET_FILE:errorAnalysisTest>")

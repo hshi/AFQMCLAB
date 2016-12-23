@@ -9,6 +9,7 @@
 #   AFQMC_LIBRARIES             - libraries to link against
 #   LIBHAO_LIBRARIES            - libraries to link against
 #   LANCZOS_LIBRARIES           - libraries to link against
+#   GTESTMAINHAO_LIBRARIES      - libraries to link against, link with other *LIBRARIES.
 
 get_filename_component(AFQMC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
 
@@ -26,6 +27,9 @@ set(AFQMC_INCLUDE_DIRS @EXT_INCLUDE_DIRS@ ${AFQMC_CMAKE_DIR}/../include)
 
 set(DEPENDENCE_LIBRARIES @EXT_LIBRARIES@)
 
+include("${AFQMC_CMAKE_DIR}/gtestMainHaoTargets.cmake")
+set(GTESTMAINHAO_LIBRARIES gtest_main_hao)
+
 include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
 set(LIBHAO_LIBRARIES libHao ${DEPENDENCE_LIBRARIES})
 
@@ -38,5 +42,5 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(afqmc  DEFAULT_MSG
                                   AFQMC_LIBRARIES AFQMC_INCLUDE_DIRS)
 if(NOT AFQMC_FOUND)
-  MESSAGE ("-- In order to find mkl, please define AFQMC_DIR ='/path/to/AFQMC' ")
+  MESSAGE ("-- In order to find AFQMC, please define AFQMC_DIR ='/path/to/AFQMC' ")
 endif()
