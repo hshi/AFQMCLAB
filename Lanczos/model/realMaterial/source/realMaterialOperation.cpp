@@ -6,7 +6,7 @@
 #endif
 
 #include "../include/realMaterial.h"
-#include "../../../../libhao/mathHao/include/simple_fun.h"
+#include "../../../../common/mathHao/include/simple_fun.h"
 
 using namespace std;
 using namespace tensor_hao;

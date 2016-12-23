@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/28/16.
 //
 #include "../include/lanczosBasis.h"
-#include "../../../../libhao/testHao/gtest_custom.h"
-#include "../../../../libhao/mathHao/include/simple_fun.h"
+#include "../../../../common/testHao/gtest_custom.h"
+#include "../../../../common/mathHao/include/simple_fun.h"
 
 using namespace std;
 using namespace tensor_hao;

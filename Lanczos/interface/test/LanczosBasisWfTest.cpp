@@ -1,4 +1,4 @@
-#include "../../../libhao/testHao/gtest_custom.h"
+#include "../../../common/testHao/gtest_custom.h"
 #include "../include/LanczosBasisWf.h"
 
 using namespace std;

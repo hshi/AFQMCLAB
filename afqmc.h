@@ -5,7 +5,7 @@
 #ifndef AFQMCLIB_AFQMC_H
 #define AFQMCLIB_AFQMC_H
 
-#include "libhao/libhao.h"
+#include "common/common.h"
 #include "Lanczos/lanczos.h"
 
 #endif //AFQMCLIB_AFQMC_H

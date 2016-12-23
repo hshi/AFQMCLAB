@@ -2,9 +2,9 @@
 // Created by boruoshihao on 11/18/16.
 //
 
-#include "../../../../libhao/testHao/gtest_custom.h"
+#include "../../../../common/testHao/gtest_custom.h"
 #include "../../../interface/include/LanczosInterface.h"
-#include "../../../../libhao/mathHao/include/simple_fun.h"
+#include "../../../../common/mathHao/include/simple_fun.h"
 #include "../include/SpinlessFermions.h"
 
 using namespace std;

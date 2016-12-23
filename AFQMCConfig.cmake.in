@@ -7,7 +7,7 @@
 #   AFQMC_DEFINITIONS           - definition for AFQMC
 #   AFQMC_INCLUDE_DIRS          - include directories for AFQMC
 #   AFQMC_LIBRARIES             - libraries to link against
-#   LIBHAO_LIBRARIES            - libraries to link against
+#   COMMON_LIBRARIES            - libraries to link against
 #   LANCZOS_LIBRARIES           - libraries to link against
 #   GTESTMAINHAO_LIBRARIES      - libraries to link against, link with other *LIBRARIES.
 
@@ -28,15 +28,15 @@ set(AFQMC_INCLUDE_DIRS @EXT_INCLUDE_DIRS@ ${AFQMC_CMAKE_DIR}/../include)
 set(DEPENDENCE_LIBRARIES @EXT_LIBRARIES@)
 
 include("${AFQMC_CMAKE_DIR}/gtestMainHaoTargets.cmake")
-set(GTESTMAINHAO_LIBRARIES gtest_main_hao)
+set(GTESTMAINHAO_LIBRARIES gtest_mainHao)
 
-include("${AFQMC_CMAKE_DIR}/libHaoTargets.cmake")
-set(LIBHAO_LIBRARIES libHao ${DEPENDENCE_LIBRARIES})
+include("${AFQMC_CMAKE_DIR}/commonHaoTargets.cmake")
+set(COMMON_LIBRARIES commonHao ${DEPENDENCE_LIBRARIES})
 
-include("${AFQMC_CMAKE_DIR}/lanczosTargets.cmake")
-set(LANCZOS_LIBRARIES lanczos libHao ${DEPENDENCE_LIBRARIES})
+include("${AFQMC_CMAKE_DIR}/lanczosHaoTargets.cmake")
+set(LANCZOS_LIBRARIES lanczosHao commonHao ${DEPENDENCE_LIBRARIES})
 
-set(AFQMC_LIBRARIES lanczos libHao ${DEPENDENCE_LIBRARIES})
+set(AFQMC_LIBRARIES lanczosHao commonHao ${DEPENDENCE_LIBRARIES})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(afqmc  DEFAULT_MSG
