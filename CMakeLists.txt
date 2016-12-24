@@ -36,7 +36,7 @@ include(Set_Openmp_int64)
 include(Set_Ext_Libraries)
 
 add_subdirectory(common)
-add_subdirectory(Lanczos)
+add_subdirectory(lanczos)
 add_subdirectory(model)
 add_subdirectory(scripts)
 

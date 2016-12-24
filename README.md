@@ -42,7 +42,7 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
     mkdir build
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
-    make
+    make -j4
     make test
     make install
 

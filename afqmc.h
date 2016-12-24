@@ -6,6 +6,6 @@
 #define AFQMCLIB_AFQMC_H
 
 #include "common/common.h"
-#include "Lanczos/lanczos.h"
+#include "lanczos/lanczos.h"
 
 #endif //AFQMCLIB_AFQMC_H
