@@ -14,7 +14,7 @@ Lanczos::Lanczos(const ModelInterface &modelInterface)
 {
     model = &modelInterface;
     wfSize = model->getWfSize();
-    lanStatus = 'N';
+    lanStatus = "none";
     reserve(300, 1000);
 }
 
@@ -23,7 +23,7 @@ void Lanczos::set(const ModelInterface &modelInterface)
     clear();
     model = &modelInterface;
     wfSize = model->getWfSize();
-    lanStatus = 'N';
+    lanStatus = "none";
     reserve(300, 1000);
 }
 
@@ -73,7 +73,7 @@ void Lanczos::readLanMatrix()
 
 void Lanczos::writeLanMatrix() const
 {
-    if( lanStatus == 'N' ) return;
+    if( lanStatus == string("none") ) return;
     writeLanMatrixStatus();
     writeLanMatrixElements();
     writeLanMatrixWavefunctions();
@@ -95,7 +95,7 @@ void Lanczos::reserve(size_t targetLanSize, size_t targetEigenSize)
 
 void Lanczos::clear()
 {
-    lanStatus = 'N';
+    lanStatus = "none";
     lana.resize(0);
     lanb.resize(0);
     lanwfs.resize(0);
@@ -202,13 +202,15 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 tuple<const vector<double> &, const vector<double> &>
 Lanczos::getLanczosMatrix(size_t L, double accuracy, double litForProjection, char wfFlag)
 {
-    if( lanStatus == 'N' )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
+    if( lanStatus == string("none") )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
+
+    checkConvergedStatusAndChangetoNoneConvergedStatus();
 
     if( L + lana.size() + eigenvalues.size() > wfSize ) L = wfSize - lana.size() - eigenvalues.size();
 
     if( wfFlag == 'F' )
     {
-        if( lanStatus == 'R' )
+        if( lanStatus == string("recurse") )
         {
             cout<<"Error!!! Lanczos Matrix is in Recurse status, can not build full matrix!"<<endl;
             exit(1);
@@ -218,7 +220,7 @@ Lanczos::getLanczosMatrix(size_t L, double accuracy, double litForProjection, ch
 
     if( wfFlag == 'R' )
     {
-        if( lanStatus == 'F' ) changeLanStatusToRecurse();
+        if( lanStatus == string("full") ) changeLanStatusToRecurse();
         getLanczosMatrixRecurse(L, accuracy, litForProjection);
     }
 

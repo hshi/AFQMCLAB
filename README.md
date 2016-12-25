@@ -122,6 +122,8 @@ Then see tutorials for detail examples.
 
   //TODO: Add AFQMC library
 
+  //TODO: Add writeFile to have trunc or append
+
   //TODO: Benchmark with Ettore's data, imaginary time and spectral function.
 
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.

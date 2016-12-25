@@ -16,7 +16,7 @@ class Lanczos
  private:
     const ModelInterface * model;
     size_t wfSize;
-    char lanStatus;  //'R' for recurse, 'F' for full storage, 'B' for both,  'N' for none
+    std::string lanStatus;  //recurse, full, both, none, recurseConverged, fullConverged, bothConverged
     std::vector<double> lana, lanb;
     std::vector<LanczosBasisWf> lanwfs;
     std::vector<double> eigenvalues;
@@ -74,10 +74,11 @@ class Lanczos
     void writeLanMatrixElements() const;
     void writeLanMatrixWavefunctions() const;
 
-    void prepareLanReturn(char defaultStatus);
+    void prepareLanReturn(std::string defaultStatus);
     void projectWaveFunctionUpdateLanb(size_t lanwfsIndex);
     double projectWaveFunction(size_t lanwfsIndex);
     void saveToEigen();
+    void checkConvergedStatusAndChangetoNoneConvergedStatus();
     void changeLanStatusToRecurse();
     void recurseWaveFunctions();
     void getLanczosHtoWf(size_t i);

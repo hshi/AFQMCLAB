@@ -7,10 +7,20 @@ using namespace tensor_hao;
 
 using namespace std;
 
-void Lanczos::prepareLanReturn( char defaultStatus )
+void Lanczos::prepareLanReturn(string defaultStatus)
 {
     lanb.pop_back();
-    lanStatus = ( lana.size() < 4 ) ? 'B' : defaultStatus ;
+
+    if( lana.size() < 4 )
+    {
+        lanStatus = "bothConverged";
+    }
+    else
+    {
+        if ( defaultStatus == string("full")  ) lanStatus = "fullConverged";
+        else if( defaultStatus == string("recurse")  )  lanStatus = "recurseConverged";
+        else { cout<<"Unexpect defaultStatus! "<<defaultStatus<<endl; exit(1); }
+    }
 }
 
 void Lanczos::projectWaveFunctionUpdateLanb(size_t lanwfsIndex)
@@ -45,26 +55,54 @@ double Lanczos::projectWaveFunction(size_t lanwfsIndex)
 void Lanczos::saveToEigen()
 {
     cout<<setprecision(16)<<"\nSUCCESS! Find Eigenstate #" << eigenstates.size() <<" : "<<lana[0]<<"\n"<<endl;
-    lanStatus = 'N';
+    lanStatus = "none";
     eigenvalues.push_back( lana[0] );
     eigenstates.push_back( move(lanwfs[0]) );
     lanwfs[0] = LanczosBasisWf();
 }
 
+void Lanczos::checkConvergedStatusAndChangetoNoneConvergedStatus()
+{
+    if( lanStatus==string("bothConverged") || lanStatus==string("fullConverged") )
+    {
+        getLanczosHtoWf( lana.size() );
+    }
+    else if( lanStatus==string("recurseConverged") )
+    {
+        getLanczosHtoWf( 3 );
+    }
+    else
+    {
+        return;;
+    }
+}
+
 void Lanczos::changeLanStatusToRecurse()
 {
-    if( lanStatus=='N' ) { cout<<"Error!!! lanStatus is None, can not transfer to Recurse!"<<endl; exit(1); }
-    if( lanStatus=='B' || lanStatus=='R' ) return;
+    if( lanStatus==string("none") )
+    {
+        cout<<"Error!!! lanStatus is none, can not transfer to Recurse!"<<endl;
+        exit(1);
+    }
 
-    if( lanStatus!='F' ) { cout<<"Error!!! lanStatus is not Full!"<<endl; exit(1); }
+    if( lanStatus==string("bothConverged") || lanStatus==string("fullConverged") || lanStatus==string("recurseConverged") )
+    {
+        cout<<"Error!!! lanStatus is *Converged, unexpected!!!"<<endl;
+        exit(1);
+    }
+
+    if( lanStatus==string("both") || lanStatus== string("recurse") ) return;
+
+    if( lanStatus!=string("full") ) { cout<<"Error!!! lanStatus is not full!"<<endl; exit(1); }
+
     size_t L = lana.size();
-    if( L < 4 ) { lanStatus = 'B'; return; }
+    if( L < 4 ) { lanStatus = "both"; return; }
 
     lanwfs[3] = move( lanwfs[L]   );
     lanwfs[2] = move( lanwfs[L-1] );
     lanwfs[1] = move( lanwfs[L-2] );
     lanwfs.resize(4);
-    lanStatus = 'R';
+    lanStatus = "recurse";
 }
 
 void Lanczos::recurseWaveFunctions()

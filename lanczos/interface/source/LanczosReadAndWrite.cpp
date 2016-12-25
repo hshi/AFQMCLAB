@@ -69,9 +69,12 @@ void Lanczos::readLanMatrixStatus()
     file >> lanSize >> lanStatus;
     file.close();
 
-    if( lanStatus == 'N' ) return;
-    if( lanStatus == 'F' || lanStatus == 'B' ) lanwfSize = lanSize + 1;
-    if( lanStatus == 'R' ) lanwfSize = 4;
+    if( lanStatus == string("none") )
+        return;
+    if( lanStatus == string("both") || lanStatus == string("bothConverged") || lanStatus == string("full") || lanStatus == string("fullConverged") )
+        lanwfSize = lanSize + 1;
+    if( lanStatus == string("recurse") || lanStatus == string("recurseConverged") )
+        lanwfSize = 4;
 
     lana.resize( lanSize );
     lanb.resize( lanSize );
@@ -128,9 +131,12 @@ void Lanczos::writeLanMatrixElements() const
 void Lanczos::writeLanMatrixWavefunctions() const
 {
     size_t lanwfSize(0);
-    if( lanStatus == 'N' ) return;
-    if( lanStatus == 'F' || lanStatus == 'B' ) lanwfSize = lana.size() + 1;
-    if( lanStatus == 'R' ) lanwfSize = 4;
+    if( lanStatus == string("none") )
+        return;
+    if( lanStatus == string("both") || lanStatus == string("bothConverged") || lanStatus == string("full") || lanStatus == string("fullConverged") )
+        lanwfSize = lana.size() + 1;
+    if( lanStatus == string("recurse") || lanStatus == string("recurseConverged") )
+        lanwfSize = 4;
 
     string filename;
     for(size_t i = 0; i < lanwfSize; ++i)

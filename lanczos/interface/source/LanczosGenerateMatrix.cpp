@@ -11,7 +11,7 @@ double Lanczos::initLanczosMatrixFromLanwfsZero()
 {
     double nrm = projectWaveFunction( 0 );
 
-    lanStatus = 'B';
+    lanStatus = "both";
     lana.resize(0); lanb.resize(0);
     lanb.push_back( 0.0 );
     getLanczosDiagonalElement( 0 );
@@ -30,12 +30,12 @@ int Lanczos::getLanczosMatrixFull(size_t L, double accuracy, double litForProjec
 
         if( abs( lanb.back() ) < litForProjection && abs( lanb.back() ) > accuracy ) projectWaveFunctionUpdateLanb(i);
 
-        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn('F'); return 0; }
+        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn("full"); return 0; }
 
         getLanczosDiagonalElement( i );
     }
 
-    lanStatus = ( lana.size() < 4 ) ? 'B' : 'F' ;
+    lanStatus = ( lana.size() < 4 ) ? "both" : "full" ;
     return 1;
 }
 
@@ -53,7 +53,7 @@ int Lanczos::getLanczosMatrixRecurse(size_t L, double accuracy, double litForPro
 
     if( lana.size() < 3 ) { cout<<"Error!!! In getLanczosMatrixRecurse, we should not have lana.size() < 3 "<<endl; exit(1); }
 
-    if( lanStatus == 'N' || lanStatus == 'F' ) {cout<<"Error!!! lanStatus is not R or B "<<endl; exit(1); }
+    if( lanStatus != string("both") && lanStatus != string("recurse") ) {cout<<"Error!!! lanStatus is not recurse or both."<<endl; exit(1);}
 
     size_t startIndex = lana.size();
     for(size_t i = startIndex; i < endIndex; ++i)
@@ -62,24 +62,31 @@ int Lanczos::getLanczosMatrixRecurse(size_t L, double accuracy, double litForPro
 
         if( abs( lanb.back() ) < litForProjection && abs( lanb.back() ) > accuracy ) projectWaveFunctionUpdateLanb(i);
 
-        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn('R'); return 0; }
+        if( abs( lanb.back() ) <= accuracy ) { prepareLanReturn("recurse"); return 0; }
 
         recurseWaveFunctions();
 
         getLanczosDiagonalElement( 2 );
     }
 
-    lanStatus = 'R';
+    lanStatus = "recurse";
 
     return 1;
 }
 
 void Lanczos::getNewLanwfsZero(const vector<double> &vec, double litForProjection)
 {
-    if( lanStatus == 'N' )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
+    if( lanStatus == string("none") )  { cout<<"Error!!! Lanczos Matrix has not been initialized!"<<endl; exit(1); }
 
-    if( lanStatus == 'F' || lanStatus =='B' ) getNewLanwfsZeroFull(vec);
-    if( lanStatus == 'R' ) getNewLanwfsZeroRecurse(vec, litForProjection);
+    if( lanStatus == string("both") || lanStatus == string("bothConverged") || lanStatus == string("full") || lanStatus == string("fullConverged") )
+    {
+        getNewLanwfsZeroFull(vec);
+    }
+
+    if( lanStatus == string("recurse") || lanStatus == string("recurseConverged") )
+    {
+        getNewLanwfsZeroRecurse(vec, litForProjection);
+    }
 }
 
 void Lanczos::getNewLanwfsZeroFull(const vector<double> &vec)
