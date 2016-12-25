@@ -12,10 +12,10 @@
 bool checkFile (const std::string &filename);
 void removeFile(const std::string &filename);
 
-template<class T> void writeFile(T data, const std::string &filename)
+template<class T> void writeFile(T data, const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     file<<std::setw(26)<<data<<"\n";
@@ -31,10 +31,10 @@ template<class T> void readFile(T &data, const std::string &filename)
     file.close();
 }
 
-template<class T> void writeFile(std::complex<T> data, const std::string &filename)
+template<class T> void writeFile(std::complex<T> data, const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     file<<std::setw(26)<<data.real()<<std::setw(26)<<data.imag()<<"\n";
@@ -52,10 +52,10 @@ template<class T> void readFile(std::complex<T> &data, const std::string &filena
     file.close();
 }
 
-template<class T> void writeFile(size_t L, const T *data, const std::string &filename)
+template<class T> void writeFile(size_t L, const T *data, const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     for(size_t i = 0; i < L; ++i) file<<std::setw(26)<<data[i]<<"\n";
@@ -71,10 +71,10 @@ template<class T>  void readFile(size_t L, T *data, const std::string& filename)
     file.close();
 }
 
-template<class T> void writeFile(size_t L, const T *dataOne, const T *dataTwo, const std::string &filename)
+template<class T> void writeFile(size_t L, const T *dataOne, const T *dataTwo, const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     for(size_t i = 0; i < L; ++i) file<<std::setw(26)<<dataOne[i]<<std::setw(26)<<dataTwo[i]<<"\n";
@@ -90,10 +90,10 @@ template<class T> void readFile(size_t L, T *dataOne, T *dataTwo, const std::str
     file.close();
 }
 
-template<class T> void writeFile(size_t L, const std::complex<T> *data, const std::string &filename)
+template<class T> void writeFile(size_t L, const std::complex<T> *data, const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     for(size_t i = 0; i < L; ++i) file<<std::setw(26)<<data[i].real()<<std::setw(26)<<data[i].imag()<<"\n";
@@ -110,10 +110,11 @@ template<class T> void readFile(size_t L, std::complex<T> *data, const std::stri
     file.close();
 }
 
-template<class T> void writeFile(size_t L, const std::complex<T> *dataOne, const std::complex<T> *dataTwo, const std::string &filename)
+template<class T> void writeFile(size_t L, const std::complex<T> *dataOne, const std::complex<T> *dataTwo,
+                                 const std::string &filename, std::ios_base::openmode type= std::ios::trunc)
 {
     std::ofstream file;
-    file.open(filename, std::ios::out|std::ios::app);
+    file.open(filename, std::ios::out|type);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     file<<std::setprecision(16)<<std::scientific;
     for(size_t i = 0; i < L; ++i) file<<std::setw(26)<<dataOne[i].real()<<std::setw(26)<<dataOne[i].imag()

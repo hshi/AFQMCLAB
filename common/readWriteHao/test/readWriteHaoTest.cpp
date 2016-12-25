@@ -27,7 +27,8 @@ TEST(readWriteHaoTest, readWriteSize_t)
     string filename = "readWriteTest.dat";
     size_t a, b;
     a = 6;
-    writeFile(a, filename);
+    if( MPIRank() == 0 ) writeFile(a, filename);
+    MPIBarrier();
     readFile(b, filename);
     removeFile(filename);
     EXPECT_EQ(a, b);
@@ -38,7 +39,8 @@ TEST(readWriteHaoTest, readWriteDouble)
     string filename = "readWriteTest.dat";
     double a, b;
     a = 0.23567;
-    writeFile(a, filename);
+    if( MPIRank() == 0 ) writeFile(a, filename);
+    MPIBarrier();
     readFile(b, filename);
     removeFile(filename);
     EXPECT_EQ(a, b);
@@ -50,7 +52,8 @@ TEST(readWriteHaoTest, readWriteDoublePointer)
     double a[10], b[10];
     for(size_t i = 0; i < 10; ++i) a[i] =  i*0.2;
 
-    writeFile(10, a, filename);
+    if( MPIRank() == 0 ) writeFile(10, a, filename);
+    MPIBarrier();
     readFile(10, b, filename);
     removeFile(filename);
 
@@ -63,7 +66,8 @@ TEST(readWriteHaoTest, readWriteDoubleTwoPointer)
     double a1[10], a2[10], b1[10], b2[10];
     for(size_t i = 0; i < 10; ++i) { a1[i] =  i*0.2; a2[i] =  i*0.3; }
 
-    writeFile(10, a1, a2, filename);
+    if( MPIRank() == 0 ) writeFile(10, a1, a2, filename);
+    MPIBarrier();
     readFile(10, b1, b2, filename);
     removeFile(filename);
 
@@ -76,7 +80,8 @@ TEST(readWriteHaoTest, readWriteComplexDouble)
     string filename = "readWriteTest.dat";
     complex<double> a, b;
     a = complex<double> (0.23567, 2.335);
-    writeFile(a, filename);
+    if( MPIRank() == 0 ) writeFile(a, filename);
+    MPIBarrier();
     readFile(b, filename);
     removeFile(filename);
     EXPECT_COMPLEXDOUBLE_EQ(a, b);
@@ -88,7 +93,8 @@ TEST(readWriteHaoTest, readWriteComplexDoublePointer)
     complex<double> a[10], b[10];
     for(size_t i = 0; i < 10; ++i) a[i] =  complex<double>(i*0.2, i*0.3);
 
-    writeFile(10, a, filename);
+    if( MPIRank() == 0 ) writeFile(10, a, filename);
+    MPIBarrier();
     readFile(10, b, filename);
     removeFile(filename);
 
@@ -101,7 +107,8 @@ TEST(readWriteHaoTest, readWriteComplexDoubleTwoPointer)
     complex<double> a1[10], a2[10], b1[10], b2[10];
     for(size_t i = 0; i < 10; ++i) { a1[i] =  complex<double>(i*0.2, i*0.3); a2[i] =  complex<double>(i*0.3, i*0.4); }
 
-    writeFile(10, a1, a2, filename);
+    if( MPIRank() == 0 ) writeFile(10, a1, a2, filename);
+    MPIBarrier();
     readFile(10, b1, b2, filename);
     removeFile(filename);
 
