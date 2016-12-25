@@ -29,8 +29,8 @@ void measureDynamic(Lanczos &lan, RealMaterial& H)
     vector<LanOneOperator> Cup(1); Cup[0] = { i, {1.0, 0.0} };
     H.applyCupToWf(phi0, CiupPhi0, Cup);
 
-    RealMaterial HupMinusOne = H.generateNewModel( H.getL(), H.getNup()-1, H.getNdn() );
-    MeasureBasedOnLanMatrix meas( HupMinusOne, CiupPhi0 );
+    RealMaterial HNupMinusOne = H.generateNewModel( H.getL(), H.getNup()-1, H.getNdn() );
+    MeasureBasedOnLanMatrix meas( HNupMinusOne, CiupPhi0 );
 
     measureExpMinusTauModel( meas );
     measureSpectralFunction( meas );

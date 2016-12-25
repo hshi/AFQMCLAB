@@ -187,12 +187,15 @@ void Lanczos::FindOneEigen(LanczosParam lanczosParam)
 
         getNewLanwfsZero(lanczosMatrixVector, lanczosParam.litForProjection);
 
-        if( abs( lana[0]-energy ) / abs(energy) > 1e-8 )
+        if( abs(energy) > 1e-8 )
         {
-            cout<<"Error!!! New lanwfs[0] does not have the same energy with variational energy! "
-                <<lana[0]<<" "<<lana[0]-energy<<" "<<abs( lana[0]-energy )/abs(energy)<<endl;
-            throw LanczosLoseAccuracy_error
-                ("Lanczos loses accuracy, please decrease matrixSize or litForProjection, or add more symmetry!");
+            if( abs( lana[0]-energy ) / abs(energy) > 1e-8 )
+            {
+                cout<<"Error!!! New lanwfs[0] does not have the same energy with variational energy! "
+                    <<lana[0]<<" "<<lana[0]-energy<<" "<<abs( lana[0]-energy )/abs(energy)<<endl;
+                throw LanczosLoseAccuracy_error
+                    ("Lanczos loses accuracy, please decrease matrixSize or litForProjection, or add more symmetry!");
+            }
         }
     }
 

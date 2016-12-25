@@ -130,7 +130,15 @@ void Lanczos::getLanczosDiagonalElement(size_t i)
 {
     getLanczosHtoWf(i+1);
     complex<double> a = lanwfs[i+1].calculateOverlapWith(lanwfs[i]);
-    if( abs( a.imag()/a.real() ) > 1e-10 ) { cout<<"Error!!! The model is not Hermition!"<<endl; exit(1); }
+    if( abs( a.real() ) < 1e-10 )
+    {
+        if( abs( a.imag() ) > 1e-10 ) { cout<<"Error!!! The model is not Hermition!"<<endl; exit(1); }
+    }
+    else
+    {
+        if( abs( a.imag()/a.real() ) > 1e-10 ) { cout<<"Error!!! The model is not Hermition!"<<endl; exit(1); }
+
+    }
     lana.push_back( a.real() );
 }
 
