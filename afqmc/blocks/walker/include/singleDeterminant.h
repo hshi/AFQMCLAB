@@ -5,7 +5,8 @@
 #ifndef AFQMCLAB_SINGLEDETERMINANT_H
 #define AFQMCLAB_SINGLEDETERMINANT_H
 
-class singleDeterminant {
+class SingleDeterminant
+{
 
 };
 
