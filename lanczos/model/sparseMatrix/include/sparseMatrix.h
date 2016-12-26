@@ -1,8 +1,8 @@
 //
 // Created by boruoshihao on 10/26/16.
 //
-#ifndef AFQMCLIB_SPARSEMATRIX_H
-#define AFQMCLIB_SPARSEMATRIX_H
+#ifndef AFQMCLAB_SPARSEMATRIX_H
+#define AFQMCLAB_SPARSEMATRIX_H
 
 #include "../../../interface/include/modelInterface.h"
 #include "../../../interface/include/LanczosBasisWf.h"
@@ -40,4 +40,4 @@ class SparseMatrix : public ModelInterface
     SparseMatrix & operator  = (const SparseMatrix& x);
 };
 
-#endif //AFQMCLIB_SPARSEMATRIX_H
+#endif //AFQMCLAB_SPARSEMATRIX_H

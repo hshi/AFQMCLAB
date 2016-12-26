@@ -2,8 +2,8 @@
 // Created by boruoshihao on 11/19/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSOPERATORS_H
-#define AFQMCLIB_LANCZOSOPERATORS_H
+#ifndef AFQMCLAB_LANCZOSOPERATORS_H
+#define AFQMCLAB_LANCZOSOPERATORS_H
 
 struct LanOneBody
 {
@@ -27,4 +27,4 @@ struct LanOneOperator
     std::complex<double> C;
 };
 
-#endif //AFQMCLIB_LANCZOSOPERATOR_H
+#endif //AFQMCLAB_LANCZOSOPERATOR_H

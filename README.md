@@ -1,4 +1,4 @@
-# AFQMCLIB
+# AFQMCLAB
 
 This is a library for AFQMC.
 
@@ -37,31 +37,31 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
 
 
 ##How to install:
-    git clone https://github.com/hshi/AFQMCLIB.git
-    cd AFQMCLIB
+    git clone https://github.com/hshi/AFQMCLAB.git
+    cd AFQMCLAB
     mkdir build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+    cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
     make -j4
     make test
     make install
 
 ##How to use
 
-Frist set path to AFQMC_DIR, e.g.
+Frist set path to AFQMCLAB_DIR, e.g.
 
-    export AFQMC_DIR='/where/to/install/AFQMC'
+    export AFQMCLAB_DIR='/where/to/install/AFQMCLAB'
 or
 
-    setenv AFQMC_DIR /where/to/install/AFQMC
+    setenv AFQMCLAB_DIR /where/to/install/AFQMCLAB
 
 Then see tutorials for detail examples.
 
 
 ##Tune cmake
-- Set install directory to ~/lib/afqmclib.
+- Set install directory to ~/lib/afqmclab.
 
-            cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
 
 - Use magma library
 
@@ -76,7 +76,7 @@ Then see tutorials for detail examples.
 
     - Change platform for particlular build type.
 
-      It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLIB/cmake/PLATFORM_*.cmake.
+      It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLAB/cmake/PLATFORM_*.cmake.
 
             cmake .. -DPLATFORM=platform
 
@@ -92,7 +92,7 @@ Then see tutorials for detail examples.
 
       - args for both MANUAL and other platform
           - Set cxx flags: ` -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" `
-          - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"`
+          - Set install path: `-DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"`
           - Use magma library: `-DUSE_MAGMA=on`
           - Use 64 bit int for lapack and blas: `-DUSE_INT64=on`
           - Use openmp for lapack, blas and Lanczos code: `-DUSE_OPENMP=on`
@@ -107,11 +107,11 @@ Then see tutorials for detail examples.
 
       For examples, serial manual looks like:
 
-            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=icpc -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DUSE_OPENMP=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=icpc -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DUSE_OPENMP=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
 
       MPI manual looks like:
 
-            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DUSE_OPENMP=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclib"
+            cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DUSE_OPENMP=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
 
 
 ##Note:
@@ -119,6 +119,9 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Change git repository name to AFQMCLAB, change original address of git
+
+  //TODO: Change AFQMCLIB to AFQMCLAB ==> In all header, directory name
 
   //TODO: Add AFQMC library
 

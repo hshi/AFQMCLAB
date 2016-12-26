@@ -1,5 +1,5 @@
-#ifndef AFQMCLIB_FFTW_HAO_H
-#define AFQMCLIB_FFTW_HAO_H
+#ifndef AFQMCLAB_FFTW_HAO_H
+#define AFQMCLAB_FFTW_HAO_H
 
 #include <complex>
 #include "fftw3.h"

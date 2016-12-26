@@ -1,5 +1,5 @@
-#ifndef AFQMCLIB_SIMPLE_FUN_H
-#define AFQMCLIB_SIMPLE_FUN_H
+#ifndef AFQMCLAB_SIMPLE_FUN_H
+#define AFQMCLAB_SIMPLE_FUN_H
 
 #include <iostream>
 #include <vector>

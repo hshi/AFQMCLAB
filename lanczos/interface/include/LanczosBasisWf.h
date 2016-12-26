@@ -2,8 +2,8 @@
 // Created by boruoshihao on 9/26/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSBASISWF_H
-#define AFQMCLIB_LANCZOSBASISWF_H
+#ifndef AFQMCLAB_LANCZOSBASISWF_H
+#define AFQMCLAB_LANCZOSBASISWF_H
 
 #include <complex>
 #include "../../../common/tensorHao/include/tensor_all.h"
@@ -45,4 +45,4 @@ class LanczosBasisWf
     void moveDeep(tensor_hao::TensorHao<std::complex<double>, 1>& wf);
 };
 
-#endif //AFQMCLIB_LANCZOSBASISWF_H
+#endif //AFQMCLAB_LANCZOSBASISWF_H

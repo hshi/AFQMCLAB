@@ -2,8 +2,8 @@
 // Created by boruoshihao on 12/20/16.
 //
 
-#ifndef AFQMCLIB_SUPERCUBIC_H
-#define AFQMCLIB_SUPERCUBIC_H
+#ifndef AFQMCLAB_SUPERCUBIC_H
+#define AFQMCLAB_SUPERCUBIC_H
 
 #include<complex>
 #include<vector>
@@ -54,4 +54,4 @@ tensor_hao::TensorHao<double, 1> getNearestNeighborDispersion(const Supercubic &
 
 tensor_hao::TensorHao<double, 1> getContinuousDispersion(const Supercubic &latt, double t1,
                                                          const tensor_hao::TensorHao<double, 1> &k);
-#endif //AFQMCLIB_SUPERCUBIC_H
+#endif //AFQMCLAB_SUPERCUBIC_H

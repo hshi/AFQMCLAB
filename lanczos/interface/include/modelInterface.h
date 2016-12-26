@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/17/16.
 //
 
-#ifndef AFQMCLIB_MODELINTERFACE_H
-#define AFQMCLIB_MODELINTERFACE_H
+#ifndef AFQMCLAB_MODELINTERFACE_H
+#define AFQMCLAB_MODELINTERFACE_H
 
 #include "LanczosBasisWf.h"
 
@@ -25,4 +25,4 @@ class ModelInterface
     };
 };
 
-#endif //AFQMCLIB_MODELINTERFACE_H
+#endif //AFQMCLAB_MODELINTERFACE_H

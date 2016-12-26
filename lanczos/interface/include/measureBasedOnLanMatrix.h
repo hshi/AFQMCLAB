@@ -2,8 +2,8 @@
 // Created by boruoshihao on 12/8/16.
 //
 
-#ifndef AFQMCLIB_MEASUREBASEDONLANMATRIX_H
-#define AFQMCLIB_MEASUREBASEDONLANMATRIX_H
+#ifndef AFQMCLAB_MEASUREBASEDONLANMATRIX_H
+#define AFQMCLAB_MEASUREBASEDONLANMATRIX_H
 
 #include "LanczosInterface.h"
 
@@ -29,4 +29,4 @@ class MeasureBasedOnLanMatrix
     MeasureBasedOnLanMatrix & operator  = (const MeasureBasedOnLanMatrix& x);
 };
 
-#endif //AFQMCLIB_MEASUREBASEDONLANMATRIX_H
+#endif //AFQMCLAB_MEASUREBASEDONLANMATRIX_H

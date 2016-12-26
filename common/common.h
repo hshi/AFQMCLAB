@@ -2,8 +2,8 @@
 // Created by boruoshihao on 11/17/16.
 //
 
-#ifndef AFQMCLIB_COMMON_H
-#define AFQMCLIB_COMMON_H
+#ifndef AFQMCLAB_COMMON_H
+#define AFQMCLAB_COMMON_H
 
 #include "testHao/gtest_custom.h"
 #include "mpiHao/include/mpi_fun.h"
@@ -19,4 +19,4 @@
 
 #include "latticeHao/include/latticeAll.h"
 
-#endif //AFQMCLIB_COMMON_H
+#endif //AFQMCLAB_COMMON_H

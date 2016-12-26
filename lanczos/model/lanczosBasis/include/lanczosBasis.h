@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/28/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSBASIS_H
-#define AFQMCLIB_LANCZOSBASIS_H
+#ifndef AFQMCLAB_LANCZOSBASIS_H
+#define AFQMCLAB_LANCZOSBASIS_H
 
 #include <cstddef>
 #include "../../../../common/tensorHao/include/tensor_all.h"
@@ -52,4 +52,4 @@ class LanczosBasis
     LanczosBasis & operator  = (const LanczosBasis& x);
 };
 
-#endif //AFQMCLIB_LANCZOSBASIS_H
+#endif //AFQMCLAB_LANCZOSBASIS_H

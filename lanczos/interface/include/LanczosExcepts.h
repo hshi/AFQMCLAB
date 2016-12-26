@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/17/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSEXCEPTS_H
-#define AFQMCLIB_LANCZOSEXCEPTS_H
+#ifndef AFQMCLAB_LANCZOSEXCEPTS_H
+#define AFQMCLAB_LANCZOSEXCEPTS_H
 
 #include<iostream>
 #include<stdexcept>
@@ -27,4 +27,4 @@ class LanczosLoseAccuracy_error: public Lanczos_error
     explicit LanczosLoseAccuracy_error (const std::string& what_arg): Lanczos_error(what_arg) {};
 };
 
-#endif //AFQMCLIB_LANCZOSEXCEPT_H
+#endif //AFQMCLAB_LANCZOSEXCEPT_H

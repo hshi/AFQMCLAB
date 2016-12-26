@@ -1,5 +1,5 @@
-#ifndef AFQMCLIB_BRENTS_FUN_H
-#define AFQMCLIB_BRENTS_FUN_H
+#ifndef AFQMCLAB_BRENTS_FUN_H
+#define AFQMCLAB_BRENTS_FUN_H
 
 #include <iostream>
 #include <cmath>

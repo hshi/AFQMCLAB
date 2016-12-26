@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/27/16.
 //
 
-#ifndef AFQMCLIB_REALMATERIAL_H
-#define AFQMCLIB_REALMATERIAL_H
+#ifndef AFQMCLAB_REALMATERIAL_H
+#define AFQMCLAB_REALMATERIAL_H
 
 #include "../../../interface/include/modelInterface.h"
 #include "../../../interface/include/LanczosBasisWf.h"
@@ -79,4 +79,4 @@ class RealMaterial : public ModelInterface
     void move_deep(RealMaterial& x);
 };
 
-#endif //AFQMCLIB_REALMATERIAL_H
+#endif //AFQMCLAB_REALMATERIAL_H

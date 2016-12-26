@@ -2,8 +2,8 @@
 // Created by boruoshihao on 11/19/16.
 //
 
-#ifndef AFQMCLIB_LANCZOS_H
-#define AFQMCLIB_LANCZOS_H
+#ifndef AFQMCLAB_LANCZOS_H
+#define AFQMCLAB_LANCZOS_H
 
 #include "interface/include/LanczosInterfaceAll.h"
 #include "model/fullMatrix/include/fullMatrix.h"
@@ -12,4 +12,4 @@
 #include "model/realMaterial/include/realMaterial.h"
 #include "model/spinlessFermions/include/SpinlessFermions.h"
 
-#endif //AFQMCLIB_LANCZOS_H
+#endif //AFQMCLAB_LANCZOS_H

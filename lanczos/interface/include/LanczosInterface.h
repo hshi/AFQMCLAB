@@ -2,8 +2,8 @@
 // Created by boruoshihao on 9/24/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSINTERFACE_H
-#define AFQMCLIB_LANCZOSINTERFACE_H
+#ifndef AFQMCLAB_LANCZOSINTERFACE_H
+#define AFQMCLAB_LANCZOSINTERFACE_H
 
 #include <cstddef>
 #include <tuple>
@@ -90,4 +90,4 @@ class Lanczos
     Lanczos & operator  = (const Lanczos& x);
 };
 
-#endif //AFQMCLIB_LANCZOS_H
+#endif //AFQMCLAB_LANCZOS_H

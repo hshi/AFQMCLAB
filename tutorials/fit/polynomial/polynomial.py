@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import sys; sys.path.append( os.environ['AFQMC_DIR']+"/scripts/fit" )
+import sys; sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/fit" )
 from fit import *
 
 def fun(x,a,b):

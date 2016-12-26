@@ -2,8 +2,8 @@
 // Created by boruoshihao on 11/18/16.
 //
 
-#ifndef AFQMCLIB_SPINLESSFERMIONS_H
-#define AFQMCLIB_SPINLESSFERMIONS_H
+#ifndef AFQMCLAB_SPINLESSFERMIONS_H
+#define AFQMCLAB_SPINLESSFERMIONS_H
 
 #include "../../../interface/include/modelInterface.h"
 #include "../../../interface/include/LanczosBasisWf.h"
@@ -58,4 +58,4 @@ class SpinlessFermions : public ModelInterface
     void move_deep(SpinlessFermions& x);
 };
 
-#endif //AFQMCLIB_SPINLESSFERMIONS_H
+#endif //AFQMCLAB_SPINLESSFERMIONS_H

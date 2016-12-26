@@ -2,8 +2,8 @@
 // Created by boruoshihao on 9/22/16.
 //
 
-#ifndef AFQMCLIB_REAL_MATERIAL_HAMILTONIAN_H
-#define AFQMCLIB_REAL_MATERIAL_HAMILTONIAN_H
+#ifndef AFQMCLAB_REAL_MATERIAL_HAMILTONIAN_H
+#define AFQMCLAB_REAL_MATERIAL_HAMILTONIAN_H
 
 #include <string>
 #include "../../common/tensorHao/include/tensor_all.h"
@@ -42,4 +42,4 @@ class RealMaterialHamiltonian
     void moveDeep(RealMaterialHamiltonian &x);
 };
 
-#endif //AFQMCLIB_REAL_MATERIAL_HAMILTONIAN_LANCZOS_H
+#endif //AFQMCLAB_REAL_MATERIAL_HAMILTONIAN_LANCZOS_H

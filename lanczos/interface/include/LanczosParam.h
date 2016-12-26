@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/25/16.
 //
 
-#ifndef AFQMCLIB_LANCZOSPARAM_H
-#define AFQMCLIB_LANCZOSPARAM_H
+#ifndef AFQMCLAB_LANCZOSPARAM_H
+#define AFQMCLAB_LANCZOSPARAM_H
 
 #include <cstddef>
 #include <string>
@@ -21,4 +21,4 @@ class LanczosParam
     void read(const std::string& filename);
 };
 
-#endif //AFQMCLIB_LANCZOSPARAM_H
+#endif //AFQMCLAB_LANCZOSPARAM_H

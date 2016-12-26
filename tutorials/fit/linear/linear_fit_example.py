@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import sys; sys.path.append( os.environ['AFQMC_DIR']+"/scripts/fit" )
+import sys; sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/fit" )
 from fit_linear import *
 
 x,y=np.loadtxt("data", dtype=np.float64,skiprows=0,unpack=True)

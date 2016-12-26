@@ -1,4 +1,4 @@
-#include "afqmc.h"
+#include "afqmclab.h"
 
 using namespace std;
 using namespace tensor_hao;

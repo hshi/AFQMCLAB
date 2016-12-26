@@ -2,8 +2,8 @@
 // Created by boruoshihao on 12/17/16.
 //
 
-#ifndef AFQMCLIB_READWRITEHAO_H
-#define AFQMCLIB_READWRITEHAO_H
+#ifndef AFQMCLAB_READWRITEHAO_H
+#define AFQMCLAB_READWRITEHAO_H
 
 #include <fstream>
 #include <iomanip>
@@ -136,4 +136,4 @@ template<class T> void readFile(size_t L, std::complex<T> *dataOne, std::complex
     file.close();
 }
 
-#endif //AFQMCLIB_READWRITEHAO_H
+#endif //AFQMCLAB_READWRITEHAO_H

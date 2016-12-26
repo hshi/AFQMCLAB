@@ -2,10 +2,10 @@
 // Created by boruoshihao on 11/17/16.
 //
 
-#ifndef AFQMCLIB_AFQMC_H
-#define AFQMCLIB_AFQMC_H
+#ifndef AFQMCLAB_AFQMCLAB_H
+#define AFQMCLAB_AFQMCLAB_H
 
 #include "common/common.h"
 #include "lanczos/lanczos.h"
 
-#endif //AFQMCLIB_AFQMC_H
+#endif //AFQMCLAB_AFQMCLAB_H

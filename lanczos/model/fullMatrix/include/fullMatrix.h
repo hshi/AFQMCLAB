@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/25/16.
 //
 
-#ifndef AFQMCLIB_FULLMATRIX_H
-#define AFQMCLIB_FULLMATRIX_H
+#ifndef AFQMCLAB_FULLMATRIX_H
+#define AFQMCLAB_FULLMATRIX_H
 
 #include "../../../interface/include/modelInterface.h"
 #include "../../../interface/include/LanczosBasisWf.h"
@@ -28,4 +28,4 @@ class FullMatrix : public ModelInterface
     FullMatrix & operator  = (const FullMatrix& x);
 };
 
-#endif //AFQMCLIB_FULLMATRIX_H
+#endif //AFQMCLAB_FULLMATRIX_H

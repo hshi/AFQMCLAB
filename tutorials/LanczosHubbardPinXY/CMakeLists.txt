@@ -6,12 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-find_package(AFQMC REQUIRED)
+find_package(AFQMCLAB REQUIRED)
 
-set(CMAKE_CXX_COMPILER ${AFQMC_COMPILER})
-include_directories(${AFQMC_INCLUDE_DIRS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${AFQMC_FLAGS}")
-add_definitions(${AFQMC_DEFINITIONS})
+set(CMAKE_CXX_COMPILER ${AFQMCLAB_COMPILER})
+include_directories(${AFQMCLAB_INCLUDE_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${AFQMCLAB_FLAGS}")
+add_definitions(${AFQMCLAB_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} ${AFQMC_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})

@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append( os.environ['AFQMC_DIR']+"/scripts/supercubic" )
+sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
 latt_n   = [2,4]

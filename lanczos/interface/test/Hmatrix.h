@@ -2,8 +2,8 @@
 // Created by boruoshihao on 12/8/16.
 //
 
-#ifndef AFQMCLIB_HMATRIX_H
-#define AFQMCLIB_HMATRIX_H
+#ifndef AFQMCLAB_HMATRIX_H
+#define AFQMCLAB_HMATRIX_H
 
 #include "../include/modelInterface.h"
 
@@ -23,4 +23,4 @@ class Hmatrix : public ModelInterface
     virtual void projectSymmetry(LanczosBasisWf &wf) const;
 };
 
-#endif //AFQMCLIB_HMATRIX_H
+#endif //AFQMCLAB_HMATRIX_H

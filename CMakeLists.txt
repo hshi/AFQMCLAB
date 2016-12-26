@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(AFQMCLIB C CXX)
+project(AFQMCLAB C CXX)
 
-set(AFQMC_MAJOR_VERSION 0)
-set(AFQMC_MINOR_VERSION 1)
-set(AFQMC_PATCH_VERSION 0)
-set(AFQMC_VERSION ${AFQMC_MAJOR_VERSION}.${AFQMC_MINOR_VERSION}.${AFQMC_PATCH_VERSION})
+set(AFQMCLAB_MAJOR_VERSION 0)
+set(AFQMCLAB_MINOR_VERSION 1)
+set(AFQMCLAB_PATCH_VERSION 0)
+set(AFQMCLAB_VERSION ${AFQMCLAB_MAJOR_VERSION}.${AFQMCLAB_MINOR_VERSION}.${AFQMCLAB_PATCH_VERSION})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -37,16 +37,17 @@ include(Set_Ext_Libraries)
 
 add_subdirectory(common)
 add_subdirectory(lanczos)
+add_subdirectory(afqmc)
 add_subdirectory(model)
 add_subdirectory(scripts)
 
 file(RELATIVE_PATH relativeDirectorPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
-install(FILES afqmc.h DESTINATION "include/${relativeDirectorPath}")
+install(FILES afqmclab.h DESTINATION "include/${relativeDirectorPath}")
 
-configure_file(AFQMCConfig.cmake.in "${PROJECT_BINARY_DIR}/AFQMCConfig.cmake" @ONLY)
-install(FILES "${PROJECT_BINARY_DIR}/AFQMCConfig.cmake" DESTINATION cmake)
+configure_file(AFQMCLABConfig.cmake.in "${PROJECT_BINARY_DIR}/AFQMCLABConfig.cmake" @ONLY)
+install(FILES "${PROJECT_BINARY_DIR}/AFQMCLABConfig.cmake" DESTINATION cmake)
 
-configure_file(AFQMCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/AFQMCConfigVersion.cmake" @ONLY)
-install(FILES "${PROJECT_BINARY_DIR}/AFQMCConfigVersion.cmake" DESTINATION cmake)
+configure_file(AFQMCLABConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/AFQMCLABConfigVersion.cmake" @ONLY)
+install(FILES "${PROJECT_BINARY_DIR}/AFQMCLABConfigVersion.cmake" DESTINATION cmake)
 
 install(DIRECTORY cmake DESTINATION cmake)

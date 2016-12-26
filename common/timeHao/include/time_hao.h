@@ -1,5 +1,5 @@
-#ifndef AFQMCLIB_TIME_HAO_H
-#define AFQMCLIB_TIME_HAO_H
+#ifndef AFQMCLAB_TIME_HAO_H
+#define AFQMCLAB_TIME_HAO_H
 
 #include <time.h>
 

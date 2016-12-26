@@ -2,8 +2,8 @@
 // Created by boruoshihao on 9/2/16.
 //
 
-#ifndef AFQMCLIB_GTEST_CUSTOM_H
-#define AFQMCLIB_GTEST_CUSTOM_H
+#ifndef AFQMCLAB_GTEST_CUSTOM_H
+#define AFQMCLAB_GTEST_CUSTOM_H
 
 #include <complex>
 #include <cmath>
@@ -52,4 +52,4 @@ void EXPECT_VECOTR_DOUBLE_EQ(const std::vector<double>& expected, const std::vec
 
 void EXPECT_VECOTR_COMPLEXDOUBLE_EQ(const std::vector< std::complex<double> >& expected, const std::vector< std::complex<double> >& actual );
 
-#endif //AFQMCLIB_GTEST_CUSTOM_H
+#endif //AFQMCLAB_GTEST_CUSTOM_H

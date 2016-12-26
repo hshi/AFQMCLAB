@@ -2,8 +2,8 @@
 // Created by boruoshihao on 10/1/16.
 //
 
-#ifndef AFQMCLIB_DATA_TYPES_H
-#define AFQMCLIB_DATA_TYPES_H
+#ifndef AFQMCLAB_DATA_TYPES_H
+#define AFQMCLAB_DATA_TYPES_H
 
 #ifdef __cplusplus
     extern "C" {
@@ -76,4 +76,4 @@
     }
 #endif /* __cplusplus */
 
-#endif //AFQMCLIB_DATA_TYPES_H
+#endif //AFQMCLAB_DATA_TYPES_H

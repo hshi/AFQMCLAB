@@ -1,5 +1,5 @@
-#ifndef AFQMCLIB_KAHAN_H
-#define AFQMCLIB_KAHAN_H
+#ifndef AFQMCLAB_KAHAN_H
+#define AFQMCLAB_KAHAN_H
 #include <iostream>
 #include <complex>
 
