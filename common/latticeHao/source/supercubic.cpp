@@ -3,11 +3,6 @@
 //
 
 #include <fstream>
-
-#ifdef MPI_HAO
-#include <mpi.h>
-#endif
-
 #include "../include/supercubic.h"
 
 using namespace std;
@@ -118,22 +113,35 @@ int Supercubic::inverse(int lattice_index) const
 void Supercubic::read(const string &filename)
 {
     int Dimen;
-    if( MPIRank() == 0 )
-    {
-        ifstream file;
-        file.open(filename, ios::in);
-        if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
-        file >> Dimen;
-        n.resize(Dimen);
-        for(size_t i = 0; i < n.size(); ++i) file >> n(i);
-        L = 1; for(size_t i = 0; i < n.size(); ++i) L *= n(i);
-        file.close();
-    }
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file >> Dimen;
+    n.resize(Dimen);
+    for(size_t i = 0; i < n.size(); ++i) file >> n(i);
+    L = 1; for(size_t i = 0; i < n.size(); ++i) L *= n(i);
+    file.close();
+}
+
+void Supercubic::write(const string &filename) const
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::trunc);
+    if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
+    file<<setprecision(16)<<scientific;
+    file<<n.size()<<"\n";
+    for(size_t i = 0; i < n.size(); ++i) file<<n(i)<<" "; file<<"\n";
+    file.close();
+}
+
+void MPIBcast(Supercubic &buffer, int root, MPI_Comm const &comm)
+{
+    int Dimen = buffer.n.size();
 
     MPIBcast( Dimen );
-    n.resize( Dimen );
-    MPIBcast( n );
-    MPIBcast( L );
+    buffer.n.resize( Dimen );
+    MPIBcast( buffer.n );
+    MPIBcast( buffer.L );
 }
 
 void Supercubic::copy_deep(const Supercubic &x)

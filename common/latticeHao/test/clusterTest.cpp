@@ -1,7 +1,6 @@
 #include <fstream>
 #include "../include/cluster.h"
 #include "../../testHao/gtest_custom.h"
-#include "../../mpiHao/include/mpi_fun.h"
 #include "../../readWriteHao/include/readWriteHao.h"
 
 using namespace std;
@@ -60,5 +59,20 @@ TEST(cluster, moveAssignment)
     size_t L=9;
     Cluster clusterBase(L);
     Cluster cluster; cluster = move( clusterBase );
+    EXPECT_EQ(L, cluster.getL());
+}
+
+TEST(cluster, readWriteBcast)
+{
+    size_t L=9;
+    string filename="latt_param.dat";
+    Cluster cluster, clusterBase(L);
+
+    if( MPIRank() == 0 ) clusterBase.write(filename);
+    if( MPIRank() == 0 ) cluster.read(filename);
+    MPIBcast(cluster);
+
+    removeFile(filename);
+
     EXPECT_EQ(L, cluster.getL());
 }

@@ -4,7 +4,6 @@
 #include <fstream>
 #include "../include/supercubic.h"
 #include "../../testHao/gtest_custom.h"
-#include "../../mpiHao/include/mpi_fun.h"
 #include "../../readWriteHao/include/readWriteHao.h"
 
 using namespace std;
@@ -39,6 +38,7 @@ TEST(supercubicTest, readConstructor)
         for(size_t i=0; i<n.size();i++) { file<<n(i)<<" "; } file<<"\n";
         file.close();
     }
+    MPIBarrier();
 
     Supercubic latt( filename ); removeFile(filename);
     EXPECT_FALSE( diff( n, latt.getN(), 0.0 ) );
@@ -194,6 +194,22 @@ TEST(supercubicTest, inverse)
     EXPECT_EQ(latt.inverse(9), 3);
     EXPECT_EQ(latt.inverse(10), 5);
     EXPECT_EQ(latt.inverse(11), 4);
+}
+
+TEST(supercubicTest, readWriteBcast)
+{
+    string filename="latt_param.dat";
+    TensorHao<int,1> n(3); n = {2,3,4};
+    Supercubic latt, lattBase(n);
+
+    if( MPIRank() == 0 ) lattBase.write(filename);
+    if( MPIRank() == 0 ) latt.read(filename);
+    MPIBcast(latt);
+    removeFile(filename);
+
+    EXPECT_FALSE( diff( n, latt.getN(), 0.0 ) );
+    EXPECT_EQ( n.size(), latt.getDimen() );
+    EXPECT_EQ( static_cast<size_t>(24), latt.getL() );
 }
 
 TEST(supercubicTest, getNearestNeighborHopping)

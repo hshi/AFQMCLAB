@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "../include/cluster.h"
-#include "../../mpiHao/include/mpi_fun.h"
 #include "../../readWriteHao/include/readWriteHao.h"
 
 using namespace std;
@@ -15,9 +14,7 @@ Cluster::Cluster(size_t L) : L(L) {}
 
 Cluster::Cluster(const string& filename)
 {
-    if( MPIRank() == 0 ) readFile(L, filename);
-    MPIBcast(L);
-    MPIBarrier();
+    read(filename);
 }
 
 Cluster::Cluster(const Cluster &x) : L(x.L) {}
@@ -41,4 +38,20 @@ Cluster& Cluster::operator  = (Cluster&& x)
 size_t Cluster::getL() const
 {
     return L;
+}
+
+void Cluster::read(const string &filename)
+{
+    readFile(L, filename);
+}
+
+void Cluster::write(const string &filename) const
+{
+    writeFile(L, filename);
+}
+
+void MPIBcast(Cluster &buffer, int root, MPI_Comm const &comm)
+{
+    MPIBcast(buffer.L);
+    MPIBarrier();
 }

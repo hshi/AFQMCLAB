@@ -6,6 +6,7 @@
 #define AFQMCLAB_CLUSTER_H
 
 #include <string>
+#include "../../mpiHao/include/mpi_fun.h"
 
 class Cluster
 {
@@ -24,6 +25,9 @@ class Cluster
     Cluster& operator  = (Cluster&& x);
 
     size_t getL() const;
-};
 
+    void read(const std::string &filename);
+    void write(const std::string &filename) const;
+    friend void MPIBcast(Cluster &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+};
 #endif //AFQMCLAB_CLUSTER_H

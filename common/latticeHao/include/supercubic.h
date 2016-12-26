@@ -40,8 +40,11 @@ class Supercubic
                                                 const tensor_hao::TensorHao<int,1>& coor_j) const;
     int inverse(int lattice_index) const;
 
- private:
     void read(const std::string &filename);
+    void write(const std::string &filename) const;
+    friend void MPIBcast(Supercubic &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+
+ private:
     void copy_deep(const Supercubic& x);
     void move_deep(Supercubic& x);
 };

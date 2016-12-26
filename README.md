@@ -119,6 +119,10 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Update Bcast in TensorHao
+
+  //TODO: Change all class for read write and Bcast
+
   //TODO: Add AFQMC library
 
   //TODO: Benchmark with Ettore's data, imaginary time and spectral function.

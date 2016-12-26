@@ -12,5 +12,11 @@
 #include "tensor_2d_bl_cpu.h"
 #include "tensor_2d_bl_magma.h"
 
+#ifdef USE_MAGMA
+   #define BL_NAME(x) x##_magma
+#else
+   #define BL_NAME(x) x##_cpu
+#endif
+
 #endif
 
