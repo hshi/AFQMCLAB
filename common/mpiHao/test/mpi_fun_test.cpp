@@ -91,6 +91,21 @@ TEST (MPIBcast, int_pointer)
     EXPECT_POINTER_EQ(N, b, a);
 }
 
+
+TEST (MPIBcast, size_t_pointer)
+{
+    const size_t N = 16;
+    size_t a[N] = {};
+    size_t b[N] = {};  for(size_t i=0; i<N; i++) b[i]=i;
+    if(MPIRank()==0)
+    {
+        for(size_t i=0; i<N; i++) a[i]=b[i];
+    }
+    MPIBcast(N,a);
+
+    EXPECT_POINTER_EQ(N, b, a);
+}
+
 TEST (MPIBcast, double_pointer)
 {
     const int N = 11;

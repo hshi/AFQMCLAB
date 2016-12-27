@@ -239,6 +239,10 @@ namespace tensor_hao
  std::ostream& operator<< (std::ostream &out, const TensorCore<T,D>& object)
  {
      out<<"size: "<<object.size()<<"\n";
+
+     out<<"rank: "; for (size_t i = 0; i<D; ++i) out<<object.rank(i)<<" "; out<<"\n";
+
+     out<<"data: ";
      size_t L = object.size(); const T* object_p = object.data();
      for (size_t i = 0; i<L; ++i) out<<object_p[i]<<" ";
      return out;

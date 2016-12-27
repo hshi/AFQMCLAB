@@ -100,6 +100,20 @@ void MPIBcast(size_t count, int* buffer, int root, const MPI_Comm& comm )
     }
 }
 
+void MPIBcast(size_t count, size_t * buffer, int root, const MPI_Comm& comm )
+{
+    size_t chunkSize = INT_MAX;
+    size_t chunkNumber = (count-1)/chunkSize;
+    size_t * bufferPerChunk = buffer;
+    size_t currentChunkSize;
+    for(size_t i = 0; i <= chunkNumber; ++i)
+    {
+        currentChunkSize = (i == chunkNumber) ? count - chunkSize * chunkNumber : chunkSize;
+        MPI_Bcast(bufferPerChunk, currentChunkSize*sizeof(size_t), MPI_BYTE, root, comm);
+        bufferPerChunk += currentChunkSize;
+    }
+}
+
 void MPIBcast(size_t count, double *buffer, int root, const MPI_Comm &comm)
 {
     size_t chunkSize = INT_MAX;
