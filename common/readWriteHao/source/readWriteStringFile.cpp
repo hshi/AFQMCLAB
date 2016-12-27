@@ -3,8 +3,8 @@
 //
 #include <sys/stat.h>
 #include <fstream>
-#include <iomanip>
-#include "../include/readWriteHao.h"
+#include "../../mpiHao/include/mpi_fun.h"
+#include "../include/readWriteStringFile.h"
 
 using namespace std;
 

@@ -119,9 +119,9 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-  //TODO: SomeBcast need to add root and comm; some Bcast need to change due to tensor Bcast
+  //TODO: SomeBcast need to add root and comm; some Bcast need to change due to tensor Bcast (lattice)
 
-  //TODO: Update Bcast in TensorHao
+  //TODO: readWrite library with file.
 
   //TODO: Change all class for read write and Bcast
 

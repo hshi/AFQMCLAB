@@ -3,8 +3,9 @@
 //
 
 #include <iostream>
-#include "../include/readWriteHao.h"
 #include "../../testHao/gtest_custom.h"
+#include "../../mpiHao/include/mpi_fun.h"
+#include "../include/readWriteStringFile.h"
 
 using namespace std;
 
