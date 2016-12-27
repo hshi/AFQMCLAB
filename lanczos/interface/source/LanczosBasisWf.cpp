@@ -136,44 +136,12 @@ void LanczosBasisWf::orthonormalizeWith(const LanczosBasisWf &wfBase)
 
 void LanczosBasisWf::read(const std::string& filename)
 {
-    if(MPIRank()==0)
-    {
-        ifstream wf_file;
-        double read_r, read_i;
-        wf_file.open(filename, ios::in);
-        if(!wf_file.is_open())
-        {
-            cout << "Error opening file in read main thread!!!";
-            exit(1);
-        }
-        size_t L; wf_file>> L;
-        if( L != wf.size() ) wf.resize(L);
-        for(size_t i = 0; i < L; i++)
-        {
-            wf_file >> read_r >> read_i;
-            wf(i) = complex<double>(read_r, read_i);
-        }
-        wf_file.close();
-    }
-    MPIBcast(wf);
+    wf.read(filename);
 }
 
 void LanczosBasisWf::write(const std::string& filename) const
 {
-    if(MPIRank()==0)
-    {
-        ofstream wf_file;
-        wf_file.open(filename, ios::out|ios::trunc);
-        if( !wf_file.is_open() )
-        {
-            cout << "Error opening file in write main thread!!!";
-            exit(1);
-        }
-        wf_file<<setprecision(16)<<scientific;
-        size_t L = wf.size(); wf_file<<L<<"\n";
-        for(size_t i=0; i<L; i++) wf_file<<setw(26)<<wf(i).real()<<setw(26)<<wf(i).imag()<<"\n";
-        wf_file.close();
-    }
+    wf.write(filename);
 }
 
 void LanczosBasisWf::copyDeep(const TensorHao<complex<double>, 1> &wf)

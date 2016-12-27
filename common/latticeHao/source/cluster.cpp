@@ -52,6 +52,6 @@ void Cluster::write(const string &filename) const
 
 void MPIBcast(Cluster &buffer, int root, MPI_Comm const &comm)
 {
-    MPIBcast(buffer.L);
+    MPIBcast(buffer.L, root, comm);
     MPIBarrier();
 }

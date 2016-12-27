@@ -3,6 +3,7 @@
 //
 #include <fstream>
 #include "../include/LanczosInterface.h"
+#include "../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace tensor_hao;
 
@@ -12,14 +13,10 @@ void Lanczos::readEigenValues(size_t numberOfWaveFunctions)
 {
     string filename;
     eigenvalues.resize(numberOfWaveFunctions);
-    ifstream eigenFile;
     for(size_t i = 0; i < numberOfWaveFunctions; ++i)
     {
         filename="eigenvalue_" + to_string(i) +".dat";
-        eigenFile.open(filename, ios::in);
-        if( !eigenFile.is_open() ) { cout << "Error opening file for Eigenvalues !!!"; exit(1); }
-        eigenFile >> eigenvalues[i];
-        eigenFile.close();
+        readFile( eigenvalues[i], filename );
     }
 }
 
@@ -37,15 +34,10 @@ void Lanczos::readEigenStates(size_t numberOfWaveFunctions)
 void Lanczos::writeEigenValues(size_t startIndex) const
 {
     string filename;
-    ofstream eigenFile;
     for(size_t i = startIndex; i < eigenvalues.size(); ++i)
     {
         filename = "eigenvalue_" + to_string(i) + ".dat";
-        eigenFile.open(filename, ios::out | ios::trunc);
-        if( !eigenFile.is_open() )  { cout << "Error opening file for Eigenvalues !!!"; exit(1); }
-        eigenFile<<setprecision(16)<<scientific;
-        eigenFile<<setw(26)<< eigenvalues[i]<<"\n";
-        eigenFile.close();
+        writeFile(eigenvalues[i], filename);
     }
 }
 

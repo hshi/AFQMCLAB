@@ -41,28 +41,13 @@ const TensorHao<size_t, 1> &SparseMatrix::getRowPointer() const  { return rowPoi
 
 void SparseMatrix::read(const std::string &filename)
 {
-    size_t fileSize;
-    double real, imag;
-
     ifstream file;
     file.open(filename, ios::in);
     if( !file.is_open() ) { cout << "Error opening file for SparseMatrix::read!!!"; exit(1); }
 
-    file>>fileSize;
-    if( values.size() != fileSize )  values.resize( fileSize );
-    for(size_t i = 0; i < fileSize; ++i)
-    {
-        file >> real >> imag;
-        values(i) = complex<double>(real, imag);
-    }
-
-    file>>fileSize;
-    if( columnIndex.size() != fileSize )  columnIndex.resize( fileSize );
-    for(size_t i = 0; i < fileSize; ++i) file >> columnIndex(i);
-
-    file>>fileSize;
-    if( rowPointer.size() != fileSize )  rowPointer.resize( fileSize );
-    for(size_t i = 0; i < fileSize; ++i) file >> rowPointer(i);
+    values.read(file);
+    columnIndex.read(file);
+    rowPointer.read(file);
 
     file.close();
 }
@@ -74,23 +59,9 @@ void SparseMatrix::write(const std::string &filename) const
     if( !file.is_open() ) { cout << "Error opening file for SparseMatrix::write!!!"; exit(1); }
     file<<setprecision(16)<<scientific;
 
-    file<<values.size()<<"\n";
-    for(size_t k = 0; k < values.size(); ++k)
-    {
-        file << setw(26) << values(k).real() << setw(26) << values(k).imag() <<"\n";
-    }
-
-    file<<columnIndex.size()<<"\n";
-    for(size_t k = 0; k < columnIndex.size(); ++k)
-    {
-        file << setw(26) << columnIndex(k) <<"\n";
-    }
-
-    file<<rowPointer.size()<<"\n";
-    for(size_t k = 0; k < rowPointer.size(); ++k)
-    {
-        file << setw(26) << rowPointer(k) <<"\n";
-    }
+    values.write(file);
+    columnIndex.write(file);
+    rowPointer.write(file);
 
     file.close();
 }

@@ -31,40 +31,12 @@ const TensorHao<complex<double>, 2> &FullMatrix::getHm() const
 
 void FullMatrix::read(const string &filename)
 {
-    size_t fileSize; double real,imag;
-
-    ifstream file;
-    file.open(filename, ios::in);
-    if( !file.is_open() ) { cout << "Error opening file for FullMatrix::read!!!"; exit(1); }
-
-    file>>fileSize;
-    size_t L = sqrt(fileSize);
-    if( L*L != fileSize ) { cout<<"Error!!! File size does not fit into a sqare matrix."<<endl; exit(1); }
-    if( Hm.size() != fileSize )  Hm.resize( L, L );
-
-    complex<double> * Hmpointer = Hm.data();
-    for(size_t i = 0; i < fileSize; ++i)
-    {
-        file >> real >> imag;
-        Hmpointer[i] = complex<double>(real, imag);
-    }
-    file.close();
+    Hm.read(filename);
 }
 
 void FullMatrix::write(const string &filename) const
 {
-    const complex<double> * Hmpointer = Hm.data();
-
-    ofstream file;
-    file.open(filename, ios::out|ios::trunc);
-    if( !file.is_open() ) { cout << "Error opening file for FullMatrix::write!!!"; exit(1); }
-    file<<setprecision(16)<<scientific;
-    file << Hm.size();
-    for(size_t i = 0; i < Hm.size(); ++i)
-    {
-        file << setw(26) << Hmpointer[i].real() << setw(26) << Hmpointer[i].imag() <<"\n";
-    }
-    file.close();
+    Hm.write(filename);
 }
 
 size_t FullMatrix::getWfSize() const

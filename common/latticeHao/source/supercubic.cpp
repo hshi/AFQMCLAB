@@ -136,12 +136,8 @@ void Supercubic::write(const string &filename) const
 
 void MPIBcast(Supercubic &buffer, int root, MPI_Comm const &comm)
 {
-    int Dimen = buffer.n.size();
-
-    MPIBcast( Dimen );
-    buffer.n.resize( Dimen );
-    MPIBcast( buffer.n );
-    MPIBcast( buffer.L );
+    MPIBcast( buffer.n, root, comm );
+    MPIBcast( buffer.L, root, comm );
 }
 
 void Supercubic::copy_deep(const Supercubic &x)
