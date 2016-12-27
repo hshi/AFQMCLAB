@@ -125,7 +125,7 @@ namespace tensor_hao
 
      }
 
-     void resize(const size_t* n_ptr)
+     virtual void resize(const size_t* n_ptr)
      {
          size_t LBackup = this->L;
 

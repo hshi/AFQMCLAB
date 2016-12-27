@@ -1,5 +1,6 @@
 #include <cmath>
 #include "../include/tensor_hao.h"
+#include "../include/tensor_mpi.h"
 #include "../../testHao/gtest_custom.h"
 
 using namespace std;
@@ -144,4 +145,32 @@ TEST(Tensor_hao_ref, resize_pointer)
         EXPECT_EQ( n[i], tensor.rank(i) );
         EXPECT_EQ( n_step[i], tensor.rankStep(i) );
     }
+}
+
+TEST(Tensor_hao_ref, readWriteBcast)
+{
+    string filename ="tensorFile.dat";
+    TensorHao<double,2>  tensor_a(3,4), tensor_b(3,4);
+    TensorHaoRef<double,2>  tensor_a_ref(tensor_a), tensor_b_ref(tensor_b);
+    tensor_a_ref={ 1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
+
+    if( MPIRank() == 0 )
+    {
+        tensor_a_ref.write(filename);
+        tensor_b_ref.read(filename);
+    }
+    MPIBcast( tensor_b_ref );
+
+    EXPECT_EQ( tensor_a_ref.size(), tensor_b_ref.size() );
+    for(size_t i=0; i< static_cast<size_t>(2); i++)
+    {
+        EXPECT_EQ( tensor_a_ref.rank(i), tensor_b_ref.rank(i) );
+        EXPECT_EQ( tensor_a_ref.rankStep(i), tensor_b_ref.rankStep(i) );
+    }
+    EXPECT_POINTER_EQ(tensor_a_ref.size(), tensor_a_ref.data(), tensor_b_ref.data() );
+
+    string command = "rm -rf " + filename;
+    MPIBarrier();
+    if( MPIRank()==0 ) system( command.c_str() );
+    MPIBarrier();
 }

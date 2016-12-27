@@ -1,5 +1,6 @@
 set(SOURCE_HEADERS
         ${CMAKE_CURRENT_LIST_DIR}/include/pfaffian_utilities.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/readWriteTemplateForTensor.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_2d_bl_magma.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_all.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_element_wise.h

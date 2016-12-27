@@ -5,6 +5,7 @@
 #include <cstdarg>
 #include <vector>
 #include <limits>
+#include "readWriteTemplateForTensor.h"
 
 namespace tensor_hao
 {
@@ -256,6 +257,41 @@ namespace tensor_hao
          return mean_all / ( number_of_points * 1.0 );
      }
 
+     virtual void resize(const size_t* n_ptr) {}
+
+     void read(std::ifstream &file)
+     {
+         size_t D_in; file>> D_in;
+         if( D_in != D ) { std::cout << "Error!!! Dimen is not consistent! "<<D<<" "<<D_in<<std::endl; exit(1); }
+         size_t n_ptr[D]; for(size_t i=0; i<D; i++) file>>n_ptr[i];
+         resize( n_ptr );
+         readFileForTensor(this->L, this->p, file );
+     }
+
+     void read(const std::string& filename)
+     {
+         std::ifstream file;
+         file.open(filename, std::ios::in);
+         if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
+         read(file);
+         file.close();
+     }
+
+     void write(std::ofstream &file) const
+     {
+         file<<D<<"\n";
+         for(size_t i=0; i<D; i++) file<<n[i]<<" "; file<<"\n";
+         writeFileForTensor(L, p, file);
+     }
+
+     void write(const std::string& filename) const
+     {
+         std::ofstream file;
+         file.open(filename, std::ios::out|std::ios::trunc);
+         if( !file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
+         write(file);
+         file.close();
+     }
 
   protected:
      void setNNstepL(const size_t* n_ptr)

@@ -1,6 +1,7 @@
 #ifndef TENSOR_HAO_LIBRARY_ALL_H
 #define TENSOR_HAO_LIBRARY_ALL_H
 
+#include "readWriteTemplateForTensor.h"
 #include "tensor_core.h"
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"

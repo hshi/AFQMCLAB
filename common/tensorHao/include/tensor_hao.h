@@ -123,7 +123,7 @@ namespace tensor_hao
          if(this->L != LBackup) safelyAllocatePointer();
      }
 
-     void resize(const size_t* n_ptr)
+     virtual void resize(const size_t* n_ptr)
      {
          size_t LBackup = this->L;
 

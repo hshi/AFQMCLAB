@@ -1,5 +1,6 @@
 #include "../include/tensor_hao_ref.h"
 #include "../include/tensor_hao.h"
+#include "../include/tensor_mpi.h"
 #include "../../testHao/gtest_custom.h"
 
 using namespace std;
@@ -233,4 +234,30 @@ TEST(Tensor_hao, resize_pointer)
     }
 }
 
+TEST(Tensor_hao, readWriteBcast)
+{
+    string filename ="tensorFile.dat";
+    TensorHao<double,2>  tensor_a(3,4);
+    tensor_a={ 1.0 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,7.0 ,8.0 ,9.0 ,10.0 ,11.0 ,12.0 };
 
+    TensorHao<double,2>  tensor_b;
+    if( MPIRank() == 0 )
+    {
+        tensor_a.write(filename);
+        tensor_b.read(filename);
+    }
+    MPIBcast( tensor_b );
+
+    EXPECT_EQ( tensor_a.size(), tensor_b.size() );
+    for(size_t i=0; i< static_cast<size_t>(2); i++)
+    {
+        EXPECT_EQ( tensor_a.rank(i), tensor_b.rank(i) );
+        EXPECT_EQ( tensor_a.rankStep(i), tensor_b.rankStep(i) );
+    }
+    EXPECT_POINTER_EQ(tensor_a.size(), tensor_a.data(), tensor_b.data() );
+
+    string command = "rm -rf " + filename;
+    MPIBarrier();
+    if( MPIRank()==0 ) system( command.c_str() );
+    MPIBarrier();
+}
