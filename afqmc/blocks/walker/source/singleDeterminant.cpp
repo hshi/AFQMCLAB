@@ -3,6 +3,7 @@
 //
 
 #include "../include/singleDeterminant.h"
+#include "../../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -51,6 +52,26 @@ void SingleDeterminant::randomFill()
     normalize();
 }
 
+void SingleDeterminant::read(const string &filename)
+{
+    ifstream file;
+    file.open(filename, ios::in);
+    if ( ! file.is_open() ) { cout << "Error opening file in File!!! "<<filename<<endl; exit(1); }
+    readFile(logw, file);
+    wf.read(file);
+    file.close();
+}
+
+void SingleDeterminant::write(const string &filename) const
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::trunc);
+    if ( ! file.is_open() ) { cout << "Error opening file in File!!! "<<filename<<endl; exit(1); }
+    writeFile(logw, file);
+    wf.write(file);
+    file.close();
+}
+
 void SingleDeterminant::copy_deep(const SingleDeterminant &x)
 {
     logw = x.logw;
@@ -61,4 +82,10 @@ void SingleDeterminant::move_deep(SingleDeterminant &x)
 {
     logw = x.logw;
     wf = move( x.wf );
+}
+
+void MPIBcast(SingleDeterminant &buffer, int root, MPI_Comm const &comm)
+{
+    MPIBcast( buffer.logw, root, comm );
+    MPIBcast( buffer.wf, root, comm );
 }

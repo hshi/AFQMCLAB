@@ -34,9 +34,9 @@ class SingleDeterminant
     std::complex<double> normalize();
     void randomFill();
 
-//    void read(const std::string& filename, int flag=0);  // flag: 0, read each thread;  1, read main thread and bcast
-//    void write(const std::string& filename,int flag=0) const; // flag: 0, write each thread; 1, write main thread.
-
+    void read(const std::string& filename);
+    void write(const std::string& filename) const;
+    friend void MPIBcast(SingleDeterminant &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
  private:
     void copy_deep(const SingleDeterminant &x);
