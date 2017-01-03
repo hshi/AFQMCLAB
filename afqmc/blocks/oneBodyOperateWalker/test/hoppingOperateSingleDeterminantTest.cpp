@@ -15,10 +15,11 @@ TEST(oneBodyOperateWalkerTest, hoppingOperateSingleDeterminant)
     randomFill(op); randomFill(wf);
     gmm_cpu(op, wf, wfNew);
 
-    SingleDeterminant sd(L,N), sdNew(L,N);
-    HoppingOperator ho(L);
-    ho.opRef() = op; sd.wfRef() = wf;
-    sdNew = ho * sd;
+    SingleDeterminant sd(L,N), sdNew;
+    HoppingOperator ho(1.2, op);
+    sd.logwRef()=1.6; sd.wfRef() = wf;
+    applyOneBodyToWalker(sd, sdNew, ho);
 
     EXPECT_FALSE( diff(wfNew, sdNew.getWf(), 1e-12) );
+    EXPECT_COMPLEXDOUBLE_EQ( 2.8, sdNew.getLogw() );
 }

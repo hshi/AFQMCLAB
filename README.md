@@ -119,14 +119,10 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
-  //TODO: SomeBcast need to add root and comm; some Bcast need to change due to tensor Bcast (lattice)
-
-  //TODO: readWrite library with file.
-
-  //TODO: Change all class for read write and Bcast
-
-  //TODO: Add AFQMC library
-
+  //TODO: Do we really need a single twoBodyOperator?
+   
+  //TODO: Think about AFQMC two body constructor? More connect to use. 
+  
   //TODO: Benchmark with Ettore's data, imaginary time and spectral function.
 
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.

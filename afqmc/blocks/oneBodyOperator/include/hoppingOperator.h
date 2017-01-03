@@ -15,7 +15,8 @@ class HoppingOperator
 
  public:
     HoppingOperator();
-    HoppingOperator(size_t L);
+    HoppingOperator(std::complex<double> logw, const tensor_hao::TensorHao<std::complex<double>,2> &op);
+    HoppingOperator(std::complex<double> logw, tensor_hao::TensorHao<std::complex<double>,2> &&op);
     HoppingOperator(const HoppingOperator& x);
     HoppingOperator(HoppingOperator&& x);
     ~HoppingOperator();
@@ -25,8 +26,6 @@ class HoppingOperator
 
     const std::complex<double> &getLogw() const;
     const tensor_hao::TensorHao<std::complex<double>, 2> &getOp() const;
-    std::complex<double> &logwRef();
-    tensor_hao::TensorHao<std::complex<double>, 2> &opRef();
     size_t getL() const;
 
  private:

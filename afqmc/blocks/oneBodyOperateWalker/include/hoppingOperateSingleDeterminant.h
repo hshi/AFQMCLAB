@@ -8,6 +8,6 @@
 #include "../../walker/include/singleDeterminant.h"
 #include "../../oneBodyOperator/include/hoppingOperator.h"
 
-SingleDeterminant operator * (const HoppingOperator& A,  const SingleDeterminant& B);
+void applyOneBodyToWalker(const SingleDeterminant& walker, SingleDeterminant& walkerNew, const HoppingOperator& A);
 
 #endif //AFQMCLAB_HOPPINGOPERATESINGLEDETERMINANT_H
