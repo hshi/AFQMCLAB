@@ -123,6 +123,8 @@ Then see tutorials for detail examples.
    
   //TODO: Think about AFQMC two body constructor? More connect to use. 
   
+  //TODO: Change imaginary time to log scale
+  
   //TODO: Benchmark with Ettore's data, imaginary time and spectral function.
 
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
