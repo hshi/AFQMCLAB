@@ -3,9 +3,16 @@
 //
 
 #include "../include/measureBasedOnLanMatrix.h"
+#include "../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 using namespace tensor_hao;
+
+MeasureBasedOnLanMatrix::MeasureBasedOnLanMatrix(const ModelInterface &modelInterface, string prefixName)
+{
+    lan.set(modelInterface);
+    read(prefixName);
+}
 
 MeasureBasedOnLanMatrix::MeasureBasedOnLanMatrix(const ModelInterface &modelInterface, LanczosBasisWf &wf)
 {
@@ -141,6 +148,17 @@ tuple<const vector<double> &, const vector<double> &> MeasureBasedOnLanMatrix::g
     return lan.getLanElements();
 }
 
+void MeasureBasedOnLanMatrix::read(string prefixName)
+{
+    lan.readLanMatrix(prefixName);
+    readFile(wfNorm, prefixName+"wfNorm.dat");
+}
+
+void MeasureBasedOnLanMatrix::write(string prefixName) const
+{
+    lan.writeLanMatrix(prefixName);
+    writeFile(wfNorm, prefixName+"wfNorm.dat");
+}
 
 MeasureBasedOnLanMatrix::MeasureBasedOnLanMatrix(const MeasureBasedOnLanMatrix &x) { }
 

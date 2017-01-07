@@ -51,9 +51,9 @@ void Lanczos::writeEigenStates(size_t startIndex) const
     }
 }
 
-void Lanczos::readLanMatrixStatus()
+void Lanczos::readLanMatrixStatus(const string &prefixName)
 {
-    string filename = "lanczosMatrixStatus.dat";
+    string filename = prefixName + "Status.dat";
     ifstream file;
     file.open(filename, ios_base::in);
     if( !file.is_open() ) { cout << "Error opening file for read lanczosMatrixStatus!!!"; exit(1); }
@@ -73,9 +73,9 @@ void Lanczos::readLanMatrixStatus()
     lanwfs.resize( lanwfSize );
 }
 
-void Lanczos::readLanMatrixElements()
+void Lanczos::readLanMatrixElements(const string &prefixName)
 {
-    string filename = "lanczosMatrixElements.dat";
+    string filename = prefixName + "Elements.dat";
     ifstream file;
     file.open(filename, ios_base::in);
     if( !file.is_open() ) { cout << "Error opening file for read lanczosMatrixElements!!!"; exit(1); }
@@ -86,19 +86,19 @@ void Lanczos::readLanMatrixElements()
     file.close();
 }
 
-void Lanczos::readLanMatrixWavefunctions()
+void Lanczos::readLanMatrixWavefunctions(const string &prefixName)
 {
     string filename;
     for(size_t i = 0; i < lanwfs.size(); ++i)
     {
-        filename = "lanczosMatrixWf_" + to_string(i) + ".dat";
+        filename = prefixName + "Wf_" + to_string(i) + ".dat";
         lanwfs[i].read(filename);
     }
 }
 
-void Lanczos::writeLanMatrixStatus() const
+void Lanczos::writeLanMatrixStatus(const string &prefixName) const
 {
-    string filename = "lanczosMatrixStatus.dat";
+    string filename = prefixName + "Status.dat";
     ofstream file;
     file.open(filename, ios_base::out | ios_base::trunc);
     if( !file.is_open() )  { cout << "Error opening file for write lanczosMatrixStatus!!!"; exit(1); }
@@ -106,9 +106,9 @@ void Lanczos::writeLanMatrixStatus() const
     file.close();
 }
 
-void Lanczos::writeLanMatrixElements() const
+void Lanczos::writeLanMatrixElements(const string &prefixName) const
 {
-    string filename = "lanczosMatrixElements.dat";
+    string filename = prefixName + "Elements.dat";
     ofstream file;
     file.open(filename, ios_base::out | ios_base::trunc);
     if( !file.is_open() )  { cout << "Error opening file for write lanczosMatrixElements!!!"; exit(1); }
@@ -120,7 +120,7 @@ void Lanczos::writeLanMatrixElements() const
     file.close();
 }
 
-void Lanczos::writeLanMatrixWavefunctions() const
+void Lanczos::writeLanMatrixWavefunctions(const string &prefixName) const
 {
     size_t lanwfSize(0);
     if( lanStatus == string("none") )
@@ -133,7 +133,7 @@ void Lanczos::writeLanMatrixWavefunctions() const
     string filename;
     for(size_t i = 0; i < lanwfSize; ++i)
     {
-        filename = "lanczosMatrixWf_" + to_string(i) + ".dat";
+        filename = prefixName + "Wf_" + to_string(i) + ".dat";
         lanwfs[i].write(filename);
     }
 }

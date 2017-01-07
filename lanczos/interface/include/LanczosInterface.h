@@ -35,8 +35,8 @@ class Lanczos
 
     void readEigens(size_t numberOfWaveFunctions = 1);
     void writeEigens(size_t startIndex = 0) const ;
-    void readLanMatrix();
-    void writeLanMatrix() const;
+    void readLanMatrix(std::string prefixName="lanczosMatrix");
+    void writeLanMatrix(std::string prefixName="lanczosMatrix") const;
     void writeLanWavefunction(const std::string &filename, size_t lanIndex=0 ) const;
 
     void reserve(size_t targetLanSize, size_t targetEigenSize);
@@ -67,12 +67,12 @@ class Lanczos
     void readEigenStates(size_t numberOfWaveFunctions);
     void writeEigenValues(size_t startIndex = 0) const;
     void writeEigenStates(size_t startIndex = 0) const;
-    void readLanMatrixStatus();
-    void readLanMatrixElements();
-    void readLanMatrixWavefunctions();
-    void writeLanMatrixStatus() const;
-    void writeLanMatrixElements() const;
-    void writeLanMatrixWavefunctions() const;
+    void readLanMatrixStatus(const std::string &prefixName);
+    void readLanMatrixElements(const std::string &prefixName);
+    void readLanMatrixWavefunctions(const std::string &prefixName);
+    void writeLanMatrixStatus(const std::string &prefixName) const;
+    void writeLanMatrixElements(const std::string &prefixName) const;
+    void writeLanMatrixWavefunctions(const std::string &prefixName) const;
 
     void prepareLanReturn(std::string defaultStatus);
     void projectWaveFunctionUpdateLanb(size_t lanwfsIndex);

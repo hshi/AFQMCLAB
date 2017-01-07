@@ -13,6 +13,7 @@ class MeasureBasedOnLanMatrix
     Lanczos lan;
     double wfNorm;
  public:
+    MeasureBasedOnLanMatrix(const ModelInterface &modelInterface, std::string prefixName="measureLanMatrix");
     MeasureBasedOnLanMatrix(const ModelInterface &modelInterface, LanczosBasisWf &wf);
 
     tensor_hao::TensorHao<double, 1> returnLogExpMinusTauModel(const tensor_hao::TensorHao<double, 1> &tau, size_t L,
@@ -24,6 +25,8 @@ class MeasureBasedOnLanMatrix
     double getWfNorm() const;
 
     std::tuple<const std::vector<double> &, const std::vector<double> &> getLanElements() const;
+    void read(std::string prefixName="measureLanMatrix");
+    void write(std::string prefixName="measureLanMatrix") const;
  private:
     MeasureBasedOnLanMatrix(const MeasureBasedOnLanMatrix& x);
     MeasureBasedOnLanMatrix & operator  = (const MeasureBasedOnLanMatrix& x);

@@ -64,19 +64,19 @@ void Lanczos::writeEigens(size_t startIndex) const
     writeEigenStates(startIndex);
 }
 
-void Lanczos::readLanMatrix()
+void Lanczos::readLanMatrix(string prefixName)
 {
-    readLanMatrixStatus();
-    readLanMatrixElements();
-    readLanMatrixWavefunctions();
+    readLanMatrixStatus(prefixName);
+    readLanMatrixElements(prefixName);
+    readLanMatrixWavefunctions(prefixName);
 }
 
-void Lanczos::writeLanMatrix() const
+void Lanczos::writeLanMatrix(string prefixName) const
 {
     if( lanStatus == string("none") ) return;
-    writeLanMatrixStatus();
-    writeLanMatrixElements();
-    writeLanMatrixWavefunctions();
+    writeLanMatrixStatus(prefixName);
+    writeLanMatrixElements(prefixName);
+    writeLanMatrixWavefunctions(prefixName);
 }
 
 void Lanczos::writeLanWavefunction(const string &filename, size_t lanIndex) const

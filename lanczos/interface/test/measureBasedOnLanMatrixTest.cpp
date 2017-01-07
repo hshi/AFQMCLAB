@@ -76,3 +76,26 @@ TEST(measureBasedOnLanMatrixTest, returnGreenFunction)
         EXPECT_COMPLEX_NEAR( greenFunction(i) , greenFunction_Exact(i), 1e-12* abs(greenFunction(i)) );
     }
 }
+
+TEST(measureBasedOnLanMatrixTest, readWrite)
+{
+    //Set parameters
+    size_t L = 10;
+    Hmatrix hmatrix; hmatrix.resize(L);
+    LanczosBasisWf wf(L); wf.randomFill();
+    TensorHao<double,1> tau(3); tau= {0, 1, 2 };
+
+    MeasureBasedOnLanMatrix meas(hmatrix, wf);
+    TensorHao<double,1> expMTauH = tensor_hao::exp( meas.returnLogExpMinusTauModel(tau, L) );
+
+    meas.write();
+    MeasureBasedOnLanMatrix measPrime(hmatrix);
+    TensorHao<double,1> expMTauHPrime = tensor_hao::exp( measPrime.returnLogExpMinusTauModel(tau, L) );
+
+    for(size_t i = 0; i < tau.size(); ++i)
+    {
+        EXPECT_NEAR( expMTauH(i) , expMTauHPrime(i), 1e-12*abs(expMTauHPrime(i)) );
+    }
+
+    system("rm -rf *.dat");
+}
