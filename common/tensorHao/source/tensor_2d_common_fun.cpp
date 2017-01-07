@@ -63,7 +63,7 @@ namespace tensor_hao
      HAO_INT L= x.ipiv.rank(0);
      for(HAO_INT i=0;i<L;i++)
      {
-         lognorm+=log(abs(x.A(i,i)));
+         lognorm+=std::log(abs(x.A(i,i)));
          if(x.ipiv(i)!=(i+1)) phase*=(-x.A(i,i)/abs(x.A(i,i)));
          else phase*=(x.A(i,i)/abs(x.A(i,i)));
      }

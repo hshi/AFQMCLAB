@@ -3,21 +3,21 @@
 using namespace std;
 using namespace tensor_hao;
 
-void measureExpMinusTauModel(MeasureBasedOnLanMatrix &meas)
+void measureLogExpMinusTauModel(MeasureBasedOnLanMatrix &meas)
 {
     TensorHao<double,1> tau(100);
     for(size_t j = 0; j < tau.size() ; ++j) tau(j) = 0.2*j;
-    TensorHao<double,1> Gtau = meas.returnExpMinusTauModel(tau, 100);
+    TensorHao<double,1> Gtau = meas.returnLogExpMinusTauModel(tau, 100);
     writeFile(tau.size(), tau.data(), Gtau.data(), "Gtau.dat" );
 }
 
-void measureSpectralFunction(MeasureBasedOnLanMatrix &meas)
+void measureMinusSpectralFunction(MeasureBasedOnLanMatrix &meas, double E0)
 {
-    TensorHao<complex<double>,1> omega(1000), EMinusOgema(1000);
-    for(size_t j = 0; j < omega.size() ; ++j) omega(j) = complex<double>(0.02*j-11.0, 0.0);
-    EMinusOgema = complex<double>(-13.04909591846378, 0.2) - omega;
+    TensorHao<complex<double>,1> omega(3000), EMinusOgema(3000);
+    for(size_t j = 0; j < omega.size() ; ++j) omega(j) = complex<double>(0.02*j-30.0, 0.0);
+    EMinusOgema = complex<double>(E0, 0.1) - omega;
     TensorHao<complex<double>,1> spectral = meas.returnGreenFunction(EMinusOgema, 100);
-    writeFile(omega.size(), omega.data(), spectral.data(), "spectral.dat" );
+    writeFile(omega.size(), omega.data(), spectral.data(), "spectralMinus.dat" );
 }
 
 void measureDynamic(Lanczos &lan, RealMaterial& H)
@@ -32,8 +32,8 @@ void measureDynamic(Lanczos &lan, RealMaterial& H)
     RealMaterial HNupMinusOne = H.generateNewModel( H.getL(), H.getNup()-1, H.getNdn() );
     MeasureBasedOnLanMatrix meas( HNupMinusOne, CiupPhi0 );
 
-    measureExpMinusTauModel( meas );
-    measureSpectralFunction( meas );
+    measureLogExpMinusTauModel( meas );
+    measureMinusSpectralFunction( meas, lan.getEigenvalue(0) );
 }
 
 void measureStatic(Lanczos &lan, RealMaterial& H)

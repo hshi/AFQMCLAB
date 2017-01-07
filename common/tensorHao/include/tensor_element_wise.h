@@ -31,6 +31,17 @@ namespace tensor_hao
  }
 
  template <class T, size_t D>
+ TensorHao<T, D> log(const TensorCore<T, D>& A)
+ {
+     TensorHao<T, D> B (A.getRank() );
+     size_t L = A.size();
+     const T * A_p = A.data();
+     T * B_p = B.data();
+     for(size_t i=0; i<L; i++) B_p[i] = std::log( A_p[i] );
+     return B;
+ }
+
+ template <class T, size_t D>
  TensorHao<T, D> norm(const TensorCore<T, D>& A)
  {
      TensorHao<T, D> B (A.getRank() );

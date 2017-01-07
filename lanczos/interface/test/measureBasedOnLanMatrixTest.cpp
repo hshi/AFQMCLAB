@@ -5,7 +5,7 @@
 using namespace std;
 using namespace tensor_hao;
 
-TEST(measureBasedOnLanMatrixTest, returnExpMinusTauModel)
+TEST(measureBasedOnLanMatrixTest, returnLogExpMinusTauModel)
 {
     //Set parameters
     size_t L = 10;
@@ -37,7 +37,7 @@ TEST(measureBasedOnLanMatrixTest, returnExpMinusTauModel)
 
     //To be tested
     MeasureBasedOnLanMatrix meas(hmatrix, wf);
-    TensorHao<double,1> expMTauH = meas.returnExpMinusTauModel(tau, L);
+    TensorHao<double,1> expMTauH = tensor_hao::exp( meas.returnLogExpMinusTauModel(tau, L) );
 
     for(size_t i = 0; i < tau.size(); ++i)
     {

@@ -39,8 +39,8 @@ void diagonalizeTriagonalMatrixGetEigenvalueAndOneRowOfEigenvector(vector<double
     for(HAO_INT i = 0; i < L; ++i) b[i] = fullvector[i*L];
 }
 
-TensorHao<double,1> MeasureBasedOnLanMatrix::returnExpMinusTauModel(const TensorHao<double,1> &tau, size_t L,
-                                                                    double accuracy, double litForProjection, char wfFlag)
+TensorHao<double,1> MeasureBasedOnLanMatrix::returnLogExpMinusTauModel(const TensorHao<double, 1> &tau, size_t L,
+                                                                       double accuracy, double litForProjection, char wfFlag)
 {
     auto lanabTuple = lan.getLanElements();
     const vector<double> &lana = get<0>(lanabTuple);
@@ -67,6 +67,7 @@ TensorHao<double,1> MeasureBasedOnLanMatrix::returnExpMinusTauModel(const Tensor
     diagonalizeTriagonalMatrixGetEigenvalueAndOneRowOfEigenvector(a,b);
 
     size_t abSize = a.size();
+    double E0 = a[0]; for(size_t i = 0; i <abSize; ++i) a[i] -= E0;
     for(size_t j = 0; j < abSize; ++j) b[j] = b[j] * b[j] * wfNorm * wfNorm;
 
     size_t tauSize = tau.size();
@@ -80,7 +81,7 @@ TensorHao<double,1> MeasureBasedOnLanMatrix::returnExpMinusTauModel(const Tensor
         }
     }
 
-    return expMinusTauModel;
+    return tensor_hao::log( expMinusTauModel ) - tau * E0;
 }
 
 TensorHao<complex<double>,1> MeasureBasedOnLanMatrix::returnGreenFunction(const TensorHao<complex<double>, 1> &omega, size_t L,

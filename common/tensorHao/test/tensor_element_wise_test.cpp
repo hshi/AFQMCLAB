@@ -37,6 +37,23 @@ TEST(Tensor_element, exp)
     }
 }
 
+TEST(Tensor_element, log)
+{
+    TensorHao<double,2>  tensor_a(3,4);
+    tensor_a={1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
+
+    TensorHao<double,2> tensor_b = log( tensor_a );
+
+    for(size_t j=0; j<4; j++)
+    {
+        for(size_t i=0; i<3; i++)
+        {
+            EXPECT_COMPLEXDOUBLE_EQ( tensor_b(i,j), log( tensor_a(i,j) ) );
+        }
+    }
+}
+
+
 TEST(Tensor_element, norm)
 {
     TensorHao< complex<double>,2>  tensor_a(3,2);
