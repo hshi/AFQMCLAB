@@ -10,12 +10,12 @@
 /******************************************************/
 /*solve the equation cosh(x)=exp(y), input y, return x*/
 /******************************************************/
-std::complex<double> sloveCoshxEqExpy(double y);
+std::complex<double> solveCoshxEqExpy(double y);
 
 /******************************************************/
 /*solve the equation cos(x)=exp(y), input y, return x*/
 /******************************************************/
-std::complex<double> sloveCosxEqExpy(double y);
+std::complex<double> solveCosxEqExpy(double y);
 
 
 /***************************************************************/

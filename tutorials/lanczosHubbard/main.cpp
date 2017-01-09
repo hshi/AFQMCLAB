@@ -50,7 +50,7 @@ void measureStatic(Lanczos &lan, RealMaterial& H)
     writeFile(V.real(), "V.dat");
 }
 
-void findEigenOfRealMaterial()
+void lanczosRealMaterial()
 {
     RealMaterial H("model_param");
     LanczosParam lanParam; lanParam.read("lanczos_param");
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
     magma_init();
 #endif
 
-    findEigenOfRealMaterial();
+    lanczosRealMaterial();
 
 #ifdef USE_MAGMA
     magma_finalize();

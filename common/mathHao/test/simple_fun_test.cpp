@@ -4,13 +4,13 @@
 
 using namespace std;
 
-TEST (simple_fun, sloveCoshxEqExpy)
+TEST (simple_fun, solveCoshxEqExpy)
 {
     vector<double> v={-5.0,-3.3,-1.2,0.0,1.1,2.0,3.0,4.0};
     complex<double> gamma;
     for (auto i: v)
     {
-        gamma= sloveCoshxEqExpy(i);
+        gamma= solveCoshxEqExpy(i);
 
         EXPECT_NEAR ( cosh(gamma).real(), exp(i), 1E-10 );
         EXPECT_NEAR ( cosh(gamma).imag(), 0.0 , 1E-10 );
@@ -18,13 +18,13 @@ TEST (simple_fun, sloveCoshxEqExpy)
 }
 
 
-TEST (simple_fun, sloveCosxEqExpy)
+TEST (simple_fun, solveCosxEqExpy)
 {
     vector<double> v={-5.0,-3.3,-1.2,0.0,1.1,2.0,3.0,4.0};
     complex<double> gamma;
     for (auto i: v)
     {
-        gamma= sloveCosxEqExpy(i);
+        gamma= solveCosxEqExpy(i);
         EXPECT_NEAR ( cos(gamma).real(), exp(i), 1E-10 );
         EXPECT_NEAR ( cos(gamma).imag(), 0.0 , 1E-10 );
     }

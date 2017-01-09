@@ -4,7 +4,7 @@ using namespace std;
 /******************************************************/
 /*solve the equation cosh(x)=exp(y), input y, return x*/
 /******************************************************/
-complex<double> sloveCoshxEqExpy(double y)
+complex<double> solveCoshxEqExpy(double y)
 {
     complex<double> ey={exp(y),0};
     complex<double> gamma=log(ey-sqrt(ey*ey-1.0));
@@ -20,7 +20,7 @@ complex<double> sloveCoshxEqExpy(double y)
 /******************************************************/
 /*solve the equation cos(x)=exp(y), input y, return x*/
 /******************************************************/
-complex<double> sloveCosxEqExpy(double y)
+complex<double> solveCosxEqExpy(double y)
 {
     complex<double> ey={exp(y),0};
     complex<double> gamma=acos(ey);

@@ -3,14 +3,17 @@
 //
 
 #include "../include/densityDensityOperator.h"
+#include "../../../../common/mathHao/include/simple_fun.h"
+#include "../../../../common/randomHao/include/random_hao.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-DensityDensityOperator::DensityDensityOperator() { }
+DensityDensityOperator::DensityDensityOperator():L(0) { }
 
-DensityDensityOperator::DensityDensityOperator(size_t L, const TensorHao<OneDensityDensityOperator,1>& op,
-                                               const string &decompType): L(L), op(op), decompType(decompType)
+DensityDensityOperator::DensityDensityOperator(size_t L, const string &decompType,
+                                               const TensorHao<OneDensityDensityOperator,1>& op)
+    : L(L), decompType(decompType), op(op)
 {
     setGamma();
 }
@@ -31,7 +34,32 @@ const string &DensityDensityOperator::getDecompType() const { return decompType;
 
 const TensorHao<OneDensityDensityOperator, 1> &DensityDensityOperator::getOp() const { return op; }
 
-const TensorHao<OneDensityDensityOperator, 1> &DensityDensityOperator::getGamma() const { return gamma; }
+const TensorHao<complex<double>, 1> &DensityDensityOperator::getGamma() const { return gamma; }
+
+DensityDensityOperatorAux DensityDensityOperator::sampleAuxFromForce(const DensityDensityOperatorForce &force, double gammaForceCap)
+{
+    if( gammaForceCap < 0.0 ) gammaForceCap=0.0;
+
+    size_t opSize = op.size();
+    DensityDensityOperatorAux field(opSize);
+    double gammaForce, expPlus, expMinus, prob;
+
+    for(size_t i=0; i<opSize; i++)
+    {
+        gammaForce = ( gamma(i) * force(i) ).real();
+        if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
+        if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
+
+        expMinus = exp( -gammaForce );
+        expPlus = exp( gammaForce );
+        prob = expMinus / (expMinus + expPlus);
+
+        if( uniformHao() < prob ) field(i) = -1;
+        else field(i)=1;
+    }
+
+    return field;
+}
 
 void DensityDensityOperator::copy_deep(const DensityDensityOperator &x)
 {
@@ -51,7 +79,28 @@ void DensityDensityOperator::move_deep(DensityDensityOperator &x)
 
 void DensityDensityOperator::setGamma()
 {
-    gamma.resize( op.size() );
+    size_t opSize = op.size();
 
-
+    gamma.resize( opSize );
+    if(  decompType == "densityCharge" )
+    {
+        for(size_t i=0; i<opSize; i++) gamma(i) = solveCoshxEqExpy( op(i).V / 2.0 );
+    }
+    else if( decompType == "densitySpin" )
+    {
+        for(size_t i=0; i<opSize; i++) gamma(i) = solveCoshxEqExpy(-op(i).V / 2.0 );
+    }
+    else if( decompType == "hopCharge" )
+    {
+        for(size_t i=0; i<opSize; i++) gamma(i) = solveCoshxEqExpy(-op(i).V / 2.0 );
+    }
+    else if( decompType == "hopSpin" )
+    {
+        for(size_t i=0; i<opSize; i++) gamma(i) = solveCosxEqExpy(-op(i).V / 2.0 );
+    }
+    else
+    {
+        cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
+        exit(1);
+    }
 }
