@@ -1,4 +1,5 @@
 add_subdirectory(walker)
 add_subdirectory(oneBodyOperator)
 add_subdirectory(twoBodyOperator)
-add_subdirectory(oneBodyOperateWalker)
+add_subdirectory(oneBodyWalkerOperation)
+#add_subdirectory(twoBodyOperateWalker)
