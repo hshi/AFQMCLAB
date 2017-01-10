@@ -27,6 +27,8 @@ NiupNidnSample &NiupNidnSample::operator=(const NiupNidnSample &x) { copy_deep(x
 
 NiupNidnSample &NiupNidnSample::operator=(NiupNidnSample &&x) { move_deep(x); return *this; }
 
+size_t NiupNidnSample::getL() const { return diag00.size(); }
+
 void NiupNidnSample::copy_deep(const NiupNidnSample &x)
 {
     logw = x.logw;

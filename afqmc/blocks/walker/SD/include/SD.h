@@ -7,21 +7,21 @@
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
-class SingleDeterminant
+class SD
 {
  private:
     std::complex<double> logw;
     tensor_hao::TensorHao<std::complex<double>,2> wf;
 
  public:
-    SingleDeterminant();
-    SingleDeterminant(size_t L, size_t N);
-    SingleDeterminant(const SingleDeterminant& x);
-    SingleDeterminant(SingleDeterminant&& x);
-    ~SingleDeterminant();
+    SD();
+    SD(size_t L, size_t N);
+    SD(const SD& x);
+    SD(SD&& x);
+    ~SD();
 
-    SingleDeterminant & operator  = (const SingleDeterminant& x);
-    SingleDeterminant & operator  = (SingleDeterminant&& x);
+    SD & operator  = (const SD& x);
+    SD & operator  = (SD&& x);
 
     const std::complex<double> &getLogw() const;
     const tensor_hao::TensorHao<std::complex<double>, 2> &getWf() const;
@@ -36,11 +36,11 @@ class SingleDeterminant
 
     void read(const std::string& filename);
     void write(const std::string& filename) const;
-    friend void MPIBcast(SingleDeterminant &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
  private:
-    void copy_deep(const SingleDeterminant &x);
-    void move_deep(SingleDeterminant &x);
+    void copy_deep(const SD &x);
+    void move_deep(SD &x);
 };
 
 #endif //AFQMCLAB_SINGLEDETERMINANT_H

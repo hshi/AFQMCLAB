@@ -1,1 +1,1 @@
-add_subdirectory(hopSingleDeterminantOperation)
+add_subdirectory(hopSDOperation)

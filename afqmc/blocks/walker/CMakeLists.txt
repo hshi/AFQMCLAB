@@ -1,1 +1,1 @@
-add_subdirectory(singleDeterminant)
+add_subdirectory(SD)

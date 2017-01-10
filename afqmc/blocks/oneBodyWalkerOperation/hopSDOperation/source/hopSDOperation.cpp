@@ -2,12 +2,12 @@
 // Created by boruoshihao on 12/28/16.
 //
 
-#include "../include/hopSingleDeterminantOperation.h"
+#include "../include/hopSDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-void applyOneBodyToRightWalker(const SingleDeterminant &walker, SingleDeterminant &walkerNew, const Hop &oneBody)
+void applyOneBodyToRightWalker(const SD &walker, SD &walkerNew, const Hop &oneBody)
 {
     size_t L = walker.getL(); size_t N = walker.getN();
     if( oneBody.getL() !=  L ) {cout<<"Error!!! Hop size is not consistent with walker!"<<endl; exit(1); }
@@ -17,7 +17,7 @@ void applyOneBodyToRightWalker(const SingleDeterminant &walker, SingleDeterminan
     walkerNew.logwRef() = oneBody.logw + walker.getLogw();
 }
 
-void applyOneBodyToLeftWalker(const SingleDeterminant &walker, SingleDeterminant &walkerNew, const Hop &oneBody)
+void applyOneBodyToLeftWalker(const SD &walker, SD &walkerNew, const Hop &oneBody)
 {
     size_t L = walker.getL(); size_t N = walker.getN();
     if( oneBody.getL() !=  L ) {cout<<"Error!!! Hop size is not consistent with walker!"<<endl; exit(1); }
