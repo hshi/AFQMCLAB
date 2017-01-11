@@ -7,6 +7,7 @@
 
 #include "NiupNidn.h"
 
+typedef NiupNidn       TwoBody;
 typedef NiupNidnAux    TwoBodyAux;
 typedef NiupNidnForce  TwoBodyForce;
 typedef NiupNidnSample TwoBodySample;

@@ -2,54 +2,54 @@
 // Created by boruoshihao on 1/10/17.
 //
 
-#include "../include/SDOperation.h"
+#include "../include/SDSDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-SDOperation::SDOperation() : state(SDOperationState::VOID), walkerLeft(nullptr), walkerRight(nullptr)
+SDSDOperation::SDSDOperation() : state(SDOperationState::VOID), walkerLeft(nullptr), walkerRight(nullptr)
 {
 }
 
-SDOperation::SDOperation(const SD &walkerLeft_, const SD &walkerRight_)
+SDSDOperation::SDSDOperation(const SD &walkerLeft_, const SD &walkerRight_)
 {
     state = SDOperationState::VOID;
     walkerLeft  = &walkerLeft_;
     walkerRight = &walkerRight_;
 }
 
-SDOperation::~SDOperation() { }
+SDSDOperation::~SDSDOperation() { }
 
-SDOperationState SDOperation::getState() const { return state; }
+SDOperationState SDSDOperation::getState() const { return state; }
 
-const SD *SDOperation::getWalkerLeft() const { return walkerLeft; }
+const SD *SDSDOperation::getWalkerLeft() const { return walkerLeft; }
 
-const SD *SDOperation::getWalkerRight() const { return walkerRight; }
+const SD *SDSDOperation::getWalkerRight() const { return walkerRight; }
 
-const LUDecomp<complex<double>> &SDOperation::returnLUOverlap()
+const LUDecomp<complex<double>> &SDSDOperation::returnLUOverlap()
 {
     calculateLUOverlap();
     return LUOverlap;
 }
 
-const TensorHao<complex<double>, 2> &SDOperation::returnWfLeftDagger()
+const TensorHao<complex<double>, 2> &SDSDOperation::returnWfLeftDagger()
 {
     calculateWfLeftDagger();
     return wfLeftDagger;
 }
 
-void SDOperation::reSet()
+void SDSDOperation::reSet()
 {
     state = SDOperationState::VOID;
 }
 
-complex<double> SDOperation::returnLogOverlap()
+complex<double> SDSDOperation::returnLogOverlap()
 {
     calculateLUOverlap();
     return conj( (*walkerLeft).getLogw() ) + (*walkerRight).getLogw() + logDeterminant( LUOverlap );
 }
 
-TensorHao<complex<double>, 2> SDOperation::returnGreenMatrix()
+TensorHao<complex<double>, 2> SDSDOperation::returnGreenMatrix()
 {
     calculateLUOverlap();
     calculateWfLeftDagger();
@@ -62,7 +62,7 @@ TensorHao<complex<double>, 2> SDOperation::returnGreenMatrix()
     return greenMatrix;
 }
 
-tensor_hao::TensorHao<std::complex<double>, 1> SDOperation::returnGreenDiagonal()
+tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenDiagonal()
 {
     calculateLUOverlap();
     calculateWfLeftDagger();
@@ -84,7 +84,7 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDOperation::returnGreenDiagonal(
     return greenDiagonal;
 }
 
-tensor_hao::TensorHao<std::complex<double>, 1> SDOperation::returnGreenOffDiagonal()
+tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenOffDiagonal()
 {
     calculateLUOverlap();
     calculateWfLeftDagger();
@@ -110,11 +110,11 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDOperation::returnGreenOffDiagon
     return greenOffDiagonal;
 }
 
-SDOperation::SDOperation(const SDOperation &x) { }
+SDSDOperation::SDSDOperation(const SDSDOperation &x) { }
 
-SDOperation &SDOperation::operator=(const SDOperation &x) { return *this; }
+SDSDOperation &SDSDOperation::operator=(const SDSDOperation &x) { return *this; }
 
-void SDOperation::calculateLUOverlap()
+void SDSDOperation::calculateLUOverlap()
 {
     if( state >= SDOperationState::LUOVERLAP ) return;
 
@@ -126,7 +126,7 @@ void SDOperation::calculateLUOverlap()
     state = SDOperationState::LUOVERLAP;
 }
 
-void SDOperation::calculateWfLeftDagger()
+void SDSDOperation::calculateWfLeftDagger()
 {
     if( state >= SDOperationState::WFLEFTDAGGER ) return;
 

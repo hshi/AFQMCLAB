@@ -1,5 +1,5 @@
 set(SOURCE_HEADERS
-        ${CMAKE_CURRENT_LIST_DIR}/include/SDOperation.h)
+        ${CMAKE_CURRENT_LIST_DIR}/include/HubbardRealSpaceSOC.h)
 
 add_subdirectory(include)
 add_subdirectory(source)

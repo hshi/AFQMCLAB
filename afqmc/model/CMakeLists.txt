@@ -1,1 +1,2 @@
+add_subdirectory(HubbardRealSpaceSOC)
 add_subdirectory(real_material_Hamiltonian)

@@ -3,9 +3,9 @@
 //
 
 #include <fstream>
-#include "../../common/testHao/gtest_custom.h"
-#include "../../common/mpiHao/include/mpi_fun.h"
-#include "../../common/tensorHao/include/tensor_all.h"
+#include "../../../common/testHao/gtest_custom.h"
+#include "../../../common/mpiHao/include/mpi_fun.h"
+#include "../../../common/tensorHao/include/tensor_all.h"
 #include "realMaterialHamiltonian.h"
 
 using namespace std;

@@ -3,7 +3,7 @@
 //
 
 #include "../include/NiupNidnSDOperation.h"
-#include "../../../walkerOperation/SDOperation/include/SDOperation.h"
+#include "../../../walkerWalkerOperation/SDSDOperation/include/SDSDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -73,26 +73,26 @@ NiupNidnForce getForce(const NiupNidn &twoBody, const SD &walkerLeft, const SD &
     NiupNidnForce force(halfL);
 
     const string &decompType = twoBody.getDecompType();
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdsdOperation(walkerLeft, walkerRight);
 
     if( decompType == "densityCharge" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdOperation.returnGreenDiagonal();
+        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
     }
     else if( decompType == "densitySpin" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdOperation.returnGreenDiagonal();
+        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
     }
     else if( decompType == "hopCharge" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdOperation.returnGreenOffDiagonal();
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
     }
     else if( decompType == "hopSpin" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdOperation.returnGreenOffDiagonal();
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
     }
     else

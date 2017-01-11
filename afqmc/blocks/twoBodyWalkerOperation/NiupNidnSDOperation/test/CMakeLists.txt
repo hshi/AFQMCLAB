@@ -4,6 +4,6 @@ set(SOURCE_TESTS
 add_executable(afqmcNiupNidnSDOperationTest ${SOURCE_HEADERS} ${SOURCE_TESTS} )
 
 target_link_libraries(afqmcNiupNidnSDOperationTest afqmcNiupNidnSDOperationHao
-        afqmcNiupNidnHao afqmcSDHao afqmcSDOperationHao commonHao gtest_mainHao ${EXT_LIBRARIES})
+        afqmcNiupNidnHao afqmcSDSDOperationHao afqmcSDHao commonHao gtest_mainHao ${EXT_LIBRARIES})
 
 add_my_test(afqmcNiupNidnSDOperationTest "$<TARGET_FILE:afqmcNiupNidnSDOperationTest>")

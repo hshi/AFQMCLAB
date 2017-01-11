@@ -2,38 +2,38 @@
 // Created by boruoshihao on 1/10/17.
 //
 
-#include "../include/SDOperation.h"
+#include "../include/SDSDOperation.h"
 #include "../../../../../common/testHao/gtest_custom.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-TEST(SDOperationTest, voidConstruction)
+TEST(SDSDOperationTest, voidConstruction)
 {
-    SDOperation sdOperation;
+    SDSDOperation sdOperation;
 
     EXPECT_EQ( sdOperation.getState(), SDOperationState::VOID );
     EXPECT_FALSE( sdOperation.getWalkerLeft() );
     EXPECT_FALSE( sdOperation.getWalkerRight() );
 }
 
-TEST(SDOperationTest, walkerPointerConstruction)
+TEST(SDSDOperationTest, walkerPointerConstruction)
 {
     SD walkerLeft, walkerRight;
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
 
     EXPECT_EQ( sdOperation.getState(), SDOperationState::VOID );
     EXPECT_TRUE( sdOperation.getWalkerLeft() );
     EXPECT_TRUE( sdOperation.getWalkerRight() );
 }
 
-TEST(SDOperationTest, reSet)
+TEST(SDSDOperationTest, reSet)
 {
     size_t L(10), N(5);
     SD walkerLeft(L,N), walkerRight(L,N);
     randomFill( walkerLeft.wfRef() ); randomFill( walkerRight.wfRef() );
 
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
     sdOperation.returnLUOverlap();
     EXPECT_EQ( sdOperation.getState(), SDOperationState::LUOVERLAP );
     sdOperation.returnWfLeftDagger();
@@ -42,7 +42,7 @@ TEST(SDOperationTest, reSet)
     EXPECT_EQ( sdOperation.getState(), SDOperationState::VOID );
 }
 
-TEST(SDOperationTest, getLogOverlap)
+TEST(SDSDOperationTest, getLogOverlap)
 {
     size_t L(10), N(5);
     SD walkerLeft(L,N), walkerRight(L,N);
@@ -53,19 +53,19 @@ TEST(SDOperationTest, getLogOverlap)
     gmm_cpu(walkerLeft.getWf(), walkerRight.getWf(), ovlp, 'C');
     complex<double> logOverlap = logDeterminant( LUconstruct_cpu(ovlp) ) + complex<double>(3.0, 2.0);
 
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
 
     EXPECT_COMPLEXDOUBLE_EQ( logOverlap, sdOperation.returnLogOverlap()  );
 }
 
-TEST(SDOperationTest, getGreenMatrix)
+TEST(SDSDOperationTest, getGreenMatrix)
 {
     size_t L(10), N(5);
     SD walkerLeft(L,N), walkerRight(L,N);
     walkerLeft.logwRef()  = complex<double>(2.0, 3.0); randomFill( walkerLeft.wfRef() );
     walkerRight.logwRef() = complex<double>(1.0, 5.0); randomFill( walkerRight.wfRef() );
 
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
     TensorHao<complex<double>, 2> greenMatrix = sdOperation.returnGreenMatrix();
 
     TensorHao<complex<double>, 2> ovlp(N,N), wfLeftDagger(N,L), greenMatrixExact(L,L);
@@ -78,14 +78,14 @@ TEST(SDOperationTest, getGreenMatrix)
     EXPECT_FALSE( diff(greenMatrix, greenMatrixExact, 1e-12) );
 }
 
-TEST(SDOperationTest, getGreenDiagonal)
+TEST(SDSDOperationTest, getGreenDiagonal)
 {
     size_t L(10), N(5);
     SD walkerLeft(L,N), walkerRight(L,N);
     walkerLeft.logwRef()  = complex<double>(2.0, 3.0); randomFill( walkerLeft.wfRef() );
     walkerRight.logwRef() = complex<double>(1.0, 5.0); randomFill( walkerRight.wfRef() );
 
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
     TensorHao<complex<double>, 1> greenDiagonal = sdOperation.returnGreenDiagonal();
 
     TensorHao<complex<double>, 2> ovlp(N,N), wfLeftDagger(N,L), greenMatrixExact(L,L);
@@ -101,14 +101,14 @@ TEST(SDOperationTest, getGreenDiagonal)
     EXPECT_FALSE( diff(greenDiagonal, greenDiagonalExact, 1e-12) );
 }
 
-TEST(SDOperationTest, getGreenOffDiagonal)
+TEST(SDSDOperationTest, getGreenOffDiagonal)
 {
     size_t L(10), N(5);
     SD walkerLeft(L,N), walkerRight(L,N);
     walkerLeft.logwRef()  = complex<double>(2.0, 3.0); randomFill( walkerLeft.wfRef() );
     walkerRight.logwRef() = complex<double>(1.0, 5.0); randomFill( walkerRight.wfRef() );
 
-    SDOperation sdOperation(walkerLeft, walkerRight);
+    SDSDOperation sdOperation(walkerLeft, walkerRight);
     TensorHao<complex<double>, 1> greenOffDiagonal = sdOperation.returnGreenOffDiagonal();
 
     TensorHao<complex<double>, 2> ovlp(N,N), wfLeftDagger(N,L), greenMatrixExact(L,L);

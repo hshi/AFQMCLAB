@@ -6,7 +6,7 @@
 #define AFQMCLAB_REAL_MATERIAL_HAMILTONIAN_H
 
 #include <string>
-#include "../../common/tensorHao/include/tensor_all.h"
+#include "../../../common/tensorHao/include/tensor_all.h"
 
 //The Hamiltionian is:
 //H0 = Sum_{i, j, \sigma} K_{i, j, \sigma} C_{i\sigma}^{\dagger} C_{j\sigma}

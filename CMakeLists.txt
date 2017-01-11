@@ -38,7 +38,6 @@ include(Set_Ext_Libraries)
 add_subdirectory(common)
 add_subdirectory(lanczos)
 add_subdirectory(afqmc)
-add_subdirectory(model)
 add_subdirectory(scripts)
 
 file(RELATIVE_PATH relativeDirectorPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})

@@ -14,7 +14,7 @@ enum class SDOperationState
     WFLEFTDAGGER
 };
 
-class SDOperation
+class SDSDOperation
 {
     SDOperationState state;
     const SD *walkerLeft, *walkerRight;
@@ -22,9 +22,9 @@ class SDOperation
     tensor_hao::LUDecomp< std::complex<double> > LUOverlap;
     tensor_hao::TensorHao< std::complex<double>, 2 > wfLeftDagger;
  public:
-    SDOperation();
-    SDOperation(const SD &walkerLeft_, const SD &walkerRight_);
-    ~SDOperation();
+    SDSDOperation();
+    SDSDOperation(const SD &walkerLeft_, const SD &walkerRight_);
+    ~SDSDOperation();
 
     SDOperationState getState() const;
     const SD *getWalkerLeft() const;
@@ -40,8 +40,8 @@ class SDOperation
     tensor_hao::TensorHao< std::complex<double>, 1 > returnGreenOffDiagonal();
 
  private:
-    SDOperation(const SDOperation& x);
-    SDOperation & operator  = (const SDOperation& x);
+    SDSDOperation(const SDSDOperation& x);
+    SDSDOperation & operator  = (const SDSDOperation& x);
 
     void calculateLUOverlap();
     void calculateWfLeftDagger();
