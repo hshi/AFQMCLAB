@@ -3,6 +3,7 @@
 //
 
 #include "../include/NiupNidnSDOperation.h"
+#include "../../../walkerOperation/SDOperation/include/SDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -59,4 +60,46 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
     }
 
     walkerNew.logwRef() = conj( twoBodySample.logw ) + walker.getLogw();
+}
+
+NiupNidnForce getForce(const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight)
+{
+    size_t L = walkerLeft.getL(); size_t N = walkerLeft.getN(); size_t halfL = twoBody.getL();
+
+    if( walkerRight.getL() != L ) { cout<<"Error!!! Walker size is not consistent!"<<endl; exit(1); }
+    if( walkerRight.getN() != N ) { cout<<"Error!!! Walker size is not consistent!"<<endl; exit(1); }
+    if( L != halfL*2 ) { cout<<"Error!!! NiupNidn size is not consistent with walker!"<<endl; exit(1); }
+
+    NiupNidnForce force(halfL);
+
+    const string &decompType = twoBody.getDecompType();
+    SDOperation sdOperation(walkerLeft, walkerRight);
+
+    if( decompType == "densityCharge" )
+    {
+        TensorHao< complex<double>, 1 > greenDiagonal = sdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
+    }
+    else if( decompType == "densitySpin" )
+    {
+        TensorHao< complex<double>, 1 > greenDiagonal = sdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
+    }
+    else if( decompType == "hopCharge" )
+    {
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
+    }
+    else if( decompType == "hopSpin" )
+    {
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
+    }
+    else
+    {
+        cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
+        exit(1);
+    }
+
+    return force;
 }
