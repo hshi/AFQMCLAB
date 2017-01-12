@@ -44,12 +44,12 @@ void HubbardRealSpaceSOC::read(const string &filename)
 
     readFile( L, file );
     readFile( N, file );
-    K.resize(L,L); readFile( K.size(),  K.data(),  file );
-    mu.resize(L);  readFile( mu.size(), mu.data(), file );
-    hx.resize(L);  readFile( hx.size(), hx.data(), file );
-    hy.resize(L);  readFile( hy.size(), hy.data(), file );
-    hz.resize(L);  readFile( hz.size(), hz.data(), file );
-    U.resize(L);   readFile( U.size(),  U.data(),  file );
+    K.resize(2*L,2*L); readFile( K.size(),  K.data(),  file );
+    mu.resize(L);      readFile( mu.size(), mu.data(), file );
+    hx.resize(L);      readFile( hx.size(), hx.data(), file );
+    hy.resize(L);      readFile( hy.size(), hy.data(), file );
+    hz.resize(L);      readFile( hz.size(), hz.data(), file );
+    U.resize(L);       readFile( U.size(),  U.data(),  file );
 
     file.close();
 
@@ -92,6 +92,29 @@ void MPIBcast(HubbardRealSpaceSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.KEigenVector );
 }
 
+Hop HubbardRealSpaceSOC::returnExpAlphaK(double alpha)
+{
+    setKEigenValueAndVector();
+
+    Hop expAlphaK(2*L);
+
+    BL_NAME(gmm)( KEigenVector, dMultiMatrix( exp(alpha*KEigenValue), conjtrans(KEigenVector) ), expAlphaK.matrix);
+
+    return expAlphaK;
+}
+
 HubbardRealSpaceSOC::HubbardRealSpaceSOC(const HubbardRealSpaceSOC &x) { }
 
 HubbardRealSpaceSOC &HubbardRealSpaceSOC::operator=(const HubbardRealSpaceSOC &x) { return *this; }
+
+void HubbardRealSpaceSOC::setKEigenValueAndVector()
+{
+    if( KEigenStatus ) return;
+
+    checkHermitian(K);
+    KEigenVector = K;
+    KEigenValue.resize(2*L);
+    BL_NAME(eigen)(KEigenVector, KEigenValue);
+
+    KEigenStatus = true;
+}

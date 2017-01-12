@@ -6,6 +6,7 @@
 #define AFQMCLAB_HUBBARDREALSPACESOC_H
 
 #include "../../../../common/tensorHao/include/tensor_all.h"
+#include "../../../blocks/oneBodyOperator/hop/include/Hop.h"
 
 class HubbardRealSpaceSOC
 {
@@ -40,9 +41,13 @@ class HubbardRealSpaceSOC
     void write(const std::string &filename) const;
     friend void MPIBcast(HubbardRealSpaceSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
+    Hop returnExpAlphaK(double alpha);
+
  private:
     HubbardRealSpaceSOC(const HubbardRealSpaceSOC& x);
     HubbardRealSpaceSOC & operator  = (const HubbardRealSpaceSOC& x);
+
+    void setKEigenValueAndVector();
 };
 
 #endif //AFQMCLAB_HUBBARDREALSPACESOC_H

@@ -5,6 +5,7 @@
 #include "../include/HubbardRealSpaceSOC.h"
 #include "../../../../common/testHao/gtest_custom.h"
 #include "../../../../common/readWriteHao/include/readWriteHao.h"
+#include "../../../blocks/oneBodyWalkerOperation/hopSDOperation/include/hopSDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -21,9 +22,10 @@ TEST(HubbardRealSpaceSOCTest, voidConstruction)
 void createInputFile(const string &filename)
 {
     size_t L(10), N(5);
-    TensorHao< complex<double>, 2 > K(L,L);
+    TensorHao< complex<double>, 2 > K(2*L,2*L);
     TensorHao< double, 1> mu(L), hx(L), hy(L), hz(L), U(L);
-    randomFill(K); randomFill(mu); randomFill(hx);
+    randomFill(K);  K+=conjtrans(K);
+    randomFill(mu); randomFill(hx);
     randomFill(hy); randomFill(hz); randomFill(U);
 
     ofstream file;
@@ -32,7 +34,7 @@ void createInputFile(const string &filename)
     file<<setprecision(16)<<scientific;
     writeFile(L,file);
     writeFile(N,file);
-    writeFile( L*L, K.data(), file );
+    writeFile( 4*L*L, K.data(), file );
     writeFile( L, mu.data(), file );
     writeFile( L, hx.data(), file );
     writeFile( L, hy.data(), file );
@@ -49,6 +51,8 @@ TEST(HubbardRealSpaceSOCTest, readWriteBcast)
     MPIBarrier();
 
     HubbardRealSpaceSOC hubbardOne(filename);
+    MPIBarrier();
+
     if( MPIRank() == 0 ) hubbardOne.write(filename);
     MPIBarrier();
 
@@ -67,6 +71,38 @@ TEST(HubbardRealSpaceSOCTest, readWriteBcast)
     EXPECT_FALSE( hubbardTwo.getKEigenStatus() );
     EXPECT_FALSE( hubbardTwo.getKEigenValue().data() );
     EXPECT_FALSE( hubbardTwo.getKEigenVector().data() );
+
+    removeFile(filename);
+}
+
+TEST(HubbardRealSpaceSOCTest, returnExpAlphaK)
+{
+    string filename = "hubbard.dat";
+
+    if( MPIRank() == 0 ) createInputFile(filename);
+    MPIBarrier();
+
+    double dt = 1; size_t projectSize=100;
+    HubbardRealSpaceSOC hubbard(filename);
+    Hop expMinusDtK = hubbard.returnExpAlphaK( -dt );
+    SD walker( 2*hubbard.getL(), hubbard.getN() );
+    SD walkerNew( 2*hubbard.getL(), hubbard.getN() );
+    walker.randomFill();
+
+    for(size_t i = 0; i < projectSize; ++i)
+    {
+        applyOneBodyToRightWalker(walker, walkerNew, expMinusDtK);
+        walker = move( walkerNew );
+        walker.normalize();
+    }
+
+    const complex<double> *walkerPointer      = walker.getWf().data();
+    const complex<double> *walkerPointerExact = hubbard.getKEigenVector().data();
+
+    for(size_t i = 0; i < 2*hubbard.getL()*hubbard.getN() ; ++i)
+    {
+        EXPECT_NEAR(abs( walkerPointer[i]), abs(walkerPointerExact[i]), 1e-12 );
+    }
 
     removeFile(filename);
 }

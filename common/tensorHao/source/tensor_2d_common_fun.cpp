@@ -85,9 +85,27 @@ namespace tensor_hao
  /*******************************/
  /*Diagonal array multipy matrix*/
  /*******************************/
- TensorHao<complex<double>,2> dMultiMatrix(const TensorCore<complex<double>, 1> &D, const TensorCore<complex<double>, 2> &ph)
+
+ TensorHao<complex<double>, 2> dMultiMatrix(const TensorCore<double, 1> &D, const TensorCore<complex<double>, 2> &ph)
  {
      if(D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
+
+     size_t L0 = ph.rank(0); size_t L1 = ph.rank(1);
+     TensorHao<complex<double>,2> ph_new(L0, L1);
+
+     //The order about loop i,j is important
+     for(size_t j=0; j<L1; j++)
+     {
+         for(size_t i=0; i<L0; i++) ph_new(i,j)=D(i)*ph(i,j);
+     }
+
+     return ph_new;
+ }
+
+
+ TensorHao<complex<double>,2> dMultiMatrix(const TensorCore<complex<double>, 1> &D, const TensorCore<complex<double>, 2> &ph)
+ {
+     if( D.rank(0) != ph.rank(0) ) {cout<<"dMultiMatrix input error: D.rank(0)!=ph.rank(0)!"<<endl; exit(1);}
 
      size_t L0 = ph.rank(0); size_t L1 = ph.rank(1);
      TensorHao<complex<double>,2> ph_new(L0, L1);
@@ -136,6 +154,4 @@ namespace tensor_hao
     if( L0!=L1 ) {cout<<"pfaffian input error: A.rank(0)!=A.rank(1)!"<<endl; exit(1);}
     return pfaffian_aitken(A.data(), L0, L1);
  }
-
-
 } //end namespace tensor_hao

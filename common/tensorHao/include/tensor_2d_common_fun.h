@@ -74,7 +74,9 @@ namespace tensor_hao
  /*******************************/
  /*Diagonal array multipy matrix*/
  /*******************************/
+ TensorHao<std::complex<double>,2> dMultiMatrix(const TensorCore<double, 1> &D, const TensorCore<std::complex<double>, 2> &ph);
  TensorHao<std::complex<double>,2> dMultiMatrix(const TensorCore<std::complex<double>, 1> &D, const TensorCore<std::complex<double>, 2> &ph);
+
 
  /**********************/
  /*pfaffian of a matrix*/
