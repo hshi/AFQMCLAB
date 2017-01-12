@@ -94,7 +94,7 @@ void MPIBcast(complex<double>& buffer, int root, const MPI_Comm& comm )
 void MPIBcast(size_t count, int* buffer, int root, const MPI_Comm& comm )
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     int * bufferPerChunk = buffer;
     size_t currentChunkSize;
     for(size_t i = 0; i <= chunkNumber; ++i)
@@ -108,7 +108,7 @@ void MPIBcast(size_t count, int* buffer, int root, const MPI_Comm& comm )
 void MPIBcast(size_t count, size_t * buffer, int root, const MPI_Comm& comm )
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     size_t * bufferPerChunk = buffer;
     size_t currentChunkSize;
     for(size_t i = 0; i <= chunkNumber; ++i)
@@ -122,7 +122,7 @@ void MPIBcast(size_t count, size_t * buffer, int root, const MPI_Comm& comm )
 void MPIBcast(size_t count, double *buffer, int root, const MPI_Comm &comm)
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     double * bufferPerChunk = buffer;
     size_t currentChunkSize;
     for(size_t i = 0; i <= chunkNumber; ++i)
@@ -136,7 +136,7 @@ void MPIBcast(size_t count, double *buffer, int root, const MPI_Comm &comm)
 void MPIBcast(size_t count, complex<double>* buffer, int root, const MPI_Comm& comm )
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     complex<double> * bufferPerChunk = buffer;
     size_t currentChunkSize;
     for(size_t i = 0; i <= chunkNumber; ++i)
@@ -160,7 +160,7 @@ void MPIAllreduce(const complex<double> &sendbuf, complex<double> &recvbuf, MPI_
 void MPIAllreduce(size_t count, const double *sendbuf, double *recvbuf, MPI_Op op, const MPI_Comm& comm)
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     const double * sendbufPerChunk = sendbuf;
     double * recvbufPerChunk = recvbuf;
     size_t currentChunkSize;
@@ -175,7 +175,7 @@ void MPIAllreduce(size_t count, const double *sendbuf, double *recvbuf, MPI_Op o
 void MPIAllreduce(size_t count, const complex<double> *sendbuf, complex<double> *recvbuf, MPI_Op op, const MPI_Comm& comm)
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     const complex<double> * sendbufPerChunk = sendbuf;
     complex<double> * recvbufPerChunk = recvbuf;
     size_t currentChunkSize;
@@ -250,7 +250,7 @@ complex<double> MPISum(const complex<double>& sendbuf, int root,  const MPI_Comm
 void MPISum(size_t count, const double* sendbuf, double* recvbuf, int root, const MPI_Comm& comm)
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     const double * sendbufPerChunk = sendbuf;
     double * recvbufPerChunk = recvbuf;
     size_t currentChunkSize;
@@ -265,7 +265,7 @@ void MPISum(size_t count, const double* sendbuf, double* recvbuf, int root, cons
 void MPISum(size_t count, const complex<double>* sendbuf, complex<double>*recvbuf, int root, const MPI_Comm& comm)
 {
     size_t chunkSize = INT_MAX;
-    size_t chunkNumber = (count-1)/chunkSize;
+    size_t chunkNumber = count<1 ? 0 : (count-1)/chunkSize;
     const complex<double> * sendbufPerChunk = sendbuf;
     complex<double> * recvbufPerChunk = recvbuf;
     size_t currentChunkSize;

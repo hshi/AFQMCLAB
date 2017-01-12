@@ -32,6 +32,9 @@ class HubbardRealSpaceSOC
     const tensor_hao::TensorHao<double, 1> &getHy() const;
     const tensor_hao::TensorHao<double, 1> &getHz() const;
     const tensor_hao::TensorHao<double, 1> &getU() const;
+    bool getKEigenStatus() const;
+    const tensor_hao::TensorHao<double, 1> &getKEigenValue() const;
+    const tensor_hao::TensorHao<std::complex<double>, 2> &getKEigenVector() const;
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;

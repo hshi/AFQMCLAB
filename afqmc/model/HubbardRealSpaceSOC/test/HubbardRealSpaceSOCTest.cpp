@@ -15,6 +15,7 @@ TEST(HubbardRealSpaceSOCTest, voidConstruction)
     size_t L(0),N(0);
     EXPECT_EQ( L, hubbard.getL() );
     EXPECT_EQ( N, hubbard.getN() );
+    EXPECT_FALSE( hubbard.getKEigenStatus() );
 }
 
 void createInputFile(const string &filename)
@@ -48,21 +49,24 @@ TEST(HubbardRealSpaceSOCTest, readWriteBcast)
     MPIBarrier();
 
     HubbardRealSpaceSOC hubbardOne(filename);
-//    if( MPIRank() == 0 ) hubbardOne.write(filename);
-//    MPIBarrier();
+    if( MPIRank() == 0 ) hubbardOne.write(filename);
+    MPIBarrier();
 
-//    HubbardRealSpaceSOC hubbardTwo;
-//    if( MPIRank() == 0 ) hubbardTwo.read(filename);
-//    MPIBcast( hubbardTwo );
-//
-//    EXPECT_EQ( hubbardOne.getL(), hubbardTwo.getL() );
-//    EXPECT_EQ( hubbardOne.getN(), hubbardTwo.getN() );
-//    EXPECT_FALSE( diff(hubbardOne.getK(),  hubbardTwo.getK(),  1e-12) );
-//    EXPECT_FALSE( diff(hubbardOne.getMu(), hubbardTwo.getMu(), 1e-12) );
-//    EXPECT_FALSE( diff(hubbardOne.getHx(), hubbardTwo.getHx(), 1e-12) );
-//    EXPECT_FALSE( diff(hubbardOne.getHy(), hubbardTwo.getHy(), 1e-12) );
-//    EXPECT_FALSE( diff(hubbardOne.getHz(), hubbardTwo.getHz(), 1e-12) );
-//    EXPECT_FALSE( diff(hubbardOne.getU(),  hubbardTwo.getU(),  1e-12) );
+    HubbardRealSpaceSOC hubbardTwo;
+    if( MPIRank() == 0 ) hubbardTwo.read(filename);
+    MPIBcast( hubbardTwo );
+
+    EXPECT_EQ( hubbardOne.getL(), hubbardTwo.getL() );
+    EXPECT_EQ( hubbardOne.getN(), hubbardTwo.getN() );
+    EXPECT_FALSE( diff(hubbardOne.getK(),  hubbardTwo.getK(),  1e-12) );
+    EXPECT_FALSE( diff(hubbardOne.getMu(), hubbardTwo.getMu(), 1e-12) );
+    EXPECT_FALSE( diff(hubbardOne.getHx(), hubbardTwo.getHx(), 1e-12) );
+    EXPECT_FALSE( diff(hubbardOne.getHy(), hubbardTwo.getHy(), 1e-12) );
+    EXPECT_FALSE( diff(hubbardOne.getHz(), hubbardTwo.getHz(), 1e-12) );
+    EXPECT_FALSE( diff(hubbardOne.getU(),  hubbardTwo.getU(),  1e-12) );
+    EXPECT_FALSE( hubbardTwo.getKEigenStatus() );
+    EXPECT_FALSE( hubbardTwo.getKEigenValue().data() );
+    EXPECT_FALSE( hubbardTwo.getKEigenVector().data() );
 
     removeFile(filename);
 }

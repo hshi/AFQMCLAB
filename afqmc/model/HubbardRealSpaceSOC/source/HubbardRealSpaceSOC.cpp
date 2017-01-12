@@ -30,6 +30,12 @@ const TensorHao<double, 1> &HubbardRealSpaceSOC::getHz() const { return hz; }
 
 const TensorHao<double, 1> &HubbardRealSpaceSOC::getU() const  { return U; }
 
+bool HubbardRealSpaceSOC::getKEigenStatus() const { return KEigenStatus; }
+
+const TensorHao<double, 1> &HubbardRealSpaceSOC::getKEigenValue() const { return KEigenValue; }
+
+const TensorHao<complex<double>, 2> &HubbardRealSpaceSOC::getKEigenVector() const { return KEigenVector; }
+
 void HubbardRealSpaceSOC::read(const string &filename)
 {
     ifstream file;
@@ -48,8 +54,8 @@ void HubbardRealSpaceSOC::read(const string &filename)
     file.close();
 
     KEigenStatus = false;
-    KEigenValue.resize(1);
-//    KEigenVector.resize(0,0);
+    KEigenValue.resize( static_cast<size_t>(0) );
+    KEigenVector.resize( 0, 0 );
 }
 
 void HubbardRealSpaceSOC::write(const string &filename) const
@@ -80,7 +86,10 @@ void MPIBcast(HubbardRealSpaceSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.hy );
     MPIBcast( buffer.hz );
     MPIBcast( buffer.U  );
+
     MPIBcast( buffer.KEigenStatus );
+    MPIBcast( buffer.KEigenValue );
+    MPIBcast( buffer.KEigenVector );
 }
 
 HubbardRealSpaceSOC::HubbardRealSpaceSOC(const HubbardRealSpaceSOC &x) { }
