@@ -8,7 +8,7 @@
 using namespace std;
 using namespace tensor_hao;
 
-HubbardRealSpaceSOC::HubbardRealSpaceSOC():L(0),N(0) { }
+HubbardRealSpaceSOC::HubbardRealSpaceSOC():L(0),N(0),KEigenStatus(false) { }
 
 HubbardRealSpaceSOC::HubbardRealSpaceSOC(const string &filename) { read(filename); }
 
@@ -46,6 +46,10 @@ void HubbardRealSpaceSOC::read(const string &filename)
     U.resize(L);   readFile( U.size(),  U.data(),  file );
 
     file.close();
+
+    KEigenStatus = false;
+    KEigenValue.resize(1);
+//    KEigenVector.resize(0,0);
 }
 
 void HubbardRealSpaceSOC::write(const string &filename) const
@@ -76,4 +80,9 @@ void MPIBcast(HubbardRealSpaceSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.hy );
     MPIBcast( buffer.hz );
     MPIBcast( buffer.U  );
+    MPIBcast( buffer.KEigenStatus );
 }
+
+HubbardRealSpaceSOC::HubbardRealSpaceSOC(const HubbardRealSpaceSOC &x) { }
+
+HubbardRealSpaceSOC &HubbardRealSpaceSOC::operator=(const HubbardRealSpaceSOC &x) { return *this; }

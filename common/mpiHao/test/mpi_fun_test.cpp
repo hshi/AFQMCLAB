@@ -5,6 +5,15 @@ using namespace std;
 
 #ifdef MPI_HAO
 
+TEST (MPIBcast, bool)
+{
+    bool i= false;
+    if(MPIRank()==0) i= true;
+    MPIBcast(i);
+
+    EXPECT_TRUE( i );
+}
+
 TEST (MPIBcast, int)
 {
     int i=0;

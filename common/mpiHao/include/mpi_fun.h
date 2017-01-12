@@ -13,6 +13,7 @@ int MPIRank(const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBarrier(const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIFinalize();
 
+void MPIBcast(bool                  & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(int                   & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(long                  & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(long long             & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);

@@ -15,6 +15,10 @@ class HubbardRealSpaceSOC
     tensor_hao::TensorHao< double, 1> mu, hx, hy, hz;
     tensor_hao::TensorHao< double, 1> U;
 
+    bool KEigenStatus;
+    tensor_hao::TensorHao< double, 1 > KEigenValue;
+    tensor_hao::TensorHao< std::complex<double>, 2 > KEigenVector;
+
  public:
     HubbardRealSpaceSOC();
     HubbardRealSpaceSOC(const std::string &filename);
@@ -32,6 +36,10 @@ class HubbardRealSpaceSOC
     void read(const std::string &filename);
     void write(const std::string &filename) const;
     friend void MPIBcast(HubbardRealSpaceSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+
+ private:
+    HubbardRealSpaceSOC(const HubbardRealSpaceSOC& x);
+    HubbardRealSpaceSOC & operator  = (const HubbardRealSpaceSOC& x);
 };
 
 #endif //AFQMCLAB_HUBBARDREALSPACESOC_H

@@ -45,6 +45,11 @@ void MPIFinalize()
     MPI_Finalize();
 }
 
+void MPIBcast(bool &buffer, int root, MPI_Comm const &comm)
+{
+    MPI_Bcast(&buffer,sizeof(buffer), MPI_BYTE, root, comm);
+}
+
 void MPIBcast(int& buffer, int root, const MPI_Comm& comm )
 {
     MPI_Bcast(&buffer, 1, MPI_INT, root, comm); 
