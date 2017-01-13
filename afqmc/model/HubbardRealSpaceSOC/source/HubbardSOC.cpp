@@ -2,41 +2,41 @@
 // Created by boruoshihao on 1/11/17.
 //
 
-#include "../include/HubbardRealSpaceSOC.h"
+#include "../include/HubbardSOC.h"
 #include "../../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-HubbardRealSpaceSOC::HubbardRealSpaceSOC():L(0),N(0),KEigenStatus(false) { }
+HubbardSOC::HubbardSOC():L(0),N(0),KEigenStatus(false) { }
 
-HubbardRealSpaceSOC::HubbardRealSpaceSOC(const string &filename) { read(filename); }
+HubbardSOC::HubbardSOC(const string &filename) { read(filename); }
 
-HubbardRealSpaceSOC::~HubbardRealSpaceSOC() { }
+HubbardSOC::~HubbardSOC() { }
 
-size_t HubbardRealSpaceSOC::getL() const { return L; }
+size_t HubbardSOC::getL() const { return L; }
 
-size_t HubbardRealSpaceSOC::getN() const { return N; }
+size_t HubbardSOC::getN() const { return N; }
 
-const TensorHao<complex<double>, 2> &HubbardRealSpaceSOC::getK() const { return K; }
+const TensorHao<complex<double>, 2> &HubbardSOC::getK() const { return K; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getMu() const { return mu; }
+const TensorHao<double, 1> &HubbardSOC::getMu() const { return mu; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getHx() const { return hx; }
+const TensorHao<double, 1> &HubbardSOC::getHx() const { return hx; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getHy() const { return hy; }
+const TensorHao<double, 1> &HubbardSOC::getHy() const { return hy; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getHz() const { return hz; }
+const TensorHao<double, 1> &HubbardSOC::getHz() const { return hz; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getU() const  { return U; }
+const TensorHao<double, 1> &HubbardSOC::getU() const  { return U; }
 
-bool HubbardRealSpaceSOC::getKEigenStatus() const { return KEigenStatus; }
+bool HubbardSOC::getKEigenStatus() const { return KEigenStatus; }
 
-const TensorHao<double, 1> &HubbardRealSpaceSOC::getKEigenValue() const { return KEigenValue; }
+const TensorHao<double, 1> &HubbardSOC::getKEigenValue() const { return KEigenValue; }
 
-const TensorHao<complex<double>, 2> &HubbardRealSpaceSOC::getKEigenVector() const { return KEigenVector; }
+const TensorHao<complex<double>, 2> &HubbardSOC::getKEigenVector() const { return KEigenVector; }
 
-void HubbardRealSpaceSOC::read(const string &filename)
+void HubbardSOC::read(const string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
@@ -58,7 +58,7 @@ void HubbardRealSpaceSOC::read(const string &filename)
     KEigenVector.resize( 0, 0 );
 }
 
-void HubbardRealSpaceSOC::write(const string &filename) const
+void HubbardSOC::write(const string &filename) const
 {
     ofstream file;
     file.open(filename, ios::out|ios::trunc);
@@ -76,7 +76,7 @@ void HubbardRealSpaceSOC::write(const string &filename) const
     file.close();
 }
 
-void MPIBcast(HubbardRealSpaceSOC &buffer, int root, MPI_Comm const &comm)
+void MPIBcast(HubbardSOC &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.L  );
     MPIBcast( buffer.N  );
@@ -92,22 +92,27 @@ void MPIBcast(HubbardRealSpaceSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.KEigenVector );
 }
 
-Hop HubbardRealSpaceSOC::returnExpAlphaK(double alpha)
+Hop HubbardSOC::returnExpMinusAlphaK(double alpha)
 {
     setKEigenValueAndVector();
 
     Hop expAlphaK(2*L);
 
-    BL_NAME(gmm)( KEigenVector, dMultiMatrix( exp(alpha*KEigenValue), conjtrans(KEigenVector) ), expAlphaK.matrix);
+    BL_NAME(gmm)( KEigenVector, dMultiMatrix( exp(-alpha*KEigenValue), conjtrans(KEigenVector) ), expAlphaK.matrix);
 
     return expAlphaK;
 }
 
-HubbardRealSpaceSOC::HubbardRealSpaceSOC(const HubbardRealSpaceSOC &x) { }
+NiupNidn HubbardSOC::returnExpMinusAlphaV(double alpha, const std::string &decompType)
+{
+    return NiupNidn(alpha, decompType, U, mu, hx, hy, hz);
+}
 
-HubbardRealSpaceSOC &HubbardRealSpaceSOC::operator=(const HubbardRealSpaceSOC &x) { return *this; }
+HubbardSOC::HubbardSOC(const HubbardSOC &x) { }
 
-void HubbardRealSpaceSOC::setKEigenValueAndVector()
+HubbardSOC &HubbardSOC::operator=(const HubbardSOC &x) { return *this; }
+
+void HubbardSOC::setKEigenValueAndVector()
 {
     if( KEigenStatus ) return;
 

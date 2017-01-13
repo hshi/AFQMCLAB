@@ -2,7 +2,7 @@
 // Created by boruoshihao on 1/11/17.
 //
 
-#include "../include/HubbardRealSpaceSOC.h"
+#include "../include/HubbardSOC.h"
 #include "../../../../common/testHao/gtest_custom.h"
 #include "../../../../common/readWriteHao/include/readWriteHao.h"
 #include "../../../blocks/oneBodyWalkerOperation/hopSDOperation/include/hopSDOperation.h"
@@ -12,7 +12,7 @@ using namespace tensor_hao;
 
 TEST(HubbardRealSpaceSOCTest, voidConstruction)
 {
-    HubbardRealSpaceSOC hubbard;
+    HubbardSOC hubbard;
     size_t L(0),N(0);
     EXPECT_EQ( L, hubbard.getL() );
     EXPECT_EQ( N, hubbard.getN() );
@@ -50,13 +50,13 @@ TEST(HubbardRealSpaceSOCTest, readWriteBcast)
     if( MPIRank() == 0 ) createInputFile(filename);
     MPIBarrier();
 
-    HubbardRealSpaceSOC hubbardOne(filename);
+    HubbardSOC hubbardOne(filename);
     MPIBarrier();
 
     if( MPIRank() == 0 ) hubbardOne.write(filename);
     MPIBarrier();
 
-    HubbardRealSpaceSOC hubbardTwo;
+    HubbardSOC hubbardTwo;
     if( MPIRank() == 0 ) hubbardTwo.read(filename);
     MPIBcast( hubbardTwo );
 
@@ -83,8 +83,8 @@ TEST(HubbardRealSpaceSOCTest, returnExpAlphaK)
     MPIBarrier();
 
     double dt = 1; size_t projectSize=100;
-    HubbardRealSpaceSOC hubbard(filename);
-    Hop expMinusDtK = hubbard.returnExpAlphaK( -dt );
+    HubbardSOC hubbard(filename);
+    Hop expMinusDtK = hubbard.returnExpMinusAlphaK(dt);
     SD walker( 2*hubbard.getL(), hubbard.getN() );
     SD walkerNew( 2*hubbard.getL(), hubbard.getN() );
     walker.randomFill();

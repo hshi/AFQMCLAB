@@ -7,8 +7,9 @@
 
 #include "../../../../common/tensorHao/include/tensor_all.h"
 #include "../../../blocks/oneBodyOperator/hop/include/Hop.h"
+#include "../../../blocks/twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
-class HubbardRealSpaceSOC
+class HubbardSOC
 {
  private:
     size_t L, N;
@@ -21,9 +22,9 @@ class HubbardRealSpaceSOC
     tensor_hao::TensorHao< std::complex<double>, 2 > KEigenVector;
 
  public:
-    HubbardRealSpaceSOC();
-    HubbardRealSpaceSOC(const std::string &filename);
-    ~HubbardRealSpaceSOC();
+    HubbardSOC();
+    HubbardSOC(const std::string &filename);
+    ~HubbardSOC();
 
     size_t getL() const;
     size_t getN() const;
@@ -39,13 +40,14 @@ class HubbardRealSpaceSOC
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;
-    friend void MPIBcast(HubbardRealSpaceSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(HubbardSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
-    Hop returnExpAlphaK(double alpha);
+    Hop returnExpMinusAlphaK(double alpha);
+    NiupNidn returnExpMinusAlphaV(double alpha, const std::string &decompType);
 
  private:
-    HubbardRealSpaceSOC(const HubbardRealSpaceSOC& x);
-    HubbardRealSpaceSOC & operator  = (const HubbardRealSpaceSOC& x);
+    HubbardSOC(const HubbardSOC& x);
+    HubbardSOC & operator  = (const HubbardSOC& x);
 
     void setKEigenValueAndVector();
 };
