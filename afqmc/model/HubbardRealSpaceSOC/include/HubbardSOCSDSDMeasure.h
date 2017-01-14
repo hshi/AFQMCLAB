@@ -14,6 +14,7 @@ class HubbardSOCSDSDMeasure
     const HubbardSOC * hubbardSOC;
     std::complex<double> den;
     std::complex<double> HNum, KNum, VNum, RNum;
+    std::complex<double> NNum, SxNum, SyNum, SzNum;
     tensor_hao::TensorHao<std::complex<double>, 2> greenMatrixNum;
 
  public:
@@ -27,6 +28,7 @@ class HubbardSOCSDSDMeasure
     void write();
  private:
     void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
+    void addPartieleAndSpin(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
     void addGreenMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
 
     HubbardSOCSDSDMeasure(const HubbardSOCSDSDMeasure& x);

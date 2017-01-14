@@ -38,16 +38,21 @@ void HubbardSOCSDSDMeasure::reSet()
     KNum = zero;
     VNum = zero;
     RNum = zero;
+    NNum  = zero;
+    SxNum = zero;
+    SyNum = zero;
+    SzNum = zero;
     greenMatrixNum = zero;
 }
 
-void HubbardSOCSDSDMeasure::addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement)
+void HubbardSOCSDSDMeasure::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     den += denIncrement;
 
     TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
 
     addEnergy(greenMatrix, denIncrement);
+    addPartieleAndSpin(greenMatrix, denIncrement);
     addGreenMatrix(greenMatrix, denIncrement);
 }
 
@@ -58,6 +63,10 @@ void HubbardSOCSDSDMeasure::write()
     writeThreadSum(KNum, "KNum.dat", ios::app);
     writeThreadSum(VNum, "VNum.dat", ios::app);
     writeThreadSum(RNum, "RNum.dat", ios::app);
+    writeThreadSum(NNum,  "NNum.dat",  ios::app);
+    writeThreadSum(SxNum, "SxNum.dat", ios::app);
+    writeThreadSum(SyNum, "SyNum.dat", ios::app);
+    writeThreadSum(SzNum, "SzNum.dat", ios::app);
     writeThreadSum(greenMatrixNum.size(), greenMatrixNum.data(), "greenMatrixNum.dat", ios::app);
 }
 
@@ -103,7 +112,26 @@ void HubbardSOCSDSDMeasure::addEnergy(const TensorHao<complex<double>, 2> &green
     RNum += ( Renergy * denIncrement );
 }
 
-void HubbardSOCSDSDMeasure::addGreenMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement)
+void HubbardSOCSDSDMeasure::addPartieleAndSpin(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+{
+    complex<double> Nup(0,0), Ndn(0,0), Splus(0,0), Sminus(0,0);
+
+    size_t L  = (*hubbardSOC).getL();
+    for(size_t i = 0; i < L; ++i)
+    {
+        Nup    += greenMatrix(i,i);
+        Ndn    += greenMatrix(i+L,i+L);
+        Splus  += greenMatrix(i,i+L);
+        Sminus += greenMatrix(i+L,i);
+    }
+
+    NNum  += ( ( Nup + Ndn ) * denIncrement );
+    SzNum += ( ( Nup - Ndn ) * 0.5 * denIncrement );
+    SxNum += ( ( Splus + Sminus ) * 0.5 * denIncrement );
+    SyNum += ( ( Splus - Sminus ) * 0.5 * complex<double>(0.0, -1.0) * denIncrement );
+}
+
+void HubbardSOCSDSDMeasure::addGreenMatrix(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
 {
     size_t L2  = (*hubbardSOC).getL() * 2;
     if( greenMatrixNum.rank(0) != L2 ) greenMatrixNum.resize(L2, L2);
