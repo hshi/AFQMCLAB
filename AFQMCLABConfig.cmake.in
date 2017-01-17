@@ -9,6 +9,7 @@
 #   AFQMCLAB_LIBRARIES             - libraries to link against
 #   COMMON_LIBRARIES               - libraries to link against
 #   LANCZOS_LIBRARIES              - libraries to link against
+#   AFQMC_LIBRARIES                - libraries to link against
 #   GTESTMAINHAO_LIBRARIES         - libraries to link against, link with other *LIBRARIES.
 
 get_filename_component(AFQMCLAB_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
@@ -36,7 +37,10 @@ set(COMMON_LIBRARIES commonHao ${DEPENDENCE_LIBRARIES})
 include("${AFQMCLAB_CMAKE_DIR}/lanczosHaoTargets.cmake")
 set(LANCZOS_LIBRARIES lanczosHao commonHao ${DEPENDENCE_LIBRARIES})
 
-set(AFQMCLAB_LIBRARIES lanczosHao commonHao ${DEPENDENCE_LIBRARIES})
+include("${AFQMCLAB_CMAKE_DIR}/afqmcHaoTargets.cmake")
+set(AFQMC_LIBRARIES afqmcHao commonHao ${DEPENDENCE_LIBRARIES})
+
+set(AFQMCLAB_LIBRARIES afqmcHao lanczosHao commonHao ${DEPENDENCE_LIBRARIES})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(afqmclab  DEFAULT_MSG

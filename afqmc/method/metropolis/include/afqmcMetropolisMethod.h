@@ -6,7 +6,8 @@
 #define AFQMCLAB_AFQMCMETROPOLISMETHOD_H
 
 #include <string>
-#include "../../../../common/mpiHao/include/mpi_fun.h"
+#include "../../../afqmc.h"
+#include "../../../../common/common.h"
 
 class AfqmcMetropolisMethod
 {

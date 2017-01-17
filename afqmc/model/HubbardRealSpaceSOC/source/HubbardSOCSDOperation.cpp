@@ -2,7 +2,7 @@
 // Created by boruoshihao on 1/17/17.
 //
 
-#include "../include/HubbardSOCSDSD.h"
+#include "../include/HubbardSOCSDOperation.h"
 
 using namespace std;
 using namespace tensor_hao;

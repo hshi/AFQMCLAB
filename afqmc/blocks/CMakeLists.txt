@@ -19,3 +19,6 @@ add_library(afqmcBlocksHao STATIC
 
         $<TARGET_OBJECTS:afqmcNiupNidnSDOperationHaoObject>
         )
+
+file(RELATIVE_PATH relativeDirectorPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
+install(FILES blocks.h DESTINATION "include/${relativeDirectorPath}")

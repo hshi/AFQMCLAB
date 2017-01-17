@@ -5,7 +5,7 @@
 #ifndef AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 #define AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 
-#include "../../../model/HubbardRealSpaceSOC/include/HubbardSOCSDSD.h"
+#include "../../../afqmc.h"
 
 typedef Hop OneBody;
 

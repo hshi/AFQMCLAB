@@ -7,5 +7,6 @@
 
 #include "common/common.h"
 #include "lanczos/lanczos.h"
+#include "afqmc/afqmc.h"
 
 #endif //AFQMCLAB_AFQMCLAB_H

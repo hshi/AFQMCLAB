@@ -3,7 +3,6 @@
 //
 
 #include "../include/afqmcMetropolis.h"
-#include "../../../../common/common.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -20,6 +19,11 @@ void AfqmcMetropolis::run()
 
     initialParameters();
     estimateMemory();
+
+    if( method.timesliceSize == 0  )
+    {
+        measureWithoutProjection();
+    }
 
     timer.end();
     if( MPIRank()==0 ) { cout<<"\n\nEnd time:\n";timer.printCurrentTime(); }
@@ -56,4 +60,11 @@ void AfqmcMetropolis::initialParameters()
 void AfqmcMetropolis::estimateMemory()
 {
     //TODO: TO BE ADDED.
+}
+
+void AfqmcMetropolis::measureWithoutProjection()
+{
+    WalkerRight walkerRight;
+    WalkerLeft walkerLeft;
+
 }

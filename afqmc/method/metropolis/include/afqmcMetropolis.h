@@ -36,6 +36,10 @@ class AfqmcMetropolis
     void run();
     void initialParameters();
     void estimateMemory();
+    void measureWithoutProjection();
+
+ private:
+    void initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerRight);
 };
 
 #endif //AFQMCLAB_METROPOLIS_H

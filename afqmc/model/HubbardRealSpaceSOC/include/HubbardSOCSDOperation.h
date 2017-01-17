@@ -6,9 +6,7 @@
 #define AFQMCLAB_HUBBARDSOCSDSD_H
 
 #include "HubbardSOC.h"
-#include "HubbardSOCSDSDMeasure.h"
-#include "../../../blocks/oneBodyWalkerOperation/hopSDOperation/include/hopSDOperation.h"
-#include "../../../blocks/twoBodyWalkerOperation/NiupNidnSDOperation/include/NiupNidnSDOperation.h"
+#include "../../../blocks/walker/SD/include/SD.h"
 
 void fillWalkerRandomly(SD &walker, const HubbardSOC &model);
 void fillWalkerFromModel(SD &walker, HubbardSOC &model);

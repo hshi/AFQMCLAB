@@ -4,8 +4,6 @@
 
 #include "../include/afqmcMetropolisMethod.h"
 
-#include <fstream>
-
 using namespace std;
 
 AfqmcMetropolisMethod::AfqmcMetropolisMethod()
