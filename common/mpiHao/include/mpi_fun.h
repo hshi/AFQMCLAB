@@ -22,6 +22,7 @@ void MPIBcast(float                 & buffer, int root=0,  const MPI_Comm& comm=
 void MPIBcast(double                & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(std::complex<float>   & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(std::complex<double>  & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+void MPIBcast(std::string & buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(size_t count, int *buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(size_t count, size_t *buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 void MPIBcast(size_t count, double *buffer, int root = 0, const MPI_Comm &comm = MPI_COMM_WORLD);

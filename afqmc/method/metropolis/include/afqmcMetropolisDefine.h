@@ -1,11 +1,11 @@
 //
-// Created by boruoshihao on 1/14/17.
+// Created by boruoshihao on 1/15/17.
 //
 
-#ifndef AFQMCLAB_HUBBARDSOCSDSDDEFINE_H
-#define AFQMCLAB_HUBBARDSOCSDSDDEFINE_H
+#ifndef AFQMCLAB_AFQMCMETROPOLISDEFINE_H
+#define AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 
-#include "HubbardSOCSDSDMeasure.h"
+#include "../../../model/HubbardRealSpaceSOC/include/HubbardSOCSDSDMeasure.h"
 
 typedef Hop OneBody;
 
@@ -16,9 +16,11 @@ typedef NiupNidnSample TwoBodySample;
 
 typedef HubbardSOC Model;
 
-typedef SD  Walker;
+typedef SD  WalkerLeft;
+typedef SD  WalkerRight;
 typedef SDSDOperation WalkerWalkerOperation;
 typedef HubbardSOCSDSDMeasure ModelCommuteMeasure;
 typedef HubbardSOCSDSDMeasure ModelObserveMeasure;
 
-#endif //AFQMCLAB_HUBBARDSOCSDSDDEFINE_H
+
+#endif //AFQMCLAB_AFQMCMETROPOLISDEFINE_H

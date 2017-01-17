@@ -86,6 +86,17 @@ TEST (MPIBcast, complex_double)
     EXPECT_COMPLEXDOUBLE_EQ(complex<double>(2.0, 2.2), i);
 }
 
+TEST (MPIBcast, string)
+{
+   string i="bvd";
+    if(MPIRank()==0) i="aaacddfdfdfdfdfdcdd";
+    MPIBcast(i);
+
+    cout<<i<<endl;
+//    EXPECT_EQ("aaaccdd", i);
+}
+
+
 TEST (MPIBcast, int_pointer)
 {
     const int N = 16;

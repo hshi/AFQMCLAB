@@ -1,11 +1,14 @@
 //
-// Created by boruoshihao on 1/14/17.
+// Created by boruoshihao on 1/15/17.
 //
 
 #ifndef AFQMCLAB_METROPOLIS_H
 #define AFQMCLAB_METROPOLIS_H
 
-class Metropolis {
+#include "afqmcMetropolisDefine.h"
+
+class AfqmcMetropolis
+{
 
 };
 

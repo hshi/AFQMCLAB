@@ -90,6 +90,13 @@ void MPIBcast(complex<double>& buffer, int root, const MPI_Comm& comm )
     MPI_Bcast(&buffer, 1, MPI_DOUBLE_COMPLEX, root, comm);
 }
 
+void MPIBcast(string &buffer, int root, MPI_Comm const &comm)
+{
+    size_t bufferSize=buffer.size();
+    MPI_Bcast(&bufferSize, sizeof(bufferSize), MPI_BYTE, root, comm);
+    buffer.resize(bufferSize);
+    MPI_Bcast(&buffer[0], buffer.size(), MPI_CHAR, root, comm);
+}
 
 void MPIBcast(size_t count, int* buffer, int root, const MPI_Comm& comm )
 {
