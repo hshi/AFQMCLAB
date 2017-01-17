@@ -4,6 +4,7 @@
 
 #include "../include/NiupNidnSDOperation.h"
 #include "../../../walkerWalkerOperation/SDSDOperation/include/SDSDOperation.h"
+#include "../../../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -62,7 +63,7 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
     walkerNew.logwRef() = conj( twoBodySample.logw ) + walker.getLogw();
 }
 
-NiupNidnForce getForce(const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight)
+void getForce(NiupNidnForce& force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight)
 {
     size_t L = walkerLeft.getL(); size_t N = walkerLeft.getN(); size_t halfL = twoBody.getL();
 
@@ -70,7 +71,7 @@ NiupNidnForce getForce(const NiupNidn &twoBody, const SD &walkerLeft, const SD &
     if( walkerRight.getN() != N ) { cout<<"Error!!! Walker size is not consistent!"<<endl; exit(1); }
     if( L != halfL*2 ) { cout<<"Error!!! NiupNidn size is not consistent with walker!"<<endl; exit(1); }
 
-    NiupNidnForce force(halfL);
+    if( force.size() != halfL ) force.resize(halfL);
 
     const string &decompType = twoBody.getDecompType();
     SDSDOperation sdsdOperation(walkerLeft, walkerRight);
@@ -100,6 +101,18 @@ NiupNidnForce getForce(const NiupNidn &twoBody, const SD &walkerLeft, const SD &
         cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
         exit(1);
     }
+}
 
-    return force;
+void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const string &filename)
+{
+    size_t L = twoBody.getL();
+    if( force.size() != L ) force.resize(L);
+
+    if( !checkFile(filename) )
+    {
+        force = complex<double>(0,0);
+        return;
+    }
+
+    readFile( force.size(), force.data(), filename );
 }

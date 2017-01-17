@@ -64,4 +64,6 @@ TEST(afqmcMetropolisMethodTest, readAndBcast)
     EXPECT_EQ(static_cast<size_t>(1799), method.measureSkipTimesliceLeft);
     EXPECT_EQ(static_cast<size_t>(1799), method.measureSkipTimesliceRight);
     EXPECT_EQ(3, method.seed);
+
+    removeFile(filename);
 }

@@ -42,6 +42,7 @@ class HubbardSOC
     void write(const std::string &filename) const;
     friend void MPIBcast(HubbardSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
 
+    void setKEigenValueAndVector();
     Hop returnExpMinusAlphaK(double alpha);
     NiupNidn returnExpMinusAlphaV(double alpha, const std::string &decompType);
 
@@ -49,7 +50,6 @@ class HubbardSOC
     HubbardSOC(const HubbardSOC& x);
     HubbardSOC & operator  = (const HubbardSOC& x);
 
-    void setKEigenValueAndVector();
 };
 
 #endif //AFQMCLAB_HUBBARDREALSPACESOC_H

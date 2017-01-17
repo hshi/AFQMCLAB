@@ -92,6 +92,18 @@ void MPIBcast(HubbardSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.KEigenVector );
 }
 
+void HubbardSOC::setKEigenValueAndVector()
+{
+    if( KEigenStatus ) return;
+
+    checkHermitian(K);
+    KEigenVector = K;
+    KEigenValue.resize(2*L);
+    BL_NAME(eigen)(KEigenVector, KEigenValue);
+
+    KEigenStatus = true;
+}
+
 Hop HubbardSOC::returnExpMinusAlphaK(double alpha)
 {
     setKEigenValueAndVector();
@@ -111,15 +123,3 @@ NiupNidn HubbardSOC::returnExpMinusAlphaV(double alpha, const std::string &decom
 HubbardSOC::HubbardSOC(const HubbardSOC &x) { }
 
 HubbardSOC &HubbardSOC::operator=(const HubbardSOC &x) { return *this; }
-
-void HubbardSOC::setKEigenValueAndVector()
-{
-    if( KEigenStatus ) return;
-
-    checkHermitian(K);
-    KEigenVector = K;
-    KEigenValue.resize(2*L);
-    BL_NAME(eigen)(KEigenVector, KEigenValue);
-
-    KEigenStatus = true;
-}

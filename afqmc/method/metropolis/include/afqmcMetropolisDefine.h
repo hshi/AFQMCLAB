@@ -5,7 +5,7 @@
 #ifndef AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 #define AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 
-#include "../../../model/HubbardRealSpaceSOC/include/HubbardSOCSDSDMeasure.h"
+#include "../../../model/HubbardRealSpaceSOC/include/HubbardSOCSDSD.h"
 
 typedef Hop OneBody;
 
@@ -21,6 +21,5 @@ typedef SD  WalkerRight;
 typedef SDSDOperation WalkerWalkerOperation;
 typedef HubbardSOCSDSDMeasure ModelCommuteMeasure;
 typedef HubbardSOCSDSDMeasure ModelObserveMeasure;
-
 
 #endif //AFQMCLAB_AFQMCMETROPOLISDEFINE_H

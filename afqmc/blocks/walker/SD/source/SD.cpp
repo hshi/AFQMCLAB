@@ -34,6 +34,11 @@ size_t SD::getL() const { return wf.rank(0); }
 
 size_t SD::getN() const { return wf.rank(1); }
 
+void SD::resize(size_t L, size_t N)
+{
+    wf.resize(L, N);
+}
+
 void SD::stabilize()
 {
     logw += log( BL_NAME(QRMatrix)(wf) );

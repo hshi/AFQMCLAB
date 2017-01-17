@@ -30,6 +30,7 @@ class SD
     size_t getL() const;
     size_t getN() const;
 
+    void resize(size_t L, size_t N);
     void stabilize();
     std::complex<double> normalize();
     void randomFill();
