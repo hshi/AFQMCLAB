@@ -22,8 +22,8 @@ class AfqmcMetropolis
     std::vector<TwoBodyAux> auxiliaryFields;
     std::vector<WalkerRight> walkerRightInBlock, walkerRightSave;
     std::vector<WalkerLeft> walkerLeftInBlock, walkerLeftSave;
-    std::vector<std::complex<double>> reWeightRightInBlock, reWeightRightSave;
-    std::vector<std::complex<double>> reWeightLeftInBlock, reWeightLeftSave;
+    std::vector<std::complex<double>> logWeightRightInBlock, logWeightRightSave;
+    std::vector<std::complex<double>> logWeightLeftInBlock, logWeightLeftSave;
 
     long updateNumber, acceptNumber, singleUpdateNumber, singleAcceptNumber;
     ModelCommuteMeasure commuteMeasure;
@@ -37,9 +37,16 @@ class AfqmcMetropolis
     void initialParameters();
     void estimateMemory();
     void measureWithoutProjection();
+    void initialWalkerAndField();
 
  private:
     void initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerRight);
+    void initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRight);
+    void readField();
+    void writeField();
+
+    void addMeasurement(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight);
+    void writeAndResetMeasurement();
 };
 
 #endif //AFQMCLAB_METROPOLIS_H

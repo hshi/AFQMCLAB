@@ -18,11 +18,16 @@ void AfqmcMetropolis::run()
     if( MPIRank()==0 ) { cout<<"\nStart time:\n";timer.printCurrentTime(); }
 
     initialParameters();
+
     estimateMemory();
 
     if( method.timesliceSize == 0  )
     {
         measureWithoutProjection();
+    }
+    else
+    {
+        initialWalkerAndField();
     }
 
     timer.end();
@@ -67,4 +72,17 @@ void AfqmcMetropolis::measureWithoutProjection()
     WalkerRight walkerRight;
     WalkerLeft walkerLeft;
 
+    initialWalker(walkerLeft, walkerRight);
+    addMeasurement(walkerLeft, walkerRight);
+    writeAndResetMeasurement();
+}
+
+
+void AfqmcMetropolis::initialWalkerAndField()
+{
+    WalkerRight walkerRight;
+    WalkerLeft walkerLeft;
+
+    initialWalker(walkerLeft, walkerRight);
+    initialField(walkerLeft, walkerRight);
 }

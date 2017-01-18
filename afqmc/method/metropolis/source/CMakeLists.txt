@@ -1,5 +1,6 @@
 set(SOURCE_FILES
         afqmcMetropolis.cpp
+        afqmcMetropolisMeasure.cpp
         afqmcMetropolisSetWalkerAndField.cpp
         afqmcMetropolisMethod.cpp)
 

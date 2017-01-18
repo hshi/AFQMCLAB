@@ -11,4 +11,5 @@
 void fillWalkerRandomly(SD &walker, const HubbardSOC &model);
 void fillWalkerFromModel(SD &walker, HubbardSOC &model);
 void fillWalkerFromModelIncludePinningField(SD &walker, HubbardSOC &model);
+
 #endif //AFQMCLAB_HUBBARDSOCSDSD_H
