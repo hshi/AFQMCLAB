@@ -38,15 +38,20 @@ class AfqmcMetropolis
     void estimateMemory();
     void measureWithoutProjection();
     void initialWalkerAndField();
-
+    void thermal();
+    void measure();
+    void prepareStop();
  private:
     void initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerRight);
     void initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRight);
     void readField();
     void writeField();
 
+    void updateOneSweep(bool isMeasure);
+
     void addMeasurement(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight);
     void writeAndResetMeasurement();
+    void calculateAndPrintAcceptRatio();
 };
 
 #endif //AFQMCLAB_METROPOLIS_H

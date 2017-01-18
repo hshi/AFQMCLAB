@@ -32,3 +32,27 @@ void AfqmcMetropolis::writeAndResetMeasurement()
         observeMeasure.reSet();
     }
 }
+
+void AfqmcMetropolis::calculateAndPrintAcceptRatio()
+{
+    double totalUpdateNumber = MPISum(updateNumber);
+    double totalAcceptNumber = MPISum(acceptNumber);
+
+    if(MPIRank()==0)
+    {
+        cout<<setprecision(16);
+        cout<<"Total Number of update: "<<totalUpdateNumber<<"\n"
+            <<"Total Number of accept: "<<totalAcceptNumber<<"\n"
+            <<"Accept ratio is: "<<totalAcceptNumber/totalUpdateNumber<<"\n"<<endl;
+    }
+
+    double totalSingleUpdateNumber = MPISum(singleUpdateNumber);
+    double totalSingleAcceptNumber = MPISum(singleAcceptNumber);
+    if(MPIRank()==0)
+    {
+        cout<<setprecision(16);
+        cout<<"Total Number of single auxiliary update: "<<totalSingleUpdateNumber<<"\n"
+            <<"Total Number of single auxiliary accept: "<<totalSingleAcceptNumber<<"\n"
+            <<"Accept ratio is: "<<totalSingleAcceptNumber/totalSingleUpdateNumber<<"\n"<<endl;
+    }
+}

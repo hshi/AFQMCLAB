@@ -28,6 +28,9 @@ void AfqmcMetropolis::run()
     else
     {
         initialWalkerAndField();
+        thermal();
+        measure();
+        prepareStop();
     }
 
     timer.end();
@@ -77,7 +80,6 @@ void AfqmcMetropolis::measureWithoutProjection()
     writeAndResetMeasurement();
 }
 
-
 void AfqmcMetropolis::initialWalkerAndField()
 {
     WalkerRight walkerRight;
@@ -85,4 +87,35 @@ void AfqmcMetropolis::initialWalkerAndField()
 
     initialWalker(walkerLeft, walkerRight);
     initialField(walkerLeft, walkerRight);
+}
+
+void AfqmcMetropolis::thermal()
+{
+    if( MPIRank()==0 ) cout<<"Start thermal sweep..."<<endl;
+    for(size_t i = 0; i < method.thermalSweep; ++i)
+    {
+        if( MPIRank()==0 ) cout<<i<<endl;
+        updateOneSweep(false);
+    }
+    if( MPIRank()==0 ) cout<<endl;
+}
+
+void AfqmcMetropolis::measure()
+{
+    if( MPIRank()==0 ) cout<<"Start measure sweep..."<<endl;
+    for(size_t i = 0; i < method.measureSweep; ++i)
+    {
+        if( MPIRank()==0 ) cout<<i<<endl;
+        updateOneSweep(true);
+
+        if( (i+1) % method.writeSweep ) writeAndResetMeasurement();
+    }
+    if( MPIRank()==0 ) cout<<endl;
+}
+
+void AfqmcMetropolis::prepareStop()
+{
+    calculateAndPrintAcceptRatio();
+    writeField();
+    randomHaoSave();
 }
