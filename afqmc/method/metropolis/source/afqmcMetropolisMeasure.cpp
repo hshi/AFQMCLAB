@@ -6,6 +6,28 @@
 using namespace std;
 using namespace tensor_hao;
 
+void AfqmcMetropolis::measureWithwalkerRightInBlock(const WalkerLeft &walkerLeft, size_t inBlockIndex)
+{
+    WalkerLeft walkerLeftTemp;
+    WalkerRight walkerRightTemp;
+
+    applyOneBodyToLeftWalker(walkerLeft, walkerLeftTemp, expHalfDtK);
+    applyOneBodyToRightWalker(walkerRightInBlock[inBlockIndex+1], walkerRightTemp, expHalfDtK);
+
+    addMeasurement(walkerLeftTemp, walkerRightTemp);
+}
+
+void AfqmcMetropolis::measureWithWalkerLeftInBlock(size_t inBlockIndex, const WalkerRight &walkerRight)
+{
+    WalkerLeft walkerLeftTemp;
+    WalkerRight walkerRightTemp;
+
+    applyOneBodyToLeftWalker(walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex], walkerLeftTemp, expHalfDtK);
+    applyOneBodyToRightWalker(walkerRight, walkerRightTemp, expHalfDtK);
+
+    addMeasurement(walkerLeftTemp, walkerRightTemp);
+}
+
 void AfqmcMetropolis::addMeasurement(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight)
 {
     WalkerWalkerOperation walkerWalkerOperation(walkerLeft, walkerRight);

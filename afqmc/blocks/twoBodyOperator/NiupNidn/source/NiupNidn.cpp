@@ -186,6 +186,24 @@ NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux)
     return twoBodySample;
 }
 
+size_t NiupNidn::getAuxSize()
+{
+    return L;
+}
+
+size_t NiupNidn::getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo)
+{
+    if( auxOne.size() != auxTwo.size() ) { cout<<"Error!!! size is not consistent between auxOne and auxTwo!"<<endl; exit(1); }
+    if( auxOne.size() != L ) { cout<<"Error!!! size of auxOne is not L!"<<endl; exit(1); }
+
+    size_t diffSize(0);
+    for(size_t i = 0; i < L; ++i)
+    {
+        if( auxOne(i) != auxTwo(i) ) diffSize++;
+    }
+    return diffSize;
+}
+
 void NiupNidn::copy_deep(const NiupNidn &x)
 {
     L = x.L;

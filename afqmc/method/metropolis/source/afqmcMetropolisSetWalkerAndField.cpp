@@ -83,7 +83,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
                 logWeightRightInBlock[j] = logWeight;
             }
 
-            if( method.initalAuxiliaryFlag == "constForceInitial")
+            if( method.initalAuxiliaryFlag == "constForceInitial" )
             {
                 auxiliaryFields[currentTimeslice] = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
             }

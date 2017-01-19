@@ -46,7 +46,8 @@ class NiupNidn
     NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap=1e300);
     double logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap=1e300);
     NiupNidnSample getTwoBodySampleFromAux(const NiupNidnAux &aux);
-
+    size_t getAuxSize();
+    size_t getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo);
  private:
     void copy_deep(const NiupNidn &x);
     void move_deep(NiupNidn &x);
