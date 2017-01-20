@@ -5,7 +5,7 @@
 #ifndef AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 #define AFQMCLAB_AFQMCMETROPOLISDEFINE_H
 
-#include "../../../../afqmclab.h"
+#include "afqmclab.h"
 
 typedef Hop OneBody;
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(lanczosHubbard C CXX)
+project(afqmcMetropolis C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,8 +14,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${AFQMCLAB_FLAGS}")
 add_definitions(${AFQMCLAB_DEFINITIONS})
 
 set(SOURCE_HEADERS
-        ${CMAKE_CURRENT_LIST_DIR}/include/afqmcMetropolis.h
-        ${CMAKE_CURRENT_LIST_DIR}/include/afqmcMetropolisMethod.h
+        include/afqmcMetropolis.h
+        include/afqmcMetropolisMethod.h
         )
 
-add_subdirectory(source)
+set(SOURCE_FILES
+        source/afqmcMetropolis.cpp
+        source/afqmcMetropolisMeasure.cpp
+        source/afqmcMetropolisSetWalkerAndField.cpp
+        source/afqmcMetropolisMethod.cpp
+        source/afqmcMetropolisUpdate.cpp
+        source/main.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCE_HEADERS} ${SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})

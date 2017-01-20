@@ -121,6 +121,8 @@ Then see tutorials for detail examples.
 
   //TODO: Add estimate memory function in AFQMC. 
   
+  //TODO: After finish tutorial, change back to afqmc develop code.
+  
   //TODO: Think about metropolis code with sign problem. 
   
   //TODO: Check lanczos with Ettore's results? Use Recurse instead of full. 
