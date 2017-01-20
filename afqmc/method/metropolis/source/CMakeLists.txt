@@ -5,5 +5,5 @@ set(SOURCE_FILES
         afqmcMetropolisMethod.cpp
         afqmcMetropolisUpdate.cpp)
 
-add_library(afqmcMetropolisHubbardSDSDHaoObject OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})
-add_library(afqmcMetropolisHubbardSDSDHao STATIC $<TARGET_OBJECTS:afqmcMetropolisHubbardSDSDHaoObject>)
+add_library(afqmcMetropolisHaoObject OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})
+add_library(afqmcMetropolisHao STATIC $<TARGET_OBJECTS:afqmcMetropolisHaoObject>)

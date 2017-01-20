@@ -121,7 +121,9 @@ Then see tutorials for detail examples.
 
   //TODO: Add estimate memory function in AFQMC. 
   
-  //TODO: Think carefully about currentLogOverlap? Used for the case with sign problem?
+  //TODO: Think about metropolis code with sign problem. 
+  
+  //TODO: Check lanczos with Ettore's results? Use Recurse instead of full. 
   
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
