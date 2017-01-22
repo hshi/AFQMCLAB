@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 
     if( argc<2 )
     {
-        cout<<"Error!!! Need input file name, example: ./dataManipulateHubbardSOC model_param !"<<endl;
+        cout<<"Error!!! Need input file name, example: ./generateNumeratorHubbardSOC model_param !"<<endl;
         exit(1);
     }
     string modelFilename = argv[1];
