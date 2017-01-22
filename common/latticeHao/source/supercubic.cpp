@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <tuple>
 #include "../include/supercubic.h"
 
 using namespace std;

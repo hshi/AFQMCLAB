@@ -5,6 +5,7 @@
 #ifndef AFQMCLAB_READWRITESTRINGFILE_H
 #define AFQMCLAB_READWRITESTRINGFILE_H
 
+#include <iostream>
 #include <fstream>
 #include <iomanip>
 
