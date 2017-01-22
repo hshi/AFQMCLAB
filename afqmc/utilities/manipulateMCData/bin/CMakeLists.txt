@@ -1,0 +1,7 @@
+add_executable(NumDenErrorAnalysis NumDenErrorAnalysis.cpp)
+target_link_libraries(NumDenErrorAnalysis commonHao ${EXT_LIBRARIES})
+install(TARGETS NumDenErrorAnalysis DESTINATION bin)
+
+add_executable(NumArrayDenErrorAnalysis NumArrayDenErrorAnalysis.cpp)
+target_link_libraries(NumArrayDenErrorAnalysis commonHao ${EXT_LIBRARIES})
+install(TARGETS NumArrayDenErrorAnalysis DESTINATION bin)

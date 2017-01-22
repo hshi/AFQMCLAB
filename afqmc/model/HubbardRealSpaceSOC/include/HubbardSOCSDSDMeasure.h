@@ -14,8 +14,11 @@ class HubbardSOCSDSDMeasure
     const HubbardSOC * hubbardSOC;
     std::complex<double> den;
     std::complex<double> HNum, KNum, VNum, RNum;
-    std::complex<double> NNum, SxNum, SyNum, SzNum;
     tensor_hao::TensorHao<std::complex<double>, 2> greenMatrixNum;
+    tensor_hao::TensorHao<std::complex<double>, 2> densityDensityNum;
+    tensor_hao::TensorHao<std::complex<double>, 2> splusSminusNum;
+    tensor_hao::TensorHao<std::complex<double>, 2> sminusSplusNum;
+    tensor_hao::TensorHao<std::complex<double>, 2> spairSpairNum;
 
  public:
     HubbardSOCSDSDMeasure();
@@ -28,8 +31,11 @@ class HubbardSOCSDSDMeasure
     void write();
  private:
     void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
-    void addPartieleAndSpin(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
     void addGreenMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
+    void addDensityDensity(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
+    void addSplusSminus(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
+    void addSminusSplus(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
+    void addSpairSpair(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
 
     HubbardSOCSDSDMeasure(const HubbardSOCSDSDMeasure& x);
     HubbardSOCSDSDMeasure & operator  = (const HubbardSOCSDSDMeasure& x);

@@ -1,0 +1,3 @@
+add_executable(dataManipulateHubbardSOC dataManipulateHubbardSOC.cpp)
+target_link_libraries(dataManipulateHubbardSOC commonHao ${EXT_LIBRARIES})
+install(TARGETS dataManipulateHubbardSOC DESTINATION bin)

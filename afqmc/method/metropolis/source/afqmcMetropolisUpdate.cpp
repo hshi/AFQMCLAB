@@ -133,11 +133,11 @@ void AfqmcMetropolis::updateToLeftOneSweep(bool isMeasure)
 void AfqmcMetropolis::updateToRightOneStep(size_t inBlockIndex, WalkerLeft &walkerLeft, complex<double> &logWeight)
 {
     TwoBodyAux auxNew;
-    if( method.initalAuxiliaryFlag == "constForce" )
+    if( method.forceType == "constForce" )
     {
         auxNew = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
     }
-    else if( method.initalAuxiliaryFlag == "dynamicForce" )
+    else if( method.forceType == "dynamicForce" )
     {
         getForce( dynamicForce, expMinusDtV, walkerLeft, walkerRightInBlock[inBlockIndex] );
         auxNew = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);
@@ -162,7 +162,7 @@ void AfqmcMetropolis::updateToRightOneStep(size_t inBlockIndex, WalkerLeft &walk
 
     if( uniformHao() < alpha )
     {
-        acceptNumber++; singleUpdateNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
+        acceptNumber++; singleAcceptNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
         auxiliaryFields[currentTimeslice] = move(auxNew);
         currentLogOverlap = logOverlapNew;
         applyOneBodyToLeftWalker(walkerLeftTemp, walkerLeft, expMinusDtK);
@@ -188,11 +188,11 @@ void AfqmcMetropolis::updateToRightOneStep(size_t inBlockIndex, WalkerLeft &walk
 void AfqmcMetropolis::updateToLeftOneStep(size_t inBlockIndex, WalkerRight &walkerRight, complex<double> &logWeight)
 {
     TwoBodyAux auxNew;
-    if( method.initalAuxiliaryFlag == "constForce" )
+    if( method.forceType == "constForce" )
     {
         auxNew = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
     }
-    else if( method.initalAuxiliaryFlag == "dynamicForce" )
+    else if( method.forceType == "dynamicForce" )
     {
         getForce( dynamicForce, expMinusDtV, walkerLeftInBlock[method.timesliceBlockSize-1-inBlockIndex], walkerRight );
         auxNew = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);
@@ -217,7 +217,7 @@ void AfqmcMetropolis::updateToLeftOneStep(size_t inBlockIndex, WalkerRight &walk
 
     if( uniformHao() < alpha )
     {
-        acceptNumber++; singleUpdateNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
+        acceptNumber++; singleAcceptNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
         auxiliaryFields[currentTimeslice] = move(auxNew);
         currentLogOverlap = logOverlapNew;
         applyOneBodyToRightWalker(walkerRightTemp, walkerRight, expMinusDtK);
@@ -306,11 +306,11 @@ void AfqmcMetropolis::setBlockFromLeftToRight(size_t rightBlockIndex)
 
 double AfqmcMetropolis::returnLogProbOfAux(const TwoBodyAux &twoBodyAux)
 {
-    if( method.initalAuxiliaryFlag == "constForce" )
+    if( method.forceType == "constForce" )
     {
         return expMinusDtV.logProbOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
     }
-    else if( method.initalAuxiliaryFlag == "dynamicForce" )
+    else if( method.forceType == "dynamicForce" )
     {
         return expMinusDtV.logProbOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
     }

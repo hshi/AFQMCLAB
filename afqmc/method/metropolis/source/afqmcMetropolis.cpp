@@ -100,7 +100,11 @@ void AfqmcMetropolis::measure()
         if( MPIRank()==0 ) cout<<i<<endl;
         updateOneSweep(true);
 
-        if( (i+1) % method.writeSweep ) writeAndResetMeasurement();
+        if( (i+1) % method.writeSweep == 0 )
+        {
+            cout<<i<<endl;
+            writeAndResetMeasurement();
+        }
     }
     if( MPIRank()==0 ) cout<<endl;
 }

@@ -10,6 +10,7 @@
 
 bool checkFile (const std::string &filename);
 void removeFile(const std::string &filename);
+size_t getFileLineSize(const std::string &filename);
 
 //For read
 template<class T> void readFile(T &data, const std::string &filename)

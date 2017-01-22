@@ -13,10 +13,6 @@ AfqmcMetropolis::~AfqmcMetropolis() { }
 
 void AfqmcMetropolis::run()
 {
-    TimerHao timer;
-    timer.start();
-    if( MPIRank()==0 ) { cout<<"\nStart time:\n";timer.printCurrentTime(); }
-
     initialParameters();
 
     estimateMemory();
@@ -32,10 +28,6 @@ void AfqmcMetropolis::run()
         measure();
         prepareStop();
     }
-
-    timer.end();
-    if( MPIRank()==0 ) { cout<<"\n\nEnd time:\n";timer.printCurrentTime(); }
-    if( MPIRank()==0 ) { cout<<"The program's running walltime is:\n"; timer.printFormat();}
 }
 
 void AfqmcMetropolis::initialParameters()
@@ -108,7 +100,11 @@ void AfqmcMetropolis::measure()
         if( MPIRank()==0 ) cout<<i<<endl;
         updateOneSweep(true);
 
-        if( (i+1) % method.writeSweep ) writeAndResetMeasurement();
+        if( (i+1) % method.writeSweep == 0 )
+        {
+            cout<<i<<endl;
+            writeAndResetMeasurement();
+        }
     }
     if( MPIRank()==0 ) cout<<endl;
 }

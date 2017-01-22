@@ -3,13 +3,13 @@ import os
 sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
-latt_n  = [3,4]
+latt_n  = [3,3]
 ktwist  = [0.12,0.34]
 t1      = 1.0
-U       = 4.0
-Nup     = 2
-Ndn     = 3
-UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
+U       = -4.0
+Nup     = 5
+Ndn     = 5
+UpDnFlag = 1    # 0 up=dn, 1 up=conj(dn) ==> different twist
 
 #Set lattice information
 latt = Latt_class( latt_n )
@@ -17,7 +17,7 @@ up_i, up_j, up_K = HubbardNearestNeighborHopping(latt, ktwist, t1)
 if UpDnFlag == 0:
     dn_i = up_i; dn_j = up_j; dn_K = up_K
 elif UpDnFlag == 1:
-    dn_i, dn_j, dn_K = HubbardNearestNeighborHopping(latt, -ktwist, t1)
+    dn_i, dn_j, dn_K = HubbardNearestNeighborHopping(latt, -np.array(ktwist), t1)
 else:
     print "WRONG!!! Do not know UpDnFlag!!!"
     sys.exit(1)

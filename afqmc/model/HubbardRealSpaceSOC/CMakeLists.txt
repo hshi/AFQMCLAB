@@ -8,3 +8,4 @@ set(SOURCE_HEADERS
 add_subdirectory(include)
 add_subdirectory(source)
 add_subdirectory(test)
+add_subdirectory(bin)

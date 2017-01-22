@@ -119,11 +119,19 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Change bin name
+  
+  //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
+  
+  //TODO: Infinite variance?
+  
   //TODO: Add estimate memory function in AFQMC. 
   
   //TODO: After finish tutorial, change back to afqmc develop code.
   
   //TODO: Think about metropolis code with sign problem. 
+  
+  //TODO: After test, add find_block in scripts 
   
   //TODO: Check lanczos with Ettore's results? Use Recurse instead of full. 
   

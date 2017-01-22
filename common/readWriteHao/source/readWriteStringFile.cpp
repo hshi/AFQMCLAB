@@ -21,3 +21,13 @@ void removeFile(const string &filename)
     if( MPIRank()==0 ) system( command.c_str() );
     MPIBarrier();
 }
+
+size_t getFileLineSize(const std::string &filename)
+{
+    ifstream file(filename);
+    string line;
+    size_t lineSize(0);
+    while( getline(file, line) ) lineSize++;
+    file.close();
+    return lineSize;
+}

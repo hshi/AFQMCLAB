@@ -38,11 +38,11 @@ void HubbardSOCSDSDMeasure::reSet()
     KNum = zero;
     VNum = zero;
     RNum = zero;
-    NNum  = zero;
-    SxNum = zero;
-    SyNum = zero;
-    SzNum = zero;
     greenMatrixNum = zero;
+    densityDensityNum = zero;
+    splusSminusNum = zero;
+    sminusSplusNum = zero;
+    spairSpairNum = zero;
 }
 
 void HubbardSOCSDSDMeasure::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
@@ -52,8 +52,11 @@ void HubbardSOCSDSDMeasure::addMeasurement(SDSDOperation &sdsdOperation, complex
     TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
 
     addEnergy(greenMatrix, denIncrement);
-    addPartieleAndSpin(greenMatrix, denIncrement);
     addGreenMatrix(greenMatrix, denIncrement);
+    addDensityDensity(greenMatrix, denIncrement);
+    addSplusSminus(greenMatrix, denIncrement);
+    addSminusSplus(greenMatrix, denIncrement);
+    addSpairSpair(greenMatrix, denIncrement);
 }
 
 void HubbardSOCSDSDMeasure::write()
@@ -63,11 +66,11 @@ void HubbardSOCSDSDMeasure::write()
     writeThreadSum(KNum, "KNum.dat", ios::app);
     writeThreadSum(VNum, "VNum.dat", ios::app);
     writeThreadSum(RNum, "RNum.dat", ios::app);
-    writeThreadSum(NNum,  "NNum.dat",  ios::app);
-    writeThreadSum(SxNum, "SxNum.dat", ios::app);
-    writeThreadSum(SyNum, "SyNum.dat", ios::app);
-    writeThreadSum(SzNum, "SzNum.dat", ios::app);
     writeThreadSum(greenMatrixNum.size(), greenMatrixNum.data(), "greenMatrixNum.dat", ios::app);
+    writeThreadSum(densityDensityNum.size(), densityDensityNum.data(), "densityDensityNum.dat", ios::app);
+    writeThreadSum(splusSminusNum.size(), splusSminusNum.data(), "splusSminusNum.dat", ios::app);
+    writeThreadSum(sminusSplusNum.size(), sminusSplusNum.data(), "sminusSplusNum.dat", ios::app);
+    writeThreadSum(spairSpairNum.size(), spairSpairNum.data(), "spairSpairNum.dat", ios::app);
 }
 
 void HubbardSOCSDSDMeasure::addEnergy(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
@@ -112,31 +115,93 @@ void HubbardSOCSDSDMeasure::addEnergy(const TensorHao<complex<double>, 2> &green
     RNum += ( Renergy * denIncrement );
 }
 
-void HubbardSOCSDSDMeasure::addPartieleAndSpin(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
-{
-    complex<double> Nup(0,0), Ndn(0,0), Splus(0,0), Sminus(0,0);
-
-    size_t L  = (*hubbardSOC).getL();
-    for(size_t i = 0; i < L; ++i)
-    {
-        Nup    += greenMatrix(i,i);
-        Ndn    += greenMatrix(i+L,i+L);
-        Splus  += greenMatrix(i,i+L);
-        Sminus += greenMatrix(i+L,i);
-    }
-
-    NNum  += ( ( Nup + Ndn ) * denIncrement );
-    SzNum += ( ( Nup - Ndn ) * 0.5 * denIncrement );
-    SxNum += ( ( Splus + Sminus ) * 0.5 * denIncrement );
-    SyNum += ( ( Splus - Sminus ) * 0.5 * complex<double>(0.0, -1.0) * denIncrement );
-}
-
 void HubbardSOCSDSDMeasure::addGreenMatrix(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
 {
     size_t L2  = (*hubbardSOC).getL() * 2;
     if( greenMatrixNum.rank(0) != L2 ) greenMatrixNum.resize(L2, L2);
 
     greenMatrixNum += ( greenMatrix * denIncrement );
+}
+
+void HubbardSOCSDSDMeasure::addDensityDensity(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+{
+    size_t L2  = (*hubbardSOC).getL() * 2;
+    if( densityDensityNum.rank(0) != L2 ) densityDensityNum.resize(L2, L2);
+
+    complex<double> temp;
+    for(size_t j = 0; j < L2; ++j)
+    {
+        for(size_t i = 0; i < L2; ++i)
+        {
+            if( i==j ) temp = greenMatrix(i,i);
+            else temp = greenMatrix(i,i) * greenMatrix(j,j) - greenMatrix(i,j)*greenMatrix(j,i);
+            densityDensityNum(i, j) += ( temp * denIncrement );
+        }
+    }
+}
+
+void HubbardSOCSDSDMeasure::addSplusSminus(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+{
+    size_t L   = (*hubbardSOC).getL();
+    if( splusSminusNum.rank(0) != L ) splusSminusNum.resize(L, L);
+
+    complex<double> temp;
+    for(size_t j = 0; j < L; ++j)
+    {
+        for(size_t i = 0; i < L; ++i)
+        {
+            if( i==j )
+            {
+                temp  = greenMatrix(i,i);
+                temp -= ( greenMatrix(i,i)*greenMatrix(i+L,i+L)-greenMatrix(i,i+L)*greenMatrix(i+L,i) );
+            }
+            else
+            {
+                temp = -greenMatrix(i,j)*greenMatrix(j+L,i+L)+greenMatrix(i,i+L)*greenMatrix(j+L, j);
+            }
+            splusSminusNum(i,j) += ( temp * denIncrement );
+        }
+    }
+}
+
+void HubbardSOCSDSDMeasure::addSminusSplus(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+{
+    size_t L   = (*hubbardSOC).getL();
+    if( sminusSplusNum.rank(0) != L ) sminusSplusNum.resize(L, L);
+
+    complex<double> temp;
+    for(size_t j = 0; j < L; ++j)
+    {
+        for(size_t i = 0; i < L; ++i)
+        {
+            if( i==j )
+            {
+                temp  = greenMatrix(i+L, i+L);
+                temp -= ( greenMatrix(i,i)*greenMatrix(i+L,i+L)-greenMatrix(i,i+L)*greenMatrix(i+L,i) );
+            }
+            else
+            {
+                temp = -greenMatrix(i+L,j+L)*greenMatrix(j,i)+greenMatrix(i+L,i)*greenMatrix(j, j+L);
+            }
+            sminusSplusNum(i,j) += ( temp * denIncrement );
+        }
+    }
+}
+
+void HubbardSOCSDSDMeasure::addSpairSpair(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+{
+    size_t L   = (*hubbardSOC).getL();
+    if( spairSpairNum.rank(0) != L ) spairSpairNum.resize(L, L);
+
+    complex<double> temp;
+    for(size_t j=0; j<L; j++)
+    {
+        for(size_t i=0; i<L; i++)
+        {
+            temp = greenMatrix(i,j)*greenMatrix(i+L,j+L)-greenMatrix(i,j+L)*greenMatrix(i+L,j);
+            spairSpairNum(i,j) += ( temp * denIncrement );
+        }
+    }
 }
 
 HubbardSOCSDSDMeasure::HubbardSOCSDSDMeasure(const HubbardSOCSDSDMeasure &x)
