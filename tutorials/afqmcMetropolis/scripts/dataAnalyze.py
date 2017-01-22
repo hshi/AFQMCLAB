@@ -68,6 +68,26 @@ if os.path.isfile('./greenMatrixNum.dat'):
     subprocess.call( os.environ['AFQMCLAB_DIR']+
                      "/bin/NumArrayDenErrorAnalysis greenMatrixNum.dat den.dat greenMatrix_{1:d}_Average.dat {0:d} {1:d}".format(4*L*L, blockSize),shell=True)
 
+if os.path.isfile('./densityDensityNum.dat'):
+    print "\033[1m" "Calculate densityDensityAverage." "\033[0m"
+    subprocess.call( os.environ['AFQMCLAB_DIR']+
+    "/bin/NumArrayDenErrorAnalysis densityDensityNum.dat den.dat densityDensity_{1:d}_Average.dat {0:d} {1:d}".format(4*L*L, blockSize),shell=True)
+
+if os.path.isfile('./splusSminusNum.dat'):
+    print "\033[1m" "Calculate splusSminusAverage." "\033[0m"
+    subprocess.call( os.environ['AFQMCLAB_DIR']+
+    "/bin/NumArrayDenErrorAnalysis splusSminusNum.dat den.dat splusSminus_{1:d}_Average.dat {0:d} {1:d}".format(L*L, blockSize),shell=True)
+
+if os.path.isfile('./sminusSplusNum.dat'):
+    print "\033[1m" "Calculate sminusSplusAverage." "\033[0m"
+    subprocess.call( os.environ['AFQMCLAB_DIR']+
+    "/bin/NumArrayDenErrorAnalysis sminusSplusNum.dat den.dat sminusSplus_{1:d}_Average.dat {0:d} {1:d}".format(L*L, blockSize),shell=True)
+
+if os.path.isfile('./spairSpairNum.dat'):
+    print "\033[1m" "Calculate spairSpairAverage." "\033[0m"
+    subprocess.call( os.environ['AFQMCLAB_DIR']+
+    "/bin/NumArrayDenErrorAnalysis spairSpairNum.dat den.dat spairSpair_{1:d}_Average.dat {0:d} {1:d}".format(L*L, blockSize),shell=True)
+
 if os.path.isfile('./NupNum.dat'):
     print "\033[1m" "Calculate NupAverage." "\033[0m"
     subprocess.call( os.environ['AFQMCLAB_DIR']+"/bin/NumArrayDenErrorAnalysis NupNum.dat den.dat Nup_{1:d}_Average.dat {0:d} {1:d}".format(L, blockSize),shell=True)

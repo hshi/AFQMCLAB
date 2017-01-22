@@ -3,7 +3,7 @@ import os
 sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
-latt_n  = [3,3]
+latt_n  = [3,4]
 ktwist  = [0.12,0.34]
 t1      = 1.0
 U       = -4.0

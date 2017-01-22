@@ -122,6 +122,8 @@ Then see tutorials for detail examples.
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
   
   //TODO: Infinite variance?
+
+  //TODO: Use derived class to split measure Commute and measure all.
   
   //TODO: Add estimate memory function in AFQMC. 
   

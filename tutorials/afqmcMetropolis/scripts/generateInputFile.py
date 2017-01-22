@@ -4,7 +4,7 @@ sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
 #Model Parameter
-latt_n   = [3,3]
+latt_n   = [3,4]
 ktwist   = [0.12,0.34]
 t1       = 1.0
 U        = -4.0
@@ -54,7 +54,7 @@ decompType                =  "densityCharge" # "densityCharge", "densitySpin", "
 forceType                 =  "dynamicForce"  # "dynamicForce", "constForce"
 sampleCap                 =  1.0
 thermalSweep              =  10
-measureSweep              =  50
+measureSweep              =  2000
 writeSweep                =  2
 stabilizeStep             =  10
 timesliceSize             =  6400
@@ -64,8 +64,8 @@ initalAuxiliaryFlag       =  "dynamicForceInitial" #"dynamicForceInitial", "cons
 measureType               =  "commute"  #"commute", "observable"
 measureVarianceType       =  "normal"   #"normal", "fixVariance"
 measureSkipTimesliceStep  =  20
-measureSkipTimesliceLeft  =  0
-measureSkipTimesliceRight =  0
+measureSkipTimesliceLeft  =  1999
+measureSkipTimesliceRight =  1999
 seed                      =  985456376  # -1. read file, 0. random, else is seeds
 
 #write method_param
