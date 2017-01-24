@@ -119,11 +119,15 @@ Then see tutorials for detail examples.
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 
+  //TODO: Why it is not good about writing GreenNum in Comet, sumbitted a ticket, wait for results?
+
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
   
   //TODO: Infinite variance?
 
   //TODO: Use derived class to split measure Commute and measure all.
+  
+  //TODO: Run three band for Ettore, imagninary time density density correlation.
   
   //TODO: Add estimate memory function in AFQMC. 
   

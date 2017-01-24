@@ -18,7 +18,9 @@ void writeThreadSum(T data, const std::string& filename, std::ios_base::openmode
 template<class T>
 void writeThreadSum(size_t L, const T *data, const std::string& filename, std::ios_base::openmode type= std::ios::trunc)
 {
-    std::vector<T> dataSum(L);
+    size_t dataSumSize(1); if( MPIRank()==0 ) dataSumSize=L;
+
+    std::vector<T> dataSum(dataSumSize);
     MPISum( L, data, dataSum.data() );
     if( MPIRank()==0 ) writeFile(L, dataSum.data(), filename, type);
 }

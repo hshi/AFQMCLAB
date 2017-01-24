@@ -37,7 +37,6 @@ void AfqmcMetropolis::initialParameters()
 
     randomHaoInit(method.seed, 1);
     if( method.seed != -1 ) randomHaoSave();
-    randomHaoBackup();
 
     if( MPIRank()==0 ) model.read("model_param");
     MPIBcast(model);
@@ -102,7 +101,6 @@ void AfqmcMetropolis::measure()
 
         if( (i+1) % method.writeSweep == 0 )
         {
-            cout<<i<<endl;
             writeAndResetMeasurement();
         }
     }

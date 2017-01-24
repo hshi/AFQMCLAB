@@ -32,7 +32,7 @@ void randomHaoRead()
     char buffer[MAX_PACKED_LENGTH];
 
     int rank=MPIRank();
-    string filename="random_checkpoint_"+ to_string(rank) +".dat";
+    string filename="./random/checkpoint_"+ to_string(rank) +".dat";
     FILE *fp = fopen(filename.c_str(),"r"); //use the example code from sprng
     fread(&size,1,sizeof(int),fp);
     fread(buffer,1,size,fp);
@@ -42,35 +42,29 @@ void randomHaoRead()
 
 void randomHaoSave()
 {
+    //Backup random seeds generated before
+    MPIBarrier();
+    if( MPIRank() == 0)
+    {
+        system("mkdir -p random");
+        system("rm -rf random.bk");
+        system("mkdir -p random.bk");
+        system("mv random/* random.bk");
+    }
+    MPIBarrier();
+
     int size;
     char *bytes;
 
     size = pack_sprng(&bytes);
 
     int rank=MPIRank();
-    string filename="random_checkpoint_"+ to_string(rank) +".dat";
+    string filename="./random/checkpoint_"+ to_string(rank) +".dat";
     FILE *fp = fopen(filename.c_str(),"w"); //use the example code from sprng 
     fwrite(&size,1,sizeof(int),fp); 
     fwrite(bytes,1,size,fp); 
     fclose(fp);
     free(bytes);	
-}
-
-void randomHaoBackup()
-{
-    int rank=MPIRank();
-
-    MPIBarrier();
-
-    //Use MPI_Barrier before and after, make sure all seeds has been generated and has not been removed.
-    if(rank == 0)
-    {
-        system("rm -rf random.bk");
-        system("mkdir -p random.bk");
-        system("mv random_checkpoint* random.bk");
-    }
-
-    MPIBarrier();
 }
 
 double uniformHao()

@@ -119,7 +119,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
 void AfqmcMetropolis::readField()
 {
     auxiliaryFields.resize( method.timesliceSize );
-    string filename="auxiliaryFields_" + to_string( MPIRank() ) +".dat";
+    string filename="./auxiliary/fields_" + to_string( MPIRank() ) +".dat";
     ifstream file;
     file.open(filename, ios::in);
     if ( ! file.is_open() ) { cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
@@ -132,10 +132,22 @@ void AfqmcMetropolis::readField()
 
 void AfqmcMetropolis::writeField()
 {
+    //Backup auxiliary fields generated before
+    MPIBarrier();
+    if( MPIRank() == 0)
+    {
+        system("mkdir -p auxiliary");
+        system("rm -rf auxiliary.bk");
+        system("mkdir -p auxiliary.bk");
+        system("mv auxiliary/* auxiliary.bk");
+    }
+    MPIBarrier();
+
+    //Start to write fields
     TimerHao timer;
     timer.start();
 
-    string filename="auxiliaryFields_" + to_string( MPIRank() ) +".dat";
+    string filename="./auxiliary/fields_" + to_string( MPIRank() ) +".dat";
     ofstream file;
     file.open(filename, ios::out|ios::trunc);
     if ( ! file.is_open() ) { cout << "Error opening file in File!!! "<<filename<<endl; exit(1); }

@@ -15,7 +15,6 @@
 void randomHaoInit(int seed = 985456376, int gtype = 1);
 void randomHaoSave();
 void randomHaoRead();
-void randomHaoBackup();
 double uniformHao();
 double gaussianHao();
 
