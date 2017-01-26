@@ -1,6 +1,7 @@
 set(SOURCE_FILES
         HubbardSOC.cpp
-        HubbardSOCSDSDMeasure.cpp
+        HubbardSOCSDSDMeasureCommute.cpp
+        HubbardSOCSDSDMeasureObserve.cpp
         HubbardSOCSDOperation.cpp)
 
 add_library(afqmcHubbardRealSpaceSOCHaoObject OBJECT ${SOURCE_HEADERS} ${SOURCE_FILES})

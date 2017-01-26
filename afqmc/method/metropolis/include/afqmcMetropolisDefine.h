@@ -19,7 +19,7 @@ typedef HubbardSOC Model;
 typedef SD  WalkerLeft;
 typedef SD  WalkerRight;
 typedef SDSDOperation WalkerWalkerOperation;
-typedef HubbardSOCSDSDMeasure ModelCommuteMeasure;
-typedef HubbardSOCSDSDMeasure ModelObserveMeasure;
+typedef HubbardSOCSDSDMeasureCommute ModelCommuteMeasure;
+typedef HubbardSOCSDSDMeasureObserve ModelObserveMeasure;
 
 #endif //AFQMCLAB_AFQMCMETROPOLISDEFINE_H

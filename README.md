@@ -76,7 +76,7 @@ Then see tutorials for detail examples.
 
     - Change platform for particlular build type.
 
-      It can be _STORM_, _HURRIANCE_, _COMET_..., details are in AFQMCLAB/cmake/PLATFORM_*.cmake.
+      It can be _STORM_, _HURRICANE_, _COMET_..., details are in AFQMCLAB/cmake/PLATFORM_*.cmake.
 
             cmake .. -DPLATFORM=platform
 
@@ -124,8 +124,6 @@ Then see tutorials for detail examples.
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
   
   //TODO: Infinite variance?
-
-  //TODO: Use derived class to split measure Commute and measure all.
   
   //TODO: Run three band for Ettore, imagninary time density density correlation.
   
