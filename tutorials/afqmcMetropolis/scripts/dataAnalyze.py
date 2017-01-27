@@ -12,8 +12,9 @@ firstLine =  f.readline()
 L =  int(firstLine)
 f.close()
 
-print "\033[1m" "Manipulate data to generate other numerator files." "\033[0m"
-subprocess.call( os.environ['AFQMCLAB_DIR']+"/bin/generateNumeratorHubbardSOC model_param", shell=True)
+if os.path.isfile('./greenMatrixNum.dat'):
+    print "\033[1m" "Manipulate data to generate other numerator files." "\033[0m"
+    subprocess.call( os.environ['AFQMCLAB_DIR']+"/bin/generateNumeratorHubbardSOC model_param", shell=True)
 
 if os.path.isfile('./HNum.dat'):
     print "\033[1m" "Calculate HAverage." "\033[0m"

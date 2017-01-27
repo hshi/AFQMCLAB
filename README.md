@@ -124,9 +124,7 @@ Then see tutorials for detail examples.
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
   
   //TODO: Infinite variance?
-  
-  //TODO: Run three band for Ettore, imagninary time density density correlation.
-  
+    
   //TODO: Add estimate memory function in AFQMC. 
   
   //TODO: After finish tutorial, change back to afqmc develop code.

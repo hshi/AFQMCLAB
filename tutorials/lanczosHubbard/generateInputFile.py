@@ -25,16 +25,21 @@ else:
 #Write to file
 f = open("model_param", 'w')
 f.write( '{:16d} {:16d} {:16d} \n'.format(latt.L, Nup, Ndn) )
+#for up
 f.write( '{:16d} \n'.format( len( up_K ) ) )
 for i in range( len(up_K) ):
     f.write( '{:16d} {:16d} {:26.18e} {:26.18e} \n'.format( up_i[i], up_j[i], up_K[i].real,  up_K[i].imag ) )
+#for dn
 f.write( '{:16d} \n'.format( len( dn_K ) ) )
 for i in range( len(dn_K) ):
     f.write( '{:16d} {:16d} {:26.18e} {:26.18e} \n'.format( dn_i[i], dn_j[i], dn_K[i].real,  dn_K[i].imag ) )
+#for upUp
 f.write( '{:16d} \n'.format( 0 ) )
+#for upDn
 f.write( '{:16d} \n'.format( latt.L ) )
 for i in range( latt.L ):
     f.write( '{:16d} {:16d} {:16d} {:16d} {:26.18e} {:26.18e} \n'.format(i, i, i, i, U, 0) )
+#for dnDn
 f.write( '{:16d} \n'.format( 0 ) )
 f.close()
 
