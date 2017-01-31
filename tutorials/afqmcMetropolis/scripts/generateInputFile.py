@@ -25,9 +25,9 @@ else:
 
 Kmatrix = np.zeros( (2*latt.L, 2*latt.L), dtype='complex', order='F' )
 for i in range( len(up_K) ):
-    Kmatrix[ up_i[i], up_j[i] ] = up_K[i]
+    Kmatrix[ up_i[i], up_j[i] ] += up_K[i]
 for i in range( len(dn_K) ):
-    Kmatrix[ dn_i[i]+latt.L, dn_j[i]+latt.L ] = dn_K[i]
+    Kmatrix[ dn_i[i]+latt.L, dn_j[i]+latt.L ] += dn_K[i]
 
 f = open("model_param", 'w')
 f.write( '{:16d} \n'.format(latt.L) )
