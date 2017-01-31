@@ -124,17 +124,13 @@ Then see tutorials for detail examples.
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
   
   //TODO: Infinite variance?
-    
-  //TODO: Add estimate memory function in AFQMC. 
-  
+      
   //TODO: After finish tutorial, change back to afqmc develop code.
   
   //TODO: Think about metropolis code with sign problem. 
   
-  //TODO: After test, add find_block in scripts 
-  
-  //TODO: Check lanczos with Ettore's results? Use Recurse instead of full. 
-  
+  //TODO: After test, add find_block in scripts.
+   
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
   //TODO: FFTW GURU interface

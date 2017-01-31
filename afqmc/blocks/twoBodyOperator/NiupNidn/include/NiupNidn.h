@@ -48,6 +48,8 @@ class NiupNidn
     NiupNidnSample getTwoBodySampleFromAux(const NiupNidnAux &aux);
     size_t getAuxSize();
     size_t getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo);
+    double getMemory() const;
+
  private:
     void copy_deep(const NiupNidn &x);
     void move_deep(NiupNidn &x);

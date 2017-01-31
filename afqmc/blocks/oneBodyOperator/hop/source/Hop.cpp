@@ -23,12 +23,16 @@ Hop &Hop::operator=(Hop &&x) { move_deep(x); return *this; }
 
 size_t Hop::getL() const { return matrix.rank(0); }
 
+double Hop::getMemory() const
+{
+    return 16.0+matrix.getMemory();
+}
+
 void Hop::copy_deep(const Hop &x)
 {
     logw = x.logw;
     matrix = x.matrix;
 }
-
 void Hop::move_deep(Hop &x)
 {
     logw = x.logw;

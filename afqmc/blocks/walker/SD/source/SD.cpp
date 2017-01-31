@@ -77,6 +77,11 @@ void SD::write(const string &filename) const
     file.close();
 }
 
+double SD::getMemory() const
+{
+    return 16.0+wf.getMemory();
+}
+
 void SD::copy_deep(const SD &x)
 {
     logw = x.logw;

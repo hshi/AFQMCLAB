@@ -38,6 +38,7 @@ class SD
     void read(const std::string& filename);
     void write(const std::string& filename) const;
     friend void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    double getMemory() const;
 
  private:
     void copy_deep(const SD &x);

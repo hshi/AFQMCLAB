@@ -46,6 +46,8 @@ class HubbardSOC
     Hop returnExpMinusAlphaK(double alpha);
     NiupNidn returnExpMinusAlphaV(double alpha, const std::string &decompType);
 
+    double getMemory() const;
+
  private:
     HubbardSOC(const HubbardSOC& x);
     HubbardSOC & operator  = (const HubbardSOC& x);

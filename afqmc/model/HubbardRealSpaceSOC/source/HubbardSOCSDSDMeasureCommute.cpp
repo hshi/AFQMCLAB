@@ -116,6 +116,11 @@ void HubbardSOCSDSDMeasureCommute::addEnergy(const TensorHao<complex<double>, 2>
     RNum += ( Renergy * denIncrement );
 }
 
+double HubbardSOCSDSDMeasureCommute::getMemory() const
+{
+    return 8.0+16.0*5;
+}
+
 HubbardSOCSDSDMeasureCommute::HubbardSOCSDSDMeasureCommute(const HubbardSOCSDSDMeasureCommute &x)
 {
 

@@ -120,6 +120,16 @@ NiupNidn HubbardSOC::returnExpMinusAlphaV(double alpha, const std::string &decom
     return NiupNidn(alpha, decompType, U, mu, hx, hy, hz);
 }
 
+double HubbardSOC::getMemory() const
+{
+    double mem(0.0);
+    mem += 8.0+8.0;
+    mem += K.getMemory();
+    mem += mu.getMemory()+hx.getMemory()+hy.getMemory()+hz.getMemory()+U.getMemory();
+    mem += 1.0+ KEigenValue.getMemory()+KEigenVector.getMemory();
+    return mem;
+}
+
 HubbardSOC::HubbardSOC(const HubbardSOC &x) { }
 
 HubbardSOC &HubbardSOC::operator=(const HubbardSOC &x) { return *this; }

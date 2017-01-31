@@ -24,6 +24,7 @@ class HubbardSOCSDSDMeasureObserve : public HubbardSOCSDSDMeasureCommute
     void reSet();
     tensor_hao::TensorHao< std::complex<double>, 2 > addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
     void write();
+    double getMemory() const;
 
  private:
     void addGreenMatrix(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);

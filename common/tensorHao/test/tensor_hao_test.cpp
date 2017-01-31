@@ -234,6 +234,18 @@ TEST(Tensor_hao, resize_pointer)
     }
 }
 
+TEST(Tensor_hao, getMemory)
+{
+    TensorHao<double,2>  tensor_a(3,4);
+    EXPECT_DOUBLE_EQ(144.0, tensor_a.getMemory() );
+
+    TensorHao<complex<double>,2>  tensor_b(3,4);
+    EXPECT_DOUBLE_EQ(240.0, tensor_b.getMemory() );
+
+    TensorHao<int,3>  tensor_c(3,4,5);
+    EXPECT_DOUBLE_EQ(304.0, tensor_c.getMemory() );
+}
+
 TEST(Tensor_hao, readWriteBcast)
 {
     string filename ="tensorFile.dat";

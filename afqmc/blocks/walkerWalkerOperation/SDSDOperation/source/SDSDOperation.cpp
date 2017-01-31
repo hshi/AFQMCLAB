@@ -110,6 +110,11 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenOffDiag
     return greenOffDiagonal;
 }
 
+double SDSDOperation::getMemory() const
+{
+    return 8.0*2+LUOverlap.A.getMemory()+LUOverlap.ipiv.getMemory()+wfLeftDagger.getMemory();
+}
+
 SDSDOperation::SDSDOperation(const SDSDOperation &x) { }
 
 SDSDOperation &SDSDOperation::operator=(const SDSDOperation &x) { return *this; }

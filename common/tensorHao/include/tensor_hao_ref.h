@@ -138,6 +138,13 @@ namespace tensor_hao
          }
      }
 
+     double getMemory() const
+     {
+         double mem(0.0);
+         mem += 8.0*D+8.0*D+8.0+8.0;
+         return mem;
+     }
+
   private:
      void copy_ref(const TensorCore<T, D>& x)
      {

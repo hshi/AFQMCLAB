@@ -23,7 +23,7 @@ class Hop
     Hop & operator  = (Hop&& x);
 
     size_t getL() const;
-
+    double getMemory() const;
  private:
     void copy_deep(const Hop &x);
     void move_deep(Hop &x);

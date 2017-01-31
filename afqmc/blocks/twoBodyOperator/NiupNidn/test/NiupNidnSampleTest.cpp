@@ -9,12 +9,13 @@ using namespace tensor_hao;
 
 TEST(NiupNidnSampleTest, voidConstruction)
 {
+    size_t L(0);
     NiupNidnSample twoBodySample;
     EXPECT_EQ( 0.0, twoBodySample.logw );
-    EXPECT_EQ( 0, twoBodySample.diag00.size() );
-    EXPECT_EQ( 0, twoBodySample.diag10.size() );
-    EXPECT_EQ( 0, twoBodySample.diag01.size() );
-    EXPECT_EQ( 0, twoBodySample.diag11.size() );
+    EXPECT_EQ( L, twoBodySample.diag00.size() );
+    EXPECT_EQ( L, twoBodySample.diag10.size() );
+    EXPECT_EQ( L, twoBodySample.diag01.size() );
+    EXPECT_EQ( L, twoBodySample.diag11.size() );
 }
 
 TEST(NiupNidnSampleTest, size_tConstruction)
@@ -39,10 +40,10 @@ TEST(NiupNidnSampleTest, copyConstruction)
 
     NiupNidnSample twoBodySample(twoBodySampleBase);
     EXPECT_EQ( 2.0, twoBodySample.logw );
-    EXPECT_EQ( 10, twoBodySample.diag00.size() );
-    EXPECT_EQ( 11, twoBodySample.diag10.size() );
-    EXPECT_EQ( 12, twoBodySample.diag01.size() );
-    EXPECT_EQ( 13, twoBodySample.diag11.size() );
+    EXPECT_EQ( static_cast<size_t>(10), twoBodySample.diag00.size() );
+    EXPECT_EQ( static_cast<size_t>(11), twoBodySample.diag10.size() );
+    EXPECT_EQ( static_cast<size_t>(12), twoBodySample.diag01.size() );
+    EXPECT_EQ( static_cast<size_t>(13), twoBodySample.diag11.size() );
     EXPECT_TRUE( twoBodySampleBase.diag00.data() );
     EXPECT_TRUE( twoBodySampleBase.diag10.data() );
     EXPECT_TRUE( twoBodySampleBase.diag01.data() );
@@ -60,10 +61,10 @@ TEST(NiupNidnSampleTest, moveConstruction)
 
     NiupNidnSample twoBodySample( move(twoBodySampleBase) );
     EXPECT_EQ( 2.0, twoBodySample.logw );
-    EXPECT_EQ( 10, twoBodySample.diag00.size() );
-    EXPECT_EQ( 11, twoBodySample.diag10.size() );
-    EXPECT_EQ( 12, twoBodySample.diag01.size() );
-    EXPECT_EQ( 13, twoBodySample.diag11.size() );
+    EXPECT_EQ( static_cast<size_t>(10), twoBodySample.diag00.size() );
+    EXPECT_EQ( static_cast<size_t>(11), twoBodySample.diag10.size() );
+    EXPECT_EQ( static_cast<size_t>(12), twoBodySample.diag01.size() );
+    EXPECT_EQ( static_cast<size_t>(13), twoBodySample.diag11.size() );
     EXPECT_FALSE( twoBodySampleBase.diag00.data() );
     EXPECT_FALSE( twoBodySampleBase.diag10.data() );
     EXPECT_FALSE( twoBodySampleBase.diag01.data() );
@@ -81,10 +82,10 @@ TEST(NiupNidnSampleTest, copyAssignment)
 
     NiupNidnSample twoBodySample; twoBodySample = twoBodySampleBase;
     EXPECT_EQ( 2.0, twoBodySample.logw );
-    EXPECT_EQ( 10, twoBodySample.diag00.size() );
-    EXPECT_EQ( 11, twoBodySample.diag10.size() );
-    EXPECT_EQ( 12, twoBodySample.diag01.size() );
-    EXPECT_EQ( 13, twoBodySample.diag11.size() );
+    EXPECT_EQ( static_cast<size_t>(10), twoBodySample.diag00.size() );
+    EXPECT_EQ( static_cast<size_t>(11), twoBodySample.diag10.size() );
+    EXPECT_EQ( static_cast<size_t>(12), twoBodySample.diag01.size() );
+    EXPECT_EQ( static_cast<size_t>(13), twoBodySample.diag11.size() );
     EXPECT_TRUE( twoBodySampleBase.diag00.data() );
     EXPECT_TRUE( twoBodySampleBase.diag10.data() );
     EXPECT_TRUE( twoBodySampleBase.diag01.data() );
@@ -102,10 +103,10 @@ TEST(NiupNidnSampleTest, moveAssignment)
 
     NiupNidnSample twoBodySample; twoBodySample =  move(twoBodySampleBase);
     EXPECT_EQ( 2.0, twoBodySample.logw );
-    EXPECT_EQ( 10, twoBodySample.diag00.size() );
-    EXPECT_EQ( 11, twoBodySample.diag10.size() );
-    EXPECT_EQ( 12, twoBodySample.diag01.size() );
-    EXPECT_EQ( 13, twoBodySample.diag11.size() );
+    EXPECT_EQ( static_cast<size_t>(10), twoBodySample.diag00.size() );
+    EXPECT_EQ( static_cast<size_t>(11), twoBodySample.diag10.size() );
+    EXPECT_EQ( static_cast<size_t>(12), twoBodySample.diag01.size() );
+    EXPECT_EQ( static_cast<size_t>(13), twoBodySample.diag11.size() );
     EXPECT_FALSE( twoBodySampleBase.diag00.data() );
     EXPECT_FALSE( twoBodySampleBase.diag10.data() );
     EXPECT_FALSE( twoBodySampleBase.diag01.data() );

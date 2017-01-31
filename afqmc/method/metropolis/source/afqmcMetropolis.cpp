@@ -58,7 +58,45 @@ void AfqmcMetropolis::initialParameters()
 
 void AfqmcMetropolis::estimateMemory()
 {
-    //TODO: TO BE ADDED.
+    double mem(0.0);
+    mem += model.getMemory();
+    mem += expMinusDtK.getMemory();
+    mem += expMinusHalfDtK.getMemory();
+    mem += expHalfDtK.getMemory();
+    mem += expMinusDtV.getMemory();
+    mem += constForce.getMemory() * 2.0;
+
+    TwoBodyAux twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
+    mem += twoBodyAux.getMemory() * method.timesliceSize;
+
+    WalkerRight walkerRight; fillWalkerRandomly(walkerRight, model);
+    WalkerLeft walkerLeft; fillWalkerRandomly(walkerLeft, model);
+    double walkerMaxMem =  max( walkerLeft.getMemory(), walkerRight.getMemory() );
+    mem += (walkerMaxMem + 32.0) * (method.timesliceBlockSize+1+method.timesliceBlockNumber);
+
+    WalkerWalkerOperation walkerWalkerOperation(walkerLeft, walkerRight);
+    if( method.measureType == "commute" )
+    {
+        ModelCommuteMeasure commuteMeasure(model);
+        commuteMeasure.addMeasurement(walkerWalkerOperation, 1.0);
+        mem += walkerWalkerOperation.getMemory();
+        mem += commuteMeasure.getMemory();
+    }
+    else if( method.measureType == "observable" )
+    {
+        ModelObserveMeasure observeMeasure(model);
+        observeMeasure.addMeasurement(walkerWalkerOperation, 1.0);
+        mem += walkerWalkerOperation.getMemory();
+        mem += observeMeasure.getMemory();
+    }
+
+    //Make a slightly big estimation for uncounted memory.
+    mem*=1.2;
+    if(MPIRank()==0)
+    {
+        cout<<"Memory need for this program is roughly: "<<mem/1e9<<"G per process."<<endl;
+        cout<<"Please make sure available memory is larger than this.\n"<<endl;
+    }
 }
 
 void AfqmcMetropolis::measureWithoutProjection()

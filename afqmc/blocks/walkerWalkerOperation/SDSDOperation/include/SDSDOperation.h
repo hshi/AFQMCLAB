@@ -39,6 +39,8 @@ class SDSDOperation
     tensor_hao::TensorHao< std::complex<double>, 1 > returnGreenDiagonal();
     tensor_hao::TensorHao< std::complex<double>, 1 > returnGreenOffDiagonal();
 
+    double getMemory() const;
+
  private:
     SDSDOperation(const SDSDOperation& x);
     SDSDOperation & operator  = (const SDSDOperation& x);

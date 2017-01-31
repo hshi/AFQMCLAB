@@ -204,6 +204,19 @@ size_t NiupNidn::getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &au
     return diffSize;
 }
 
+double NiupNidn::getMemory() const
+{
+    double mem(0.0);
+    mem += 8.0+8.0;
+    mem += gamma.getMemory();
+    mem += constDiag00.getMemory();
+    mem += constDiag10.getMemory();
+    mem += constDiag01.getMemory();
+    mem += constDiag11.getMemory();
+    return mem;
+}
+
+
 void NiupNidn::copy_deep(const NiupNidn &x)
 {
     L = x.L;

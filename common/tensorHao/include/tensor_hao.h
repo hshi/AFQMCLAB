@@ -132,6 +132,13 @@ namespace tensor_hao
          if(this->L != LBackup) safelyAllocatePointer();
      }
 
+     double getMemory() const
+     {
+         double mem(0.0);
+         mem += 8.0*D+8.0*D+8.0+8.0+this->L*sizeof(T);
+         return mem;
+     }
+
   private:
      void safelyAllocatePointer()
      {
