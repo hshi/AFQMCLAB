@@ -140,7 +140,7 @@ void generateOneBody(size_t L)
 
 int main(int argc, char** argv)
 {
-    MPIInitFunnel(argc,argv);
+    MPIInit(argc,argv);
 
     if( argc<2 )
     {

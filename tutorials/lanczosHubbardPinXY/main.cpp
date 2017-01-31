@@ -49,7 +49,7 @@ void findEigenOfSpinlessFermin()
 
 int main(int argc, char** argv)
 {
-    MPIInitFunnel(argc,argv);
+    MPIInit(argc,argv);
 
 #ifdef USE_MAGMA
     magma_init();

@@ -9,7 +9,7 @@ using namespace tensor_hao;
 
 int main(int argc, char** argv)
 {
-    MPIInitFunnel(argc,argv);
+    MPIInit(argc,argv);
 
     TimerHao timer;
     timer.start(); if(MPIRank()==0) {cout<<"\nStart time:\n";timer.printCurrentTime();}

@@ -14,7 +14,7 @@ void bl_cpu_magma_timing();
 
 int main(int argc, char** argv)
 {
-    MPIInitFunnel(argc,argv);
+    MPIInit(argc,argv);
 
     int rank = MPIRank ();
 
