@@ -118,7 +118,8 @@ Then see tutorials for detail examples.
 
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
-
+- `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
+  
   //TODO: Why it is not good about writing GreenNum in Comet, sumbitted a ticket, wait for results?
 
   //TODO: Huge test to check QMC code. Pin x, y, z, data? Bin for <Sx> <Sy> <Sz>?
