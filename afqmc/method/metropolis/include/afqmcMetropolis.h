@@ -59,6 +59,8 @@ class AfqmcMetropolis
     void measureWithwalkerRightInBlock(const WalkerLeft &walkerLeft, size_t inBlockIndex);
     void measureWithWalkerLeftInBlock(size_t inBlockIndex, const WalkerRight &walkerRight);
     void addMeasurement(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight);
+    void addMeasurementFixVariance(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight, std::complex<double> expMinusTauHAvg);
+    std::complex<double> measureExpMinusDtV(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight);
     void writeAndResetMeasurement();
     void calculateAndPrintAcceptRatio();
 };

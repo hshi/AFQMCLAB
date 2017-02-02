@@ -23,7 +23,8 @@ NiupNidn::NiupNidn(double dt,
     L = U.size();
     decompType = decompTypeIn;
     dtUSum = dt*U.sum();
-    setGamma(dt, U);
+    dtU = dt * U;
+    setGamma();
     setConstDiag(dt, U, mu, hx, hy, hz);
 }
 
@@ -42,6 +43,8 @@ size_t NiupNidn::getL() const { return L; }
 const string &NiupNidn::getDecompType() const { return decompType; }
 
 double NiupNidn::getDtUSum() const { return dtUSum; }
+
+const TensorHao<double, 1> &NiupNidn::getDtU() const { return dtU; }
 
 const TensorHao<complex<double>, 1> &NiupNidn::getGamma() const { return gamma; }
 
@@ -208,6 +211,7 @@ double NiupNidn::getMemory() const
 {
     double mem(0.0);
     mem += 8.0+8.0;
+    mem += dtU.getMemory();
     mem += gamma.getMemory();
     mem += constDiag00.getMemory();
     mem += constDiag10.getMemory();
@@ -216,12 +220,12 @@ double NiupNidn::getMemory() const
     return mem;
 }
 
-
 void NiupNidn::copy_deep(const NiupNidn &x)
 {
     L = x.L;
     decompType = x.decompType;
     dtUSum = x.dtUSum;
+    dtU = x.dtU;
     gamma = x.gamma;
     constDiag00 = x.constDiag00;
     constDiag10 = x.constDiag10;
@@ -234,6 +238,7 @@ void NiupNidn::move_deep(NiupNidn &x)
     L = x.L;
     decompType = x.decompType;
     dtUSum = x.dtUSum;
+    dtU = move( x.dtU );
     gamma = move( x.gamma );
     constDiag00 = move( x.constDiag00 );
     constDiag10 = move( x.constDiag10 );
@@ -241,25 +246,25 @@ void NiupNidn::move_deep(NiupNidn &x)
     constDiag11 = move( x.constDiag11 );
 }
 
-void NiupNidn::setGamma(double dt, const TensorHao<double,1> &U)
+void NiupNidn::setGamma()
 {
     gamma.resize(L);
 
     if( decompType == "densityCharge" )
     {
-        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy(-dt * U(i) * 0.5 );
+        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy(-dtU(i) * 0.5 );
     }
     else if( decompType == "densitySpin" )
     {
-        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy( dt * U(i) * 0.5 );
+        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy( dtU(i) * 0.5 );
     }
     else if( decompType == "hopCharge" )
     {
-        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy( dt * U(i) * 0.5 );
+        for(size_t i=0; i<L; i++) gamma(i) = solveCoshxEqExpy( dtU(i) * 0.5 );
     }
     else if( decompType == "hopSpin" )
     {
-        for(size_t i=0; i<L; i++) gamma(i) = solveCosxEqExpy( dt * U(i) * 0.5 );
+        for(size_t i=0; i<L; i++) gamma(i) = solveCosxEqExpy( dtU(i) * 0.5 );
     }
     else
     {

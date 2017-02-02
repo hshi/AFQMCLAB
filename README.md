@@ -126,6 +126,14 @@ Then see tutorials for detail examples.
         
   //TODO: Think about metropolis code with sign problem. 
   
+  //TODO: Write a cp code?
+  
+  //TODO: Write a fp code?
+  
+  //TODO: Try two side projection? (two side cp, two side fp)
+  
+  //TODO: add dynamic correlation function?
+  
   //TODO: After test, add find_block in scripts.
    
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.

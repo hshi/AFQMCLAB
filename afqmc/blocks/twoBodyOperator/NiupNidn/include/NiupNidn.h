@@ -15,6 +15,7 @@ class NiupNidn
     size_t L;
     std::string decompType;  //densityCharge, densitySpin, hopCharge, hopSpin, pairCharge, pairSpin
     double dtUSum;
+    tensor_hao::TensorHao<double,1> dtU;
     tensor_hao::TensorHao<std::complex<double>,1> gamma;
     tensor_hao::TensorHao<std::complex<double>,1> constDiag00, constDiag10, constDiag01, constDiag11;
 
@@ -37,6 +38,7 @@ class NiupNidn
     size_t getL() const;
     const std::string &getDecompType() const;
     double getDtUSum() const;
+    const tensor_hao::TensorHao<double, 1> &getDtU() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getGamma() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag00() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag10() const;
@@ -54,7 +56,7 @@ class NiupNidn
     void copy_deep(const NiupNidn &x);
     void move_deep(NiupNidn &x);
 
-    void setGamma(double dt, const tensor_hao::TensorHao<double,1> &U);
+    void setGamma();
     void setConstDiag(double dt,
                       const tensor_hao::TensorHao<double,1> &U,
                       const tensor_hao::TensorHao<double,1> &mu,

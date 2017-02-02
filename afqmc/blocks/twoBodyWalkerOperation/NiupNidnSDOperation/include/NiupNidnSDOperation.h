@@ -13,4 +13,7 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight);
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const std::string &filename);
 
+std::tuple < std::complex<double>, std::complex<double> >
+measureTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn);
+
 #endif //AFQMCLAB_NIUPNIDNSDOPERATION_H

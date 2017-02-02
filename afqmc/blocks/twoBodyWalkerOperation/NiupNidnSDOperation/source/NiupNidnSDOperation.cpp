@@ -116,3 +116,97 @@ void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const string &filen
 
     readFile( force.size(), force.data(), filename );
 }
+
+void applyOneBodyPartInTwoBodyToRightWalker(const SD &walker, SD &walkerNew, const NiupNidn &niupNidn)
+{
+    size_t L = walker.getL(); size_t N = walker.getN(); size_t halfL = niupNidn.getL();
+
+    if( L != halfL*2 ) { cout<<"Error!!! niupNidn size is not consistent with walker!"<<endl; exit(1); }
+    if( walkerNew.getL() != L  ||  walkerNew.getN() != N ) walkerNew.wfRef().resize( L, N );
+
+    TensorHao<complex<double>,1> expHalfDtU(halfL);
+    const TensorHao<double,1> &dtU = niupNidn.getDtU();
+    for(size_t i = 0; i < halfL; ++i) expHalfDtU(i) = exp( dtU(i) * 0.5 );
+
+    TensorHao<complex<double>,1> diag00 = niupNidn.getConstDiag00() * expHalfDtU;
+    TensorHao<complex<double>,1> diag11 = niupNidn.getConstDiag11() * expHalfDtU;
+
+    const TensorHao<complex<double>,1> &diag10 = niupNidn.getConstDiag10();
+    const TensorHao<complex<double>,1> &diag01 = niupNidn.getConstDiag01();
+
+    const TensorHao<complex<double>,2> &wf = walker.getWf();
+    TensorHao<complex<double>,2> &wfNew = walkerNew.wfRef();
+    for(size_t j = 0; j < N; ++j)
+    {
+        for(size_t i = 0; i < halfL; ++i)
+        {
+            wfNew(i,j)        = diag00(i) * wf(i,j) + diag01(i)*wf(i+halfL, j);
+            wfNew(i+halfL, j) = diag10(i) * wf(i,j) + diag11(i)*wf(i+halfL, j);
+        }
+    }
+
+    walkerNew.logwRef() = walker.getLogw();
+}
+
+complex<double> measureFirstOrder(const TensorHao< complex<double>, 2 > &green,  const NiupNidn &niupNidn)
+{
+    size_t L = niupNidn.getL();
+    const TensorHao<double,1> &dtU = niupNidn.getDtU();
+
+    complex<double> minusDtU(0.0,0.0);
+    for(size_t i = 0; i < L; ++i)
+    {
+        minusDtU += -dtU(i)*( green(i,i)*green(i+L,i+L) - green(i,i+L)*green(i+L,i) );
+    }
+    return minusDtU;
+}
+
+complex<double> measureSecondOrder(const TensorHao< complex<double>, 2 > &green,  const NiupNidn &niupNidn)
+{
+    size_t L = niupNidn.getL();
+    const TensorHao<double,1> &dtU = niupNidn.getDtU();
+
+    complex<double> minusDtU2(0.0,0.0);
+    complex<double> temp;
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = 0; j < L; ++j)
+        {
+            if( i== j )
+            {
+                temp = green(i,i)*green(i+L,i+L) - green(i,i+L)*green(i+L, i);
+            }
+            else
+            {
+                temp = 0.0;
+                //<niup njup> <nidn njdn>
+                temp += ( green(i,i)*green(j,j)-green(i,j)*green(j,i) )*( green(i+L,i+L)*green(j+L,j+L)-green(i+L,j+L)*green(j+L,i+L) );
+                //<niup nidn> <njup njdn>
+                temp += ( green(i,i)*green(i+L,i+L)-green(i,i+L)*green(i+L,i) )*( green(j,j)*green(j+L,j+L)-green(j,j+L)*green(j+L,j) );
+                //<niup njdn> <njup nidn>
+                temp += ( green(i,i)*green(j+L,j+L)-green(i,j+L)*green(j+L,i) )*( green(i+L,i+L)*green(j,j)-green(i+L,j)*green(j,i+L) );
+            }
+            minusDtU2 += dtU(i)*dtU(j)* temp;
+        }
+    }
+    return minusDtU2;
+}
+
+tuple<complex<double>, complex<double>> measureTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn)
+{
+    SD walkerRightNew;
+    applyOneBodyPartInTwoBodyToRightWalker(walkerRight, walkerRightNew, niupNidn);
+
+    SDSDOperation sdsdOperation(walkerLeft, walkerRightNew);
+    complex<double> overlap = exp( sdsdOperation.returnLogOverlap() );
+
+    TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
+    complex<double> firstOrder  = measureFirstOrder(greenMatrix, niupNidn);
+    complex<double> secondOrder = measureSecondOrder(greenMatrix, niupNidn);
+
+    complex<double> background = firstOrder;
+    complex<double> criteria  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
+    complex<double> twoBodyAvg = exp(background) * criteria * overlap;
+
+    return make_tuple(twoBodyAvg, criteria);
+}
