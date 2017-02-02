@@ -1,7 +1,9 @@
 import sys
 import os
 sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
+sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/simpleMath" )
 from setHoping import *
+from findBlockSize import *
 
 #Model Parameter
 latt_n   = [3,4]
@@ -58,7 +60,7 @@ measureSweep              =  50
 writeSweep                =  2
 stabilizeStep             =  10
 timesliceSize             =  6400
-timesliceBlockSize        =  40
+timesliceBlockSize        =  findBlockSize(timesliceSize)
 initalWalkerFlag          =  "setFromModel"  #"setFromModel", "setRandomly", "readFromFile"
 initalAuxiliaryFlag       =  "dynamicForceInitial" #"dynamicForceInitial", "constForceInitial", "readFromFile"
 measureType               =  "observable"  #"commute", "observable"
