@@ -135,11 +135,13 @@ void Supercubic::write(const string &filename) const
     file.close();
 }
 
+#ifdef MPI_HAO
 void MPIBcast(Supercubic &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.n, root, comm );
     MPIBcast( buffer.L, root, comm );
 }
+#endif
 
 void Supercubic::copy_deep(const Supercubic &x)
 {

@@ -34,7 +34,11 @@ class AfqmcMetropolisMethod
     ~AfqmcMetropolisMethod();
 
     void read(const std::string& filename);
+
+#ifdef MPI_HAO
     friend void MPIBcast(AfqmcMetropolisMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
  private:
     void analysis();
 };

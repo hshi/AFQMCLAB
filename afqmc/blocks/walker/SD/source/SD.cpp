@@ -94,8 +94,10 @@ void SD::move_deep(SD &x)
     wf = move( x.wf );
 }
 
+#ifdef MPI_HAO
 void MPIBcast(SD &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.logw, root, comm );
     MPIBcast( buffer.wf, root, comm );
 }
+#endif

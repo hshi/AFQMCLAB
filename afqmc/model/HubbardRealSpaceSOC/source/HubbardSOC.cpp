@@ -76,6 +76,7 @@ void HubbardSOC::write(const string &filename) const
     file.close();
 }
 
+#ifdef MPI_HAO
 void MPIBcast(HubbardSOC &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.L  );
@@ -91,6 +92,7 @@ void MPIBcast(HubbardSOC &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.KEigenValue );
     MPIBcast( buffer.KEigenVector );
 }
+#endif
 
 void HubbardSOC::setKEigenValueAndVector()
 {

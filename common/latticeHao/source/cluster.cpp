@@ -50,8 +50,10 @@ void Cluster::write(const string &filename) const
     writeFile(L, filename);
 }
 
+#ifdef MPI_HAO
 void MPIBcast(Cluster &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast(buffer.L, root, comm);
     MPIBarrier();
 }
+#endif

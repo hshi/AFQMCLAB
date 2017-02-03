@@ -42,7 +42,10 @@ class Supercubic
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;
+
+#ifdef MPI_HAO
     friend void MPIBcast(Supercubic &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
 
  private:
     void copy_deep(const Supercubic& x);

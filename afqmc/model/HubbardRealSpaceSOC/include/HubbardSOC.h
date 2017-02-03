@@ -40,7 +40,10 @@ class HubbardSOC
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;
+
+#ifdef MPI_HAO
     friend void MPIBcast(HubbardSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
 
     void setKEigenValueAndVector();
     Hop returnExpMinusAlphaK(double alpha);

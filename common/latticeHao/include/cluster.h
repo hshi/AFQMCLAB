@@ -28,6 +28,9 @@ class Cluster
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;
+
+#ifdef MPI_HAO
     friend void MPIBcast(Cluster &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
 };
 #endif //AFQMCLAB_CLUSTER_H
