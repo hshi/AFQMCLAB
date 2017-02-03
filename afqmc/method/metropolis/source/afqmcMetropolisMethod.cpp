@@ -46,6 +46,7 @@ void AfqmcMetropolisMethod::read(const string &filename)
     analysis();
 }
 
+#ifdef MPI_HAO
 void MPIBcast(AfqmcMetropolisMethod &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast(buffer.dt);
@@ -68,6 +69,7 @@ void MPIBcast(AfqmcMetropolisMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.measureSkipTimesliceRight);
     MPIBcast(buffer.seed);
 }
+#endif
 
 void AfqmcMetropolisMethod::analysis()
 {

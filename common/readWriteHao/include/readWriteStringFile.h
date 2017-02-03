@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <complex>
 #include <iomanip>
 
 bool checkFile (const std::string &filename);
