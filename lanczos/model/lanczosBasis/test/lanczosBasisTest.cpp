@@ -168,7 +168,7 @@ TEST(LanczosBasisTest, diagonalizeOneBodyMatrix)
     TensorHao<double, 1> HeManyBody(NHilbert);
     eigen_cpu(HvManyBody, HeManyBody);
 
-    EXPECT_DOUBLE_EQ( energyExact, HeManyBody(0) );
+    EXPECT_NEAR( energyExact, HeManyBody(0), 1e-12 );
 }
 
 TEST(LanczosBasisTest, getInfoByCiDaggerCjCkDaggerCl)
