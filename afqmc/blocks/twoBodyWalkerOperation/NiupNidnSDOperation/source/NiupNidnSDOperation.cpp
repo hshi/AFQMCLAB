@@ -210,3 +210,27 @@ tuple<complex<double>, complex<double>> measureTwoBodySecondOrder(const SD &walk
 
     return make_tuple(twoBodyAvg, criteria);
 }
+
+complex<double> measureTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
+                                              const NiupNidn &niupNidn, double sampleCap, size_t sampleSize)
+{
+    NiupNidnForce force;
+    NiupNidnAux aux;
+    NiupNidnSample sample;
+    SD walkerRightTemp;
+    SDSDOperation sdsdOperation(walkerLeft, walkerRightTemp);
+
+    getForce(force, niupNidn, walkerLeft, walkerRight);
+    complex<double> den(0,0), num(0,0);
+    for(size_t i = 0; i < sampleSize; ++i)
+    {
+        aux = niupNidn.sampleAuxFromForce(force, sampleCap);
+        sample = niupNidn.getTwoBodySampleFromAux(aux);
+        applyTwoBodySampleToRightWalker(walkerRight, walkerRightTemp, sample);
+        den += exp( sdsdOperation.returnLogOverlap() - niupNidn.logOfAuxFromForce(aux, force, sampleCap) );
+        num += 1.0;
+        sdsdOperation.reSet();
+    }
+
+    return den/num * niupNidn.sumOfAuxFromForce(force, sampleCap);
+}

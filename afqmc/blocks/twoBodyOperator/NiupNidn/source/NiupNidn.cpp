@@ -56,7 +56,7 @@ const TensorHao<complex<double>, 1> &NiupNidn::getConstDiag01() const { return c
 
 const TensorHao<complex<double>, 1> &NiupNidn::getConstDiag11() const { return constDiag11; }
 
-NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap)
+NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap) const
 {
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
 
@@ -82,7 +82,7 @@ NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gamm
     return aux;
 }
 
-double NiupNidn::logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap)
+double NiupNidn::logOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap) const
 {
     if( L != aux.size() ) { cout<<"Error!!! aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
@@ -95,13 +95,31 @@ double NiupNidn::logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnFor
         if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
         if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
 
-        logProb += aux(i) * gammaForce;
+        logProb += aux(i) * gammaForce + log(0.5);
     }
 
     return logProb;
 }
 
-NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux)
+double NiupNidn::sumOfAuxFromForce(const NiupNidnForce &force, double gammaForceCap) const
+{
+    if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
+
+    double gammaForce(0);
+    KahanData<double> kahanData;
+    for(size_t i=0; i<L; i++)
+    {
+        gammaForce = ( gamma(i) * force(i) ).real();
+        if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
+        if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
+
+        kahanData += 0.5 * ( exp( gammaForce ) + exp( -gammaForce) );
+    }
+
+    return kahanData.returnSum();
+}
+
+NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
 {
     if( L != aux.size() ) { cout<<"Error!!! aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
 
@@ -189,12 +207,12 @@ NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux)
     return twoBodySample;
 }
 
-size_t NiupNidn::getAuxSize()
+size_t NiupNidn::getAuxSize() const
 {
     return L;
 }
 
-size_t NiupNidn::getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo)
+size_t NiupNidn::getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo) const
 {
     if( auxOne.size() != auxTwo.size() ) { cout<<"Error!!! size is not consistent between auxOne and auxTwo!"<<endl; exit(1); }
     if( auxOne.size() != L ) { cout<<"Error!!! size of auxOne is not L!"<<endl; exit(1); }

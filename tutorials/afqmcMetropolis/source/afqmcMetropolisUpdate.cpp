@@ -308,11 +308,11 @@ double AfqmcMetropolis::returnLogProbOfAux(const TwoBodyAux &twoBodyAux)
 {
     if( method.forceType == "constForce" )
     {
-        return expMinusDtV.logProbOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
+        return expMinusDtV.logOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
     }
     else if( method.forceType == "dynamicForce" )
     {
-        return expMinusDtV.logProbOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
+        return expMinusDtV.logOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
     }
     else
     {

@@ -45,11 +45,12 @@ class NiupNidn
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag01() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag11() const;
 
-    NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap=1e300);
-    double logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap=1e300);
-    NiupNidnSample getTwoBodySampleFromAux(const NiupNidnAux &aux);
-    size_t getAuxSize();
-    size_t getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo);
+    NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap=1e300) const;
+    double logOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap = 1e300) const;
+    double sumOfAuxFromForce(const NiupNidnForce &force, double gammaForceCap = 1e300) const;
+    NiupNidnSample getTwoBodySampleFromAux(const NiupNidnAux &aux) const;
+    size_t getAuxSize() const;
+    size_t getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo) const;
     double getMemory() const;
 
  private:

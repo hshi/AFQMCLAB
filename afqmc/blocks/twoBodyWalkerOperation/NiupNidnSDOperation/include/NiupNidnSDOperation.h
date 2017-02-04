@@ -16,4 +16,6 @@ void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const std::string &
 std::tuple < std::complex<double>, std::complex<double> >
 measureTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn);
 
+std::complex<double> measureTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
+                                                   const NiupNidn &niupNidn, double sampleCap, size_t sampleSize=1000);
 #endif //AFQMCLAB_NIUPNIDNSDOPERATION_H

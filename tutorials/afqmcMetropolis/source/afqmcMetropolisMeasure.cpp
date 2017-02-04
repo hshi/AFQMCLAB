@@ -86,9 +86,10 @@ void AfqmcMetropolis::addMeasurementFixVariance(const WalkerLeft &walkerLeft, co
 
 complex<double> AfqmcMetropolis::measureExpMinusDtV(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight)
 {
-    complex<double> expMinusDtVAvg, criteria;
-    tie(expMinusDtVAvg, criteria) = measureTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
+//    complex<double> expMinusDtVAvg, criteria;
+//    tie(expMinusDtVAvg, criteria) = measureTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
 
+    complex<double> expMinusDtVAvg = measureTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, 10000);
     return expMinusDtVAvg;
 }
 
