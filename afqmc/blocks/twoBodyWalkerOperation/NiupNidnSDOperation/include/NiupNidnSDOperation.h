@@ -5,6 +5,7 @@
 #ifndef AFQMCLAB_NIUPNIDNSDOPERATION_H
 #define AFQMCLAB_NIUPNIDNSDOPERATION_H
 
+#include <tuple>
 #include "../../../walker/SD/include/SD.h"
 #include "../../../twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
