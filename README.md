@@ -121,6 +121,10 @@ Then see tutorials for detail examples.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
   
+  //TODO: Infinite variance problem: QMC sample has a large trotter error? Check the code? Some bug? Or check 
+  Hurricane? 
+  Wich gnu v.s. intel compiler.
+  
   //TODO: Why it is not good about writing GreenNum in Comet, sumbitted a ticket, wait for results?
   
   //TODO: Infinite variance?

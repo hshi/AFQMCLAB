@@ -106,17 +106,17 @@ double NiupNidn::sumOfAuxFromForce(const NiupNidnForce &force, double gammaForce
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
 
     double gammaForce(0);
-    KahanData<double> kahanData;
+    double sum(1.0);
     for(size_t i=0; i<L; i++)
     {
         gammaForce = ( gamma(i) * force(i) ).real();
         if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
         if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
 
-        kahanData += 0.5 * ( exp( gammaForce ) + exp( -gammaForce) );
+        sum *= ( 0.5 * ( exp( gammaForce ) + exp( -gammaForce) ) );
     }
 
-    return kahanData.returnSum();
+    return sum;
 }
 
 NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
