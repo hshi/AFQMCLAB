@@ -120,13 +120,13 @@ Then see tutorials for detail examples.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
-  
+
+  //TODO: Test pinning field with second order
+    
   //TODO: Use inverse Force Bias to fix infinit varaince problem
   
   //TODO: Flip spin, Yuanyao mentioned is also scales as ~L?
-  
-  //TODO: Test pinning field with second order
-  
+    
   //TODO: Why it is not good about writing GreenNum in Comet, sumbitted a ticket, wait for results?
   
   //TODO: Infinite variance?

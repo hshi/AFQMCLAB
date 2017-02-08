@@ -220,6 +220,7 @@ tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &w
     complex<double> secondOrder = measureSecondOrder(greenMatrix, niupNidn);
 
     complex<double> background = firstOrder;
+//    complex<double> background = -0.25*niupNidn.getDtUSum();
     complex<double> criteria  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
     complex<double> logTwoBodyAvg = background + log(criteria) +logOverlap;
 
