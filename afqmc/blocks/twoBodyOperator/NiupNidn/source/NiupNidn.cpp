@@ -113,7 +113,7 @@ double NiupNidn::sumOfAuxFromForce(const NiupNidnForce &force, double gammaForce
         if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
         if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
 
-        sum *= ( 0.5 * ( exp( gammaForce ) + exp( -gammaForce) ) );
+        sum *= 0.5 * ( exp( gammaForce ) + exp( -gammaForce) );
     }
 
     return sum;

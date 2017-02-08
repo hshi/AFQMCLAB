@@ -179,12 +179,27 @@ complex<double> measureSecondOrder(const TensorHao< complex<double>, 2 > &green,
             else
             {
                 temp = 0.0;
+                //Total 24 contractions!
                 //<niup njup> <nidn njdn>
                 temp += ( green(i,i)*green(j,j)-green(i,j)*green(j,i) )*( green(i+L,i+L)*green(j+L,j+L)-green(i+L,j+L)*green(j+L,i+L) );
                 //<niup nidn> <njup njdn>
                 temp += ( green(i,i)*green(i+L,i+L)-green(i,i+L)*green(i+L,i) )*( green(j,j)*green(j+L,j+L)-green(j,j+L)*green(j+L,j) );
                 //<niup njdn> <njup nidn>
                 temp += ( green(i,i)*green(j+L,j+L)-green(i,j+L)*green(j+L,i) )*( green(i+L,i+L)*green(j,j)-green(i+L,j)*green(j,i+L) );
+                //<niup> <nidn> <njup> <njdn> (additional counts before)
+                temp -= 2.0*green(i,i)*green(i+L,i+L)*green(j,j)*green(j+L,j+L);
+                //<niup> <nidn njup njdn> (3 inter contractions)
+                temp += green(i,i) * ( green(i+L,j)*green(j,j+L)*green(j+L,i+L)+green(i+L,j+L)*green(j+L,j)*green(j,i+L) );
+                //<nidn> <niup njup njdn> (3 inter contractions)
+                temp += green(i+L,i+L) * ( green(i,j)*green(j,j+L)*green(j+L,i)+green(i,j+L)*green(j+L,j)*green(j,i) );
+                //<njup> <njdn niup nidn> (3 inter contractions)
+                temp += green(j,j) * ( green(j+L,i)*green(i,i+L)*green(i+L,j+L)+green(j+L,i+L)*green(i+L,i)*green(i,j+L) );
+                //<njdn> <njup niup nidn> (3 inter contractions)
+                temp += green(j+L,j+L) * ( green(j,i)*green(i,i+L)*green(i+L,j)+green(j,i+L)*green(i+L,i)*green(i,j) );
+                //<niup nidn njup njdn> (4 inter contractions)
+                temp += green(i,i+L)*( -green(i+L,j)*green(j,j+L)*green(j+L,i) - green(i+L,j+L)*green(j+L,j)*green(j,i) );
+                temp += green(i,j)*( -green(j,i+L)*green(i+L,j+L)*green(j+L,i) - green(j,j+L)*green(j+L,i+L)*green(i+L,i));
+                temp += green(i,j+L)*( -green(j+L,i+L)*green(i+L,j)*green(j,i) - green(j+L,j)*green(j,i+L)*green(i+L,i));
             }
             minusDtU2 += dtU(i)*dtU(j)* temp;
         }
@@ -192,13 +207,13 @@ complex<double> measureSecondOrder(const TensorHao< complex<double>, 2 > &green,
     return minusDtU2;
 }
 
-tuple<complex<double>, complex<double>> measureTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn)
+tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn)
 {
     SD walkerRightNew;
     applyOneBodyPartInTwoBodyToRightWalker(walkerRight, walkerRightNew, niupNidn);
 
     SDSDOperation sdsdOperation(walkerLeft, walkerRightNew);
-    complex<double> overlap = exp( sdsdOperation.returnLogOverlap() );
+    complex<double> logOverlap = sdsdOperation.returnLogOverlap();
 
     TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
     complex<double> firstOrder  = measureFirstOrder(greenMatrix, niupNidn);
@@ -206,19 +221,23 @@ tuple<complex<double>, complex<double>> measureTwoBodySecondOrder(const SD &walk
 
     complex<double> background = firstOrder;
     complex<double> criteria  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
-    complex<double> twoBodyAvg = exp(background) * criteria * overlap;
+    complex<double> logTwoBodyAvg = background + log(criteria) +logOverlap;
 
-    return make_tuple(twoBodyAvg, criteria);
+    return make_tuple(logTwoBodyAvg, criteria);
 }
 
-complex<double> measureTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
-                                              const NiupNidn &niupNidn, double sampleCap, size_t sampleSize)
+complex<double> measureLogTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
+                                                 const NiupNidn &niupNidn, double sampleCap, size_t sampleSize)
 {
     NiupNidnForce force;
     NiupNidnAux aux;
     NiupNidnSample sample;
     SD walkerRightTemp;
-    SDSDOperation sdsdOperation(walkerLeft, walkerRightTemp);
+    SDSDOperation sdsdTempOperation(walkerLeft, walkerRightTemp);
+
+    //Note: Separate logW outside to avoid NAN problem!
+    SDSDOperation sdsdOperation(walkerLeft, walkerRight);
+    complex<double> logW = sdsdOperation.returnLogOverlap();
 
     getForce(force, niupNidn, walkerLeft, walkerRight);
     complex<double> num(0,0), den(0,0);
@@ -227,10 +246,14 @@ complex<double> measureTwoBodyForceBiasSample(const SD &walkerLeft, const SD &wa
         aux = niupNidn.sampleAuxFromForce(force, sampleCap);
         sample = niupNidn.getTwoBodySampleFromAux(aux);
         applyTwoBodySampleToRightWalker(walkerRight, walkerRightTemp, sample);
-        num += exp( sdsdOperation.returnLogOverlap() - niupNidn.logOfAuxFromForce(aux, force, sampleCap) );
+
+        num += exp( sdsdTempOperation.returnLogOverlap() -logW - niupNidn.logOfAuxFromForce(aux, force, sampleCap) );
         den += 1.0;
-        sdsdOperation.reSet();
+
+        sdsdTempOperation.reSet();
     }
 
-    return num/den * niupNidn.sumOfAuxFromForce(force, sampleCap);
+    complex<double> logTwoBodyAvg = log( num/den * niupNidn.sumOfAuxFromForce(force, sampleCap) ) + logW;
+
+    return logTwoBodyAvg;
 }

@@ -21,8 +21,8 @@ void AfqmcMetropolis::measureWithwalkerRightInBlock(const WalkerLeft &walkerLeft
         applyOneBodyToLeftWalker(walkerLeft, walkerLeftTemp, expHalfDtK);
         applyOneBodyToRightWalker(walkerRightInBlock[inBlockIndex], walkerRightTemp, expHalfDtK);
         //<walkerLeftTemp| exp(-dt H) | walkerRightTemp>
-        complex<double> expMinusTauHAvg = measureExpMinusDtV(walkerLeft, walkerRightInBlock[inBlockIndex]);
-        addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, expMinusTauHAvg);
+        complex<double> logExpMinusTauHAvg = measureLogExpMinusDtV(walkerLeft, walkerRightInBlock[inBlockIndex]);
+        addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, logExpMinusTauHAvg);
     }
     else
     {
@@ -45,8 +45,8 @@ void AfqmcMetropolis::measureWithWalkerLeftInBlock(size_t inBlockIndex, const Wa
         applyOneBodyToLeftWalker(walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerLeftTemp, expHalfDtK);
         applyOneBodyToRightWalker(walkerRight, walkerRightTemp, expHalfDtK);
         //<walkerLeftTemp| exp(-dt H) | walkerRightTemp>
-        complex<double> expMinusTauHAvg = measureExpMinusDtV(walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerRight);
-        addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, expMinusTauHAvg);
+        complex<double> logExpMinusTauHAvg = measureLogExpMinusDtV(walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerRight);
+        addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, logExpMinusTauHAvg);
     }
     else
     {
@@ -68,11 +68,11 @@ void AfqmcMetropolis::addMeasurement(const WalkerLeft &walkerLeft, const WalkerR
 }
 
 void AfqmcMetropolis::addMeasurementFixVariance(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight,
-                                                complex<double> expMinusTauHAvg)
+                                                complex<double> logExpMinusTauHAvg)
 {
     WalkerWalkerOperation walkerWalkerOperation(walkerLeft, walkerRight);
-    complex<double> leftRightOverlap = exp( walkerWalkerOperation.returnLogOverlap() );
-    complex<double> denIncrement = leftRightOverlap/expMinusTauHAvg;
+    complex<double> leftRightLogOverlap = walkerWalkerOperation.returnLogOverlap();
+    complex<double> denIncrement = exp(leftRightLogOverlap-logExpMinusTauHAvg);
 
     if( method.measureType == "commute" )
     {
@@ -84,13 +84,13 @@ void AfqmcMetropolis::addMeasurementFixVariance(const WalkerLeft &walkerLeft, co
     }
 }
 
-complex<double> AfqmcMetropolis::measureExpMinusDtV(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight)
+complex<double> AfqmcMetropolis::measureLogExpMinusDtV(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight)
 {
-//    complex<double> expMinusDtVAvg, criteria;
-//    tie(expMinusDtVAvg, criteria) = measureTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
+//    complex<double> logExpMinusDtVAvg, criteria;
+//    tie(logExpMinusDtVAvg, criteria) = measureLogTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
 
-    complex<double> expMinusDtVAvg = measureTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, 10000);
-    return expMinusDtVAvg;
+    complex<double> logExpMinusDtVAvg = measureLogTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, 10000);
+    return logExpMinusDtVAvg;
 }
 
 void AfqmcMetropolis::writeAndResetMeasurement()
