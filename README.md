@@ -121,6 +121,9 @@ Then see tutorials for detail examples.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
 
+  //TODO: Check normal results, mean-field background results, dynamic background results, Sample results (100, 1000), 
+  v.s systems size.
+  
   //TODO: Test pinning field with second order
     
   //TODO: Use inverse Force Bias to fix infinit varaince problem

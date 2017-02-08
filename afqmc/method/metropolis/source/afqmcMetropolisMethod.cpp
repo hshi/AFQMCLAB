@@ -36,6 +36,8 @@ void AfqmcMetropolisMethod::read(const string &filename)
     file>>initalAuxiliaryFlag;
     file>>measureType;
     file>>measureVarianceType;
+    file>>secondOrderCap;
+    file>>twoBodySampleSize;
     file>>measureSkipTimesliceStep;
     file>>measureSkipTimesliceLeft;
     file>>measureSkipTimesliceRight;
@@ -64,6 +66,8 @@ void MPIBcast(AfqmcMetropolisMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.initalAuxiliaryFlag);
     MPIBcast(buffer.measureType);
     MPIBcast(buffer.measureVarianceType);
+    MPIBcast(buffer.secondOrderCap);
+    MPIBcast(buffer.twoBodySampleSize);
     MPIBcast(buffer.measureSkipTimesliceStep);
     MPIBcast(buffer.measureSkipTimesliceLeft);
     MPIBcast(buffer.measureSkipTimesliceRight);

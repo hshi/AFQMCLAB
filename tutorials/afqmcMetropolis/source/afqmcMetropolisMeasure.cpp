@@ -89,7 +89,13 @@ complex<double> AfqmcMetropolis::measureLogExpMinusDtV(const WalkerLeft &walkerL
     complex<double> logExpMinusDtVAvg, criteria;
     tie(logExpMinusDtVAvg, criteria) = measureLogTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
 
-//    complex<double> logExpMinusDtVAvg = measureLogTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, 1000);
+    varianceMeasureNumber++;
+    if( criteria.real() > exp(method.secondOrderCap) || criteria.real() < exp(-method.secondOrderCap) )
+    {
+        varianceSampleNumber++;
+        logExpMinusDtVAvg = measureLogTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, method.twoBodySampleSize);
+    }
+
     return logExpMinusDtVAvg;
 }
 
@@ -128,5 +134,22 @@ void AfqmcMetropolis::calculateAndPrintAcceptRatio()
         cout<<"Total Number of single auxiliary update: "<<totalSingleUpdateNumber<<"\n"
             <<"Total Number of single auxiliary accept: "<<totalSingleAcceptNumber<<"\n"
             <<"Accept ratio is: "<<totalSingleAcceptNumber/totalSingleUpdateNumber<<"\n"<<endl;
+    }
+}
+
+void AfqmcMetropolis::calculateVarianceSampleRatio()
+{
+    if( method.measureVarianceType == "fixVariance" )
+    {
+        double totalMeasureNumber = MPISum(varianceMeasureNumber);
+        double totalSampleNumber = MPISum(varianceSampleNumber);
+
+        if(MPIRank()==0)
+        {
+            cout<<setprecision(16);
+            cout<<"Total Number of varaince measurement: "<<totalMeasureNumber<<"\n"
+                <<"Total Number of variance sample: "<<totalSampleNumber<<"\n"
+                <<"Sample ratio is: "<<totalSampleNumber/totalMeasureNumber<<"\n"<<endl;
+        }
     }
 }

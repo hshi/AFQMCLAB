@@ -65,6 +65,8 @@ initalWalkerFlag          =  "setFromModel"  #"setFromModel", "setRandomly", "re
 initalAuxiliaryFlag       =  "dynamicForceInitial" #"dynamicForceInitial", "constForceInitial", "readFromFile"
 measureType               =  "observable"  #"commute", "observable"
 measureVarianceType       =  "normal"   #"normal", "fixVariance"
+secondOrderCap            =  2.0
+twoBodySampleSize         =  1000
 measureSkipTimesliceStep  =  20
 measureSkipTimesliceLeft  =  1999
 measureSkipTimesliceRight =  1999
@@ -86,6 +88,8 @@ f.write(   '{:>26} \n'.format(initalWalkerFlag         ) )
 f.write(   '{:>26} \n'.format(initalAuxiliaryFlag      ) )
 f.write(   '{:>26} \n'.format(measureType              ) )
 f.write(   '{:>26} \n'.format(measureVarianceType      ) )
+f.write('{:26.18e} \n'.format(secondOrderCap           ) )
+f.write(   '{:26d} \n'.format(twoBodySampleSize        ) )
 f.write(   '{:26d} \n'.format(measureSkipTimesliceStep ) )
 f.write(   '{:26d} \n'.format(measureSkipTimesliceLeft ) )
 f.write(   '{:26d} \n'.format(measureSkipTimesliceRight) )

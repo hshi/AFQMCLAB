@@ -54,6 +54,9 @@ void AfqmcMetropolis::initialParameters()
     singleAcceptNumber=0;
     commuteMeasure.setModel(model);
     observeMeasure.setModel(model);
+
+    varianceMeasureNumber=0;
+    varianceSampleNumber=0;
 }
 
 void AfqmcMetropolis::estimateMemory()
@@ -148,6 +151,7 @@ void AfqmcMetropolis::measure()
 void AfqmcMetropolis::prepareStop()
 {
     calculateAndPrintAcceptRatio();
+    calculateVarianceSampleRatio();
     writeField();
     randomHaoSave();
 }

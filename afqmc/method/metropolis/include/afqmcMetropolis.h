@@ -29,6 +29,8 @@ class AfqmcMetropolis
     ModelCommuteMeasure commuteMeasure;
     ModelObserveMeasure observeMeasure;
 
+    long varianceMeasureNumber, varianceSampleNumber;
+
  public:
     AfqmcMetropolis();
     ~AfqmcMetropolis();
@@ -63,6 +65,7 @@ class AfqmcMetropolis
     std::complex<double> measureLogExpMinusDtV(const WalkerLeft &walkerLeft, const WalkerRight &walkerRight);
     void writeAndResetMeasurement();
     void calculateAndPrintAcceptRatio();
+    void calculateVarianceSampleRatio();
 };
 
 #endif //AFQMCLAB_METROPOLIS_H

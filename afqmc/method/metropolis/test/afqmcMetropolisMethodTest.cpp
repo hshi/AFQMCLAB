@@ -28,6 +28,8 @@ void generateAfqmcMetropolisMethodInputFile(const string &filename)
     writeFile("dynamicForceInitial", file);
     writeFile("commute", file);
     writeFile("normal", file);
+    writeFile(2.0, file);
+    writeFile(1000, file);
     writeFile(20, file);
     writeFile(1799, file);
     writeFile(1799, file);
@@ -60,6 +62,8 @@ TEST(afqmcMetropolisMethodTest, readAndBcast)
     EXPECT_EQ("dynamicForceInitial", method.initalAuxiliaryFlag);
     EXPECT_EQ("commute", method.measureType);
     EXPECT_EQ("normal", method.measureVarianceType);
+    EXPECT_EQ(2.0, method.secondOrderCap);
+    EXPECT_EQ(static_cast<size_t>(1000), method.twoBodySampleSize);
     EXPECT_EQ(static_cast<size_t>(20), method.measureSkipTimesliceStep);
     EXPECT_EQ(static_cast<size_t>(1799), method.measureSkipTimesliceLeft);
     EXPECT_EQ(static_cast<size_t>(1799), method.measureSkipTimesliceRight);

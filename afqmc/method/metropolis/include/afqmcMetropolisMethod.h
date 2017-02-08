@@ -25,6 +25,8 @@ class AfqmcMetropolisMethod
     std::string initalAuxiliaryFlag; //"dynamicForceInitial", "constForceInitial", "readFromFile"
     std::string measureType; //"commute", "observable"
     std::string measureVarianceType; //"normal", "fixVariance"
+    double secondOrderCap;
+    size_t twoBodySampleSize;
     size_t measureSkipTimesliceStep;
     size_t measureSkipTimesliceLeft;
     size_t measureSkipTimesliceRight;
