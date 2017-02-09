@@ -90,7 +90,7 @@ complex<double> AfqmcMetropolis::measureLogExpMinusDtV(const WalkerLeft &walkerL
     tie(logExpMinusDtVAvg, criteria) = measureLogTwoBodySecondOrder(walkerLeft, walkerRight, expMinusDtV);
 
     varianceMeasureNumber++;
-    if( criteria.real() > exp(method.secondOrderCap) || criteria.real() < exp(-method.secondOrderCap) )
+    if( criteria.real() > method.secondOrderCap || criteria.real() < -method.secondOrderCap )
     {
         varianceSampleNumber++;
         logExpMinusDtVAvg = measureLogTwoBodyForceBiasSample(walkerLeft, walkerRight, expMinusDtV, method.sampleCap, method.twoBodySampleSize);
