@@ -219,12 +219,22 @@ tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &w
     complex<double> firstOrder  = measureFirstOrder(greenMatrix, niupNidn);
     complex<double> secondOrder = measureSecondOrder(greenMatrix, niupNidn);
 
-    complex<double> background = firstOrder+1.0-sqrt(firstOrder*firstOrder+1.0-secondOrder);
-//    complex<double> background = firstOrder;
-//    complex<double> background = -0.25*niupNidn.getDtUSum();
-    complex<double> expand  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
-    complex<double> criteria = background + log(expand);
-    complex<double> logTwoBodyAvg = criteria +logOverlap;
+    complex<double> background, expand;
+//    background = -0.25*niupNidn.getDtUSum();
+
+    background = firstOrder+1.0-sqrt(firstOrder*firstOrder+1.0-secondOrder);
+    expand  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
+    complex<double> measureOne = background + log(expand);
+
+    background = firstOrder;
+    expand  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
+    complex<double> measureTwo = background + log(expand);
+
+    complex<double> logTwoBodyAvg = measureOne +logOverlap;
+    complex<double> criteria = max(measureOne, measureTwo);
+
+    if( abs( measureOne.imag()/measureOne.real() ) > 1e-8 ) criteria = 1E300;
+    if( abs( measureTwo.imag()/measureTwo.real() ) > 1e-8 ) criteria = 1E300;
 
     return make_tuple(logTwoBodyAvg, criteria);
 }
