@@ -231,10 +231,10 @@ tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &w
     complex<double> measureTwo = background + log(expand);
 
     complex<double> logTwoBodyAvg = measureOne +logOverlap;
-    complex<double> criteria = max(measureOne, measureTwo);
 
-    if( abs( measureOne.imag()/measureOne.real() ) > 1e-8 ) criteria = 1E300;
-    if( abs( measureTwo.imag()/measureTwo.real() ) > 1e-8 ) criteria = 1E300;
+    double criteria_real = max( measureOne.real(), measureTwo.real() );
+    double criteria_imag = max( measureOne.imag(), measureTwo.imag() );
+    complex<double>  criteria(criteria_real, criteria_imag);
 
     return make_tuple(logTwoBodyAvg, criteria);
 }
