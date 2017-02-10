@@ -121,6 +121,9 @@ Then see tutorials for detail examples.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
 
+
+  //TODO: Check new method with large simulation? 
+  
   //TODO: Why 5 + 1000 consistent lower than exact answer? ==> Increase to 10000 okay? Decrease 5 to 0.1 ?==> Always 
   lower  ==> wait for a big run to see if it is really lower?
   

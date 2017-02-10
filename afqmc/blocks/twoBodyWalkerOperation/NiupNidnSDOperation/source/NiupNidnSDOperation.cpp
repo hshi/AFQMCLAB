@@ -219,7 +219,8 @@ tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &w
     complex<double> firstOrder  = measureFirstOrder(greenMatrix, niupNidn);
     complex<double> secondOrder = measureSecondOrder(greenMatrix, niupNidn);
 
-    complex<double> background = firstOrder;
+    complex<double> background = firstOrder+1.0-sqrt(firstOrder*firstOrder+1.0-secondOrder);
+//    complex<double> background = firstOrder;
 //    complex<double> background = -0.25*niupNidn.getDtUSum();
     complex<double> expand  = 1.0 + (firstOrder-background) + 0.5*(secondOrder-2.0*firstOrder*background+background*background);
     complex<double> criteria = background + log(expand);
