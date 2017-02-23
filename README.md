@@ -7,7 +7,7 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
 ##Dependence
    - **GoogleTest**
 
-     set `GTEST_ROOT='/PATH/TO/FFTW'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
+     set `GTEST_ROOT='/PATH/TO/GOOGLETEST'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
 
    - **SPRNG** and **GMP**
 
@@ -121,11 +121,12 @@ Then see tutorials for detail examples.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
 
+  //TODO: Normal simulation seems to have more infinite variance problem, check old code for benchmark. ==> Try to 
+  run new code in Hurricane
 
-  //TODO: Check new method with large simulation? 
+  //TODO: Large simulation with trotter has large infinite variance problem, why?
   
-  //TODO: Why 5 + 1000 consistent lower than exact answer? ==> Increase to 10000 okay? Decrease 5 to 0.1 ?==> Always 
-  lower  ==> wait for a big run to see if it is really lower?
+  //TODO: Fixed infinite variance method is always lower, why?
   
   //TODO: Check normal results and fixed results v.s systems size.
   
@@ -139,6 +140,8 @@ Then see tutorials for detail examples.
   
   //TODO: Infinite variance?
         
+  //TODO: Hurricane intel mp problem?
+  
   //TODO: Think about metropolis code with sign problem. 
   
   //TODO: Write a cp code?
