@@ -13,5 +13,12 @@ include_directories(${AFQMCLAB_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${AFQMCLAB_FLAGS}")
 add_definitions(${AFQMCLAB_DEFINITIONS})
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME}
+        main.cpp
+        measureStatic.cpp
+        measureDynamicParam.h
+        measureDynamicDestroyToWf.cpp
+        measureDynamicCreateToWf.cpp
+        measureDynamicDensityToWf.cpp)
+
 target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})
