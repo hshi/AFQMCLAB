@@ -20,6 +20,22 @@ void measureStatic(Lanczos &lan, RealMaterial& H)
     complex<double> V = phi0.calculateOverlapWith(phip);
     writeFile(V.real(), "V.dat");
 
+    TensorHao<complex<double>, 1> ni_up(L);
+    for(size_t i = 0; i < L; ++i)
+    {
+        H.applyCupiDaggerCupjToWf(phi0, phip, i, i);
+        ni_up(i) = phi0.calculateOverlapWith(phip);
+    }
+    writeFile(ni_up.size(), ni_up.data(), "ni_up.dat");
+
+    TensorHao<complex<double>, 1> ni_dn(L);
+    for(size_t i = 0; i < L; ++i)
+    {
+        H.applyCdniDaggerCdnjToWf(phi0, phip, i, i);
+        ni_dn(i) = phi0.calculateOverlapWith(phip);
+    }
+    writeFile(ni_dn.size(), ni_dn.data(), "ni_dn.dat");
+
     TensorHao<complex<double>, 1> SzSz(L);
     for(size_t i = 0; i < L; ++i)
     {

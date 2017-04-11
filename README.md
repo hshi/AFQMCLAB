@@ -135,9 +135,7 @@ Then see tutorials for detail examples.
   //TODO: Use inverse Force Bias to fix infinit varaince problem
   
   //TODO: Flip spin, Yuanyao mentioned is also scales as ~L?
-    
-  //TODO: Why it is not good about writing GreenNum in Comet, sumbitted a ticket, wait for results?
-  
+      
   //TODO: Infinite variance?
         
   //TODO: Hurricane intel mp problem?
