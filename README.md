@@ -120,6 +120,9 @@ Then see tutorials for detail examples.
 - `MAGMA` wrap does not support 64 bit int and openmp.
 - `ACML_MP` is very slow for zgetrf when OMP_NUM_THREADS=1, `MKL` is preferred for openmp jobs. 
 - `ACML_MP` can be used for Lanczos code, since it does not use zgetrf.
+- For intel Openmp threading, currently use flag -qopenmp (icpc) and -fopenmp (g++). While 
+intel-mkl-link-line-advisor now suggests to link library -liomp5 (icpc) and -lgomp (g++). It seems okay to use flag. We 
+might need to move to -openmp (icpc) later.
 
   //TODO: Normal simulation seems to have more infinite variance problem, check old code for benchmark. ==> Try to 
   run new code in Hurricane

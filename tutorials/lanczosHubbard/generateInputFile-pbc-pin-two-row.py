@@ -3,20 +3,32 @@ import os
 sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
-latt_n  = [3,4]
-ktwist  = [0.12,0.34]
-t1      = 1.0
-t2      = 0.2
-U       = -4.0
-Nup     = 5
-Ndn     = 5
-UpDnFlag = 1    # 0 up=dn, 1 up=conj(dn) ==> different twist
+latt_n  =  [4,4]
+ktwist  =  [0.0,0.0]
+t1      =  1.0
+t2      =  0.2
+pin_0   =  0.25
+pin_L   = -0.25
+U       =  8.0
+Nup     =  5
+Ndn     =  5
+UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
 
 #Set lattice information
 latt = Latt_class( latt_n )
 up_i, up_j, up_K = HubbardNearestNeighborHopping(latt, ktwist, t1)
 if( abs(t2) > 1e-10 ):
     up_i_p, up_j_p, up_K_p = Hubbard2DNextNearestNeighborHopping(latt, ktwist, t2)
+    up_i = np.concatenate([up_i, up_i_p])
+    up_j = np.concatenate([up_j, up_j_p])
+    up_K = np.concatenate([up_K, up_K_p])
+if( abs(pin_0) > 1e-10 ):
+    up_i_p, up_j_p, up_K_p = Hubbard2DRowAFMPinning(latt, 0, pin_0)
+    up_i = np.concatenate([up_i, up_i_p])
+    up_j = np.concatenate([up_j, up_j_p])
+    up_K = np.concatenate([up_K, up_K_p])
+if( abs(pin_L) > 1e-10 ):
+    up_i_p, up_j_p, up_K_p = Hubbard2DRowAFMPinning(latt, latt_n[1]-1, pin_L)
     up_i = np.concatenate([up_i, up_i_p])
     up_j = np.concatenate([up_j, up_j_p])
     up_K = np.concatenate([up_K, up_K_p])
