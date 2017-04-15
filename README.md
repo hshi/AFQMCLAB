@@ -4,7 +4,7 @@ This is a library for AFQMC.
 
 All rights reserved. Please do not distribute the program, or any of its parts, without explicit consent of the author.
 
-##Dependence
+## Dependence
    - **GoogleTest**
 
      set `GTEST_ROOT='/PATH/TO/GOOGLETEST'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
@@ -36,7 +36,7 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
    - **MPI** (Optional)
 
 
-##How to install:
+## How to install:
     git clone https://github.com/hshi/AFQMCLAB.git
     cd AFQMCLAB
     mkdir build
@@ -46,7 +46,7 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
     make test
     make install
 
-##How to use
+## How to use
 
 Frist set path to AFQMCLAB_DIR, e.g.
 
@@ -58,7 +58,7 @@ or
 Then see tutorials for detail examples.
 
 
-##Tune cmake
+## Tune cmake
 - Set install directory to ~/lib/afqmclab.
 
             cmake .. -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
@@ -114,7 +114,7 @@ Then see tutorials for detail examples.
             cmake .. -DPLATFORM=MANUAL -DCMAKE_CXX_COMPILER=mpic++ -DMPIEXEC=mpiexec -DMPIEXEC_NUMPROC_FLAG="-np" -DUSE_MPI=on -DCMAKE_CXX_FLAGS="-Wall -O3 -DNDEBUG" -DUSE_OPENMP=on -DCMAKE_INSTALL_PREFIX:PATH="~/lib/afqmclab"
 
 
-##Note:
+## Note:
 
 - `FFTW` wrap does not support 64 bit int and openmp.
 - `MAGMA` wrap does not support 64 bit int and openmp.
