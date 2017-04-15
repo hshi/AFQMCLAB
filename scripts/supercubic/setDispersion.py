@@ -19,6 +19,16 @@ def Continous_dispersion(latt, k, t1):
         ek[i] = t1 * (k_tmp*k_tmp).sum()
     return ek
 
+def Hubbard_2Ddispersion(latt, k, t1, t2=0):
+    if ( latt.dimen != 2 ):
+        print ( "Error!!! Lattice dimension must be two!" )
+        sys.exit(1)
+    ek = np.empty(latt.L);
+    for i in range(latt.L):
+        k_tmp = (latt.coor(i) + k)*2.0*np.pi/latt.n
+        ek[i] = -2.0*t1*np.cos(k_tmp).sum() -4.0*t2*np.cos(k_tmp[0])*np.cos(k_tmp[1])
+    return ek
+
 #Set Hubbard modify dispersion
 def set_sort_list(ek):
     map_ek   = sorted( range(len(ek)), key=lambda k: ek[k] )

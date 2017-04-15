@@ -38,7 +38,7 @@ if UpDnFlag == 0:
 elif UpDnFlag == 1:
     dn_i = up_i; dn_j = up_j; dn_K = np.conj( up_K )
 else:
-    print "WRONG!!! Do not know UpDnFlag!!!"
+    print ( "WRONG!!! Do not know UpDnFlag!!!" )
     sys.exit(1)
 
 #Write to file
@@ -84,4 +84,4 @@ f.close()
 #Hzero = np.zeros(( latt.L, latt.L), dtype=complex )
 #for i in range( len(up_K) ):
 #    Hzero[ up_i[i], up_j[i] ] += up_K[i]
-#print np.real( np.sort( np.linalg.eig(Hzero)[0] ) )
+#print ( np.real( np.sort( np.linalg.eig(Hzero)[0] ) ) )

@@ -22,7 +22,7 @@ if UpDnFlag == 0:
 elif UpDnFlag == 1:
     dn_i, dn_j, dn_K = HubbardNearestNeighborHopping(latt, -np.array(ktwist), t1)
 else:
-    print "WRONG!!! Do not know UpDnFlag!!!"
+    print( "WRONG!!! Do not know UpDnFlag!!!" )
     sys.exit(1)
 
 Kmatrix = np.zeros( (2*latt.L, 2*latt.L), dtype='complex', order='F' )

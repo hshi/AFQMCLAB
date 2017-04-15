@@ -86,7 +86,7 @@ if UpDnFlag == 0:
 elif UpDnFlag == 1:
     dn_i = up_i; dn_j = up_j; dn_K = np.conj(up_K)
 else:
-    print "WRONG!!! Do not know UpDnFlag!!!"
+    print ( "WRONG!!! Do not know UpDnFlag!!!" )
     sys.exit(1)
 
 #Write to file
