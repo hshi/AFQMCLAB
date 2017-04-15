@@ -45,7 +45,7 @@ void pop_control(std::vector<T>& walker, const std::vector<int>& table)
 
     //Some parameters for send and recv
     int count, send_index, recv_rank, send_index_bk, recv_rank_bk, send_rank, send_local_index, recv_local_index;
-    int Nbuf=(walker[0]).Nbuf;
+    int Nbuf=(walker[0]).getNbuf();
     std::vector< std::vector<char>  >  buf_send(buf_send_number); 
     std::vector<char> buf_recv_one(Nbuf);
     std::vector< MPI_Request > ISREQ(buf_send_number); 

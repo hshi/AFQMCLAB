@@ -6,5 +6,6 @@
 #define AFQMCLAB_UTILITIES_H
 
 #include "manipulateMCData/include/writeThreadSum.h"
+#include "populationControl/include/populationControl.h"
 
 #endif //AFQMCLAB_UTILITIES_H

@@ -1,7 +1,5 @@
 #include <iomanip>
-#include <iostream>
 #include <vector>
-#include "../../../../common/mpiHao/include/mpi_fun.h"
 #include "../../../../common/randomHao/include/random_hao.h"
 
 using namespace std;
@@ -17,7 +15,7 @@ vector<int> popConfiguration(int size, const vector<double>& weight)
     vector<double> prob(L); for(int i=0; i<L; i++) prob[i]=weight[i]/sum;
 
     //Set num transfer
-    vector<int> number(L,0); 
+    vector<int> number(L,0);
     double prob_sum_new;
     int index_old=0; double prob_sum_old=prob[0];
     for(int i=0; i<L; i++)
@@ -77,7 +75,7 @@ vector<int> popConfiguration(int size, const vector<double>& weight)
     }
 
     //Check
-    for(int i=0; i<L; i++) 
+    for(int i=0; i<L; i++)
     {
         if(number[i]!=1) {cout<<"ERROR!!!! After pop configuration, number of each walker is not 1!"<<endl; exit(1);}
     }

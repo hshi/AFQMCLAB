@@ -1,4 +1,6 @@
 set(SOURCE_TESTS
+        doublePopType.h
+        doublePopType.cpp
         populationControlTest.cpp)
 
 add_executable(afqmcPopulationControlTest ${SOURCE_HEADERS} ${SOURCE_TESTS})

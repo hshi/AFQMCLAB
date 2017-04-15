@@ -12,9 +12,9 @@ void deterSendNumber(int& send_number, vector<int>& send_number_list, const vect
  
     if(rank==0) 
     {
-        int L=table.size(); int L_chunk=L/size; 
+        int L=table.size(); int L_chunk=L/size;
         send_number_list=vector<int>(size, 0);
-        
+
         int j, rank_recv, rank_send;
         for(int i=0; i<L; i++)
         {

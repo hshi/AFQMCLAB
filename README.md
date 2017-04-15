@@ -123,7 +123,10 @@ Then see tutorials for detail examples.
 - For intel Openmp threading, currently use flag -qopenmp (icpc) and -fopenmp (g++). While 
 intel-mkl-link-line-advisor now suggests to link library -liomp5 (icpc) and -lgomp (g++). It seems okay to use flag. We 
 might need to move to -openmp (icpc) later.
+- Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+  //TODO: Check population Control Configuration, make sure it is proportion to weight.
+   
   //TODO: Normal simulation seems to have more infinite variance problem, check old code for benchmark. ==> Try to 
   run new code in Hurricane
 
