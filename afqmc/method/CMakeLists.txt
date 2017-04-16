@@ -1,1 +1,2 @@
+add_subdirectory(constraintPath)
 add_subdirectory(metropolis)

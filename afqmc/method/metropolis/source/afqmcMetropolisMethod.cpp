@@ -32,8 +32,8 @@ void AfqmcMetropolisMethod::read(const string &filename)
     file>>stabilizeStep;
     file>>timesliceSize;
     file>>timesliceBlockSize;
-    file>>initalWalkerFlag;
-    file>>initalAuxiliaryFlag;
+    file>>initialWalkerFlag;
+    file>>initialAuxiliaryFlag;
     file>>measureType;
     file>>measureVarianceType;
     file>>secondOrderCap;
@@ -62,8 +62,8 @@ void MPIBcast(AfqmcMetropolisMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.timesliceSize);
     MPIBcast(buffer.timesliceBlockSize);
     MPIBcast(buffer.timesliceBlockNumber);
-    MPIBcast(buffer.initalWalkerFlag);
-    MPIBcast(buffer.initalAuxiliaryFlag);
+    MPIBcast(buffer.initialWalkerFlag);
+    MPIBcast(buffer.initialAuxiliaryFlag);
     MPIBcast(buffer.measureType);
     MPIBcast(buffer.measureVarianceType);
     MPIBcast(buffer.secondOrderCap);

@@ -21,8 +21,8 @@ class AfqmcMetropolisMethod
     size_t timesliceSize;
     size_t timesliceBlockSize;
     size_t timesliceBlockNumber;
-    std::string initalWalkerFlag;    //"setFromModel", "setRandomly", "readFromFile"
-    std::string initalAuxiliaryFlag; //"dynamicForceInitial", "constForceInitial", "readFromFile"
+    std::string initialWalkerFlag;    //"setFromModel", "setRandomly", "readFromFile"
+    std::string initialAuxiliaryFlag; //"dynamicForceInitial", "constForceInitial", "readFromFile"
     std::string measureType; //"commute", "observable"
     std::string measureVarianceType; //"normal", "fixVariance"
     double secondOrderCap;

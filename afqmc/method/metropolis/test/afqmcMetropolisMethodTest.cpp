@@ -58,8 +58,8 @@ TEST(afqmcMetropolisMethodTest, readAndBcast)
     EXPECT_EQ(static_cast<size_t>(6400), method.timesliceSize);
     EXPECT_EQ(static_cast<size_t>(32), method.timesliceBlockSize);
     EXPECT_EQ(static_cast<size_t>(200), method.timesliceBlockNumber);
-    EXPECT_EQ("setFromModel", method.initalWalkerFlag);
-    EXPECT_EQ("dynamicForceInitial", method.initalAuxiliaryFlag);
+    EXPECT_EQ("setFromModel", method.initialWalkerFlag);
+    EXPECT_EQ("dynamicForceInitial", method.initialAuxiliaryFlag);
     EXPECT_EQ("commute", method.measureType);
     EXPECT_EQ("normal", method.measureVarianceType);
     EXPECT_EQ(2.0, method.secondOrderCap);

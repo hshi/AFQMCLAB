@@ -8,7 +8,7 @@ using namespace tensor_hao;
 
 void AfqmcMetropolis::initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerRight)
 {
-    if( method.initalWalkerFlag == "setFromModel" )
+    if( method.initialWalkerFlag == "setFromModel" )
     {
         fillWalkerFromModel(walkerLeft, model);
         fillWalkerFromModel(walkerRight, model);
@@ -19,7 +19,7 @@ void AfqmcMetropolis::initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerR
             walkerRight.write("walkerRight.dat");
         }
     }
-    else if( method.initalWalkerFlag == "setRandomly" )
+    else if( method.initialWalkerFlag == "setRandomly" )
     {
         if( MPIRank()==0 )
         {
@@ -31,7 +31,7 @@ void AfqmcMetropolis::initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerR
         MPIBcast(walkerLeft);
         MPIBcast(walkerRight);
     }
-    else if( method.initalWalkerFlag == "readFromFile" )
+    else if( method.initialWalkerFlag == "readFromFile" )
     {
         if( MPIRank()==0 )
         {
@@ -43,7 +43,7 @@ void AfqmcMetropolis::initialWalker(WalkerLeft &walkerLeft, WalkerRight &walkerR
     }
     else
     {
-        cout<<"Error!!! Do not recognize initalWalkerFlag!"<<endl;
+        cout<<"Error!!! Do not recognize initialWalkerFlag!"<<endl;
         exit(1);
     }
 }
@@ -52,7 +52,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
 {
     auxiliaryFields.resize( method.timesliceSize );
 
-    if( method.initalAuxiliaryFlag == "readFromFile") readField();
+    if( method.initialAuxiliaryFlag == "readFromFile") readField();
 
     walkerRightInBlock.resize(method.timesliceBlockSize+1);
     logWeightRightInBlock.resize(method.timesliceBlockSize+1);
@@ -83,11 +83,11 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
                 logWeightRightInBlock[j] = logWeight;
             }
 
-            if( method.initalAuxiliaryFlag == "constForceInitial" )
+            if( method.initialAuxiliaryFlag == "constForceInitial" )
             {
                 auxiliaryFields[currentTimeslice] = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
             }
-            else if( method.initalAuxiliaryFlag == "dynamicForceInitial" )
+            else if( method.initialAuxiliaryFlag == "dynamicForceInitial" )
             {
                 getForce(dynamicForce, expMinusDtV, walkerLeft, walkerRightTemp);
                 auxiliaryFields[currentTimeslice] = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);

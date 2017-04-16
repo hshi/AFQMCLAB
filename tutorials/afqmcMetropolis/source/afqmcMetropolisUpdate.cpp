@@ -316,6 +316,6 @@ double AfqmcMetropolis::returnLogProbOfAux(const TwoBodyAux &twoBodyAux)
     }
     else
     {
-        cout<<"Error!!! Do not recognize initalAuxiliaryFlag!"<<endl; exit(1);
+        cout<<"Error!!! Do not recognize initialAuxiliaryFlag!"<<endl; exit(1);
     }
 }
