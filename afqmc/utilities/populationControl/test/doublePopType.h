@@ -15,8 +15,8 @@ class DoublePop
     ~DoublePop();
 
     int getNbuf() const;
-    DoublePop& operator  = (const DoublePop& x);
 
+    DoublePop& operator  = (const DoublePop& x);
 #ifdef MPI_HAO
     std::vector<char> pack() const;
     void unpack(const std::vector<char>& buf);

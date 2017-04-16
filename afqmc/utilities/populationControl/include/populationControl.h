@@ -16,7 +16,7 @@ int deterBufRecvNumber(const std::vector<int>& table_recv);
 #endif
 
 template<class T >
-void pop_control(std::vector<T>& walker, const std::vector<int>& table)
+void populationControl(std::vector<T> &walker, const std::vector<int> &table)
 {
     int rank=MPIRank(); int size=MPISize(); int L_chunk=walker.size();
     int L=0; if(rank==0) L=table.size(); MPIBcast(L);
