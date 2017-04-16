@@ -6,10 +6,37 @@
 #define AFQMCLAB_AFQMCCONSTRAINTPATH_H
 
 #include "afqmcConstraintPathDefine.h"
+#include "afqmcConstraintPathMethod.h"
 
 class AfqmcConstraintPath
 {
+ private:
+    AfqmcConstraintPathMethod method;
+    Model model;
+    OneBody expMinusDtK, expMinusHalfDtK, expHalfDtK;
+    TwoBody expMinusDtV;
+    TwoBodyForce dynamicForce, constForce;
+    TwoBodyAux twoBodyAux;
 
+    WalkerLeft phiT;
+    std::vector<WalkerRight> walker;
+
+    ModelCommuteMeasure commuteMeasure;
+
+ public:
+    AfqmcConstraintPath();
+    ~AfqmcConstraintPath();
+
+    void run();
+    void initialParameters();
+    void estimateMemory();
+    void measureWithoutProjection();
+    void prepareStop();
+
+ private:
+    void initialPhiT();
+    void initialWalker();
+    void writeWalkers();
 };
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATH_H

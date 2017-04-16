@@ -25,8 +25,8 @@ void generateAfqmcConstraintPathMethodInputFile(const string &filename)
     writeFile(5, file);
     writeFile("setFromModel", file);
     writeFile("setRandomly", file);
-    writeFile("generateFromCode", file);
     writeFile(80, file);
+    writeFile(120, file);
     writeFile(3, file);
 
     file.close();
@@ -53,8 +53,9 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
     EXPECT_EQ(static_cast<size_t>(5), method.measureStep);
     EXPECT_EQ("setFromModel", method.initialPhiTFlag);
     EXPECT_EQ("setRandomly", method.initialWalkerFlag);
-    EXPECT_EQ("generateFromCode", method.initialAuxiliaryFlag);
     EXPECT_EQ(static_cast<size_t>(80), method.adjustEnergyMaxStep);
+    EXPECT_EQ(120, method.walkerSizePerThread);
+    EXPECT_EQ(120*MPISize(), method.walkerSize);
     EXPECT_EQ(3, method.seed);
 
     removeFile(filename);

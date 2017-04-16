@@ -19,10 +19,11 @@ class AfqmcConstraintPathMethod
     size_t loopSize;
     size_t thermalStep;
     size_t measureStep;
-    std::string initialPhiTFlag; //"setFromModel", "readFromFile"
-    std::string initialWalkerFlag;    //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile"
-    std::string initialAuxiliaryFlag; //"generateFromCode", "readFromFile"
+    std::string initialPhiTFlag;   //"setFromModel", "setRandomly", "readFromFile"
+    std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
     size_t adjustEnergyMaxStep;
+    int walkerSizePerThread;
+    int walkerSize;
     int seed;  // -1. read file, 0. random, else is seeds
 
     AfqmcConstraintPathMethod();

@@ -139,3 +139,8 @@ void SDSDOperation::calculateWfLeftDagger()
 
     state = SDOperationState::WFLEFTDAGGER;
 }
+
+void sampleWalkerFromPhiT(SD &walker, const SD &phiT)
+{
+    walker = phiT;
+}

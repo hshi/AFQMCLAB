@@ -33,8 +33,8 @@ void AfqmcConstraintPathMethod::read(const string &filename)
     file>>measureStep;
     file>>initialPhiTFlag;
     file>>initialWalkerFlag;
-    file>>initialAuxiliaryFlag;
     file>>adjustEnergyMaxStep;
+    file>>walkerSizePerThread;
     file>>seed;
 
     file.close();
@@ -56,14 +56,17 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.measureStep);
     MPIBcast(buffer.initialPhiTFlag);
     MPIBcast(buffer.initialWalkerFlag);
-    MPIBcast(buffer.initialAuxiliaryFlag);
     MPIBcast(buffer.adjustEnergyMaxStep);
+    MPIBcast(buffer.walkerSizePerThread);
+    MPIBcast(buffer.walkerSize);
     MPIBcast(buffer.seed);
 }
 #endif
 
 void AfqmcConstraintPathMethod::analysis()
 {
+    walkerSize = walkerSizePerThread*MPISize();
+
     if( dt * stabilizeStep > 2.0 )
     {
         cout<<"Warning!!! Stable beta is larger than 2.0!"<<endl;

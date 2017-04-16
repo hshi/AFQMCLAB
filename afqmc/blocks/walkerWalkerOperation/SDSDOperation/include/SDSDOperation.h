@@ -49,4 +49,6 @@ class SDSDOperation
     void calculateWfLeftDagger();
 };
 
+void sampleWalkerFromPhiT(SD &walker, const SD& phiT);
+
 #endif //AFQMCLAB_SDOPERATION_H
