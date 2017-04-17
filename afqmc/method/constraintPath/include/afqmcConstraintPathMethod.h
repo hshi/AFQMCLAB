@@ -15,10 +15,12 @@ class AfqmcConstraintPathMethod
     std::string forceType;   // "dynamicForce", "constForce"
     double sampleCap;
     size_t stabilizeStep;
+    size_t populationControlStep;
     size_t timesliceSize;
     size_t loopSize;
     size_t thermalStep;
-    size_t measureStep;
+    size_t measureSkipTimesliceStep;
+    size_t writeSkipMeasureStep;
     std::string initialPhiTFlag;   //"setFromModel", "setRandomly", "readFromFile"
     std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
     size_t adjustEnergyMaxStep;

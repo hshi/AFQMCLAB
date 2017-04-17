@@ -127,6 +127,8 @@ might need to move to `-openmp` (icpc) later.
 
   //TODO: Check population Control Configuration, make sure it is proportion to weight.
    
+  //TODO: Change getForce function, most of them should have input Walkerwalkeroperation function.
+  
   //TODO: Normal simulation seems to have more infinite variance problem, check old code for benchmark. ==> Try to 
   run new code in Hurricane
 

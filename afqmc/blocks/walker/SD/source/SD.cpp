@@ -51,6 +51,11 @@ complex<double> SD::normalize()
     return logwTemp;
 }
 
+void SD::addLogw(std::complex<double> logw_add)
+{
+    logw += logw_add;
+}
+
 void SD::randomFill()
 {
     tensor_hao::randomFill(wf);
@@ -77,6 +82,11 @@ void SD::write(const string &filename) const
     file.close();
 }
 
+int SD::returnNbuf() const
+{
+    return 16+16*wf.size();
+}
+
 double SD::getMemory() const
 {
     return 16.0+wf.getMemory();
@@ -99,5 +109,17 @@ void MPIBcast(SD &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.logw, root, comm );
     MPIBcast( buffer.wf, root, comm );
+}
+
+void SD::pack(vector<char> &buf, int &posit) const
+{
+    MPI_Pack(&logw, 1, MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
+    MPI_Pack(wf.data(), wf.size(), MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
+}
+
+void SD::unpack(const vector<char> &buf, int &posit)
+{
+    MPI_Unpack(buf.data(), buf.size(), &posit, &logw, 1, MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
+    MPI_Unpack(buf.data(), buf.size(), &posit, wf.data(), wf.size(), MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
 }
 #endif

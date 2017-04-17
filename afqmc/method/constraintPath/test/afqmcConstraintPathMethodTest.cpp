@@ -19,10 +19,12 @@ void generateAfqmcConstraintPathMethodInputFile(const string &filename)
     writeFile("constForce", file);
     writeFile(0.8, file);
     writeFile(10, file);
+    writeFile(12, file);
     writeFile(1000, file);
     writeFile(20, file);
     writeFile(30, file);
     writeFile(5, file);
+    writeFile(6, file);
     writeFile("setFromModel", file);
     writeFile("setRandomly", file);
     writeFile(80, file);
@@ -47,10 +49,12 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
     EXPECT_EQ("constForce", method.forceType);
     EXPECT_EQ(0.8, method.sampleCap);
     EXPECT_EQ(static_cast<size_t>(10), method.stabilizeStep);
+    EXPECT_EQ(static_cast<size_t>(12), method.populationControlStep);
     EXPECT_EQ(static_cast<size_t>(1000), method.timesliceSize);
     EXPECT_EQ(static_cast<size_t>(20), method.loopSize);
     EXPECT_EQ(static_cast<size_t>(30), method.thermalStep);
-    EXPECT_EQ(static_cast<size_t>(5), method.measureStep);
+    EXPECT_EQ(static_cast<size_t>(5), method.measureSkipTimesliceStep);
+    EXPECT_EQ(static_cast<size_t>(6), method.writeSkipMeasureStep);
     EXPECT_EQ("setFromModel", method.initialPhiTFlag);
     EXPECT_EQ("setRandomly", method.initialWalkerFlag);
     EXPECT_EQ(static_cast<size_t>(80), method.adjustEnergyMaxStep);

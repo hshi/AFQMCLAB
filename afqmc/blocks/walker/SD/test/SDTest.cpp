@@ -126,3 +126,31 @@ TEST(SDTest, readWriteBcast)
     EXPECT_EQ( L, sd.getL() );
     EXPECT_EQ( N, sd.getN() );
 }
+
+#ifdef MPI_HAO
+TEST(SDTest, packUnpack)
+{
+    size_t L(10), N(5);
+    TensorHao<complex<double>,2> wf(L,N);
+    randomFill(wf);
+    complex<double> logw(2.0, 3.0);
+
+    SD sdBase;
+    sdBase.wfRef() = wf;
+    sdBase.logwRef() = logw;
+
+    SD sd;
+    sd.wfRef() = 0.0;
+    sd.wfRef().resize(L, N);
+
+    int Nbuf = sdBase.returnNbuf();
+    vector<char> buf(Nbuf);
+    int posit(0); sdBase.pack(buf, posit);
+    posit = 0; sd.unpack(buf, posit);
+
+    EXPECT_COMPLEXDOUBLE_EQ( logw, sd.getLogw() );
+    EXPECT_FALSE( diff( wf, sd.getWf(), 1e-12 ) );
+    EXPECT_EQ( L, sd.getL() );
+    EXPECT_EQ( N, sd.getN() );
+}
+#endif

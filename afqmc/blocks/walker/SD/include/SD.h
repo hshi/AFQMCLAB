@@ -33,14 +33,18 @@ class SD
     void resize(size_t L, size_t N);
     void stabilize();
     std::complex<double> normalize();
+    void addLogw(std::complex<double> logw_add);
     void randomFill();
 
     void read(const std::string& filename);
     void write(const std::string& filename) const;
+    int returnNbuf() const;
     double getMemory() const;
 
 #ifdef MPI_HAO
     friend void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    void pack( std::vector<char> &buf,  int &posit ) const;
+    void unpack( const std::vector<char> &buf, int &posit );
 #endif
 
  private:

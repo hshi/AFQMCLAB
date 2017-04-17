@@ -63,6 +63,42 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
     walkerNew.logwRef() = conj( twoBodySample.logw ) + walker.getLogw();
 }
 
+void getForce(NiupNidnForce& force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation )
+{
+    size_t halfL = twoBody.getL();
+
+    if( force.size() != halfL ) force.resize(halfL);
+
+    const string &decompType = twoBody.getDecompType();
+
+    if( decompType == "densityCharge" )
+    {
+        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
+    }
+    else if( decompType == "densitySpin" )
+    {
+        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
+    }
+    else if( decompType == "hopCharge" )
+    {
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
+    }
+    else if( decompType == "hopSpin" )
+    {
+        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
+    }
+    else
+    {
+        cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
+        exit(1);
+    }
+}
+
+
 void getForce(NiupNidnForce& force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight)
 {
     size_t L = walkerLeft.getL(); size_t N = walkerLeft.getN(); size_t halfL = twoBody.getL();

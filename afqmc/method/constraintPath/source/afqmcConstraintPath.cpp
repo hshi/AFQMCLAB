@@ -16,6 +16,21 @@ void AfqmcConstraintPath::run()
     initialParameters();
 
     estimateMemory();
+
+    if( method.timesliceSize == 0  )
+    {
+        measureWithoutProjection();
+    }
+    else
+    {
+        initialPhiT();
+
+        for(size_t i = 0; i < method.loopSize; ++i)
+        {
+            initialWalker();
+        }
+//        prepareStop();
+    }
 }
 
 void AfqmcConstraintPath::initialParameters()
@@ -71,6 +86,14 @@ void AfqmcConstraintPath::estimateMemory()
         cout<<"Please make sure available memory is larger than this.\n"<<endl;
     }
 }
+
+void AfqmcConstraintPath::measureWithoutProjection()
+{
+    initialPhiT();
+    initialWalker();
+    writeAndResetMeasurement();
+}
+
 
 void AfqmcConstraintPath::prepareStop()
 {

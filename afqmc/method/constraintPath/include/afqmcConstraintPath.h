@@ -37,6 +37,17 @@ class AfqmcConstraintPath
     void initialPhiT();
     void initialWalker();
     void writeWalkers();
+
+    void projection();
+    void projectExpHalfDtK();
+    void projectExpMinusHalfDtK();
+    void projectExpHalfDtKExpMinusDtV();
+
+    void modifyGM();
+    void popControl();
+
+    void addMeasurement();
+    void writeAndResetMeasurement();
 };
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATH_H

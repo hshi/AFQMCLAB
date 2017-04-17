@@ -27,10 +27,12 @@ void AfqmcConstraintPathMethod::read(const string &filename)
     file>>forceType;
     file>>sampleCap;
     file>>stabilizeStep;
+    file>>populationControlStep;
     file>>timesliceSize;
     file>>loopSize;
     file>>thermalStep;
-    file>>measureStep;
+    file>>measureSkipTimesliceStep;
+    file>>writeSkipMeasureStep;
     file>>initialPhiTFlag;
     file>>initialWalkerFlag;
     file>>adjustEnergyMaxStep;
@@ -50,10 +52,12 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.forceType);
     MPIBcast(buffer.sampleCap);
     MPIBcast(buffer.stabilizeStep);
+    MPIBcast(buffer.populationControlStep);
     MPIBcast(buffer.timesliceSize);
     MPIBcast(buffer.loopSize);
     MPIBcast(buffer.thermalStep);
-    MPIBcast(buffer.measureStep);
+    MPIBcast(buffer.measureSkipTimesliceStep);
+    MPIBcast(buffer.writeSkipMeasureStep);
     MPIBcast(buffer.initialPhiTFlag);
     MPIBcast(buffer.initialWalkerFlag);
     MPIBcast(buffer.adjustEnergyMaxStep);
@@ -69,11 +73,18 @@ void AfqmcConstraintPathMethod::analysis()
 
     if( dt * stabilizeStep > 2.0 )
     {
-        cout<<"Warning!!! Stable beta is larger than 2.0!"<<endl;
+        cout<<"Warning!!! Stabilization beta is larger than 2.0!"<<endl;
+    }
+
+    if( dt * populationControlStep > 2.0 )
+    {
+        cout<<"Warning!!! Population control beta is larger than 2.0!"<<endl;
     }
 
     if( thermalStep > timesliceSize )
     {
         cout<<"Warning!!! thermalStep is larger than timesliceSize!"<<endl;
     }
+
+    //TODO: Add more check here.
 }
