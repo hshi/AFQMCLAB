@@ -5,6 +5,7 @@ add_subdirectory(model)
 add_library(afqmcHao STATIC
         #utilities
         $<TARGET_OBJECTS:afqmcManipulateMCDataHaoObject>
+        $<TARGET_OBJECTS:afqmcPopulationControlHaoObject>
 
         #Blocks
         $<TARGET_OBJECTS:afqmcSDHaoObject>
