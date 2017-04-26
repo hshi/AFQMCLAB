@@ -126,6 +126,8 @@ might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
 
+  //TODO: Test phaseless in constraint path 
+  
   //TODO: Try to use the latest version of SPRNG?
   
   //TODO: Check population Control Configuration, make sure it is proportion to weight.

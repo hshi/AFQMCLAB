@@ -10,11 +10,15 @@ void AfqmcConstraintPath::addMeasurement()
 {
     complex<double> overlap;
     WalkerRight walkerTemp;
+
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
         applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
+
         overlap = exp( walkerWalkerOperation.returnLogOverlap() );
+
         commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
     }
 }
@@ -25,19 +29,22 @@ void AfqmcConstraintPath::writeAndResetMeasurement()
     commuteMeasure.reSet();
 }
 
-
 void AfqmcConstraintPath::setET()
 {
-    ModelCommuteMeasure commuteMeasure;
+    ModelCommuteMeasure commuteMeasure(model);
     complex<double> overlap;
     WalkerRight walkerTemp;
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
         applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
+
         overlap = exp( walkerWalkerOperation.returnLogOverlap() );
+
         commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
     }
+
     ET = ( commuteMeasure.returnEnergy() ).real();
 }

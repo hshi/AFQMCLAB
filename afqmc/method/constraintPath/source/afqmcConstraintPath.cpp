@@ -95,7 +95,7 @@ void AfqmcConstraintPath::measureWithProjection()
     setET();
     for(size_t i = 0; i < method.timesliceSize; ++i)
     {
-        projectExpHalfDtKExpMinusDtV();
+        projectExpMinusDtKExpMinusDtV();
 
         if( (i+1)%method.stabilizeStep == 0 )
         {

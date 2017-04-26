@@ -28,7 +28,7 @@ void AfqmcConstraintPath::projectExpMinusHalfDtK()
     }
 }
 
-void AfqmcConstraintPath::projectExpHalfDtKExpMinusDtV()
+void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
 {
     double phase, norm, logProb;
     WalkerRight walkerTemp;

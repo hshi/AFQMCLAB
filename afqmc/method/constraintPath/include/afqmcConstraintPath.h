@@ -32,6 +32,7 @@ class AfqmcConstraintPath
     void initialParameters();
     void estimateMemory();
     void measureWithoutProjection();
+    void measureWithProjection();
     void prepareStop();
 
  private:
@@ -39,10 +40,9 @@ class AfqmcConstraintPath
     void initialWalker();
     void writeWalkers();
 
-    void measureWithProjection();
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
-    void projectExpHalfDtKExpMinusDtV();
+    void projectExpMinusDtKExpMinusDtV();
 
     void modifyGM();
     void popControl();
@@ -50,7 +50,6 @@ class AfqmcConstraintPath
     void addMeasurement();
     void writeAndResetMeasurement();
     void setET();
-
 };
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATH_H
