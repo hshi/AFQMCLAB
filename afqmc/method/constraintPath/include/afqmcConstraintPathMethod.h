@@ -17,13 +17,12 @@ class AfqmcConstraintPathMethod
     size_t stabilizeStep;
     size_t populationControlStep;
     size_t timesliceSize;
-    size_t loopSize;
     size_t thermalStep;
     size_t measureSkipTimesliceStep;
-    size_t writeSkipMeasureStep;
+    size_t writeSkipTimesliceStep;
     std::string initialPhiTFlag;   //"setFromModel", "setRandomly", "readFromFile"
     std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
-    size_t adjustEnergyMaxStep;
+    size_t setETMaxStep;
     int walkerSizePerThread;
     int walkerSize;
     int seed;  // -1. read file, 0. random, else is seeds

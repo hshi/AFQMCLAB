@@ -29,13 +29,12 @@ void AfqmcConstraintPathMethod::read(const string &filename)
     file>>stabilizeStep;
     file>>populationControlStep;
     file>>timesliceSize;
-    file>>loopSize;
     file>>thermalStep;
     file>>measureSkipTimesliceStep;
-    file>>writeSkipMeasureStep;
+    file>>writeSkipTimesliceStep;
     file>>initialPhiTFlag;
     file>>initialWalkerFlag;
-    file>>adjustEnergyMaxStep;
+    file>>setETMaxStep;
     file>>walkerSizePerThread;
     file>>seed;
 
@@ -54,13 +53,12 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.stabilizeStep);
     MPIBcast(buffer.populationControlStep);
     MPIBcast(buffer.timesliceSize);
-    MPIBcast(buffer.loopSize);
     MPIBcast(buffer.thermalStep);
     MPIBcast(buffer.measureSkipTimesliceStep);
-    MPIBcast(buffer.writeSkipMeasureStep);
+    MPIBcast(buffer.writeSkipTimesliceStep);
     MPIBcast(buffer.initialPhiTFlag);
     MPIBcast(buffer.initialWalkerFlag);
-    MPIBcast(buffer.adjustEnergyMaxStep);
+    MPIBcast(buffer.setETMaxStep);
     MPIBcast(buffer.walkerSizePerThread);
     MPIBcast(buffer.walkerSize);
     MPIBcast(buffer.seed);
@@ -70,6 +68,26 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
 void AfqmcConstraintPathMethod::analysis()
 {
     walkerSize = walkerSizePerThread*MPISize();
+
+    if( (timesliceSize-thermalStep)%writeSkipTimesliceStep != 0 )
+    {
+        size_t numberOfWrite=(timesliceSize-thermalStep)/writeSkipTimesliceStep;
+        timesliceSize = writeSkipTimesliceStep*numberOfWrite+thermalStep;
+        cout<<"Warning!!! (timesliceSize-thermalStep)%writeSkipTimesliceStep is not zero!"<<endl;
+        cout<<"Cut timesliceSize to avoid unnecessary projection step: "<<timesliceSize<<endl;
+    }
+
+    if( dt <= 0.0 )
+    {
+        cout<<"Error!!! dt must be postive!"<<endl;
+        exit(1);
+    }
+
+    if( sampleCap < 0.0 )
+    {
+        cout<<"Error!!! sampleCap must be positive or zero!"<<endl;
+        exit(1);
+    }
 
     if( dt * stabilizeStep > 2.0 )
     {
@@ -86,5 +104,19 @@ void AfqmcConstraintPathMethod::analysis()
         cout<<"Warning!!! thermalStep is larger than timesliceSize!"<<endl;
     }
 
-    //TODO: Add more check here.
+    if( writeSkipTimesliceStep%measureSkipTimesliceStep != 0 )
+    {
+        cout<<"Warning!!! writeSkipTimesliceStep%measureSkipTimesliceStep is not zero!"<<endl;
+    }
+
+    if( dt * setETMaxStep > 2.0 )
+    {
+        cout<<"Warning!!! dt * setETMaxStep is larger than 2.0!"<<endl;
+    }
+
+    if( walkerSizePerThread <= 0 )
+    {
+        cout<<"Error!!! walkerSizePerThread is not a positive number!"<<endl;
+        exit(1);
+    }
 }

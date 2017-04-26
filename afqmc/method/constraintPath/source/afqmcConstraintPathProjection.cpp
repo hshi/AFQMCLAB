@@ -57,25 +57,9 @@ void AfqmcConstraintPath::projectExpHalfDtKExpMinusDtV()
 
         applyTwoBodySampleToRightWalker(walker[i], walkerTemp, twoBodySample);
 
-        walkerTemp.addLogw( log(norm)-logProb );
+        walkerTemp.addLogw( log(norm)-logProb + method.dt*ET );
 
         applyOneBodyToRightWalker(walkerTemp, walker[i], expMinusDtK);
-    }
-}
-
-void AfqmcConstraintPath::projection()
-{
-    projectExpMinusHalfDtK();
-    for(size_t i = 0; i < method.timesliceSize; ++i)
-    {
-        projectExpHalfDtKExpMinusDtV();
-
-        if( (i+1)%method.stabilizeStep == 0 ) modifyGM();
-
-        if( (i+1)%method.populationControlStep) { popControl(); }
-
-        if( (i>=method.thermalStep)  && (i-method.thermalStep)%method.measureSkipTimesliceStep==0 ) {}
-        //Meausre and Write
     }
 }
 

@@ -9,10 +9,11 @@ using namespace tensor_hao;
 void AfqmcConstraintPath::addMeasurement()
 {
     complex<double> overlap;
+    WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
-        //TODO: For CPQMC time exp(tK/2) back to measure
+        applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+        WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
         overlap = exp( walkerWalkerOperation.returnLogOverlap() );
         commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
     }
@@ -22,4 +23,21 @@ void AfqmcConstraintPath::writeAndResetMeasurement()
 {
     commuteMeasure.write();
     commuteMeasure.reSet();
+}
+
+
+void AfqmcConstraintPath::setET()
+{
+    ModelCommuteMeasure commuteMeasure;
+    complex<double> overlap;
+    WalkerRight walkerTemp;
+
+    for(int i = 0; i < method.walkerSizePerThread; ++i)
+    {
+        applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+        WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
+        overlap = exp( walkerWalkerOperation.returnLogOverlap() );
+        commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
+    }
+    ET = ( commuteMeasure.returnEnergy() ).real();
 }

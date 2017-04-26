@@ -17,6 +17,7 @@ class AfqmcConstraintPath
     TwoBody expMinusDtV;
     TwoBodyForce dynamicForce, constForce;
     TwoBodyAux twoBodyAux;
+    double ET;
 
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
@@ -38,7 +39,7 @@ class AfqmcConstraintPath
     void initialWalker();
     void writeWalkers();
 
-    void projection();
+    void measureWithProjection();
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
     void projectExpHalfDtKExpMinusDtV();
@@ -48,6 +49,8 @@ class AfqmcConstraintPath
 
     void addMeasurement();
     void writeAndResetMeasurement();
+    void setET();
+
 };
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATH_H

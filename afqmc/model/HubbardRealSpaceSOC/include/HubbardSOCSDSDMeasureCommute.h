@@ -25,6 +25,7 @@ class HubbardSOCSDSDMeasureCommute
     void initModelNullptr();
     void setModel(const HubbardSOC &hubbardSOC_);
     void reSet();
+    std::complex<double> returnEnergy();
     tensor_hao::TensorHao< std::complex<double>, 2 > addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
     void write();
     void writeKNumVumRum();

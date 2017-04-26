@@ -50,6 +50,16 @@ void HubbardSOCSDSDMeasureCommute::reSet()
     RNum = zero;
 }
 
+complex<double> HubbardSOCSDSDMeasureCommute::returnEnergy()
+{
+    complex<double> Htot   = MPISum(HNum);
+    complex<double> denTot = MPISum(den);
+    complex<double> energy;
+    if( MPIRank() == 0 ) energy = Htot/denTot;
+    MPIBcast(energy);
+    return energy;
+}
+
 TensorHao< complex<double>, 2 >  HubbardSOCSDSDMeasureCommute::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     den += denIncrement;

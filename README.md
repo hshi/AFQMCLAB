@@ -125,6 +125,9 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+
+  //TODO: Try to use the latest version of SPRNG?
+  
   //TODO: Check population Control Configuration, make sure it is proportion to weight.
    
   //TODO: Change getForce function, most of them should have input Walkerwalkeroperation function.

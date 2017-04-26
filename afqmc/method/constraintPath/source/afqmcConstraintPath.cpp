@@ -17,20 +17,14 @@ void AfqmcConstraintPath::run()
 
     estimateMemory();
 
-    if( method.timesliceSize == 0  )
-    {
-        measureWithoutProjection();
-    }
-    else
-    {
-        initialPhiT();
+    initialPhiT();
 
-        for(size_t i = 0; i < method.loopSize; ++i)
-        {
-            initialWalker();
-        }
-//        prepareStop();
-    }
+    initialWalker();
+
+    if( method.timesliceSize == 0  ) measureWithoutProjection();
+    else measureWithProjection();
+
+    prepareStop();
 }
 
 void AfqmcConstraintPath::initialParameters()
@@ -89,15 +83,50 @@ void AfqmcConstraintPath::estimateMemory()
 
 void AfqmcConstraintPath::measureWithoutProjection()
 {
-    initialPhiT();
-    initialWalker();
+    projectExpMinusHalfDtK();
+    addMeasurement();
     writeAndResetMeasurement();
 }
 
+void AfqmcConstraintPath::measureWithProjection()
+{
+    projectExpMinusHalfDtK();
+
+    setET();
+    for(size_t i = 0; i < method.timesliceSize; ++i)
+    {
+        projectExpHalfDtKExpMinusDtV();
+
+        if( (i+1)%method.stabilizeStep == 0 )
+        {
+            modifyGM();
+        }
+
+        if( (i+1)%method.populationControlStep )
+        {
+            popControl();
+            if( i < method.setETMaxStep ) setET();
+        }
+
+        if( i >= method.thermalStep )
+        {
+            if( (i+1-method.thermalStep)%method.measureSkipTimesliceStep==0 )
+            {
+                addMeasurement();
+            }
+
+            if( (i+1-method.thermalStep)%method.writeSkipTimesliceStep==0 )
+            {
+                writeFile(method.dt*(i-method.writeSkipTimesliceStep*0.5+0.5), "beta.dat", ios::app);
+                writeAndResetMeasurement();
+            }
+        }
+    }
+}
 
 void AfqmcConstraintPath::prepareStop()
 {
+    projectExpHalfDtK();
     writeWalkers();
     randomHaoSave();
 }
-
