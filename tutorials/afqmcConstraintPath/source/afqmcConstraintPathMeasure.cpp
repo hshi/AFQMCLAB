@@ -47,4 +47,6 @@ void AfqmcConstraintPath::setET()
     }
 
     ET = ( commuteMeasure.returnEnergy() ).real();
+
+    if( MPIRank()==0 ) cout<<"\nSet trial energy: "<<ET<<"\n"<<endl;
 }

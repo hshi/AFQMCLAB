@@ -9,20 +9,28 @@ using namespace tensor_hao;
 
 int main(int argc, char** argv)
 {
-    if( argc<4 ) { cout<<"Error!!!!! Need input/output file name, example: ./NumDenErrorAnalysis num.dat den.dat out.dat!"<<endl; exit(1); }
+    if( argc<4 ) { cout<<"Error!!!!! Need input/output file name, example: ./NumDenErrorAnalysis num.dat den.dat "
+            "out.dat skipStep(Optional, zero by default)!"<<endl; exit(1); }
     string numFilename = argv[1];
     string denFilename = argv[2];
     string outFilename = argv[3];
+    size_t skipStep(0);
+    if( argc>4 )
+    {
+        skipStep = atoi(argv[4]);
+        cout<<"Skip first "<<skipStep<<" steps."<<endl;
+    }
 
     int numSampleSize = getFileLineSize(numFilename);
     int denSampleSize = getFileLineSize(denFilename);
     int sampleSize = (numSampleSize > denSampleSize) ? denSampleSize : numSampleSize;
+    sampleSize -= skipStep;
     cout<<"Effective sample points is "<<sampleSize<<endl;
 
     //Read num and den data
     TensorHao<complex<double>, 1> num(sampleSize), den(sampleSize);
-    readFile(num.size(), num.data(), numFilename);
-    readFile(den.size(), den.data(), denFilename);
+    readFile(num.size(), num.data(), numFilename, skipStep);
+    readFile(den.size(), den.data(), denFilename, skipStep);
 
     //Get all factors of sampleSize
     vector<size_t> fact = getDivisors(sampleSize);
@@ -61,4 +69,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

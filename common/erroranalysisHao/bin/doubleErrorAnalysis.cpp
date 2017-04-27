@@ -6,9 +6,15 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    if( argc<3 ) {cout<<"Error!!!!! Need input/output file name! Example: ./double_error_analysis input output"<<endl;}
+    if( argc<3 ) {cout<<"Error!!!!! Need input/output file name! Example: ./double_error_analysis input output skipStep(Optional, zero by default)"<<endl;}
     string in_filename  = argv[1];
     string out_filename = argv[2];
+    size_t skipStep(0);
+    if( argc>3 )
+    {
+        skipStep = atoi(argv[3]);
+        cout<<"Skip first "<<skipStep<<" steps."<<endl;
+    }
 
     vector<double> vec;
     vector<size_t> fact;
@@ -19,6 +25,7 @@ int main(int argc, char** argv)
     input_file.open(in_filename, ios::in);
     if ( ! input_file.is_open() ) {cout << "Error opening input file in double_error_analysis.cpp!!!"; exit(1);}
     double data;
+    for(size_t i = 0; i < skipStep; ++i) input_file >> data;
     while (input_file >> data) vec.push_back(data);
     input_file.close();
 

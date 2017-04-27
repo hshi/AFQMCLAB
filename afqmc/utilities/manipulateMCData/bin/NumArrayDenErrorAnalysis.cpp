@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     if( argc<6 )
     {
         cout<<"Error!!!!! Need input/output file name arraySize and blockSize!"<<endl;
-        cout<<"Example: ./NumArrayDenErrorAnalysis num.dat den.dat out.dat arraySize blockSize!"<<endl;
+        cout<<"Example: ./NumArrayDenErrorAnalysis num.dat den.dat out.dat arraySize blockSize skipStep(Optional, zero by default)!"<<endl;
         exit(1);
     }
     string numFilename = argv[1];
@@ -20,12 +20,20 @@ int main(int argc, char** argv)
     string outFilename = argv[3];
     int arraySize = atoi( argv[4] );
     int blockSize = atoi( argv[5] );
+    size_t skipStep(0);
+    if( argc>6 )
+    {
+        skipStep = atoi(argv[6]);
+        cout<<"Skip first "<<skipStep<<" steps."<<endl;
+    }
 
     int numSampleSize = getFileLineSize(numFilename) / arraySize;
     int denSampleSize = getFileLineSize(denFilename);
     int sampleSize = (numSampleSize > denSampleSize) ? denSampleSize : numSampleSize;
-    int blockNumber = sampleSize / blockSize;
+    sampleSize -= skipStep;
     cout<<"Effective sample points is "<<sampleSize<<endl;
+
+    int blockNumber = sampleSize / blockSize;
     if( ( sampleSize-blockNumber*blockSize ) !=0 )
     {
         cout<<"ERROR!!!!! Effective sample size can not be devided by block size! "<<sampleSize<<" "<<blockSize<<endl;
@@ -45,6 +53,13 @@ int main(int argc, char** argv)
     complex<double> denTmp, denSum, zero(0,0);
     TensorHao<complex<double>, 1> mean(arraySize), error(arraySize);
 
+    //Skip
+    for(int i=0; i<skipStep; i++)
+    {
+        readFile(numTmp.size(), numTmp.data(), numFile);
+        readFile(denTmp, denFile);
+    }
+
     //Calculate mean valule
     numSum = zero; denSum = zero;
     for(int i=0; i<sampleSize; i++)
@@ -61,6 +76,15 @@ int main(int argc, char** argv)
     {
         numFile.clear();            denFile.clear();
         numFile.seekg(0, ios::beg); denFile.seekg(0, ios::beg);
+
+        //Skip
+        for(int i=0; i<skipStep; i++)
+        {
+            readFile(numTmp.size(), numTmp.data(), numFile);
+            readFile(denTmp, denFile);
+        }
+
+        //Calculate Error bar
         for(int i=0; i<blockNumber; i++)
         {
             numSum = zero; denSum = zero;

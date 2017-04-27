@@ -15,60 +15,66 @@ void removeFile(const std::string &filename);
 size_t getFileLineSize(const std::string &filename);
 
 //For read
-template<class T> void readFile(T &data, const std::string &filename)
+template<class T> void readFile(T &data, const std::string &filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
+    for(size_t i = 0; i < skipStep; ++i) file>>data;
     file >> data;
     file.close();
 }
 
-template<class T> void readFile(std::complex<T> &data, const std::string &filename)
+template<class T> void readFile(std::complex<T> &data, const std::string &filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     T real, imag;
+    for(size_t i = 0; i < skipStep; ++i) file >> real >> imag;
     file >> real >> imag;
     data = std::complex<T>(real, imag);
     file.close();
 }
 
-template<class T>  void readFile(size_t L, T *data, const std::string& filename)
+template<class T>  void readFile(size_t L, T *data, const std::string& filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
+    for(size_t i = 0; i < skipStep; ++i) file>>data[0];
     for(size_t i = 0; i < L; ++i) file>>data[i];
     file.close();
 }
 
-template<class T> void readFile(size_t L, T *dataOne, T *dataTwo, const std::string &filename)
+template<class T> void readFile(size_t L, T *dataOne, T *dataTwo, const std::string &filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
+    for(size_t i = 0; i < skipStep; ++i) file>>dataOne[0]>>dataTwo[0];
     for(size_t i = 0; i < L; ++i) file>>dataOne[i]>>dataTwo[i];
     file.close();
 }
 
-template<class T> void readFile(size_t L, std::complex<T> *data, const std::string &filename)
+template<class T> void readFile(size_t L, std::complex<T> *data, const std::string &filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     T real, imag;
+    for(size_t i = 0; i < skipStep; ++i) file>>real>>imag;
     for(size_t i = 0; i < L; ++i) { file>>real>>imag; data[i] = std::complex<T>(real, imag); }
     file.close();
 }
 
-template<class T> void readFile(size_t L, std::complex<T> *dataOne, std::complex<T> *dataTwo, const std::string &filename)
+template<class T> void readFile(size_t L, std::complex<T> *dataOne, std::complex<T> *dataTwo, const std::string &filename, size_t skipStep=0)
 {
     std::ifstream file;
     file.open(filename, std::ios::in);
     if ( ! file.is_open() ) {std::cout << "Error opening file in File!!! "<<filename<<std::endl; exit(1);}
     T real, imag;
+    for(size_t i = 0; i < skipStep; ++i) { file>>real>>imag; file>>real>>imag; }
     for(size_t i = 0; i < L; ++i)
     {
         file>>real>>imag; dataOne[i] = std::complex<T>(real, imag);
