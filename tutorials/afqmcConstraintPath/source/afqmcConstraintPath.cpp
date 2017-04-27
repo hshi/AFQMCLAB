@@ -83,6 +83,8 @@ void AfqmcConstraintPath::estimateMemory()
 
 void AfqmcConstraintPath::measureWithoutProjection()
 {
+    if( MPIRank() == 0 ) cout<<"Measure without projection."<<endl;
+
     projectExpMinusHalfDtK();
     addMeasurement();
     writeAndResetMeasurement();
@@ -93,8 +95,13 @@ void AfqmcConstraintPath::measureWithProjection()
     projectExpMinusHalfDtK();
 
     setET();
+
+    if( MPIRank() == 0 ) cout<<"Start the projection..."<<endl;
+
     for(size_t i = 0; i < method.timesliceSize; ++i)
     {
+        if( MPIRank() == 0 ) cout<<i<<endl;
+
         projectExpMinusDtKExpMinusDtV();
 
         if( (i+1)%method.stabilizeStep == 0 )
@@ -117,7 +124,10 @@ void AfqmcConstraintPath::measureWithProjection()
 
             if( (i+1-method.thermalStep)%method.writeSkipTimesliceStep == 0 )
             {
-                writeFile(method.dt*(i-method.writeSkipTimesliceStep*0.5+0.5), "beta.dat", ios::app);
+                if( MPIRank()==0 )
+                {
+                    writeFile(method.dt * (i - method.writeSkipTimesliceStep * 0.5 + 0.5), "beta.dat", ios::app);
+                }
                 writeAndResetMeasurement();
             }
         }
