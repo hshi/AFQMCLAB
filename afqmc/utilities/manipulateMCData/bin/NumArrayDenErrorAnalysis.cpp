@@ -20,10 +20,10 @@ int main(int argc, char** argv)
     string outFilename = argv[3];
     int arraySize = atoi( argv[4] );
     int blockSize = atoi( argv[5] );
-    size_t skipStep(0);
+    int skipStep(0);
     if( argc>6 )
     {
-        skipStep = atoi(argv[6]);
+        skipStep = atoi( argv[6] );
         cout<<"Skip first "<<skipStep<<" steps."<<endl;
     }
 

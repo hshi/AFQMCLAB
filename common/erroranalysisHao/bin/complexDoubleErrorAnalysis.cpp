@@ -29,6 +29,8 @@ int main(int argc, char** argv)
     while (input_file >> re >> im) vec.push_back( complex<double>(re, im) );
     input_file.close();
 
+    cout<<"Effective sample points is "<<vec.size()<<endl;
+
     //data analysis
     tie( fact,mean,err ) = getAllBlockMeanError(vec);
 

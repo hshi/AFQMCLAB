@@ -29,6 +29,8 @@ int main(int argc, char** argv)
     while (input_file >> data) vec.push_back(data);
     input_file.close();
 
+    cout<<"Effective sample points is "<<vec.size()<<endl;
+
     //data analysis
     tie( fact,mean,err ) = getAllBlockMeanError(vec);
 
