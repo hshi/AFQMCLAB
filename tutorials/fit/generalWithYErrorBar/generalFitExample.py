@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import sys; sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/fit" )
-from fit import *
+from fitGeneral import *
 
 def fun(x,a,b,c):
     return a + b*x**2 + np.exp(c*x)

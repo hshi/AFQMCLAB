@@ -15,7 +15,10 @@ PolynomialFit::PolynomialFit(const TensorHao<double, 1> &x_in, const TensorHao<d
 
     analysis();
 
-    fitBySolvingLinearEquation();
+    coefficient.resize(polynomialOrder+1);
+    if( polynomialOrder == 0 ) coefficient(0) = y_in.mean();
+    if( polynomialOrder == 1 ) fitLinearFunction();
+    else fitBySolvingLinearEquation();
 }
 
 const TensorHao<double, 1> &PolynomialFit::getCoefficient() const
@@ -44,6 +47,18 @@ void PolynomialFit::analysis() const
 {
     if( x->size() != y->size() ) { cout<<"Error!!! Size is not consistent for x and y vector!"<<endl; exit(1); }
     if( polynomialOrder >= x->size() ) { cout<<"Warning!!! Polynomial order is larger equal than vectorSize!"<<endl; }
+}
+
+void PolynomialFit::fitLinearFunction()
+{
+    size_t vectorSize = x->size();
+
+    double xMean = x->mean();
+    double yMean = y->mean();
+    double Sxy = ( (*x)*(*y) ).sum() - xMean*yMean*vectorSize;
+    double Sxx = ( (*x)*(*x) ).sum() - xMean*xMean*vectorSize;
+    coefficient(1) = Sxy/Sxx;
+    coefficient(0) = yMean - coefficient(1)*xMean;
 }
 
 void PolynomialFit::fitBySolvingLinearEquation()
@@ -75,6 +90,5 @@ void PolynomialFit::fitBySolvingLinearEquation()
 
     TensorHao<double, 2> coefficient2D = solve_lineq_cpu( LUconstruct_cpu( move(polynomialMatrix) ), move( sumPowXY ) );
 
-    coefficient.resize(polynomialOrder+1);
     for(size_t i = 0; i < polynomialOrder+1; ++i) coefficient(i) = coefficient2D(i,0);
 }

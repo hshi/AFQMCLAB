@@ -24,6 +24,7 @@ class PolynomialFit
 
  private:
     void analysis() const;
+    void fitLinearFunction();
     void fitBySolvingLinearEquation();
 };
 
