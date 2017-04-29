@@ -65,6 +65,15 @@ void zheevd(
     const HAO_INT* liwork,
     HAO_INT* info );
 
+#define dgetrf FORTRAN_WRAPPER(dgetrf)
+void dgetrf(
+    const HAO_INT* m,
+    const HAO_INT* n,
+    double* a,
+    const HAO_INT* lda,
+    HAO_INT* ipiv,
+    HAO_INT* info );
+
 #define zgetrf FORTRAN_WRAPPER(zgetrf)
 void zgetrf(
     const HAO_INT* m,
@@ -82,6 +91,18 @@ void zgetri(
     const HAO_INT* ipiv,
     HAO_Complex16* work,
     const HAO_INT* lwork,
+    HAO_INT* info );
+
+#define dgetrs FORTRAN_WRAPPER(dgetrs)
+void dgetrs(
+    const char* trans,
+    const HAO_INT* n,
+    const HAO_INT* nrhs,
+    const double* a,
+    const HAO_INT* lda,
+    const HAO_INT* ipiv,
+    double* b,
+    const HAO_INT* ldb,
     HAO_INT* info );
 
 #define zgetrs FORTRAN_WRAPPER(zgetrs)

@@ -2,9 +2,9 @@ import numpy as np
 import subprocess
 import os
 
-beta               = np.loadtxt( "beta.dat", usecols=(0,),  unpack=True )
-HNumReal, HNumImag = np.loadtxt( "HNum.dat", usecols=(0,1), unpack=True )
-DenReal, DenImag   = np.loadtxt( "den.dat",  usecols=(0,1), unpack=True )
+beta               = np.loadtxt( "beta.dat",  unpack=True )
+HNumReal, HNumImag = np.loadtxt( "HNum.dat",  unpack=True )
+DenReal, DenImag   = np.loadtxt( "den.dat",   unpack=True )
 
 E = ( HNumReal+1j*HNumImag ) / ( DenReal+1j*DenImag )
 EReal = np.real(E)

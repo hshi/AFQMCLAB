@@ -22,3 +22,5 @@ add_executable(${PROJECT_NAME}
         measureDynamicDensityToWf.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})
+
+add_custom_target(rmdat COMMAND rm -rf *dat)

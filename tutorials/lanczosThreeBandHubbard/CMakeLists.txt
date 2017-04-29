@@ -15,3 +15,5 @@ add_definitions(${AFQMCLAB_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})
+
+add_custom_target(rmdat COMMAND rm -rf *dat)

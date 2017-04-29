@@ -31,3 +31,5 @@ set(SOURCE_FILES
 
 add_executable(${PROJECT_NAME} ${SOURCE_HEADERS} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${AFQMCLAB_LIBRARIES})
+
+add_custom_target(rmdat COMMAND rm -rf *dat)

@@ -40,8 +40,11 @@ namespace tensor_hao
  /*Construct LUDecomp with CPU*/
  /*****************************/
 
+ LUDecomp<double> LUconstruct_cpu(const TensorCore<double,2>& x);
+ LUDecomp<double> LUconstruct_cpu(TensorHao<double,2>&& x);
  LUDecomp< std::complex<double> > LUconstruct_cpu(const TensorCore<std::complex<double>,2>& x);
  LUDecomp< std::complex<double> > LUconstruct_cpu(TensorHao<std::complex<double>,2>&& x);
+
 
 
  /*******************/
@@ -53,9 +56,11 @@ namespace tensor_hao
 
 
  /*********************************************************/
- /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
+ /*Solve linear equation of matrix x*M=B: return M=x^{-1}B*/
  /*********************************************************/
 
+ TensorHao<double,2> solve_lineq_cpu(const LUDecomp<double>& x, const TensorCore<double,2>& B, char TRANS='N');
+ TensorHao<double,2> solve_lineq_cpu(const LUDecomp<double>& x, TensorHao<double,2>&& B, char TRANS='N');
  TensorHao<std::complex<double>,2> solve_lineq_cpu(const LUDecomp<std::complex<double>>& x, const TensorCore<std::complex<double>,2>& B, char TRANS='N');
  TensorHao<std::complex<double>,2> solve_lineq_cpu(const LUDecomp<std::complex<double>>& x, TensorHao<std::complex<double>,2>&& B, char TRANS='N');
 

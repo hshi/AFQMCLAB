@@ -110,6 +110,28 @@ namespace tensor_hao
  /******************************************/
  /*LU Decomposition a complex square Matrix*/
  /******************************************/
+ LUDecomp<double> LUconstruct_cpu(const TensorCore<double, 2> &x)
+ {
+     if(x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
+     HAO_INT N= x.rank(0);
+     LUDecomp<double> y; y.A=x; y.ipiv=TensorHao<HAO_INT,1>(N);
+
+     dgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
+     return y;
+ }
+
+ LUDecomp<double> LUconstruct_cpu(TensorHao<double, 2> &&x)
+ {
+     if(x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
+     HAO_INT N= x.rank(0);
+     LUDecomp<double> y; y.A= move(x); y.ipiv=TensorHao<HAO_INT,1>(N);
+
+     dgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
+     if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
+     return y;
+ }
+
  LUDecomp<complex<double>> LUconstruct_cpu(const TensorCore<complex<double>,2>& x)
  {
      if(x.rank(0) != x.rank(1) ) {cout<<"Input for LU is not square matrix!"<<endl; exit(1);}
@@ -167,6 +189,18 @@ namespace tensor_hao
  /*********************************************************/
  /*Solve linear equation of matrix A*M=B: return M=A^{-1}B*/
  /*********************************************************/
+ void solve_lineq_cpu_utilities(const LUDecomp<double>& x, TensorHao<double,2>& M, char TRANS)
+ {
+     if(x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
+     HAO_INT N= M.rank(0); HAO_INT NRHS= M.rank(1); HAO_INT info;
+     dgetrs(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
+     if(info!=0)
+     {
+         cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal!"<<endl;
+         exit(1);
+     }
+ }
+
  void solve_lineq_cpu_utilities(const LUDecomp<complex<double>>& x, TensorHao<complex<double>,2>& M, char TRANS)
  {
      if(x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
@@ -177,6 +211,20 @@ namespace tensor_hao
          cout<<"Solve linear equation is not suceesful: "<<info<<"-th parameter is illegal!"<<endl;
          exit(1);
      }
+ }
+
+ TensorHao<double, 2> solve_lineq_cpu(const LUDecomp<double> &x, const TensorCore<double, 2> &B, char TRANS)
+ {
+     TensorHao<double,2> M(B);
+     solve_lineq_cpu_utilities(x, M, TRANS);
+     return M;
+ }
+
+ TensorHao<double, 2> solve_lineq_cpu(const LUDecomp<double> &x, TensorHao<double, 2> &&B, char TRANS)
+ {
+     TensorHao<double,2> M( move(B) );
+     solve_lineq_cpu_utilities(x, M, TRANS);
+     return M;
  }
 
  TensorHao<complex<double>,2> solve_lineq_cpu(const LUDecomp<complex<double>>& x, const TensorCore<complex<double>,2>& B, char TRANS)
@@ -283,6 +331,7 @@ namespace tensor_hao
          exit(1);
      }
  }
+
 /*
  void SVDMatrix_cpu(TensorCore<complex<double>,2>& U, TensorCore<double,1>& D, TensorCore<complex<double>,2>& V)
  {

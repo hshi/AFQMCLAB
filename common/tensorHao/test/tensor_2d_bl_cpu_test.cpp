@@ -159,7 +159,7 @@ TEST ( Tensor_2d_bl_cpu, inverse )
     EXPECT_FALSE ( diff(INV_A,INV_A_exact,1e-13) );
 }
 
-TEST ( Tensor_2d_bl_cpu, solve_lineq )
+TEST ( Tensor_2d_bl_cpu, solve_lineq_complex16 )
 {
     TensorHao<complex<double>,2> A(3,3), B(3,2), X_exact(3,2), X;
 
@@ -180,7 +180,28 @@ TEST ( Tensor_2d_bl_cpu, solve_lineq )
     X=solve_lineq_cpu( LUconstruct_cpu(A), B );
     EXPECT_FALSE ( diff(X,X_exact,1e-13) );
 
-    X=solve_lineq_cpu( LUconstruct_cpu(A), move(B) );
+    X=solve_lineq_cpu( LUconstruct_cpu( move(A) ), move(B) );
+    EXPECT_FALSE ( diff(X,X_exact,1e-13) );
+}
+
+TEST ( Tensor_2d_bl_cpu, solve_lineq_double)
+{
+    TensorHao<double,2> A(3,3), B(3,2), X_exact(3,2), X;
+
+    A = { 1.0,   3.0,   2.123,
+          3.0,   2.0,   5.123,
+          2.123, 5.123, 3     };
+
+    B = { 2.0, 3.0, 3.123,
+          3.0, 2.0, 6.123 };
+
+    X_exact = {-0.013864247475405822, 0.3470039690412339, 0.458244154664015,
+               1.236247812837214, 1.1384846511548297, -0.7780036581732008};
+
+    X=solve_lineq_cpu( LUconstruct_cpu(A), B );
+    EXPECT_FALSE ( diff(X,X_exact,1e-13) );
+
+    X=solve_lineq_cpu( LUconstruct_cpu( move(A) ), move(B) );
     EXPECT_FALSE ( diff(X,X_exact,1e-13) );
 }
 
