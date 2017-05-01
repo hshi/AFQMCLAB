@@ -1,7 +1,7 @@
 import sys
 import os
-sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
-from setHoping import *
+sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/threeBandHubbardModel" )
+from threeBandHubbardModelHopping import *
 
 latt_n  = [2,2]
 ktwist  = [0.12,0.34]
@@ -17,70 +17,7 @@ UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
 
 #Set lattice information
 latt = Latt_class( latt_n )
-
-up_i =[]; up_j =[]; up_K=[];
-for i in range( latt.L ):
-    coor_i = latt.coor(i)
-
-    # coor_j = coor_i
-    j =i
-
-    up_i.append(i);          up_j.append(j);            up_K.append(  ed  )   #d^{\dagger} d
-    up_i.append(i);          up_j.append(j+latt.L);     up_K.append( -tpd )   #d^{\dagger} px
-    up_i.append(i);          up_j.append(j+2*latt.L);   up_K.append(  tpd )   #d^{\dagger} py
-    up_i.append(i+latt.L);   up_j.append(j+latt.L);     up_K.append(  ep  )   #px^{\dagger} px
-    up_i.append(i+latt.L);   up_j.append(j);            up_K.append( -tpd )   #px^{\dagger} d
-    up_i.append(i+latt.L);   up_j.append(j+2*latt.L);   up_K.append(  tpp )   #px^{\dagger} py
-    up_i.append(i+2*latt.L); up_j.append(j+2*latt.L);   up_K.append(  ep  )   #py^{\dagger} py
-    up_i.append(i+2*latt.L); up_j.append(j);            up_K.append(  tpd )   #py^{\dagger} d
-    up_i.append(i+2*latt.L); up_j.append(j+latt.L);     up_K.append(  tpp )   #py^{\dagger} px
-
-    #coor_j[0]=coor_i[0]-1
-    coor_j=[ latt.bound( coor_i[0]-1, latt.n[0]  ),  coor_i[1] ]
-    j = latt.index( coor_j )
-    phase = np.exp( -1j * ktwist[0]*2.0*np.pi/latt.n[0] )
-
-    up_i.append(i);          up_j.append(j+latt.L);     up_K.append( tpd*phase )   #d^{\dagger} px
-    up_i.append(i+2*latt.L); up_j.append(j+latt.L);     up_K.append(-tpp*phase )   #py^{\dagger} px
-
-    #coor_j[1]=coor_i[1]-1
-    coor_j=[ coor_i[0],  latt.bound( coor_i[1]-1, latt.n[1]  ) ]
-    j = latt.index( coor_j )
-    phase = np.exp( -1j * ktwist[1]*2.0*np.pi/latt.n[1] )
-
-    up_i.append(i);          up_j.append(j+2*latt.L);   up_K.append( -tpd*phase )   #d^{\dagger} py
-    up_i.append(i+latt.L);   up_j.append(j+2*latt.L);   up_K.append( -tpp*phase )   #px^{\dagger} py
-
-    #coor_j[0]=coor_i[0]+1
-    coor_j=[ latt.bound( coor_i[0]+1, latt.n[0]  ),  coor_i[1] ]
-    j = latt.index( coor_j )
-    phase = np.exp( 1j * ktwist[0]*2.0*np.pi/latt.n[0] )
-
-    up_i.append(i+latt.L);   up_j.append(j);            up_K.append( tpd*phase )   #px^{\dagger} d
-    up_i.append(i+latt.L);   up_j.append(j+2*latt.L);   up_K.append(-tpp*phase )   #px^{\dagger} py
-
-    #coor_j[1]=coor_i[1]+1
-    coor_j=[ coor_i[0],  latt.bound( coor_i[1]+1, latt.n[1]  ) ]
-    j = latt.index( coor_j )
-    phase = np.exp( 1j * ktwist[1]*2.0*np.pi/latt.n[1] )
-
-    up_i.append(i+2*latt.L); up_j.append(j);            up_K.append(-tpd*phase )   #py^{\dagger} d
-    up_i.append(i+2*latt.L); up_j.append(j+latt.L);     up_K.append(-tpp*phase )   #py^{\dagger} px
-
-    #coor_j[0]=coor_i[0]-1, coor_j[1]=coor_i[1]+1
-    coor_j=[ latt.bound( coor_i[0]-1, latt.n[0]  ),  latt.bound( coor_i[1]+1, latt.n[1]  ) ]
-    j = latt.index( coor_j )
-    phase = np.exp( -1j * ktwist[0]*2.0*np.pi/latt.n[0] + 1j * ktwist[1]*2.0*np.pi/latt.n[1] )
-
-    up_i.append(i+2*latt.L); up_j.append(j+latt.L);     up_K.append(  tpp*phase )   #py^{\dagger} px
-
-    #coor_j[0]=coor_i[0]+1, coor_j[1]=coor_i[1]-1
-    coor_j=[ latt.bound( coor_i[0]+1, latt.n[0]  ),  latt.bound( coor_i[1]-1, latt.n[1]  ) ]
-    j = latt.index( coor_j )
-    phase = np.exp( 1j * ktwist[0]*2.0*np.pi/latt.n[0] - 1j * ktwist[1]*2.0*np.pi/latt.n[1] )
-
-    up_i.append(i+latt.L);   up_j.append(j+2*latt.L);   up_K.append(  tpp*phase )   #px^{\dagger} py
-
+up_i, up_j, up_K = threeBandHubbardModelRectangularHopping(latt, ktwist, tpp, tpd, ep, ed)
 if UpDnFlag == 0:
     dn_i = up_i; dn_j = up_j; dn_K = up_K
 elif UpDnFlag == 1:

@@ -15,7 +15,7 @@ void Ghf::run()
 {
     initialParameters();
 
-    for(size_t i = 0; i < method.annealStep; ++i)
+    for(size_t i = 0; i < ( method.annealStep+1 ); ++i)
     {
         selfConsistentLoop();
 
@@ -28,9 +28,12 @@ void Ghf::run()
             minimumState.write("minimumState.dat");
         }
 
-        double anneal = method.annealMagnitude*(method.annealStep-i-1)/method.annealStep;
-        cout<<"Anneal the order parameter: "<<anneal<<"\n"<<endl;
-        annealOrderParameter( anneal );
+        if( i!=method.annealStep )
+        {
+            double anneal = method.annealMagnitude*(method.annealStep-i)/method.annealStep;
+            cout<<"Anneal the order parameter: "<<anneal<<"\n"<<endl;
+            annealOrderParameter( anneal );
+        }
     }
 
     prepareStop();
