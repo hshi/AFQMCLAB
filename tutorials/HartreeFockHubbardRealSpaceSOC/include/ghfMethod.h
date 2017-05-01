@@ -10,12 +10,13 @@
 class GhfMethod
 {
  public:
-    std::string initialType; //"setFromModel", "readOrderParameter", "readWaveFunction"
+    std::string initialType; //"setFromModel", "readWaveFunction", "readOrderParameter"
     std::string convergeType; //"energy", "orderParameter"
     double convergeTolerance;
     size_t maxIterateStep;
     double annealMagnitude;
     size_t annealStep;
+    double relaxMagnitude; // 1.0 fully relax to new order paramter, 0.0 not update
     int seed;  // -1. read file, 0. random, else is seeds
 
     GhfMethod();

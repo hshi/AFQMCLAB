@@ -13,12 +13,17 @@ class Ghf
  private:
     GhfMethod method;
     HubbardSOC model;
+    tensor_hao::TensorHao<std::complex<double>, 2> H0;
 
     double variationalEnergy;
     SD variationalState;
-    tensor_hao::TensorHao<std::complex<double>, 1> density, spinOrbit;
-    tensor_hao::TensorHao<std::complex<double>, 2> H0, meanFieldVectors;
+    tensor_hao::TensorHao<std::complex<double>, 1> density, spinOrbit, densityBefore, spinOrbitBefore;
+    tensor_hao::TensorHao<std::complex<double>, 2> meanFieldVectors;
     tensor_hao::TensorHao<double, 1> meanFieldValues;
+
+    double convergeValue;
+    double minimumEnergy;
+    SD minimumState;
 
  public:
     Ghf();
@@ -26,14 +31,18 @@ class Ghf
 
     void run();
     void initialParameters();
+    void selfConsistentLoop();
+    void oneSelfConsistentStep();
+    void prepareStop();
 
  private:
     void setH0();
-    void setVariationalStateFromH0();
-    void setOrderParameterFromVariationalState();
+    void initialHartreeFockEssential();
     void setMeanFieldVectorsValuesFromOrderParameter();
-    void setVariationalEnergyFromOrderParameterAndMeanFieldValues();
     void setVariationalStateFromMeanFieldVectors();
+    void backupAndUpdateOrderParameterFromVariationalState();
+    void setVariationalEnergyFromOrderParameterAndMeanFieldValues();
+    void relaxOrderParameter();
+    void annealOrderParameter(double anneal);
 };
-
 #endif //AFQMCLAB_GHF_H

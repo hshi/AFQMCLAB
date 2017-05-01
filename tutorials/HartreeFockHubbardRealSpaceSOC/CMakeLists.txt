@@ -20,6 +20,7 @@ set(SOURCE_HEADERS
 
 set(SOURCE_FILES
         source/ghf.cpp
+        source/ghfDetail.cpp
         source/ghfMethod.cpp
         source/main.cpp)
 

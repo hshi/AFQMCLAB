@@ -28,6 +28,7 @@ void GhfMethod::read(const string &filename)
     file>>maxIterateStep;
     file>>annealMagnitude;
     file>>annealStep;
+    file>>relaxMagnitude;
     file>>seed;
 
     file.close();
@@ -44,6 +45,7 @@ void MPIBcast(GhfMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.maxIterateStep);
     MPIBcast(buffer.annealMagnitude);
     MPIBcast(buffer.annealStep);
+    MPIBcast(buffer.relaxMagnitude);
     MPIBcast(buffer.seed);
 }
 #endif
@@ -53,6 +55,12 @@ void GhfMethod::analysis()
     if( convergeTolerance < 0.0 )
     {
         cout<<"Errorr!!! convergeTolerance can not be negative!"<<endl;
+        exit(1);
+    }
+
+    if( relaxMagnitude <= 0.0 )
+    {
+        cout<<"Errorr!!! relaxMagnitude must be positive!"<<endl;
         exit(1);
     }
 }
