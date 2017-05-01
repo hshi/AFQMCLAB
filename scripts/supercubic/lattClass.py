@@ -82,6 +82,14 @@ class Latt_class:
     def bound(self, i, i_max):
         return i%i_max
 
+    def boundOpen(self, i, i_max):
+        if i > i_max:
+            return None
+        elif i < 0:
+            return None
+        else:
+            return i%i_max
+
     #return coor_j - coor_i
     def coor_relat(self, coor_i, coor_j):
         coor=np.empty(self.dimen, dtype=int)
