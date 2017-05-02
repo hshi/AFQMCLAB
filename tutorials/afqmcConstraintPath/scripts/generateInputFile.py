@@ -4,13 +4,13 @@ sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
 #Model Parameter
-latt_n   = [3,4]
-ktwist   = [0.12,0.34]
+latt_n   = [4,4]
+ktwist   = [0.0,0.0]
 t1       = 1.0
-U        = -4.0
-mu       = 2.0
-Ntot     = 10
-UpDnFlag = 1    # 0 up=dn, 1 up=conj(dn) ==> different twist
+U        = 4.0
+mu       = 0.0
+Ntot     = 16
+UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
 
 #Set lattice information
 latt = Latt_class( latt_n )
@@ -50,7 +50,7 @@ f.close()
 
 #Method Parameter
 dt                        =  0.01
-decompType                =  "densityCharge" # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
+decompType                =  "densitySpin" # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
 forceType                 =  "dynamicForce"  # "dynamicForce", "constForce"
 sampleCap                 =  1.0
 stabilizeStep             =  10
@@ -59,8 +59,8 @@ timesliceSize             =  2000
 thermalStep               =  0
 measureSkipTimesliceStep  =  5
 writeSkipTimesliceStep    =  20
-initialPhiTFlag           =  "setFromModel"  #"setFromModel", "setRandomly", "readFromFile"
-initialWalkerFlag         =  "setFromModel"  #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
+initialPhiTFlag           =  "readFromFile"  #"setFromModel", "setRandomly", "readFromFile"
+initialWalkerFlag         =  "readFromFile"  #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
 setETMaxStep              =  100
 walkerSizePerThread       =  500
 seed                      =  985456376  # -1. read file, 0. random, else is seeds

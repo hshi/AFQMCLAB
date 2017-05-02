@@ -6,7 +6,7 @@ from setHoping import *
 
 #Model Parameter
 latt_n   = [4,4]
-ktwist   = [0.12,0.34]
+ktwist   = [0.0,0.0]
 t1       = 1.0
 U        = 4.0
 mu       = 0.0
@@ -56,10 +56,10 @@ convergeType              =  "energy"        # "energy", "orderParameter"
 convergeTolerance         =  1e-10
 maxIterateStep            =  100
 annealMagnitude           =  0.3
-annealStep                =  10
+annealStep                =  0
 relaxMagnitude            =  1.0          # 1.0 fully relax to new order paramter, 0.0 not update
 seed                      =  985456376    # 1. read file, 0. random, else is seeds
-initOrderParamType        =  "random"       # None, zafm, xafm, yafm, random
+initOrderParamType        =  "xafm"       # None, zafm, xafm, yafm, random
 
 #write method_param
 f = open('ghf_param', 'w')
