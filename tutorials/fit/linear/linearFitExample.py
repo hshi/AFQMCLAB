@@ -1,8 +1,8 @@
 import os
 import numpy as np
 import sys; sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/fit" )
-from fitLinear import *
+import linear
 
 x,y=np.loadtxt("data", unpack=True)
-popt,perr=fit(x, y)
-fit_plot(popt, x, y, xmin=0.0)
+popt,perr=linear.fit(x, y)
+linear.plot(popt, x, y, xmin=0.0)

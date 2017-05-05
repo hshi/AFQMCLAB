@@ -7,7 +7,7 @@ from setHoping import *
 latt_n   = [4,4]
 ktwist   = [0.0,0.0]
 t1       = 1.0
-U        = 4.0
+U        = -4.0
 mu       = 0.0
 Ntot     = 16
 UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
@@ -50,17 +50,17 @@ f.close()
 
 #Method Parameter
 dt                        =  0.01
-decompType                =  "densitySpin" # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
+decompType                =  "densityCharge" # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
 forceType                 =  "dynamicForce"  # "dynamicForce", "constForce"
 sampleCap                 =  1.0
 stabilizeStep             =  10
 populationControlStep     =  10
-timesliceSize             =  2000
+timesliceSize             =  3000
 thermalStep               =  0
 measureSkipTimesliceStep  =  5
 writeSkipTimesliceStep    =  20
-initialPhiTFlag           =  "readFromFile"  #"setFromModel", "setRandomly", "readFromFile"
-initialWalkerFlag         =  "readFromFile"  #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
+initialPhiTFlag           =  "setFromModel"  #"setFromModel", "setRandomly", "readFromFile"
+initialWalkerFlag         =  "setFromModel"  #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
 setETMaxStep              =  100
 walkerSizePerThread       =  500
 seed                      =  985456376  # -1. read file, 0. random, else is seeds

@@ -125,6 +125,11 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+
+  //TODO: Change python fit into a class.
+  
+  //TODO: Update my script to use . instead of import from different directory.
+  
   //TODO: Check Mingpu's pairing case?
   
   //TODO: Add a UHF code?

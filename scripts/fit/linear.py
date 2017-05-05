@@ -59,7 +59,7 @@ def fit(x, y, dy = None):
 
     return np.array([a,b]),np.array([da,db])
 
-def fit_plot(popt, x, y, dy=None, xmin=None, xmax=None, save=0):
+def plot(popt, x, y, dy=None, xmin=None, xmax=None, save=0):
     fig, ax = plt.subplots()
     ax.set_xlabel('$x$')
     ax.set_xlabel('$y$')

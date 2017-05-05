@@ -1,10 +1,10 @@
 #Note!!!!!
 #The variance estimation of each coefficient is from diagonal part of covariance matrix,
-#Which is not consistent with fitLinear.py when polynomial is 2.
-#I Checked the fitLinear.py at http://mathworld.wolfram.com/LeastSquaresFitting.html and
+#Which is not consistent with linear.py when polynomial is 2.
+#I Checked the linear.py at http://mathworld.wolfram.com/LeastSquaresFitting.html and
 #NUMERICAL RECIPES IN FORTRAIN II P656, did not find any bug.
 #Maybe the variance estimation is different for general polynomial function and linear function.
-#Recommend to use fitLinear.py for linear function.
+#Recommend to use linear.py for linear function.
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,7 +29,7 @@ def fit(n, x, y, dy=None):
 
     return popt,perr
 
-def fit_plot(popt, x, y, dy=None, xmin=None, xmax=None, save=0):
+def plot(popt, x, y, dy=None, xmin=None, xmax=None, save=0):
     fig, ax = plt.subplots()
     ax.set_xlabel('$x$')
     ax.set_xlabel('$y$')

@@ -17,7 +17,7 @@ def fit(func, x, y, dy=None, p0=None):
 
     return popt,perr
 
-def fit_plot(func, popt, x, y, dy=None, xmin=None, xmax=None, save=0):
+def plot(func, popt, x, y, dy=None, xmin=None, xmax=None, save=0):
     fig, ax = plt.subplots()
     ax.set_xlabel('$x$')
     ax.set_xlabel('$y$')
