@@ -1,5 +1,5 @@
 set(SOURCE_TESTS
-        HopTest.cpp)
+        hopTest.cpp)
 
 add_executable(afqmcHopTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 

@@ -1,7 +1,7 @@
 //
 // Created by boruoshihao on 12/28/16.
 //
-#include "../include/Hop.h"
+#include "../include/hop.h"
 #include "../../../../../common/testHao/gtest_custom.h"
 
 using namespace std;

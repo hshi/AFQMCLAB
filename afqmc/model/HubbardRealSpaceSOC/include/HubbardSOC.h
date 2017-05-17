@@ -6,7 +6,7 @@
 #define AFQMCLAB_HUBBARDREALSPACESOC_H
 
 #include "../../../../common/tensorHao/include/tensor_all.h"
-#include "../../../blocks/oneBodyOperator/hop/include/Hop.h"
+#include "../../../blocks/oneBodyOperator/hop/include/hop.h"
 #include "../../../blocks/twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
 class HubbardSOC

@@ -1,5 +1,5 @@
 set(SOURCE_HEADERS
-        ${CMAKE_CURRENT_LIST_DIR}/include/hop.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/hop2Spin.h
         )
 
 add_subdirectory(include)

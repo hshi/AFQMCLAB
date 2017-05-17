@@ -2,7 +2,7 @@
 // Created by boruoshihao on 12/28/16.
 //
 
-#include "../include/Hop.h"
+#include "../include/hop.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -33,6 +33,7 @@ void Hop::copy_deep(const Hop &x)
     logw = x.logw;
     matrix = x.matrix;
 }
+
 void Hop::move_deep(Hop &x)
 {
     logw = x.logw;

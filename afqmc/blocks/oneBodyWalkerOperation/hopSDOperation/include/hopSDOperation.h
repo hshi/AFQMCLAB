@@ -6,7 +6,7 @@
 #define AFQMCLAB_HOPSINGLEDETERMINANTOPERATION_H
 
 #include "../../../walker/SD/include/SD.h"
-#include "../../../oneBodyOperator/hop/include/Hop.h"
+#include "../../../oneBodyOperator/hop/include/hop.h"
 
 void applyOneBodyToRightWalker(const SD &walker, SD &walkerNew, const Hop &oneBody);
 void applyOneBodyToLeftWalker(const SD &walker, SD &walkerNew, const Hop &oneBody);

@@ -12,6 +12,7 @@ add_library(afqmcHao STATIC
         $<TARGET_OBJECTS:afqmcSD2SpinHaoObject>
 
         $<TARGET_OBJECTS:afqmcHopHaoObject>
+        $<TARGET_OBJECTS:afqmcHop2SpinHaoObject>
 
         $<TARGET_OBJECTS:afqmcNiupNidnHaoObject>
 
