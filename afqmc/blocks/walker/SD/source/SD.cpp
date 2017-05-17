@@ -92,18 +92,6 @@ double SD::getMemory() const
     return 16.0+wf.getMemory();
 }
 
-void SD::copy_deep(const SD &x)
-{
-    logw = x.logw;
-    wf = x.wf;
-}
-
-void SD::move_deep(SD &x)
-{
-    logw = x.logw;
-    wf = move( x.wf );
-}
-
 #ifdef MPI_HAO
 void MPIBcast(SD &buffer, int root, MPI_Comm const &comm)
 {
@@ -123,3 +111,15 @@ void SD::unpack(const vector<char> &buf, int &posit)
     MPI_Unpack(buf.data(), buf.size(), &posit, wf.data(), wf.size(), MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
 }
 #endif
+
+void SD::copy_deep(const SD &x)
+{
+    logw = x.logw;
+    wf = x.wf;
+}
+
+void SD::move_deep(SD &x)
+{
+    logw = x.logw;
+    wf = move( x.wf );
+}

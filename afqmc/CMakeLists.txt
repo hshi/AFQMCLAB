@@ -9,6 +9,7 @@ add_library(afqmcHao STATIC
 
         #Blocks
         $<TARGET_OBJECTS:afqmcSDHaoObject>
+        $<TARGET_OBJECTS:afqmcSD2SpinHaoObject>
 
         $<TARGET_OBJECTS:afqmcHopHaoObject>
 

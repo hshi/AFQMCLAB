@@ -115,7 +115,7 @@ TEST(SDTest, readWriteBcast)
     sdBase.wfRef() = wf;
     sdBase.logwRef() = logw;
 
-    string filename="latt_param.dat";
+    string filename="SD.dat";
     if( MPIRank() == 0 ) sdBase.write(filename);
     if( MPIRank() == 0 ) sd.read(filename);
     MPIBcast(sd);

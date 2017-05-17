@@ -6,5 +6,6 @@
 #define AFQMCLAB_WALKER_H
 
 #include "SD/include/SD.h"
+#include "SD2Spin/include/SD2Spin.h"
 
 #endif //AFQMCLAB_WALKER_H

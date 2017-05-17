@@ -8,6 +8,7 @@ add_subdirectory(twoBodyWalkerOperation)
 
 add_library(afqmcBlocksHao STATIC
         $<TARGET_OBJECTS:afqmcSDHaoObject>
+        $<TARGET_OBJECTS:afqmcSD2SpinHaoObject>
 
         $<TARGET_OBJECTS:afqmcHopHaoObject>
 
