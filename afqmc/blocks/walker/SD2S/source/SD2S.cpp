@@ -2,79 +2,79 @@
 // Created by boruoshihao on 5/17/17.
 //
 
-#include "../include/SD2Spin.h"
+#include "../include/SD2S.h"
 #include "../../../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-SD2Spin::SD2Spin():logw(0.0) {}
+SD2S::SD2S():logw(0.0) {}
 
-SD2Spin::SD2Spin(size_t L, size_t Nup, size_t Ndn):logw(0.0)
+SD2S::SD2S(size_t L, size_t Nup, size_t Ndn):logw(0.0)
 {
     wfUp.resize(L, Nup);
     wfDn.resize(L, Ndn);
 }
 
-SD2Spin::SD2Spin(const SD2Spin &x) { copy_deep(x); }
+SD2S::SD2S(const SD2S &x) { copy_deep(x); }
 
-SD2Spin::SD2Spin(SD2Spin &&x) { move_deep(x); }
+SD2S::SD2S(SD2S &&x) { move_deep(x); }
 
-SD2Spin::~SD2Spin() { }
+SD2S::~SD2S() { }
 
-SD2Spin &SD2Spin::operator=(const SD2Spin &x) { copy_deep(x); return *this; }
+SD2S &SD2S::operator=(const SD2S &x) { copy_deep(x); return *this; }
 
-SD2Spin &SD2Spin::operator=(SD2Spin &&x) { move_deep(x); return *this; }
+SD2S &SD2S::operator=(SD2S &&x) { move_deep(x); return *this; }
 
-const complex<double> &SD2Spin::getLogw() const { return logw; }
+const complex<double> &SD2S::getLogw() const { return logw; }
 
-const TensorHao<complex<double>, 2> &SD2Spin::getWfUp() const { return wfUp; }
+const TensorHao<complex<double>, 2> &SD2S::getWfUp() const { return wfUp; }
 
-const TensorHao<complex<double>, 2> &SD2Spin::getWfDn() const { return wfDn; }
+const TensorHao<complex<double>, 2> &SD2S::getWfDn() const { return wfDn; }
 
-complex<double> &SD2Spin::logwRef() { return logw; }
+complex<double> &SD2S::logwRef() { return logw; }
 
-TensorHao<complex<double>, 2> &SD2Spin::wfUpRef() { return wfUp; }
+TensorHao<complex<double>, 2> &SD2S::wfUpRef() { return wfUp; }
 
-TensorHao<complex<double>, 2> &SD2Spin::wfDnRef() { return wfDn; }
+TensorHao<complex<double>, 2> &SD2S::wfDnRef() { return wfDn; }
 
-size_t SD2Spin::getL() const { return wfUp.rank(0); }
+size_t SD2S::getL() const { return wfUp.rank(0); }
 
-size_t SD2Spin::getNup() const { return wfUp.rank(1); }
+size_t SD2S::getNup() const { return wfUp.rank(1); }
 
-size_t SD2Spin::getNdn() const { return wfDn.rank(1); }
+size_t SD2S::getNdn() const { return wfDn.rank(1); }
 
-void SD2Spin::resize(size_t L, size_t Nup, size_t Ndn)
+void SD2S::resize(size_t L, size_t Nup, size_t Ndn)
 {
     wfUp.resize(L, Nup);
     wfDn.resize(L, Ndn);
 }
 
-void SD2Spin::stabilize()
+void SD2S::stabilize()
 {
     logw += log( BL_NAME(QRMatrix)(wfUp) * BL_NAME(QRMatrix)(wfDn)  );
 }
 
-std::complex<double> SD2Spin::normalize()
+std::complex<double> SD2S::normalize()
 {
     complex<double> logwTemp = logw + log( BL_NAME(QRMatrix)(wfUp) * BL_NAME(QRMatrix)(wfDn) );
     logw=0.0;
     return logwTemp;
 }
 
-void SD2Spin::addLogw(std::complex<double> logw_add)
+void SD2S::addLogw(std::complex<double> logw_add)
 {
     logw += logw_add;
 }
 
-void SD2Spin::randomFill()
+void SD2S::randomFill()
 {
     tensor_hao::randomFill(wfUp);
     tensor_hao::randomFill(wfDn);
     normalize();
 }
 
-void SD2Spin::read(const std::string &filename)
+void SD2S::read(const std::string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
@@ -85,7 +85,7 @@ void SD2Spin::read(const std::string &filename)
     file.close();
 }
 
-void SD2Spin::write(const std::string &filename) const
+void SD2S::write(const std::string &filename) const
 {
     ofstream file;
     file.open(filename, ios::out|ios::trunc);
@@ -96,32 +96,32 @@ void SD2Spin::write(const std::string &filename) const
     file.close();
 }
 
-int SD2Spin::returnNbuf() const
+int SD2S::returnNbuf() const
 {
     return 16 + 16*wfUp.size() + 16*wfDn.size();
 }
 
-double SD2Spin::getMemory() const
+double SD2S::getMemory() const
 {
     return 16.0+wfUp.getMemory()+wfDn.getMemory();
 }
 
 #ifdef MPI_HAO
-void MPIBcast(SD2Spin &buffer, int root, MPI_Comm const &comm)
+void MPIBcast(SD2S &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast( buffer.logw, root, comm );
     MPIBcast( buffer.wfUp, root, comm );
     MPIBcast( buffer.wfDn, root, comm );
 }
 
-void SD2Spin::pack(std::vector<char> &buf, int &posit) const
+void SD2S::pack(std::vector<char> &buf, int &posit) const
 {
     MPI_Pack(&logw, 1, MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
     MPI_Pack(wfUp.data(), wfUp.size(), MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
     MPI_Pack(wfDn.data(), wfDn.size(), MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
 }
 
-void SD2Spin::unpack(const std::vector<char> &buf, int &posit)
+void SD2S::unpack(const std::vector<char> &buf, int &posit)
 {
     MPI_Unpack(buf.data(), buf.size(), &posit, &logw, 1, MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
     MPI_Unpack(buf.data(), buf.size(), &posit, wfUp.data(), wfUp.size(), MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
@@ -130,14 +130,14 @@ void SD2Spin::unpack(const std::vector<char> &buf, int &posit)
 }
 #endif
 
-void SD2Spin::copy_deep(const SD2Spin &x)
+void SD2S::copy_deep(const SD2S &x)
 {
     logw = x.logw;
     wfUp = x.wfUp;
     wfDn = x.wfDn;
 }
 
-void SD2Spin::move_deep(SD2Spin &x)
+void SD2S::move_deep(SD2S &x)
 {
     logw = x.logw;
     wfUp = move( x.wfUp );

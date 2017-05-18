@@ -6,6 +6,6 @@
 #define AFQMCLAB_ONEBODYOPERATOR_H
 
 #include "hop/include/hop.h"
-#include "hop2Spin/include/hop2Spin.h"
+#include "hop2S/include/hop2S.h"
 
 #endif //AFQMCLAB_ONEBODYOPERATOR_H

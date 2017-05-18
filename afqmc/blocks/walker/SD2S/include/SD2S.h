@@ -2,26 +2,26 @@
 // Created by boruoshihao on 5/17/17.
 //
 
-#ifndef AFQMCLAB_SD2SPIN_H
-#define AFQMCLAB_SD2SPIN_H
+#ifndef AFQMCLAB_SD2S_H
+#define AFQMCLAB_SD2S_H
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
-class SD2Spin
+class SD2S
 {
  private:
     std::complex<double> logw;
     tensor_hao::TensorHao<std::complex<double>,2> wfUp, wfDn;
 
  public:
-    SD2Spin();
-    SD2Spin(size_t L, size_t Nup, size_t Ndn);
-    SD2Spin(const SD2Spin& x);
-    SD2Spin(SD2Spin&& x);
-    ~SD2Spin();
+    SD2S();
+    SD2S(size_t L, size_t Nup, size_t Ndn);
+    SD2S(const SD2S& x);
+    SD2S(SD2S&& x);
+    ~SD2S();
 
-    SD2Spin & operator  = (const SD2Spin& x);
-    SD2Spin & operator  = (SD2Spin&& x);
+    SD2S & operator  = (const SD2S& x);
+    SD2S & operator  = (SD2S&& x);
 
     const std::complex<double> &getLogw() const;
     const tensor_hao::TensorHao<std::complex<double>, 2> &getWfUp() const;
@@ -45,14 +45,14 @@ class SD2Spin
     double getMemory() const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(SD2Spin &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(SD2S &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
     void pack( std::vector<char> &buf,  int &posit ) const;
     void unpack( const std::vector<char> &buf, int &posit );
 #endif
 
  private:
-    void copy_deep(const SD2Spin &x);
-    void move_deep(SD2Spin &x);
+    void copy_deep(const SD2S &x);
+    void move_deep(SD2S &x);
 };
 
-#endif //AFQMCLAB_SD2SPIN_H
+#endif //AFQMCLAB_SD2S_H
