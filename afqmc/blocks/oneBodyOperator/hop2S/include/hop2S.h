@@ -7,6 +7,8 @@
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
+//One body operator: two spin species.
+
 class Hop2S
 {
  public:
