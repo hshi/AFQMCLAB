@@ -10,6 +10,7 @@ add_library(afqmcHao STATIC
         #Blocks
         $<TARGET_OBJECTS:afqmcSDHaoObject>
         $<TARGET_OBJECTS:afqmcSD2SHaoObject>
+        $<TARGET_OBJECTS:afqmcSD2ISHaoObject>
 
         $<TARGET_OBJECTS:afqmcHopHaoObject>
         $<TARGET_OBJECTS:afqmcHop2SHaoObject>

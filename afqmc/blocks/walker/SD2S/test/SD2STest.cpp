@@ -124,7 +124,7 @@ TEST(SD2STest, moveAssignment)
     EXPECT_FALSE( sd2SBase.getWfDn().data() );
 }
 
-TEST(SDTest, readWriteBcast)
+TEST(SD2STest, readWriteBcast)
 {
     size_t L(10), Nup(5), Ndn(3);
     TensorHao<complex<double>,2> wfUp(L,Nup), wfDn(L, Ndn);
@@ -151,7 +151,7 @@ TEST(SDTest, readWriteBcast)
 }
 
 #ifdef MPI_HAO
-TEST(SDTest, packUnpack)
+TEST(SD2STest, packUnpack)
 {
     size_t L(10), Nup(5), Ndn(3);
     TensorHao<complex<double>,2> wfUp(L,Nup), wfDn(L, Ndn);

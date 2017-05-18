@@ -57,7 +57,8 @@ void SD2S::stabilize()
 
 std::complex<double> SD2S::normalize()
 {
-    complex<double> logwTemp = logw + log( BL_NAME(QRMatrix)(wfUp) * BL_NAME(QRMatrix)(wfDn) );
+    stabilize();
+    complex<double> logwTemp(logw);
     logw=0.0;
     return logwTemp;
 }

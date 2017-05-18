@@ -46,7 +46,8 @@ void SD::stabilize()
 
 complex<double> SD::normalize()
 {
-    complex<double> logwTemp = logw + log( BL_NAME(QRMatrix)(wf) );
+    stabilize();
+    complex<double> logwTemp(logw);
     logw=0.0;
     return logwTemp;
 }

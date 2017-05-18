@@ -7,5 +7,6 @@
 
 #include "SD/include/SD.h"
 #include "SD2S/include/SD2S.h"
+#include "SD2IS/include/SD2IS.h"
 
 #endif //AFQMCLAB_WALKER_H

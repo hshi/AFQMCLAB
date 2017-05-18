@@ -7,6 +7,8 @@
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
+//Single Determinant, two spin species.
+
 class SD2S
 {
  private:

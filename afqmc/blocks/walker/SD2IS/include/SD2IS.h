@@ -1,38 +1,40 @@
 //
-// Created by boruoshihao on 12/25/16.
+// Created by boruoshihao on 5/18/17.
 //
 
-#ifndef AFQMCLAB_SINGLEDETERMINANT_H
-#define AFQMCLAB_SINGLEDETERMINANT_H
+#ifndef AFQMCLAB_SD2IS_H
+#define AFQMCLAB_SD2IS_H
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
-//Single Determinant.
+//Single Determinant, two identical spin species.
 
-class SD
+class SD2IS
 {
  private:
     std::complex<double> logw;
+    size_t Nup, Ndn;
     tensor_hao::TensorHao<std::complex<double>,2> wf;
 
  public:
-    SD();
-    SD(size_t L, size_t N);
-    SD(const SD& x);
-    SD(SD&& x);
-    ~SD();
+    SD2IS();
+    SD2IS(size_t L, size_t Nup, size_t Ndn);
+    SD2IS(const SD2IS& x);
+    SD2IS(SD2IS&& x);
+    ~SD2IS();
 
-    SD & operator  = (const SD& x);
-    SD & operator  = (SD&& x);
+    SD2IS & operator  = (const SD2IS& x);
+    SD2IS & operator  = (SD2IS&& x);
 
     const std::complex<double> &getLogw() const;
     const tensor_hao::TensorHao<std::complex<double>, 2> &getWf() const;
     std::complex<double> &logwRef();
     tensor_hao::TensorHao<std::complex<double>, 2> &wfRef();
     size_t getL() const;
-    size_t getN() const;
+    size_t getNup() const;
+    size_t getNdn() const;
 
-    void resize(size_t L, size_t N);
+    void resize(size_t L, size_t Nup, size_t Ndn);
     void stabilize();
     std::complex<double> normalize();
     void addLogw(std::complex<double> logw_add);
@@ -44,14 +46,14 @@ class SD
     double getMemory() const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(SD2IS &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
     void pack( std::vector<char> &buf,  int &posit ) const;
     void unpack( const std::vector<char> &buf, int &posit );
 #endif
 
  private:
-    void copy_deep(const SD &x);
-    void move_deep(SD &x);
+    void copy_deep(const SD2IS &x);
+    void move_deep(SD2IS &x);
 };
 
-#endif //AFQMCLAB_SINGLEDETERMINANT_H
+#endif //AFQMCLAB_SD2IS_H
