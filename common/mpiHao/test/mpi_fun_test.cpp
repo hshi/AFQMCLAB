@@ -88,12 +88,12 @@ TEST (MPIBcast, complex_double)
 
 TEST (MPIBcast, string)
 {
-   string i="bvd";
+    string i="bvd";
     if(MPIRank()==0) i="aaacddfdfdfdfdfdcdd";
     MPIBcast(i);
 
-    cout<<i<<endl;
-//    EXPECT_EQ("aaaccdd", i);
+//    cout<<i<<endl;
+    EXPECT_EQ("aaacddfdfdfdfdfdcdd", i);
 }
 
 
@@ -152,6 +152,24 @@ TEST (MPIBcast, complexdouble_pointer)
     MPIBcast(N,a);
 
     EXPECT_POINTER_COMPLEXDOUBLE_EQ(N, b, a);
+}
+
+TEST(MPIReduce, size_t_max)
+{
+    size_t i = MPIRank();
+    size_t maxi;
+    MPIReduce(i, maxi, MPI_MAX);
+
+    if( MPIRank()==0 ) EXPECT_COMPLEXDOUBLE_EQ( MPISize()-1, maxi);
+}
+
+TEST(MPIReduce, size_t_min)
+{
+    size_t i = MPIRank();
+    size_t mini;
+    MPIReduce(i, mini, MPI_MIN);
+
+    if( MPIRank()==0 ) EXPECT_COMPLEXDOUBLE_EQ( 0, mini);
 }
 
 TEST(MPIAllreduce, double_sum)
@@ -269,6 +287,15 @@ TEST(MPISum, longlong)
     long long i    = 2;
     long long size = MPISize();
     long long sum  = MPISum(i);
+
+    if( MPIRank()==0 ) EXPECT_EQ(i*size, sum);
+}
+
+TEST(MPISum, size_t)
+{
+    size_t i    = 2;
+    size_t size = MPISize();
+    size_t sum  = MPISum(i);
 
     if( MPIRank()==0 ) EXPECT_EQ(i*size, sum);
 }

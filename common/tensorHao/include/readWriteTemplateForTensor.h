@@ -6,6 +6,7 @@
 #define AFQMCLAB_READWRITETEMPLATEFORTENSOR_H
 
 #include <complex>
+#include <iostream>
 #include <fstream>
 #include <iomanip>
 

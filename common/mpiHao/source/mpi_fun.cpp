@@ -154,6 +154,11 @@ void MPIBcast(size_t count, complex<double>* buffer, int root, const MPI_Comm& c
     }
 }
 
+void MPIReduce(const size_t &sendbuf, size_t &recvbuf, MPI_Op op, int root, MPI_Comm const &comm)
+{
+    MPI_Reduce(&sendbuf, &recvbuf, sizeof(sendbuf), MPI_BYTE, op, root, comm);
+}
+
 void MPIAllreduce(const double &sendbuf, double &recvbuf, MPI_Op op, const MPI_Comm& comm)
 {
     MPI_Allreduce(&sendbuf, &recvbuf, 1, MPI_DOUBLE, op, comm);
@@ -223,6 +228,13 @@ long long MPISum(const long long& sendbuf, int root,  const MPI_Comm& comm)
 {
     long long recvbuf=0;
     MPI_Reduce(&sendbuf, &recvbuf, 1 , MPI_LONG_LONG, MPI_SUM, root, comm);
+    return recvbuf;
+}
+
+size_t MPISum(const size_t& sendbuf, int root,  const MPI_Comm& comm)
+{
+    size_t recvbuf=0;
+    MPI_Reduce(&sendbuf, &recvbuf, sizeof(sendbuf), MPI_BYTE, MPI_SUM, root, comm);
     return recvbuf;
 }
 

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <iomanip>
 #include <vector>
 #include "../../../../common/randomHao/include/random_hao.h"

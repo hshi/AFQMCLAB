@@ -8,5 +8,6 @@
 #include "hop/include/hop.h"
 #include "hop2S/include/hop2S.h"
 #include "hop2IS/include/hop2IS.h"
+#include "logHop2IS/include/logHop2IS.h"
 
 #endif //AFQMCLAB_ONEBODYOPERATOR_H
