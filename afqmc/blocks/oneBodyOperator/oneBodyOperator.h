@@ -6,8 +6,8 @@
 #define AFQMCLAB_ONEBODYOPERATOR_H
 
 #include "hop/include/hop.h"
-#include "hop2S/include/hop2S.h"
-#include "hop2IS/include/hop2IS.h"
-#include "logHop2IS/include/logHop2IS.h"
+#include "hop2s/include/hop2s.h"
+#include "hop2is/include/hop2is.h"
+#include "logHop2is/include/logHop2is.h"
 
 #endif //AFQMCLAB_ONEBODYOPERATOR_H

@@ -12,7 +12,7 @@
 
 void applyTwoBodySampleToRightWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample);
 void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample);
-void getForce(NiupNidnForce& force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation );
+void getForce(NiupNidnForce &force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation );
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight);
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const std::string &filename);
 

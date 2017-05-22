@@ -32,4 +32,4 @@ class Hop
     void move_deep(Hop &x);
 };
 
-#endif //AFQMCLAB_HOP_H
+#endif //AFQMCLAB_HOP_Hcd

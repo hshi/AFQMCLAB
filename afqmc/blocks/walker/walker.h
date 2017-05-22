@@ -6,7 +6,7 @@
 #define AFQMCLAB_WALKER_H
 
 #include "SD/include/SD.h"
-#include "SD2S/include/SD2S.h"
-#include "SD2IS/include/SD2IS.h"
+#include "SD2s/include/SD2s.h"
+#include "SD2is/include/SD2is.h"
 
 #endif //AFQMCLAB_WALKER_H
