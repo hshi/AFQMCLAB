@@ -7,20 +7,27 @@
 using namespace std;
 using namespace tensor_hao;
 
-SDSDOperation::SDSDOperation() : state(SDOperationState::VOID), walkerLeft(nullptr), walkerRight(nullptr)
+SDSDOperation::SDSDOperation() : state(SDSDOperationState::VOID), walkerLeft(nullptr), walkerRight(nullptr)
 {
 }
 
 SDSDOperation::SDSDOperation(const SD &walkerLeft_, const SD &walkerRight_)
 {
-    state = SDOperationState::VOID;
+    state = SDSDOperationState::VOID;
     walkerLeft  = &walkerLeft_;
     walkerRight = &walkerRight_;
+
+    size_t L = walkerLeft->getL(); size_t N = walkerLeft->getN();
+    if( L != walkerRight->getL() || N != walkerRight->getN() )
+    {
+        cout<<"Error!!! Find Inconsistency between walkerLeft and walkerRight!"<<endl;
+        exit(1);
+    }
 }
 
 SDSDOperation::~SDSDOperation() { }
 
-SDOperationState SDSDOperation::getState() const { return state; }
+SDSDOperationState SDSDOperation::getState() const { return state; }
 
 const SD *SDSDOperation::getWalkerLeft() const { return walkerLeft; }
 
@@ -32,33 +39,33 @@ const LUDecomp<complex<double>> &SDSDOperation::returnLUOverlap()
     return LUOverlap;
 }
 
-const TensorHao<complex<double>, 2> &SDSDOperation::returnWfLeftDagger()
+const TensorHao<complex<double>, 2> &SDSDOperation::returnTheta_T()
 {
     calculateLUOverlap();
-    calculateWfLeftDagger();
-    return wfLeftDagger;
+    calculateTheta_T();
+    return theta_T;
 }
 
 void SDSDOperation::reSet()
 {
-    state = SDOperationState::VOID;
+    state = SDSDOperationState::VOID;
 }
 
 complex<double> SDSDOperation::returnLogOverlap()
 {
     calculateLUOverlap();
-    return conj( (*walkerLeft).getLogw() ) + (*walkerRight).getLogw() + logDeterminant( LUOverlap );
+    return conj(walkerLeft->getLogw()) + walkerRight->getLogw() + logDeterminant(LUOverlap);
 }
 
 TensorHao<complex<double>, 2> SDSDOperation::returnGreenMatrix()
 {
     calculateLUOverlap();
-    calculateWfLeftDagger();
+    calculateTheta_T();
 
-    size_t L = (*walkerLeft).getL();
+    size_t L = walkerLeft->getL();
     TensorHao<complex<double>, 2> greenMatrix(L,L);
 
-    BL_NAME(gmm)( wfLeftDagger, (*walkerRight).getWf(), greenMatrix, 'T', 'T');
+    BL_NAME(gmm)( conj( walkerLeft->getWf() ), theta_T, greenMatrix );
 
     return greenMatrix;
 }
@@ -66,11 +73,10 @@ TensorHao<complex<double>, 2> SDSDOperation::returnGreenMatrix()
 tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenDiagonal()
 {
     calculateLUOverlap();
-    calculateWfLeftDagger();
+    calculateTheta_T();
 
-    size_t L = (*walkerLeft).getL();
-    size_t N = (*walkerLeft).getN();
-    const TensorHao<complex<double>, 2> &wfRight = (*walkerRight).getWf();
+    size_t L = walkerLeft->getL(); size_t N = walkerLeft->getN();
+    const TensorHao<complex<double>, 2> &wfLeft = walkerLeft->getWf();
 
     TensorHao<complex<double>, 1> greenDiagonal(L);
     greenDiagonal = complex<double>(0,0);
@@ -78,7 +84,7 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenDiagona
     {
         for(size_t i = 0; i < L; ++i)
         {
-            greenDiagonal(i) += wfRight(i, j) * wfLeftDagger(j,i);
+            greenDiagonal(i) += conj( wfLeft(i, j) ) * theta_T(j,i);
         }
     }
 
@@ -88,11 +94,10 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenDiagona
 tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenOffDiagonal()
 {
     calculateLUOverlap();
-    calculateWfLeftDagger();
+    calculateTheta_T();
 
-    size_t L = (*walkerLeft).getL();
-    size_t N = (*walkerLeft).getN();
-    const TensorHao<complex<double>, 2> &wfRight = (*walkerRight).getWf();
+    size_t L = walkerLeft->getL(); size_t N = walkerLeft->getN();
+    const TensorHao<complex<double>, 2> &wfLeft = walkerLeft->getWf();
 
     size_t halfL = L/2;
     if( L != halfL*2 ) { cout<<"Error!!! Green Matrix rank size is odd number! "<<L<<endl; exit(1); }
@@ -103,8 +108,8 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenOffDiag
     {
         for(size_t i = 0; i < halfL; ++i)
         {
-            greenOffDiagonal(i)       += wfRight(i+halfL, j) * wfLeftDagger(j, i); // C_i^\dagger C_{i+halfL}
-            greenOffDiagonal(i+halfL) += wfRight(i, j) * wfLeftDagger(j, i+halfL); // C_{i+halfL}^\dagger C_i
+            greenOffDiagonal(i)       += conj( wfLeft(i,       j) ) * theta_T(j, i+halfL); // C_i^\dagger C_{i+halfL}
+            greenOffDiagonal(i+halfL) += conj( wfLeft(i+halfL, j) ) * theta_T(j, i      ); // C_{i+halfL}^\dagger C_i
         }
     }
 
@@ -113,7 +118,7 @@ tensor_hao::TensorHao<std::complex<double>, 1> SDSDOperation::returnGreenOffDiag
 
 double SDSDOperation::getMemory() const
 {
-    return 8.0*2+LUOverlap.A.getMemory()+LUOverlap.ipiv.getMemory()+wfLeftDagger.getMemory();
+    return 8.0*2+LUOverlap.A.getMemory()+LUOverlap.ipiv.getMemory()+theta_T.getMemory();
 }
 
 SDSDOperation::SDSDOperation(const SDSDOperation &x) { }
@@ -122,23 +127,23 @@ SDSDOperation &SDSDOperation::operator=(const SDSDOperation &x) { return *this; 
 
 void SDSDOperation::calculateLUOverlap()
 {
-    if( state >= SDOperationState::LUOVERLAP ) return;
+    if( state >= SDSDOperationState::LUOVERLAP ) return;
 
-    size_t N = (*walkerLeft).getN();
+    size_t N = walkerLeft->getN();
     TensorHao<complex<double>,2> overlapMatrix(N,N);
-    BL_NAME(gmm)( (*walkerLeft).getWf(), (*walkerRight).getWf(), overlapMatrix, 'C' );
+    BL_NAME(gmm)( walkerLeft->getWf(), walkerRight->getWf(), overlapMatrix, 'C' );
     LUOverlap = BL_NAME(LUconstruct)( move(overlapMatrix) );
 
-    state = SDOperationState::LUOVERLAP;
+    state = SDSDOperationState::LUOVERLAP;
 }
 
-void SDSDOperation::calculateWfLeftDagger()
+void SDSDOperation::calculateTheta_T()
 {
-    if( state >= SDOperationState::WFLEFTDAGGER ) return;
+    if( state >= SDSDOperationState::THETA_T ) return;
 
-    wfLeftDagger =  BL_NAME(solve_lineq)( LUOverlap, conjtrans( (*walkerLeft).getWf() ) );
+    theta_T =  BL_NAME(solve_lineq)( LUOverlap, trans( walkerRight->getWf() ), 'T' );
 
-    state = SDOperationState::WFLEFTDAGGER;
+    state = SDSDOperationState::THETA_T;
 }
 
 void sampleWalkerFromPhiT(SD &walker, const SD &phiT)

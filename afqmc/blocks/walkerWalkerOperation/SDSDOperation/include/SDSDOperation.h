@@ -2,36 +2,36 @@
 // Created by boruoshihao on 1/10/17.
 //
 
-#ifndef AFQMCLAB_SDOPERATION_H
-#define AFQMCLAB_SDOPERATION_H
+#ifndef AFQMCLAB_SDSDOPERATION_H
+#define AFQMCLAB_SDSDOPERATION_H
 
 #include "../../../walker/SD/include/SD.h"
 
-enum class SDOperationState
+enum class SDSDOperationState
 {
     VOID=0,
     LUOVERLAP,
-    WFLEFTDAGGER
+    THETA_T
 };
 
 class SDSDOperation
 {
-    SDOperationState state;
+    SDSDOperationState state;
     const SD *walkerLeft, *walkerRight;
 
     tensor_hao::LUDecomp< std::complex<double> > LUOverlap;
-    tensor_hao::TensorHao< std::complex<double>, 2 > wfLeftDagger;
+    tensor_hao::TensorHao< std::complex<double>, 2 > theta_T;
  public:
     SDSDOperation();
     SDSDOperation(const SD &walkerLeft_, const SD &walkerRight_);
     ~SDSDOperation();
 
-    SDOperationState getState() const;
+    SDSDOperationState getState() const;
     const SD *getWalkerLeft() const;
     const SD *getWalkerRight() const;
 
     const tensor_hao::LUDecomp<std::complex<double>> &returnLUOverlap();
-    const tensor_hao::TensorHao<std::complex<double>, 2> &returnWfLeftDagger();
+    const tensor_hao::TensorHao<std::complex<double>, 2> &returnTheta_T();
 
     void reSet();
     std::complex<double> returnLogOverlap();
@@ -46,9 +46,9 @@ class SDSDOperation
     SDSDOperation & operator  = (const SDSDOperation& x);
 
     void calculateLUOverlap();
-    void calculateWfLeftDagger();
+    void calculateTheta_T();
 };
 
 void sampleWalkerFromPhiT(SD &walker, const SD& phiT);
 
-#endif //AFQMCLAB_SDOPERATION_H
+#endif //AFQMCLAB_SDSDOPERATION_H

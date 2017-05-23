@@ -30,9 +30,7 @@ SD2sSD2isOperation::SD2sSD2isOperation(const SD2s &walkerLeft_, const SD2is &wal
     wfRightDn.point( const_cast<complex<double>*> ( walkerRight->getWf().data() ) );
 }
 
-SD2sSD2isOperation::~SD2sSD2isOperation()
-{
-}
+SD2sSD2isOperation::~SD2sSD2isOperation() { }
 
 SD2sSD2isOperationState SD2sSD2isOperation::getState() const { return state; }
 

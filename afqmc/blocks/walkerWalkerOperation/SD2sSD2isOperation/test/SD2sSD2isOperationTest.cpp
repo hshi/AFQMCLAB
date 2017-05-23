@@ -17,7 +17,7 @@ class SD2sSD2isOperationTest: public ::testing::Test
 
     SD2sSD2isOperationTest( )
     {
-        L=5; Nup=2; Ndn=4;
+        L=10; Nup=3; Ndn=5;
 
         wfLeftUp.resize(L,Nup); wfLeftDn.resize(L,Ndn); wfRightUp.resize(L,Nup); wfRightDn.resize(L,Ndn);
         randomFill(wfLeftUp); randomFill(wfLeftDn); randomFill(wfRightDn);
@@ -86,7 +86,7 @@ TEST_F(SD2sSD2isOperationTest, getLogOverlap)
 
 TEST_F(SD2sSD2isOperationTest, returnGreenMatrixAndDiagonalUp)
 {
-    TensorHao< complex<double>,2 > ovlpUp(Nup,Nup),  wfLeftUpDagger(Nup,L), greenMatrixUp(L,L);
+    TensorHao< complex<double>,2 > ovlpUp(Nup,Nup), wfLeftUpDagger(Nup,L), greenMatrixUp(L,L);
     gmm_cpu(wfLeftUp, wfRightUp, ovlpUp, 'C');
     ovlpUp = inverse_cpu(  LUconstruct_cpu( move(ovlpUp) ) );
     gmm_cpu( ovlpUp, wfLeftUp, wfLeftUpDagger, 'N', 'C' );
