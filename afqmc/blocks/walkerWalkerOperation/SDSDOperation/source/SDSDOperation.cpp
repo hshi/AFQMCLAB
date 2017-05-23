@@ -34,6 +34,7 @@ const LUDecomp<complex<double>> &SDSDOperation::returnLUOverlap()
 
 const TensorHao<complex<double>, 2> &SDSDOperation::returnWfLeftDagger()
 {
+    calculateLUOverlap();
     calculateWfLeftDagger();
     return wfLeftDagger;
 }

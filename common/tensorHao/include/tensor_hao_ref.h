@@ -10,7 +10,6 @@ namespace tensor_hao
  template<class T = double, size_t D = 1> class TensorHaoRef : public TensorCore<T, D>
  {
   public:
-
      TensorHaoRef(void): TensorCore<T,D>()
      {
          for(size_t i=0; i<D; i++)

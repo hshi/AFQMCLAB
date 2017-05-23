@@ -19,6 +19,7 @@ add_library(afqmcBlocksHao STATIC
         $<TARGET_OBJECTS:afqmcNiupNidnHaoObject>
 
         $<TARGET_OBJECTS:afqmcSDSDOperationHaoObject>
+        $<TARGET_OBJECTS:afqmcSD2sSD2isOperationHaoObject>
 
         $<TARGET_OBJECTS:afqmcHopSDOperationHaoObject>
         $<TARGET_OBJECTS:afqmcHop2sSD2sOperationHaoObject>

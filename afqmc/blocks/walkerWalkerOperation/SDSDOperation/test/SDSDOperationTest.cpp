@@ -91,7 +91,7 @@ TEST(SDSDOperationTest, getGreenDiagonal)
     TensorHao<complex<double>, 2> ovlp(N,N), wfLeftDagger(N,L), greenMatrixExact(L,L);
     gmm_cpu(walkerLeft.getWf(), walkerRight.getWf(), ovlp, 'C');
     ovlp = inverse_cpu(  LUconstruct_cpu( move(ovlp) ) );
-    gmm_cpu( ovlp, conjtrans( walkerLeft.getWf() ), wfLeftDagger );
+    gmm_cpu( ovlp, walkerLeft.getWf(), wfLeftDagger, 'N', 'C' );
     gmm_cpu( walkerRight.getWf(), wfLeftDagger, greenMatrixExact );
     greenMatrixExact = trans( greenMatrixExact );
 
