@@ -125,7 +125,13 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+  //TODO: Think about phaseless in Hubbard model! 
+  
+  //TODO: Make sure that we can absorb cap into two body operator. ==> cap is better in measurement.(Force should include gamma/sqrt(-dt) )
+  //TODO: Update two body functions for NiupNidn?
 
+  //TODO: Add gemv_magma function.
+  
   //TODO: Change python fit into a class.
   
   //TODO: Update my script to use . instead of import from different directory.

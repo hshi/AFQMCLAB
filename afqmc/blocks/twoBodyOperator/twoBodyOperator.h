@@ -6,5 +6,6 @@
 #define AFQMCLAB_TWOBODYOPERATOR_H
 
 #include "NiupNidn/include/NiupNidn.h"
+#include "choleskyReal/include/choleskyReal.h"
 
 #endif //AFQMCLAB_TWOBODYOPERATOR_H

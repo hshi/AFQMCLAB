@@ -84,7 +84,7 @@ NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gamm
 
 double NiupNidn::logOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap) const
 {
-    if( L != aux.size() ) { cout<<"Error!!! aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
+    if( L != aux.size() ) { cout<<"Error!!! Aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
 
     double logProb(0), gammaForce(0);
@@ -95,8 +95,9 @@ double NiupNidn::logOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &
         if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
         if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
 
-        logProb += aux(i) * gammaForce + log(0.5);
+        logProb += aux(i) * gammaForce;
     }
+    logProb += log(0.5) * L;
 
     return logProb;
 }
@@ -121,7 +122,7 @@ double NiupNidn::sumOfAuxFromForce(const NiupNidnForce &force, double gammaForce
 
 NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
 {
-    if( L != aux.size() ) { cout<<"Error!!! aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
+    if( L != aux.size() ) { cout<<"Error!!! Aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
 
     NiupNidnSample twoBodySample(L);
 

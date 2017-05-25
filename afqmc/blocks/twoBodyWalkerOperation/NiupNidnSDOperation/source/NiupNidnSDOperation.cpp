@@ -3,7 +3,6 @@
 //
 
 #include "../include/NiupNidnSDOperation.h"
-#include "../../../walkerWalkerOperation/SDSDOperation/include/SDSDOperation.h"
 #include "../../../../../common/readWriteHao/include/readWriteHao.h"
 
 using namespace std;
