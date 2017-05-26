@@ -146,7 +146,9 @@ void RealMaterial::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasisWf &
     size_t numUp, numDn, numNew;
     TableElement tableElementOne, tableElementTwo;
 
+#ifdef USE_OPENMP
     #pragma omp parallel for private(numUp, numDn, numNew, tableElementOne, tableElementTwo)
+#endif
     for(size_t num = 0; num < NHilbert; ++num)
     {
         vecNew(num) = 0;
@@ -241,7 +243,9 @@ void RealMaterial::applyCupToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
 
     size_t numUp, numDn, numNew;
     TableElement tableElement;
+#ifdef USE_OPENMP
     #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+#endif
     for(size_t num = 0; num < NewHilbert; ++num)
     {
         vecNew(num) = 0;
@@ -283,7 +287,9 @@ void RealMaterial::applyCdnToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew,
 
     size_t numUp, numDn, numNew;
     TableElement tableElement;
+#ifdef USE_OPENMP
     #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+#endif
     for(size_t num = 0; num < NewHilbert; ++num)
     {
         vecNew(num) = 0;
@@ -325,7 +331,9 @@ void RealMaterial::applyCupDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &
 
     size_t numUp, numDn, numNew;
     TableElement tableElement;
+#ifdef USE_OPENMP
     #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+#endif
     for(size_t num = 0; num < NewHilbert; ++num)
     {
         vecNew(num) = 0;
@@ -367,7 +375,9 @@ void RealMaterial::applyCdnDaggerToWf(const LanczosBasisWf &wf, LanczosBasisWf &
 
     size_t numUp, numDn, numNew;
     TableElement tableElement;
+#ifdef USE_OPENMP
     #pragma omp parallel for private(numUp, numDn, numNew, tableElement)
+#endif
     for(size_t num = 0; num < NewHilbert; ++num)
     {
         vecNew(num) = 0;

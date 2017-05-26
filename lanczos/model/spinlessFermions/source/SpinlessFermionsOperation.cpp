@@ -55,7 +55,9 @@ void SpinlessFermions::applyOperatorsToWf(const LanczosBasisWf &wf, LanczosBasis
     const TensorHao<complex<double>, 1> & vec = wf.getWf();
     TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
 
+#ifdef USE_OPENMP
     #pragma omp parallel
+#endif
     {
         #ifdef USE_OPENMP
         size_t threadRank = omp_get_thread_num();
@@ -112,8 +114,9 @@ void SpinlessFermions::applyCreationOperatorsToWf(const LanczosBasisWf &wf, Lanc
     if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
     const TensorHao<complex<double>, 1> & vec = wf.getWf();
     TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
-
+#ifdef USE_OPENMP
 #pragma omp parallel
+#endif
     {
 #ifdef USE_OPENMP
         size_t threadRank = omp_get_thread_num();
@@ -160,8 +163,9 @@ void SpinlessFermions::applyAnnihilationOperatorsToWf(const LanczosBasisWf &wf, 
     if( wfNew.size() != NewHilbert ) wfNew.resize( NewHilbert );
     const TensorHao<complex<double>, 1> & vec = wf.getWf();
     TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
-
+#ifdef USE_OPENMP
 #pragma omp parallel
+#endif
     {
 #ifdef USE_OPENMP
         size_t threadRank = omp_get_thread_num();

@@ -94,7 +94,9 @@ void SparseMatrix::applyHToWf(const LanczosBasisWf &wf, LanczosBasisWf &wfNew) c
     TensorHao<complex<double>, 1> & vecNew = wfNew.wfRef();
 
     size_t wfSize = wf.size();
+#ifdef USE_OPENMP
     #pragma omp parallel for
+#endif
     for(size_t i = 0; i < wfSize; ++i)
     {
         vecNew(i) = 0.0;

@@ -53,7 +53,9 @@ LanczosBasisWf &LanczosBasisWf::operator=(std::complex<double> x)
 {
     size_t wfSize = wf.size();
 
+#ifdef USE_OPENMP
 #pragma omp parallel for
+#endif
     for(size_t i = 0; i < wfSize; ++i)
     {
         wf(i) = x;
