@@ -7,9 +7,9 @@
 using namespace std;
 using namespace tensor_hao;
 
-NiupNidnSample::NiupNidnSample():logw(0) { }
+NiupNidnSample::NiupNidnSample():logw(0.0) { }
 
-NiupNidnSample::NiupNidnSample(size_t L):logw(0)
+NiupNidnSample::NiupNidnSample(size_t L):logw(0.0)
 {
     diag00.resize(L);
     diag10.resize(L);

@@ -82,7 +82,7 @@ NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gamm
     return aux;
 }
 
-double NiupNidn::logOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap) const
+double NiupNidn::logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap) const
 {
     if( L != aux.size() ) { cout<<"Error!!! Aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }

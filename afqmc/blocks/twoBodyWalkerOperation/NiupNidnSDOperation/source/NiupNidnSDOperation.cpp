@@ -295,7 +295,7 @@ complex<double> measureLogTwoBodyForceBiasSample(const SD &walkerLeft, const SD 
         sample = niupNidn.getTwoBodySampleFromAux(aux);
         applyTwoBodySampleToRightWalker(walkerRight, walkerRightTemp, sample);
 
-        num += exp( sdsdTempOperation.returnLogOverlap() -logW - niupNidn.logOfAuxFromForce(aux, force, sampleCap) );
+        num += exp( sdsdTempOperation.returnLogOverlap() -logW - niupNidn.logProbOfAuxFromForce(aux, force, sampleCap) );
         den += 1.0;
 
         sdsdTempOperation.reSet();

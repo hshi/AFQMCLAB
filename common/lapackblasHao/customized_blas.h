@@ -53,6 +53,20 @@ void zaxpy(
 
 /* blas level2 */
 
+#define dgemv FORTRAN_WRAPPER(dgemv)
+void dgemv(
+        const char *trans,
+        const HAO_INT *m,
+        const HAO_INT *n,
+        const double *alpha,
+        const double *a,
+        const HAO_INT *lda,
+        const double *x,
+        const HAO_INT *incx,
+        const double *beta,
+        double *y,
+        const HAO_INT *incy);
+
 #define zgemv FORTRAN_WRAPPER(zgemv)
 void zgemv(
     const char *trans,

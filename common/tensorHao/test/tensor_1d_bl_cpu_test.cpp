@@ -79,7 +79,28 @@ TEST(Tensor_1d_bl_cpu, axpy)
     EXPECT_FALSE( diff(yExact, y, 1e-12));
 }
 
-TEST(Tensor_1d_bl_cpu, gemv)
+TEST(Tensor_1d_bl_cpu, gemvDouble)
+{
+    TensorHao<double,2> A(6,5);
+    TensorHao<double,1> x(6), y(5), yExact(5);
+    double alpha(2.0), beta(3.0);
+
+    randomFill(A); randomFill(x);
+
+    for(size_t i = 0; i < A.rank(1); ++i)
+    {
+        yExact(i) = 0.0;
+        for(size_t j = 0; j < A.rank(0); ++j)
+        {
+            yExact(i) += alpha * A(j,i) * x(j) + beta * y(i);
+        }
+    }
+
+    gemv_cpu(A, x, y, 'T', alpha, beta);
+    EXPECT_FALSE( diff(yExact, y, 1e-12));
+}
+
+TEST(Tensor_1d_bl_cpu, gemvComplexDouble)
 {
     TensorHao<complex<double>,2> A(6,5);
     TensorHao<complex<double>,1> x(6), y(5), yExact(5);

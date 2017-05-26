@@ -43,14 +43,14 @@ void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
         {
             twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
             norm = expMinusDtV.sumOfAuxFromForce(constForce, method.sampleCap);
-            logProb = expMinusDtV.logOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
+            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
         }
         else if( method.forceType == "dynamicForce" )
         {
             getForce( dynamicForce, expMinusDtV, walkerWalkerOperation);
             twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);
             norm = expMinusDtV.sumOfAuxFromForce(dynamicForce, method.sampleCap);
-            logProb = expMinusDtV.logOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
+            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
         }
         else
         {

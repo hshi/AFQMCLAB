@@ -29,15 +29,22 @@ class CholeskyReal
 
     CholeskyReal & operator  = (const CholeskyReal& x);
 
-    CholeskyRealAux sampleAuxFromForce(const CholeskyRealForce &force, double cap=1e300) const;
-    double logOfAuxFromForce(const CholeskyRealAux &aux, const CholeskyRealForce &force, double cap = 1e300) const;
-    double sumOfAuxFromForce(const CholeskyRealForce &force, double cap = 1e300) const;
+    double getDt() const;
+    const tensor_hao::TensorHao<double, 3> *getCholeskyVecs() const;
+    const tensor_hao::TensorHao<double, 1> *getCholeskyBg() const;
+    size_t getCholeskyNumber() const;
+    const std::complex<double> &getSqrtMinusDt() const;
+    size_t returnBasisSize() const;
+
+    CholeskyRealAux sampleAuxFromForce(const CholeskyRealForce &force) const;
+    double logProbOfAuxFromForce(const CholeskyRealAux &aux, const CholeskyRealForce &force) const;
     CholeskyRealSample getTwoBodySampleFromAux(const CholeskyRealAux &aux) const;
+    CholeskyRealSample getTwoBodySampleFromAuxForce(const CholeskyRealAux &aux, const CholeskyRealForce &force) const;
 
-
-
+    double getMemory() const;
  private:
     void copy_deep(const CholeskyReal &x);
+    void setTwoBodySampleMatrix(CholeskyRealSample &choleskyRealSample, const CholeskyRealAux &aux) const;
 };
 
 #endif //AFQMCLAB_CHOLESKYREAL_H
