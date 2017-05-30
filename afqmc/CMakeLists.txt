@@ -32,6 +32,7 @@ add_library(afqmcHao STATIC
 
         #model
         $<TARGET_OBJECTS:afqmcHubbardRealSpaceSOCHaoObject>
+        $<TARGET_OBJECTS:afqmcRealMaterialMoleculeHaoObject>
         )
 
 install(TARGETS afqmcHao DESTINATION lib EXPORT afqmcHaoTargets)

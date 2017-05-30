@@ -5,7 +5,7 @@
 #ifndef AFQMCLAB_HUBBARDREALSPACESOC_H
 #define AFQMCLAB_HUBBARDREALSPACESOC_H
 
-#include "../../../../common/tensorHao/include/tensor_all.h"
+#include "../../../../common/common.h"
 #include "../../../blocks/oneBodyOperator/hop/include/hop.h"
 #include "../../../blocks/twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
