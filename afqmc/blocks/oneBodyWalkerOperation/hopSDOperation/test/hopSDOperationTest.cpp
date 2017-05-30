@@ -8,34 +8,43 @@
 using namespace std;
 using namespace tensor_hao;
 
-TEST(hopSDOperationTest, applyOneBodyToRightWalker)
+class HopSDOperationTest: public ::testing::Test
 {
-    size_t L(10), N(5);
-    TensorHao<complex<double>, 2> matrix(L,L), wf(L,N), wfNew(L,N);
-    randomFill(matrix); randomFill(wf);
-    gmm_cpu(matrix, wf, wfNew);
+ public:
+    size_t L, N;
+    TensorHao<complex<double>,2> matrix, wfOld, wfRightNew, wfLeftNew;
 
+    HopSDOperationTest( )
+    {
+        L=10; N=5;
+        matrix.resize(L,L); wfOld.resize(L,N); wfRightNew.resize(L,N); wfLeftNew.resize(L,N);
+
+        randomFill(matrix); randomFill(wfOld);
+        gmm_cpu(matrix, wfOld, wfRightNew);
+        gmm_cpu(matrix, wfOld, wfLeftNew,'C');
+    }
+
+    ~HopSDOperationTest( )  {}
+};
+
+TEST_F(HopSDOperationTest, applyToRight)
+{
     SD sd(L,N), sdNew;
     Hop hop; hop.logw=complex<double>(1.2,1.5); hop.matrix=matrix;
-    sd.logwRef()=1.6; sd.wfRef() = wf;
-    applyOneBodyToRightWalker(sd, sdNew, hop);
+    sd.logwRef()=1.6; sd.wfRef() = wfOld;
+    HopSDOperation hopSDOperation; hopSDOperation.applyToRight(hop, sd, sdNew);
 
-    EXPECT_FALSE( diff(wfNew, sdNew.getWf(), 1e-12) );
+    EXPECT_FALSE( diff(wfRightNew, sdNew.getWf(), 1e-12) );
     EXPECT_COMPLEXDOUBLE_EQ( complex<double>(2.8, 1.5), sdNew.getLogw() );
 }
 
-TEST(hopSDOperationTest, applyOneBodyToLeftWalker)
+TEST_F(HopSDOperationTest, applyToLeft)
 {
-    size_t L(10), N(5);
-    TensorHao<complex<double>, 2> matrix(L,L), wf(L,N), wfNew(L,N);
-    randomFill(matrix); randomFill(wf);
-    gmm_cpu(matrix, wf, wfNew,'C');
-
     SD sd(L,N), sdNew;
-    Hop hop; hop.logw= complex<double>(1.2,1.5); hop.matrix=matrix;
-    sd.logwRef()=1.6; sd.wfRef() = wf;
-    applyOneBodyToLeftWalker(sd, sdNew, hop);
+    Hop hop; hop.logw=complex<double>(1.2,1.5); hop.matrix=matrix;
+    sd.logwRef()=1.6; sd.wfRef() = wfOld;
+    HopSDOperation hopSDOperation; hopSDOperation.applyToLeft(hop, sd, sdNew);
 
-    EXPECT_FALSE( diff(wfNew, sdNew.getWf(), 1e-12) );
+    EXPECT_FALSE( diff(wfLeftNew, sdNew.getWf(), 1e-12) );
     EXPECT_COMPLEXDOUBLE_EQ( complex<double>(2.8, -1.5), sdNew.getLogw() );
 }

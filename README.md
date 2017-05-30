@@ -125,7 +125,9 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
-   //TODO: Think about phaseless in Hubbard model!
+  //TODO: twoBodywalkerOperation should be only with one walker, we can have twoBodyWalkerWalkerOperation for measurement.
+  
+  //TODO: Think about phaseless in Hubbard model!
    
   //TODO: Use the faster way for mixed estimator in Hubbard model, measurement should become very cheap.
   

@@ -13,7 +13,7 @@ void AfqmcConstraintPath::projectExpHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
         walker[i] = move( walkerTemp );
     }
 }
@@ -23,7 +23,7 @@ void AfqmcConstraintPath::projectExpMinusHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        applyOneBodyToRightWalker(walker[i], walkerTemp, expMinusHalfDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
         walker[i] = move( walkerTemp );
     }
 }
@@ -43,14 +43,14 @@ void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
         {
             twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
             norm = expMinusDtV.sumOfAuxFromForce(constForce, method.sampleCap);
-            logProb = expMinusDtV.logOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
+            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
         }
         else if( method.forceType == "dynamicForce" )
         {
             getForce( dynamicForce, expMinusDtV, walkerWalkerOperation);
             twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);
             norm = expMinusDtV.sumOfAuxFromForce(dynamicForce, method.sampleCap);
-            logProb = expMinusDtV.logOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
+            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
         }
         else
         {
@@ -64,7 +64,7 @@ void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
 
         walkerTemp.addLogw( log(norm)-logProb + method.dt*ET );
 
-        applyOneBodyToRightWalker(walkerTemp, walker[i], expMinusDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
     }
 }
 

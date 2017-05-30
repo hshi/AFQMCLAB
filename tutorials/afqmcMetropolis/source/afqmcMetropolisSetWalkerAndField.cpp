@@ -69,7 +69,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
 
     currentTimeslice = 0;
     complex<double> logWeight(0,0);
-    applyOneBodyToRightWalker(walkerRight, walkerRightTemp, expMinusHalfDtK);
+    oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walkerRight, walkerRightTemp);
     for(size_t i = 0; i < method.timesliceBlockNumber; ++i)
     {
         walkerRightSave[i] = walkerRightTemp;
@@ -95,7 +95,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
 
             twoBodySample = expMinusDtV.getTwoBodySampleFromAux( auxiliaryFields[currentTimeslice] );
             applyTwoBodySampleToRightWalker(walkerRightTemp, walkerRight, twoBodySample);
-            applyOneBodyToRightWalker(walkerRight, walkerRightTemp, expMinusDtK);
+            oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerRight, walkerRightTemp);
 
             currentTimeslice++;
 
@@ -107,7 +107,7 @@ void AfqmcMetropolis::initialField(WalkerLeft &walkerLeft, WalkerRight &walkerRi
     walkerRightInBlock[method.timesliceBlockSize] = move(walkerRightTemp);
     logWeightRightInBlock[method.timesliceBlockSize] = logWeight;
 
-    applyOneBodyToLeftWalker(walkerLeft, walkerLeftSave[0], expMinusHalfDtK);
+    oneBodyWalkerLeftOperation.applyToLeft(expMinusHalfDtK, walkerLeft, walkerLeftSave[0]);
     logWeightLeftSave[0] = 0.0;
 
     currentTimeslice--;

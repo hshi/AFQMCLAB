@@ -11,6 +11,13 @@ using namespace tensor_hao;
 
 LogHop2isSD2isOperation::LogHop2isSD2isOperation(std::string flag, size_t taylorOrder, double accuracy, size_t baseTaylorOrder)
 {
+    reset(flag, taylorOrder, accuracy, baseTaylorOrder);
+}
+
+LogHop2isSD2isOperation::~LogHop2isSD2isOperation() { }
+
+void LogHop2isSD2isOperation::reset(string flag, size_t taylorOrder, double accuracy, size_t baseTaylorOrder)
+{
     LogHop2isSD2isOperation::flag = flag;
     LogHop2isSD2isOperation::taylorOrder = taylorOrder;
     LogHop2isSD2isOperation::accuracy = accuracy;
@@ -28,13 +35,9 @@ LogHop2isSD2isOperation::LogHop2isSD2isOperation(std::string flag, size_t taylor
     }
 }
 
-LogHop2isSD2isOperation::~LogHop2isSD2isOperation() { }
-
 void LogHop2isSD2isOperation::applyToRight(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew)
 {
-    size_t L = walker.getL(); size_t Nup = walker.getNup(); size_t Ndn = walker.getNdn();
-    if( oneBody.getL() !=  L ) {cout<<"Error!!! LogHop2is size is not consistent with walker!"<<endl; exit(1); }
-    if( walkerNew.getL() != L  ||  walkerNew.getNup() != Nup || walkerNew.getNdn() != Ndn ) walkerNew.resize( L, Nup, Ndn );
+    checkAndResize(oneBody, walker, walkerNew);
 
     char TRANSOneBody='N';
     addOrders(oneBody, walker, walkerNew, TRANSOneBody);
@@ -43,9 +46,7 @@ void LogHop2isSD2isOperation::applyToRight(const LogHop2is &oneBody, const SD2is
 
 void LogHop2isSD2isOperation::applyToLeft(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew)
 {
-    size_t L = walker.getL(); size_t Nup = walker.getNup(); size_t Ndn = walker.getNdn();
-    if( oneBody.getL() !=  L ) {cout<<"Error!!! LogHop2is size is not consistent with walker!"<<endl; exit(1); }
-    if( walkerNew.getL() != L  ||  walkerNew.getNup() != Nup || walkerNew.getNdn() != Ndn ) walkerNew.resize( L, Nup, Ndn );
+    checkAndResize(oneBody, walker, walkerNew);
 
     char TRANSOneBody='C';
     addOrders(oneBody, walker, walkerNew, TRANSOneBody);
@@ -87,6 +88,13 @@ void LogHop2isSD2isOperation::print()
 }
 
 size_t LogHop2isSD2isOperation::getCurrentOrder() const { return currentOrder; }
+
+void LogHop2isSD2isOperation::checkAndResize(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew) const
+{
+    size_t L = walker.getL(); size_t Nup = walker.getNup(); size_t Ndn = walker.getNdn();
+    if( oneBody.getL() !=  L ) {cout<<"Error!!! LogHop2is size is not consistent with walker!"<<endl; exit(1); }
+    if( walkerNew.getL() != L  ||  walkerNew.getNup() != Nup || walkerNew.getNdn() != Ndn ) walkerNew.resize( L, Nup, Ndn );
+}
 
 void LogHop2isSD2isOperation::addOrders(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew, char TRANSOneBody)
 {

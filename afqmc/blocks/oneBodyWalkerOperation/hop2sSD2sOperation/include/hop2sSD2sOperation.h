@@ -8,7 +8,17 @@
 #include "../../../walker/SD2s/include/SD2s.h"
 #include "../../../oneBodyOperator/hop2s/include/hop2s.h"
 
-void applyOneBodyToRightWalker(const SD2s &walker, SD2s &walkerNew, const Hop2s &oneBody);
-void applyOneBodyToLeftWalker(const SD2s &walker, SD2s &walkerNew, const Hop2s &oneBody);
+class Hop2sSD2sOperation
+{
+ public:
+    Hop2sSD2sOperation();
+    ~Hop2sSD2sOperation();
+
+    void applyToRight(const Hop2s &oneBody, const SD2s &walker, SD2s &walkerNew) const;
+    void applyToLeft(const Hop2s &oneBody, const SD2s &walker, SD2s &walkerNew) const;
+
+ private:
+    void checkAndResize(const Hop2s &oneBody, const SD2s &walker, SD2s &walkerNew) const;
+};
 
 #endif //AFQMCLAB_HOP2SSD2SOPERATION_H

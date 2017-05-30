@@ -17,6 +17,9 @@ class AfqmcMetropolis
     TwoBody expMinusDtV;
     TwoBodyForce dynamicForce, constForce;
 
+    OneBodyWalkerRightOperation oneBodyWalkerRightOperation;
+    OneBodyWalkerLeftOperation oneBodyWalkerLeftOperation;
+
     int currentTimeslice;
     std::complex<double> currentLogOverlap;
     std::vector<TwoBodyAux> auxiliaryFields;

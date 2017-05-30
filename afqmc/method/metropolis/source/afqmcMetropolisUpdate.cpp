@@ -165,13 +165,13 @@ void AfqmcMetropolis::updateToRightOneStep(size_t inBlockIndex, WalkerLeft &walk
         acceptNumber++; singleAcceptNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
         auxiliaryFields[currentTimeslice] = move(auxNew);
         currentLogOverlap = logOverlapNew;
-        applyOneBodyToLeftWalker(walkerLeftTemp, walkerLeft, expMinusDtK);
+        oneBodyWalkerLeftOperation.applyToLeft(expMinusDtK, walkerLeftTemp, walkerLeft);
     }
     else
     {
         twoBodySample = expMinusDtV.getTwoBodySampleFromAux(auxiliaryFields[currentTimeslice]);
         applyTwoBodySampleToLeftWalker(walkerLeft, walkerLeftTemp, twoBodySample);
-        applyOneBodyToLeftWalker(walkerLeftTemp, walkerLeft, expMinusDtK);
+        oneBodyWalkerLeftOperation.applyToLeft(expMinusDtK, walkerLeftTemp, walkerLeft);
     }
 
     currentLogOverlap += logWeightRightInBlock[inBlockIndex];
@@ -220,13 +220,13 @@ void AfqmcMetropolis::updateToLeftOneStep(size_t inBlockIndex, WalkerRight &walk
         acceptNumber++; singleAcceptNumber+= expMinusDtV.getAuxDiffSize( auxNew, auxiliaryFields[currentTimeslice] );
         auxiliaryFields[currentTimeslice] = move(auxNew);
         currentLogOverlap = logOverlapNew;
-        applyOneBodyToRightWalker(walkerRightTemp, walkerRight, expMinusDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerRightTemp, walkerRight);
     }
     else
     {
         twoBodySample = expMinusDtV.getTwoBodySampleFromAux(auxiliaryFields[currentTimeslice]);
         applyTwoBodySampleToRightWalker(walkerRight, walkerRightTemp, twoBodySample);
-        applyOneBodyToRightWalker(walkerRightTemp, walkerRight, expMinusDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerRightTemp, walkerRight);
     }
 
     currentLogOverlap += conj( logWeightLeftInBlock[method.timesliceBlockSize-1-inBlockIndex] );
@@ -256,7 +256,7 @@ void AfqmcMetropolis::setBlockFromRightToLeft(size_t leftBlockIndex)
     {
         twoBodySample = expMinusDtV.getTwoBodySampleFromAux( auxiliaryFields[timeSliceIndex] );
         applyTwoBodySampleToRightWalker(walkerRightInBlock[i], walkerRightTemp, twoBodySample);
-        applyOneBodyToRightWalker(walkerRightTemp, walkerRightInBlock[i+1], expMinusDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerRightTemp, walkerRightInBlock[i+1]);
 
         timeSliceIndex++;
 
@@ -288,7 +288,7 @@ void AfqmcMetropolis::setBlockFromLeftToRight(size_t rightBlockIndex)
     {
         twoBodySample = expMinusDtV.getTwoBodySampleFromAux( auxiliaryFields[timeSliceIndex] );
         applyTwoBodySampleToLeftWalker(walkerLeftInBlock[i], walkerLeftTemp, twoBodySample);
-        applyOneBodyToLeftWalker(walkerLeftTemp, walkerLeftInBlock[i+1], expMinusDtK);
+        oneBodyWalkerLeftOperation.applyToLeft(expMinusDtK, walkerLeftTemp, walkerLeftInBlock[i+1]);
 
         logWeight = 0.0;
         if( (method.timesliceSize-timeSliceIndex) % method.stabilizeStep == 0 )

@@ -13,7 +13,7 @@ void AfqmcConstraintPath::addMeasurement()
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
+        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
 
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
 
@@ -37,8 +37,8 @@ void AfqmcConstraintPath::setET()
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        applyOneBodyToRightWalker(walker[i], walkerTemp, expHalfDtK);
-
+        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+        
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
 
         overlap = exp( walkerWalkerOperation.returnLogOverlap() );

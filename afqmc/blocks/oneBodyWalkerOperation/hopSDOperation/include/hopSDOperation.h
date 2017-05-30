@@ -8,7 +8,17 @@
 #include "../../../walker/SD/include/SD.h"
 #include "../../../oneBodyOperator/hop/include/hop.h"
 
-void applyOneBodyToRightWalker(const SD &walker, SD &walkerNew, const Hop &oneBody);
-void applyOneBodyToLeftWalker(const SD &walker, SD &walkerNew, const Hop &oneBody);
+class HopSDOperation
+{
+ public:
+    HopSDOperation();
+    ~HopSDOperation();
+
+    void applyToRight(const Hop &oneBody, const SD &walker, SD &walkerNew) const;
+    void applyToLeft(const Hop &oneBody, const SD &walker, SD &walkerNew) const;
+
+ private:
+    void checkAndResize(const Hop &oneBody, const SD &walker, SD &walkerNew) const;
+};
 
 #endif //AFQMCLAB_HOPSINGLEDETERMINANTOPERATION_H

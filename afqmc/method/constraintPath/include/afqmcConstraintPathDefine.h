@@ -18,6 +18,8 @@ typedef HubbardSOC Model;
 
 typedef SD  WalkerLeft;
 typedef SD  WalkerRight;
+typedef HopSDOperation OneBodyWalkerLeftOperation;
+typedef HopSDOperation OneBodyWalkerRightOperation;
 typedef SDSDOperation WalkerWalkerOperation;
 typedef HubbardSOCSDSDMeasureCommute ModelCommuteMeasure;
 

@@ -16,6 +16,9 @@ class AfqmcConstraintPath
     OneBody expMinusDtK, expMinusHalfDtK, expHalfDtK;
     TwoBody expMinusDtV;
     TwoBodyForce dynamicForce, constForce;
+
+    OneBodyWalkerRightOperation oneBodyWalkerRightOperation;
+
     TwoBodyAux twoBodyAux;
     double ET;
 

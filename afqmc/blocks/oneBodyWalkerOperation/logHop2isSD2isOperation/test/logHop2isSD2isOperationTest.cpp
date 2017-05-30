@@ -82,7 +82,7 @@ TEST_F(LogHop2isSD2isOperationTest, dynamicOrder)
     LogHop2is logHop2is; logHop2is.logw=complex<double>(1.2,1.5); logHop2is.matrix=matrix;
     sd2is.logwRef()=1.6; sd2is.wfRef() = wfOld;
 
-    LogHop2isSD2isOperation oneBodyWalkerOperation("dynamicOrder", 0, 1e-8);
+    LogHop2isSD2isOperation oneBodyWalkerOperation;
 
     oneBodyWalkerOperation.applyToRight(logHop2is, sd2is, sd2isRightNew);
     EXPECT_EQ( static_cast<size_t>(6), oneBodyWalkerOperation.getCurrentOrder() );

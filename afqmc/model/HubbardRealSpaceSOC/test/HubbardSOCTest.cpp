@@ -89,9 +89,10 @@ TEST(HubbardRealSpaceSOCTest, returnExpAlphaK)
     SD walkerNew( 2*hubbard.getL(), hubbard.getN() );
     walker.randomFill();
 
+    HopSDOperation oneBodyWalkerRightOperation;
     for(size_t i = 0; i < projectSize; ++i)
     {
-        applyOneBodyToRightWalker(walker, walkerNew, expMinusDtK);
+        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walker, walkerNew);
         walker = move( walkerNew );
         walker.normalize();
     }

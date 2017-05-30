@@ -6,5 +6,6 @@
 #define AFQMCLAB_TWOBODYWALKEROPERATION_H
 
 #include "NiupNidnSDOperation/include/NiupNidnSDOperation.h"
+#include "choleskyRealSD2isOperation/include/choleskyRealSD2isOperation.h"
 
 #endif //AFQMCLAB_TWOBODYWALKEROPERATION_H

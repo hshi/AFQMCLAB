@@ -28,15 +28,18 @@ class LogHop2isSD2isOperation
     tensor_hao::TensorHao<std::complex<double>,2> wfTempOld, wfTempNew;
 
  public:
-    LogHop2isSD2isOperation(std::string flag, size_t taylorOrder=0, double accuracy=1e-8, size_t baseTaylorOrder=3);
+    LogHop2isSD2isOperation(std::string flag="dynamicOrder", size_t taylorOrder=0, double accuracy=1e-8, size_t baseTaylorOrder=3);
     ~LogHop2isSD2isOperation();
 
+    void reset(std::string flag="dynamicOrder", size_t taylorOrder=0, double accuracy=1e-8, size_t baseTaylorOrder=3);
     void applyToRight(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew);
     void applyToLeft(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew);
     void print();
     size_t getCurrentOrder() const;
 
  private:
+    void checkAndResize(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew) const;
+
     void addOrders(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew, char TRANSOneBody);
     void determinantAndAddFixedOrders(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew, char TRANSOneBody);
     void initialAndAddFixedOrders(const LogHop2is &oneBody, const SD2is &walker, SD2is &walkerNew, size_t maxOrder, char TRANSOneBody);
