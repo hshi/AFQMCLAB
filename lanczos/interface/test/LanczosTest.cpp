@@ -115,7 +115,8 @@ TEST_F(LanczosTest, findOneEigenReadLanInit)
     lanczos.readLanInit();
     lanczos.FindOneEigen();
     EXPECT_DOUBLE_EQ( he(0),lanczos.getEigenvalue(0) );
-    system("rm -rf *.dat");
+    int flag=system("rm -rf *.dat");
+    if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
 }
 
 TEST_F(LanczosTest, getLanczosMatrix)
@@ -144,7 +145,8 @@ TEST_F(LanczosTest, getLanczosMatrix)
         EXPECT_DOUBLE_EQ( b[i], get<1>(lanabNew)[i] );
     }
 
-    system("rm -rf *.dat");
+    int flag=system("rm -rf *.dat");
+    if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
 }
 
 TEST_F(LanczosTest, findOneEigenLargeMatrixSize)

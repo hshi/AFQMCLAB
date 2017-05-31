@@ -46,3 +46,20 @@ void RealMaterialMolecule::write(const std::string &filename) const
 
     file.close();
 }
+
+#ifdef MPI_HAO
+void MPIBcast(RealMaterialMolecule &buffer, int root, MPI_Comm const &comm)
+{
+    MPIBcast(buffer.L);
+    MPIBcast(buffer.Nup);
+    MPIBcast(buffer.Ndn);
+    MPIBcast(buffer.choleskyNumber);
+    MPIBcast(buffer.K);
+    MPIBcast(buffer.choleskyVecs);
+    MPIBcast(buffer.choleskyBg);
+}
+#endif
+
+RealMaterialMolecule::RealMaterialMolecule(const RealMaterialMolecule &x)  { }
+
+RealMaterialMolecule &RealMaterialMolecule::operator=(const RealMaterialMolecule &x) { return *this; }

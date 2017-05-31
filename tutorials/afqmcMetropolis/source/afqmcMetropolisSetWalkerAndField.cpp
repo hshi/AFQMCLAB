@@ -136,10 +136,12 @@ void AfqmcMetropolis::writeField()
     MPIBarrier();
     if( MPIRank() == 0)
     {
-        system("mkdir -p auxiliary");
-        system("rm -rf auxiliary.bk");
-        system("mkdir -p auxiliary.bk");
-        system("mv auxiliary/* auxiliary.bk");
+        int flag(0);
+        flag+=system("mkdir -p auxiliary");
+        flag+=system("rm -rf auxiliary.bk");
+        flag+=system("mkdir -p auxiliary.bk");
+        flag+=system("mv auxiliary/* auxiliary.bk");
+        if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
     }
     MPIBarrier();
 

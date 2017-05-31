@@ -8,6 +8,10 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
    - **GoogleTest**
 
      set `GTEST_ROOT='/PATH/TO/GOOGLETEST'`, e.g. `export GTEST_ROOT='/home/username/lib/gtest'`
+     
+   - **HDF5**
+   
+     set `HDF5_ROOT='/PATH/TO/HDF5'`, e.g. `export HDF5_ROOT='/opt/hdf5'`, use FindHDF5.cmake in cmake system.
 
    - **SPRNG** and **GMP**
 
@@ -126,7 +130,7 @@ might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
   //TODO: Add HDF file for real materials.
-
+    
   //TODO: twoBodywalkerOperation should be only with one walker, we can have twoBodyWalkerWalkerOperation for measurement.
   
   //TODO: Think about phaseless in Hubbard model!

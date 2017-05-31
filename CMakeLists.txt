@@ -23,6 +23,8 @@ find_package(Threads REQUIRED)
 
 find_package(GTest REQUIRED)
 
+find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+
 find_package(gmp REQUIRED)
 
 find_package(sprng REQUIRED)

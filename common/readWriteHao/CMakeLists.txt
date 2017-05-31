@@ -1,6 +1,7 @@
 set(SOURCE_HEADERS
         ${CMAKE_CURRENT_LIST_DIR}/include/readWriteFstream.h
         ${CMAKE_CURRENT_LIST_DIR}/include/readWriteStringFile.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/readWriteHdf5.h
         ${CMAKE_CURRENT_LIST_DIR}/include/readWriteHao.h)
 
 add_subdirectory(include)

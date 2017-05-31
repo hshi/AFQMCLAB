@@ -99,7 +99,11 @@ void AfqmcConstraintPath::initialWalker()
 void AfqmcConstraintPath::writeWalkers()
 {
     MPIBarrier();
-    if( MPIRank() == 0) system("mkdir -p walkers");
+    if( MPIRank() == 0)
+    {
+        int flag = system("mkdir -p walkers");
+        if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
+    }
     MPIBarrier();
 
     string filename;

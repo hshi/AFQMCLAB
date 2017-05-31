@@ -16,7 +16,11 @@ TEST(readWriteHaoTest, checkFile)
     EXPECT_FALSE( checkFile(filename) );
 
     MPIBarrier();
-    if( MPIRank() == 0 ) system("touch readWriteTest.dat");
+    if( MPIRank() == 0 )
+    {
+        int flag=system("touch readWriteTest.dat");
+        if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
+    }
     MPIBarrier();
 
     EXPECT_TRUE( checkFile(filename) );

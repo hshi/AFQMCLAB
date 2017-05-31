@@ -9,6 +9,7 @@
 #include "mpiHao/include/mpi_fun.h"
 #include "timeHao/include/time_hao.h"
 
+#include "hdf5Hao/include/hdf5CustomHao.h"
 #include "erroranalysisHao/include/errorAnalysis.h"
 #include "randomHao/include/random_hao.h"
 #include "tensorHao/include/tensor_all.h"

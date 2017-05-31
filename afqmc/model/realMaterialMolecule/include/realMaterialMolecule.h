@@ -23,7 +23,13 @@ class RealMaterialMolecule
 
     void read(const std::string &filename);
     void write(const std::string &filename) const;
-};
+#ifdef MPI_HAO
+    friend void MPIBcast(RealMaterialMolecule &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
 
+ private:
+    RealMaterialMolecule(const RealMaterialMolecule& x);
+    RealMaterialMolecule & operator  = (const RealMaterialMolecule& x);
+};
 
 #endif //AFQMCLAB_REALMATERIALMOLECULE_H

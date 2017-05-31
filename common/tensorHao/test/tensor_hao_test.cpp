@@ -270,6 +270,10 @@ TEST(Tensor_hao, readWriteBcast)
 
     string command = "rm -rf " + filename;
     MPIBarrier();
-    if( MPIRank()==0 ) system( command.c_str() );
+    if( MPIRank()==0 )
+    {
+        int flag=system( command.c_str() );
+        if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
+    }
     MPIBarrier();
 }

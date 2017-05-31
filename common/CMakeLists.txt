@@ -4,6 +4,7 @@ add_subdirectory(mpiHao)
 add_subdirectory(timeHao)
 
 #First level
+add_subdirectory(hdf5Hao)
 add_subdirectory(erroranalysisHao)
 add_subdirectory(randomHao)
 add_subdirectory(tensorHao)
@@ -19,6 +20,7 @@ add_library(commonHao STATIC
         $<TARGET_OBJECTS:testHaoObject>
         $<TARGET_OBJECTS:mpiHaoObject>
         $<TARGET_OBJECTS:timeHaoObject>
+        $<TARGET_OBJECTS:hdf5CustomHaoObject>
         $<TARGET_OBJECTS:errorAnalysisHaoObject>
         $<TARGET_OBJECTS:randomNumberHaoObject>
         $<TARGET_OBJECTS:tensorHaoObject>

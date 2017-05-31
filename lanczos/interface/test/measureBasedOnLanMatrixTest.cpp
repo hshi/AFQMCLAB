@@ -97,5 +97,6 @@ TEST(measureBasedOnLanMatrixTest, readWrite)
         EXPECT_NEAR( expMTauH(i) , expMTauHPrime(i), 1e-12*abs(expMTauHPrime(i)) );
     }
 
-    system("rm -rf *.dat");
+    int flag=system("rm -rf *.dat");
+    if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
 }

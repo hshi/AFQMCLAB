@@ -46,10 +46,12 @@ void randomHaoSave()
     MPIBarrier();
     if( MPIRank() == 0)
     {
-        system("mkdir -p random");
-        system("rm -rf random.bk");
-        system("mkdir -p random.bk");
-        system("mv random/* random.bk");
+        int flag(0);
+        flag+=system("mkdir -p random");
+        flag+=system("rm -rf random.bk");
+        flag+=system("mkdir -p random.bk");
+        flag+=system("mv random/* random.bk");
+        if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
     }
     MPIBarrier();
 

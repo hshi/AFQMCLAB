@@ -7,5 +7,6 @@
 
 #include "readWriteFstream.h"
 #include "readWriteStringFile.h"
+#include "readWriteHdf5.h"
 
 #endif //AFQMCLAB_READWRITEHAO_H
