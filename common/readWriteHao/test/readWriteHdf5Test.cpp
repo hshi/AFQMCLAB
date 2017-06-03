@@ -18,6 +18,8 @@ TEST(readWriteHdf5Test, readWriteSize_t)
     if( MPIRank()==0 )
     {
         H5File file(fileName, H5F_ACC_TRUNC);
+        //Use two writeFile to test remove function.
+        writeFile(dataWrite, file, dataSetName);
         writeFile(dataWrite, file, dataSetName);
         file.close();
     }
@@ -41,6 +43,7 @@ TEST(readWriteHdf5Test, readWriteDouble)
     {
         H5File file(fileName, H5F_ACC_TRUNC);
         writeFile(dataWrite, file, dataSetName);
+        writeFile(dataWrite, file, dataSetName);
         file.close();
     }
     MPIBarrier();
@@ -62,6 +65,7 @@ TEST(readWriteHdf5Test, readWriteComplexDouble)
     if( MPIRank()==0 )
     {
         H5File file(fileName, H5F_ACC_TRUNC);
+        writeFile(dataWrite, file, dataSetName);
         writeFile(dataWrite, file, dataSetName);
         file.close();
     }
@@ -87,6 +91,7 @@ TEST(readWriteHdf5Test, readWriteSize_tArray)
     {
         H5File file(fileName, H5F_ACC_TRUNC);
         writeFile(L, dataWrite.data(), file, dataSetName);
+        writeFile(L, dataWrite.data(), file, dataSetName);
         file.close();
     }
     MPIBarrier();
@@ -111,6 +116,7 @@ TEST(readWriteHdf5Test, readWriteDoubleArray)
     {
         H5File file(fileName, H5F_ACC_TRUNC);
         writeFile(L, dataWrite.data(), file, dataSetName);
+        writeFile(L, dataWrite.data(), file, dataSetName);
         file.close();
     }
     MPIBarrier();
@@ -134,6 +140,7 @@ TEST(readWriteHdf5Test, readWriteComplexDoubleArray)
     if( MPIRank()==0 )
     {
         H5File file(fileName, H5F_ACC_TRUNC);
+        writeFile(L, dataWrite.data(), file, dataSetName);
         writeFile(L, dataWrite.data(), file, dataSetName);
         file.close();
     }

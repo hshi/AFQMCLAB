@@ -44,6 +44,7 @@ namespace tensor_hao
  /*****************************/
  /*Check Hermitian of a matrix*/
  /*****************************/
+ void checkSymmetry(const TensorCore<double, 2> &A);
  void checkHermitian(const TensorCore<std::complex<double>, 2> &A);
 
  /*******************************************/
@@ -74,6 +75,7 @@ namespace tensor_hao
  /*******************************/
  /*Diagonal array multipy matrix*/
  /*******************************/
+ TensorHao<double,2> dMultiMatrix(const TensorCore<double,1> &D, const TensorCore<double,2> &ph);
  TensorHao<std::complex<double>,2> dMultiMatrix(const TensorCore<double, 1> &D, const TensorCore<std::complex<double>, 2> &ph);
  TensorHao<std::complex<double>,2> dMultiMatrix(const TensorCore<std::complex<double>, 1> &D, const TensorCore<std::complex<double>, 2> &ph);
 

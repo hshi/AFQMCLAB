@@ -26,11 +26,27 @@ TEST(Tensor_2d_common_fun, conjtrans)
     EXPECT_FALSE ( diff(B, B_exact, 1e-12) );
 }
 
+TEST(Tensor_2d_common_fun, symmetry)
+{
+    TensorHao<double,2> a(3,3);
+    a = { 1.0, 3.0, 2.123,
+          3.0, 2.0, 5.123,
+          2.123, 5.223, 3 };
+    try
+    {
+        checkSymmetry(a);
+    }
+    catch(runtime_error& err)
+    {
+        EXPECT_EQ( "ERROR!!! Matrix is not symmetric!", string(err.what()) );
+    }
+}
+
 TEST(Tensor_2d_common_fun, Hermitian)
 {
     TensorHao<complex<double>,2> a(3,3);
     a = { {1.0,0.0} ,   {3.0,4.0},    {2.123,3.11},
-          {3.0,-4.0},   {2.0,0.0},    {5.123,3.11},
+          {6.0,-4.0},   {2.0,0.0},    {5.123,3.11},
           {2.123,-3.11},{5.123,-3.11},{3,0.0}     };
     try
     {
@@ -150,7 +166,7 @@ TEST(Tensor_2d_common_fun, checkSkewSymmetric)
     TensorHao<complex<double>,2> a(3,3);
     a = { {0.0,0.0} ,    {3.0,4.0},     {2.123,3.11},
           {-3.0,-4.0},   {0.0,0.0},     {5.123,3.11},
-          {-2.123,-3.11},{-5.123,-3.11},{0,0.0}     };
+          {-2.123,-3.11},{-5.123, 3.11},{0,0.0}     };
 
     try
     {

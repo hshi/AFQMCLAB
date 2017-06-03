@@ -2,9 +2,9 @@
 add_subdirectory(testHao)
 add_subdirectory(mpiHao)
 add_subdirectory(timeHao)
+add_subdirectory(hdf5Hao)
 
 #First level
-add_subdirectory(hdf5Hao)
 add_subdirectory(erroranalysisHao)
 add_subdirectory(randomHao)
 add_subdirectory(tensorHao)

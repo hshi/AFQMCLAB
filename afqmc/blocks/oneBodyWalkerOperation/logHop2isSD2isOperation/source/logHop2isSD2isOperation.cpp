@@ -196,8 +196,8 @@ bool LogHop2isSD2isOperation::isConverged()
 
 void LogHop2isSD2isOperation::clearWfTemp()
 {
-    wfTempOld.resize(1,1);
-    wfTempNew.resize(1,1);
+    wfTempOld.resize(0,0);
+    wfTempNew.resize(0,0);
 }
 
 LogHop2isSD2isOperation::LogHop2isSD2isOperation(const LogHop2isSD2isOperation &x) { }
