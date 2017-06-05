@@ -128,9 +128,7 @@ Then see tutorials for detail examples.
 intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-lgomp` (g++). It seems okay to use flag. We 
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
-
-  //TODO: Add HDF file for real materials.
-    
+  
   //TODO: twoBodywalkerOperation should be only with one walker, we can have twoBodyWalkerWalkerOperation for measurement.
   
   //TODO: Think about phaseless in Hubbard model!

@@ -102,16 +102,17 @@ void RealMaterialMolecule::writeBackGround(const string &filename) const
 
 void RealMaterialMolecule::updateBackGround(const TensorHao<double, 1> &background)
 {
+    if( background.size() != choleskyNumber ) {cout<<"Error!!! Background size is not choleskyNumber!"<<endl; exit(1);}
     KpEigenStatus = 0;
     choleskyBg = background;
 }
 
 void RealMaterialMolecule::updateBackGround(TensorHao<double, 1> &&background)
 {
+    if( background.size() != choleskyNumber ) {cout<<"Error!!! Background size is not choleskyNumber!"<<endl; exit(1);}
     KpEigenStatus = 0;
     choleskyBg = move(background);
 }
-
 
 Hop2is RealMaterialMolecule::returnExpMinusAlphaK(double alpha)
 {

@@ -81,4 +81,127 @@ TEST_F(RealMaterialMoleculeTest, readWriteBcast)
     EXPECT_FALSE( diff(choleskyVecs, realMaterialMolecule.getCholeskyVecs(), 1e-12) );
     EXPECT_FALSE( diff(choleskyBg, realMaterialMolecule.getCholeskyBg(), 1e-12) );
     EXPECT_EQ( static_cast<size_t>(0), realMaterialMolecule.getKpEigenStatus() );
+
+    removeFile(filenamePrime);
+}
+
+TEST_F(RealMaterialMoleculeTest, writeBackGround)
+{
+    string filenamePrime="modelPrime.h5";
+    TensorHao<double,1> background(choleskyNumber); randomFill(background); MPIBcast(background);
+
+    if( MPIRank()==0 )
+    {
+        RealMaterialMolecule realMaterialMoleculeBase(filename);
+        realMaterialMoleculeBase.write(filenamePrime);
+        realMaterialMoleculeBase.updateBackGround(background);
+        realMaterialMoleculeBase.writeBackGround(filenamePrime);
+    }
+    MPIBarrier();
+
+    RealMaterialMolecule realMaterialMolecule(filenamePrime);
+    EXPECT_FALSE( diff(background, realMaterialMolecule.getCholeskyBg(), 1e-12) );
+
+    removeFile(filenamePrime);
+}
+
+TEST_F(RealMaterialMoleculeTest, updateBackGround)
+{
+    RealMaterialMolecule realMaterialMolecule(filename);
+    EXPECT_EQ( static_cast<size_t>(0), realMaterialMolecule.getKpEigenStatus() );
+
+    Hop2is Hop2is = realMaterialMolecule.returnExpMinusAlphaK(0.01);
+    EXPECT_EQ( static_cast<size_t>(2), realMaterialMolecule.getKpEigenStatus() );
+
+    TensorHao<double> background(choleskyNumber); randomFill(background);
+    TensorHao<double> backgroundPrime(background);
+    realMaterialMolecule.updateBackGround( move(backgroundPrime) );
+    EXPECT_EQ( static_cast<size_t>(0), realMaterialMolecule.getKpEigenStatus() );
+
+    EXPECT_FALSE( diff(background, realMaterialMolecule.getCholeskyBg(), 1e-12 ) );
+    EXPECT_TRUE( diff(background, backgroundPrime, 1e-12) );
+}
+
+TEST_F(RealMaterialMoleculeTest, returnLogExpMinusAlphaK)
+{
+    RealMaterialMolecule realMaterialMolecule(filename);
+    double dt=0.05;
+
+    complex<double> logw(0,0);
+    for(size_t i = 0; i < choleskyNumber; ++i) logw += choleskyBg(i)*choleskyBg(i);
+    logw *= 0.5*dt;
+
+    TensorHao<complex<double>,2> matrix(L,L);
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = 0; j < L; ++j) matrix(j,i) += K(j,i);
+    }
+    for(size_t k = 0; k < choleskyNumber; ++k)
+    {
+        for(size_t i = 0; i < L; ++i)
+        {
+            for(size_t j = 0; j < L; ++j)
+            {
+                matrix(j,i) += choleskyBg(k)*choleskyVecs(j,i,k);
+            }
+        }
+    }
+    matrix=complex<double>(-dt)*matrix;
+
+    LogHop2is logHop2is = realMaterialMolecule.returnLogExpMinusAlphaK(dt);
+
+    EXPECT_EQ( static_cast<size_t>(1), realMaterialMolecule.getKpEigenStatus() );
+    EXPECT_EQ( logw, logHop2is.logw );
+    EXPECT_FALSE( diff(matrix, logHop2is.matrix, 1e-12 ) );
+}
+
+TEST_F(RealMaterialMoleculeTest, returnExpMinusAlphaK)
+{
+    RealMaterialMolecule realMaterialMolecule(filename);
+    double dt=0.05;
+
+    complex<double> logw(0,0);
+    for(size_t i = 0; i < choleskyNumber; ++i) logw += choleskyBg(i)*choleskyBg(i);
+    logw *= 0.5*dt;
+
+    TensorHao<complex<double>,2> matrix(L,L);
+    for(size_t i = 0; i < L; ++i)
+    {
+        for(size_t j = 0; j < L; ++j) matrix(j,i) += K(j,i);
+    }
+    for(size_t k = 0; k < choleskyNumber; ++k)
+    {
+        for(size_t i = 0; i < L; ++i)
+        {
+            for(size_t j = 0; j < L; ++j)
+            {
+                matrix(j,i) += choleskyBg(k)*choleskyVecs(j,i,k);
+            }
+        }
+    }
+    matrix=complex<double>(-dt)*matrix;
+
+    TensorHao<complex<double>,2> eigenVec( matrix );
+    TensorHao<double,1> eigenVal(L);
+    eigen_cpu(eigenVec, eigenVal);
+    gmm_cpu( eigenVec, dMultiMatrix( exp(eigenVal), trans(eigenVec) ), matrix );
+
+
+    Hop2is Hop2is = realMaterialMolecule.returnExpMinusAlphaK(dt);
+
+    EXPECT_EQ( static_cast<size_t>(2), realMaterialMolecule.getKpEigenStatus() );
+    EXPECT_EQ( logw, Hop2is.logw );
+    EXPECT_FALSE( diff(matrix, Hop2is.matrix, 1e-12 ) );
+}
+
+TEST_F(RealMaterialMoleculeTest, returnExpMinusAlphaV)
+{
+    RealMaterialMolecule realMaterialMolecule(filename);
+    double dt=0.05;
+    CholeskyReal choleskyReal=realMaterialMolecule.returnExpMinusAlphaV(dt);
+
+    EXPECT_EQ( dt, choleskyReal.getDt() );
+    EXPECT_EQ( choleskyReal.getCholeskyVecs(), &realMaterialMolecule.getCholeskyVecs() );
+    EXPECT_EQ( choleskyReal.getCholeskyBg(), &realMaterialMolecule.getCholeskyBg() );
+    EXPECT_EQ( choleskyNumber, choleskyReal.getCholeskyNumber() );
 }

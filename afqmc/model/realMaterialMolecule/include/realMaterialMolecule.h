@@ -60,7 +60,6 @@ class RealMaterialMolecule
     Hop2is returnExpMinusAlphaK(double alpha);
     LogHop2is returnLogExpMinusAlphaK(double alpha);
     CholeskyReal returnExpMinusAlphaV(double alpha);
-    //TODO: Check 6 new Function + SetKp* + KpEigenStatus
 
  private:
     RealMaterialMolecule(const RealMaterialMolecule& x);
