@@ -21,12 +21,24 @@ class RealMaterialMoleculeTest: public ::testing::Test
     {
         L=5; Nup=3; Ndn=2; choleskyNumber=6;
         t.resize(L,L); randomFill(t); t+=trans(t);
-        K.resize(L,L); randomFill(K); K+=trans(K);
         choleskyVecs.resize(L, L, choleskyNumber); randomFill(choleskyVecs);
         for(size_t i = 0; i < choleskyNumber; ++i) choleskyVecs[i] += trans(choleskyVecs[i]);
         choleskyBg.resize(choleskyNumber); randomFill(choleskyBg);
-        filename="model.h5"; writeHdf5();
 
+        K.resize(L,L); K=0.0; double tmp;
+        for(size_t g = 0; g < choleskyNumber; ++g)
+        {
+            for(size_t i = 0; i < L ; ++i)
+            {
+                for(size_t j = 0; j < L ; ++j)
+                {
+                    tmp = 0.0; for(size_t k = 0; k < L ; ++k) tmp += choleskyVecs(k,j,g) * choleskyVecs(k,i,g);
+                    K(j,i) += tmp;
+                }
+            }
+        }
+        K = t - K * 0.5;
+        filename="model.h5"; writeHdf5();
     }
 
     void writeHdf5()

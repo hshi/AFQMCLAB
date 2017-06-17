@@ -128,6 +128,11 @@ Then see tutorials for detail examples.
 intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-lgomp` (g++). It seems okay to use flag. We 
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
+
+
+  //TODO: Lanczos measure statics, make sure php is correct? Measure all statics.
+ 
+  //TODO: Why intel is also very slow with openmp? (For AFQMC part? Find out the reason.)
   
   //TODO: twoBodywalkerOperation should be only with one walker, we can have twoBodyWalkerWalkerOperation for measurement.
   
@@ -145,6 +150,8 @@ might need to move to `-openmp` (icpc) later.
   //TODO: Update my script to use . instead of import from different directory.
   
   //TODO: Check Mingpu's pairing case?
+  
+  //TODO: GHF code can be faster! ==> Use wave left eq. wave right
   
   //TODO: Add a UHF code?
   

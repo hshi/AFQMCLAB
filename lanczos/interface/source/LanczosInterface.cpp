@@ -49,6 +49,11 @@ tuple<const vector<double> &, const vector<double> &> Lanczos::getLanElements() 
 
 LanczosBasisWf & Lanczos::getLanWavefunction(size_t lanIndex)
 {
+    if( lanwfs.size() < (lanIndex+1) )
+    {
+        cout<<"Warning!!! Do not have the input lanIndex, resize lanwfs size to lanIndex+1."<<endl;
+        lanwfs.resize(lanIndex+1);
+    }
     return lanwfs[lanIndex];
 }
 

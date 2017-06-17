@@ -1,5 +1,6 @@
 set(SOURCE_TESTS
-        realMaterialMoleculeTest.cpp)
+        realMaterialMoleculeTest.cpp
+        realMaterialMoleculeFixedSD2sSD2isTest.cpp)
 
 add_executable(afqmcRealMaterialMoleculeTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 

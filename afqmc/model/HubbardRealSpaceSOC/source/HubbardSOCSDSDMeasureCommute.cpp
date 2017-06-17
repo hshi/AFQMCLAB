@@ -71,13 +71,13 @@ TensorHao< complex<double>, 2 >  HubbardSOCSDSDMeasureCommute::addMeasurement(SD
     return greenMatrix;
 }
 
-void HubbardSOCSDSDMeasureCommute::write()
+void HubbardSOCSDSDMeasureCommute::write() const
 {
     writeThreadSum(den, "den.dat", ios::app);
     writeThreadSum(HNum, "HNum.dat", ios::app);
 }
 
-void HubbardSOCSDSDMeasureCommute::writeKNumVumRum()
+void HubbardSOCSDSDMeasureCommute::writeKNumVumRum() const
 {
     writeThreadSum(KNum, "KNum.dat", ios::app);
     writeThreadSum(VNum, "VNum.dat", ios::app);

@@ -27,8 +27,8 @@ class HubbardSOCSDSDMeasureCommute
     void reSet();
     std::complex<double> returnEnergy();
     tensor_hao::TensorHao< std::complex<double>, 2 > addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
-    void write();
-    void writeKNumVumRum();
+    void write() const;
+    void writeKNumVumRum() const;
     double getMemory() const;
 
  private:
