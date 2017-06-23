@@ -132,3 +132,37 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, returnEnergy)
 
     EXPECT_COMPLEX_NEAR( Henergy, meas.returnEnergy(), 1e-12 );
 }
+
+TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
+{
+    double dt=0.01; double cap=0.21;
+    RealMaterialMoleculeFixedSD2sSD2is meas(model, walkerLeft);
+    SD2sSD2isOperation walkerWalkerOperation(walkerLeft, walkerRight);
+    CholeskyRealForce force = meas.getForce(model.returnExpMinusAlphaV(dt), walkerWalkerOperation, cap);
+    MPIBcast(force);
+
+    TensorHao<complex<double>, 2 > greenUp = walkerWalkerOperation.returnGreenMatrixUp();
+    TensorHao<complex<double>, 2 > greenDn = walkerWalkerOperation.returnGreenMatrixDn();
+
+    TensorHao<double,1> forceExact(choleskyNumber); complex<double> tmp;
+    for(size_t k = 0; k < choleskyNumber; ++k)
+    {
+        tmp = 0.0;
+        for(size_t i = 0; i < L ; ++i)
+        {
+            for(size_t j = 0; j < L; ++j)
+            {
+                tmp += choleskyVecs(j,i,k) * ( greenUp(j,i)+greenDn(j,i) );
+            }
+        }
+        tmp -= choleskyBg(k);
+        tmp *= sqrt(-dt*complex<double>(1.0, 0.0));
+
+        if( tmp.real() > cap ) forceExact(k) = cap;
+        else if( tmp.real() <-cap ) forceExact(k) =-cap;
+        else forceExact(k) = tmp.real();
+    }
+    MPIBcast(forceExact);
+
+    EXPECT_FALSE( diff(force, forceExact, 1e-12) );
+}

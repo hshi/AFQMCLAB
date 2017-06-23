@@ -130,6 +130,12 @@ might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
 
+  //TODO: Check to make sure M-GS and PopControl step is good enough. Automaticly adjust thee steps
+  
+  //TODO: Yuanyao mention MKL zgemv do not have openmp version. Check that?
+
+  //TODO: Check the code for low optimization level v.s high optimization level: correct or not? speedUp? 
+  
   //TODO: Lanczos measure statics, make sure php is correct? Measure all statics.
  
   //TODO: Why intel is also very slow with openmp? (For AFQMC part? Find out the reason.)

@@ -93,6 +93,30 @@ void RealMaterialMoleculeFixedSD2sSD2is::addMeasurement(SD2sSD2isOperation &sd2s
     addEnergy(thetaUp_T, thetaDn_T, denIncrement);
 }
 
+CholeskyRealForce RealMaterialMoleculeFixedSD2sSD2is::getForce(const CholeskyReal &choleskyReal,
+                                                               SD2sSD2isOperation &sd2sSD2isOperation,
+                                                               double cap)
+{
+    checkWalkerLeft(sd2sSD2isOperation);
+
+    size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
+    const TensorHao<double,1> & currentBg = realMaterialMolecule->getCholeskyBg();
+    const TensorHao<complex<double>, 2> &thetaUp_T =  sd2sSD2isOperation.returnThetaUp_T();
+    const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
+    complex<double> sqrtMinusDt = choleskyReal.getSqrtMinusDt();
+
+    TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(thetaUp_T, thetaDn_T);
+    CholeskyRealForce force(choleskyNumber);
+    for(size_t i = 0; i < choleskyNumber; ++i)
+    {
+        force(i) = ( (choleskyBg(i)-currentBg(i)) * sqrtMinusDt ).real();
+        if( force(i) >  cap ) force(i) =  cap;
+        if( force(i) < -cap ) force(i) = -cap;
+    }
+
+    return force;
+}
+
 void RealMaterialMoleculeFixedSD2sSD2is::write() const
 {
     writeThreadSum(den, "den.dat", ios::app);

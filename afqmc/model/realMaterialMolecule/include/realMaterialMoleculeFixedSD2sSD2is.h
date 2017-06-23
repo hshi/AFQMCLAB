@@ -33,6 +33,7 @@ class RealMaterialMoleculeFixedSD2sSD2is
     std::complex<double> returnEnergy();
     tensor_hao::TensorHao<double, 1> returnCholeskyBg();
     void addMeasurement(SD2sSD2isOperation &sd2sSD2isOperation, std::complex<double> denIncrement);
+    CholeskyRealForce getForce(const CholeskyReal &choleskyReal, SD2sSD2isOperation &sd2sSD2isOperation, double cap=1.0);
 
     void write() const;
     double getMemory() const;
