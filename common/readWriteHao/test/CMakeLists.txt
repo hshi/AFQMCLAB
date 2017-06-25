@@ -1,4 +1,4 @@
-set(SOURCE_TESTS readWriteStringFileTest.cpp readWriteHdf5Test.cpp)
+set(SOURCE_TESTS readWriteStringFileTest.cpp readWriteHdf5Test.cpp readBySearchStringTest.cpp)
 
 add_executable(readWriteHaoTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 
