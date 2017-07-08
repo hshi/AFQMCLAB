@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <tuple>
 #include "../../../../common/mpiHao/include/mpi_fun.h"
 
 //size is MPISize(), only call pop_configuration for one thread
+std::tuple <double, double> popCheck(const std::vector<double>& weight);
 std::vector<int> popConfiguration(int size, const std::vector<double>& weight);
 
 #ifdef MPI_HAO

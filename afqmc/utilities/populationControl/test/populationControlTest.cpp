@@ -9,6 +9,21 @@
 
 using namespace std;
 
+TEST(populationControlTest, check)
+{
+    int L=10; vector<double> a(L); double ratio, average;
+
+    for(int i=0; i<L; i++) a[i]=i+1.0;
+    tie(ratio,average) = popCheck(a);
+    EXPECT_DOUBLE_EQ(ratio, 5.5);
+    EXPECT_DOUBLE_EQ(average, 5.5);
+
+    for(int i=0; i<L; i++) a[i]=1.0; a[5] =6.0;
+    tie(ratio,average) = popCheck(a);
+    EXPECT_DOUBLE_EQ(ratio, 4.0);
+    EXPECT_DOUBLE_EQ(average, 1.5);
+}
+
 TEST(populationControlTest, configuration)
 {
     randomHaoInit(985456376,1);
