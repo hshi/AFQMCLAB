@@ -160,3 +160,20 @@ TEST(SD2isTest, packUnpack)
     EXPECT_EQ( Ndn, sd2is.getNdn() );
 }
 #endif
+
+TEST(SD2isTest, normalize)
+{
+    size_t L(4), Nup(3), Ndn=2;
+    SD2is sd2is(L,Nup, Ndn);
+    sd2is.wfRef() = {{1.0,1.0}, {2.0,1.0}, {3.0,1.0}, {4.0,1.0},
+                     {2.0,2.0}, {3.0,1.0}, {5.0,2.0}, {6.0,1.0},
+                     {4.0,1.0}, {3.0,3.0}, {2.0,2.0}, {2.0,6.0} };
+
+    complex<double> logw; double ratio;
+    logw = sd2is.normalize(ratio);
+
+    complex<double> logwExact(5.2382917510141205, 0.0);
+    double ratioExact(0.19286583895005868);
+    EXPECT_COMPLEXDOUBLE_EQ(logw, logwExact);
+    EXPECT_DOUBLE_EQ(ratio, ratioExact);
+}

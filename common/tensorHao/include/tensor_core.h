@@ -257,6 +257,22 @@ namespace tensor_hao
          return mean_all / ( number_of_points * 1.0 );
      }
 
+     T max(size_t begin = 0, size_t end = std::numeric_limits<std::size_t>::max(), size_t step = 1) const
+     {
+         if(end > L) end = L;
+         T maxValue = p[begin];
+         for(size_t i=begin; i<end; i+=step) { if( maxValue < p[i] ) maxValue = p[i]; }
+         return maxValue;
+     }
+
+     T min(size_t begin = 0, size_t end = std::numeric_limits<std::size_t>::max(), size_t step = 1) const
+     {
+         if(end > L) end = L;
+         T minValue = p[begin];
+         for(size_t i=begin; i<end; i+=step) { if( minValue > p[i] ) minValue = p[i]; }
+         return minValue;
+     }
+
      virtual void resize(const size_t* n_ptr) {}
 
      void read(std::ifstream &file)

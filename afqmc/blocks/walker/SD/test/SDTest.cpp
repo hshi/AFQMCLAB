@@ -154,3 +154,20 @@ TEST(SDTest, packUnpack)
     EXPECT_EQ( N, sd.getN() );
 }
 #endif
+
+TEST(SDTest, normalize)
+{
+    size_t L(4), N(3);
+    SD sd(L,N);
+    sd.wfRef() = {{1.0,1.0}, {2.0,1.0}, {3.0,1.0}, {4.0,1.0},
+                  {2.0,2.0}, {3.0,1.0}, {5.0,2.0}, {6.0,1.0},
+                  {4.0,1.0}, {3.0,3.0}, {2.0,2.0}, {2.0,6.0} };
+
+    complex<double> logw; double ratio;
+    logw = sd.normalize(ratio);
+
+    complex<double> logwExact(3.35769169316734, 0.0);
+    double ratioExact(0.19286583895005868);
+    EXPECT_COMPLEXDOUBLE_EQ(logw, logwExact);
+    EXPECT_DOUBLE_EQ(ratio, ratioExact);
+}

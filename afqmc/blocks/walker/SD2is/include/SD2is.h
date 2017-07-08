@@ -36,7 +36,9 @@ class SD2is
 
     void resize(size_t L, size_t Nup, size_t Ndn);
     void stabilize();
+    void stabilize(double &ratio);
     std::complex<double> normalize();
+    std::complex<double> normalize(double &ratio);
     void addLogw(std::complex<double> logw_add);
     void randomFill();
 

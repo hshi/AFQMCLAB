@@ -130,7 +130,7 @@ might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
 
-  //TODO: Check to make sure M-GS and PopControl step is good enough. Automaticly adjust thee steps
+   //TODO: Check to make sure M-GS and PopControl step is good enough. Automaticly adjust thee steps
   
   //TODO: Yuanyao mention MKL zgemv do not have openmp version. Check that?
 

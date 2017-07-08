@@ -470,3 +470,22 @@ TEST(Tensor_core, mean)
 
     EXPECT_COMPLEXDOUBLE_EQ( exact, tensor_a.mean(0, 5, 2) );
 }
+
+TEST(Tensor_core, max)
+{
+    TensorHao<double, 2>  tensor_a(3,4);
+    tensor_a={ 1.0, 21.0, 34.0 ,14.0 , 5.0 ,6.0 , 79.0 ,8.0, 9.0 ,19.0, 61.0, 12.0 };
+
+    double exact(79.0);
+
+    EXPECT_DOUBLE_EQ( exact, tensor_a.max() );
+}
+
+TEST(Tensor_core, min)
+{
+    TensorHao<double, 2>  tensor_a(3,4);
+    tensor_a={ 30.0, 21.0, 34.0 ,14.0 , 5.0 ,6.0 , 79.0 ,8.0, 9.0 ,19.0, 61.0, 12.0 };
+
+    double exact(5.0);
+    EXPECT_DOUBLE_EQ( exact, tensor_a.min() );
+}

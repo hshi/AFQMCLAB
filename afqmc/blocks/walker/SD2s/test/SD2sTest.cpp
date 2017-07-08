@@ -179,3 +179,23 @@ TEST(SD2sTest, packUnpack)
     EXPECT_EQ( Ndn, sd2s.getNdn() );
 }
 #endif
+
+TEST(SD2sTest, normalize)
+{
+    size_t L(4), Nup(3), Ndn=2;
+    SD2s sd2s(L,Nup, Ndn);
+    sd2s.wfUpRef() = {{1.0,1.0}, {2.0,1.0}, {3.0,1.0}, {4.0,1.0},
+                     {2.0,2.0}, {3.0,1.0}, {5.0,2.0}, {6.0,1.0},
+                     {4.0,1.0}, {3.0,3.0}, {2.0,2.0}, {2.0,6.0} };
+
+    sd2s.wfDnRef() = {{1.0,2.0}, {2.0,3.0}, {3.0,4.0}, {4.0,5.0},
+                      {2.0,2.0}, {3.0,3.0}, {5.0,2.0}, {6.0,3.0} };
+
+    complex<double> logw; double ratio;
+    logw = sd2s.normalize(ratio);
+
+    complex<double> logwExact(5.83560522196797, 0.0);
+    double ratioExact(0.14186161056920224);
+    EXPECT_COMPLEXDOUBLE_EQ(logw, logwExact);
+    EXPECT_DOUBLE_EQ(ratio, ratioExact);
+}

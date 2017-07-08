@@ -50,16 +50,31 @@ void SD2is::stabilize()
     if( Nup == Ndn ) logw += 2.0 * log( BL_NAME(QRMatrix)(wf)  );
     else
     {
-        TensorHao<double,1> det_list( max(Nup, Ndn) );
-        logw += log( BL_NAME(QRMatrix)(wf, det_list) );
+        TensorHao<double,1> detList( max(Nup, Ndn) );
+        logw += log( BL_NAME(QRMatrix)(wf, detList) );
 
         size_t Nmin = min( Nup, Ndn );
-        double norm(1.0); for(size_t i = 0; i < Nmin; ++i) norm *= det_list(i);
+        double norm(1.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
         logw += log( norm );
     }
 }
 
-std::complex<double> SD2is::normalize()
+void SD2is::stabilize(double &ratio)
+{
+    size_t Nmax = max( Nup, Ndn );
+    size_t Nmin = min( Nup, Ndn );
+
+    TensorHao<double,1> detList( Nmax );
+    logw += log( BL_NAME(QRMatrix)(wf, detList) );
+
+    double norm(1.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
+    logw += log( norm );
+
+    TensorHao<double,1> absDetList = abs( detList );
+    ratio = absDetList.min()/absDetList.max();
+}
+
+complex<double> SD2is::normalize()
 {
     stabilize();
     complex<double> logwTemp(logw);
@@ -67,7 +82,15 @@ std::complex<double> SD2is::normalize()
     return logwTemp;
 }
 
-void SD2is::addLogw(std::complex<double> logw_add)
+complex<double> SD2is::normalize(double &ratio)
+{
+    stabilize(ratio);
+    complex<double> logwTemp(logw);
+    logw=0.0;
+    return logwTemp;
+}
+
+void SD2is::addLogw(complex<double> logw_add)
 {
     logw += logw_add;
 }
@@ -78,7 +101,7 @@ void SD2is::randomFill()
     normalize();
 }
 
-void SD2is::read(const std::string &filename)
+void SD2is::read(const string &filename)
 {
     ifstream file;
     file.open(filename, ios::in);
@@ -90,7 +113,7 @@ void SD2is::read(const std::string &filename)
     file.close();
 }
 
-void SD2is::write(const std::string &filename) const
+void SD2is::write(const string &filename) const
 {
     ofstream file;
     file.open(filename, ios::out|ios::trunc);
@@ -121,13 +144,13 @@ void MPIBcast(SD2is &buffer, int root, MPI_Comm const &comm)
     MPIBcast( buffer.wf, root, comm );
 }
 
-void SD2is::pack(std::vector<char> &buf, int &posit) const
+void SD2is::pack(vector<char> &buf, int &posit) const
 {
     MPI_Pack(&logw, 1, MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
     MPI_Pack(wf.data(), wf.size(), MPI_DOUBLE_COMPLEX, buf.data(), buf.size(), &posit, MPI_COMM_WORLD);
 }
 
-void SD2is::unpack(const std::vector<char> &buf, int &posit)
+void SD2is::unpack(const vector<char> &buf, int &posit)
 {
     MPI_Unpack(buf.data(), buf.size(), &posit, &logw, 1, MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
     MPI_Unpack(buf.data(), buf.size(), &posit, wf.data(), wf.size(), MPI_DOUBLE_COMPLEX, MPI_COMM_WORLD);
@@ -149,3 +172,5 @@ void SD2is::move_deep(SD2is &x)
     Ndn  = x.Ndn;
     wf   = move( x.wf );
 }
+
+

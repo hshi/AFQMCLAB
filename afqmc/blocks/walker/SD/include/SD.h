@@ -34,7 +34,9 @@ class SD
 
     void resize(size_t L, size_t N);
     void stabilize();
+    void stabilize(double &ratio);
     std::complex<double> normalize();
+    std::complex<double> normalize(double &ratio);
     void addLogw(std::complex<double> logw_add);
     void randomFill();
 

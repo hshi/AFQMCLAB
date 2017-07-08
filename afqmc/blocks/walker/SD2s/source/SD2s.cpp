@@ -55,9 +55,34 @@ void SD2s::stabilize()
     logw += log( BL_NAME(QRMatrix)(wfUp) * BL_NAME(QRMatrix)(wfDn)  );
 }
 
+void SD2s::stabilize(double &ratio)
+{
+    size_t Nup = wfUp.rank(1), Ndn = wfDn.rank(1);
+    TensorHao<double,1> detListUp( Nup ), detListDn( Ndn );
+
+    logw += log( BL_NAME(QRMatrix)(wfUp, detListUp) );
+    logw += log( BL_NAME(QRMatrix)(wfDn, detListDn) );
+
+    TensorHao<double,1> absDetListUp = abs( detListUp );
+    double ratioUp = absDetListUp.min()/absDetListUp.max();
+
+    TensorHao<double,1> absDetListDn = abs( detListDn );
+    double ratioDn = absDetListDn.min()/absDetListDn.max();
+
+    ratio = min( ratioUp, ratioDn );
+}
+
 std::complex<double> SD2s::normalize()
 {
     stabilize();
+    complex<double> logwTemp(logw);
+    logw=0.0;
+    return logwTemp;
+}
+
+std::complex<double> SD2s::normalize(double &ratio)
+{
+    stabilize(ratio);
     complex<double> logwTemp(logw);
     logw=0.0;
     return logwTemp;
@@ -144,3 +169,4 @@ void SD2s::move_deep(SD2s &x)
     wfUp = move( x.wfUp );
     wfDn = move( x.wfDn );
 }
+
