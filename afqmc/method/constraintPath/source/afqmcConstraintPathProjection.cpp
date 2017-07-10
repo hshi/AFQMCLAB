@@ -3,7 +3,7 @@
 //
 
 #include "../include/afqmcConstraintPath.h"
-#include "../include/AfqmcWalkerPop.h"
+#include "../include/afqmcWalkerPop.h"
 
 using namespace std;
 using namespace tensor_hao;

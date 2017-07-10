@@ -35,7 +35,7 @@ void generateAfqmcPhaselessMethodInputFile(const string &filename)
     writeFile("ETAndBackGroundAdjustMaxSize = 120", file);
     writeFile("isETAndBackGroundGrowthEstimable = true", file);
     writeFile("ETAndBackGroundGrowthEstimateStep = 20", file);
-    writeFile("ETAndBackGroundGrowthEstimateSize = 200", file);
+    writeFile("ETAndBackGroundGrowthEstimateMaxSize = 200", file);
     writeFile("seed = 77", file);
 
     file.close();
@@ -79,7 +79,7 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
     EXPECT_EQ( method.ETAndBackGroundAdjustMaxSize, static_cast<size_t>(120) );
     EXPECT_EQ( method.isETAndBackGroundGrowthEstimable, true );
     EXPECT_EQ( method.ETAndBackGroundGrowthEstimateStep, static_cast<size_t>(20) );
-    EXPECT_EQ( method.ETAndBackGroundGrowthEstimateSize, static_cast<size_t>(200) );
+    EXPECT_EQ( method.ETAndBackGroundGrowthEstimateMaxSize, static_cast<size_t>(200) );
 
     EXPECT_EQ( method.seed, 77);
 

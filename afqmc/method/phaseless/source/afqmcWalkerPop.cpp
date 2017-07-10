@@ -1,8 +1,8 @@
 //
-// Created by boruoshihao on 4/17/17.
+// Created by boruoshihao on 7/9/17.
 //
 
-#include "../include/AfqmcWalkerPop.h"
+#include "../include/afqmcWalkerPop.h"
 
 using namespace std;
 

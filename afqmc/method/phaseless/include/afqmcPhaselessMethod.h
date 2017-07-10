@@ -38,7 +38,7 @@ class AfqmcPhaselessMethod
     size_t ETAndBackGroundAdjustMaxSize;
     bool isETAndBackGroundGrowthEstimable;
     size_t ETAndBackGroundGrowthEstimateStep;
-    size_t ETAndBackGroundGrowthEstimateSize;
+    size_t ETAndBackGroundGrowthEstimateMaxSize;
 
     int seed;  // -1. read file, 0. random, else is seeds
 
@@ -46,6 +46,7 @@ class AfqmcPhaselessMethod
     ~AfqmcPhaselessMethod();
 
     void read(const std::string& filename);
+    void write(const std::string& filename);
     void print();
 
 #ifdef MPI_HAO
@@ -55,7 +56,6 @@ class AfqmcPhaselessMethod
  private:
     void setDefault();
     void analysis();
-
 };
 
 #endif //AFQMCLAB_AFQMCPHASELESSMETHOD_H

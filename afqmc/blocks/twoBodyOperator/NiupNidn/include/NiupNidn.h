@@ -45,6 +45,7 @@ class NiupNidn
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag01() const;
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag11() const;
 
+    NiupNidnForce readForce(const std::string &filename) const;
     NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap=1e300) const;
     double logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap = 1e300) const;
     double sumOfAuxFromForce(const NiupNidnForce &force, double gammaForceCap = 1e300) const;

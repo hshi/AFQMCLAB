@@ -6,6 +6,6 @@
 #define AFQMCLAB_MODEL_H
 
 #include "HubbardRealSpaceSOC/include/HubbardSOCAll.h"
-#include "realMaterialMolecule/include/realMaterialMolecule.h"
+#include "realMaterialMolecule/include/realMaterialMoleculeAll.h"
 
 #endif //AFQMCLAB_MODEL_H

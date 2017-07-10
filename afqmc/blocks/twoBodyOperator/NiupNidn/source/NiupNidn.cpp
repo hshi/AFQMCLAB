@@ -1,11 +1,8 @@
 //
 // Created by boruoshihao on 1/8/17.
 //
-
+#include "../../../../../common/common.h"
 #include "../include/NiupNidn.h"
-#include "../../../../../common/mathHao/include/simple_fun.h"
-#include "../../../../../common/randomHao/include/random_hao.h"
-#include "../../../../../common/erroranalysisHao/include/kahan.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -55,6 +52,16 @@ const TensorHao<complex<double>, 1> &NiupNidn::getConstDiag10() const { return c
 const TensorHao<complex<double>, 1> &NiupNidn::getConstDiag01() const { return constDiag01; }
 
 const TensorHao<complex<double>, 1> &NiupNidn::getConstDiag11() const { return constDiag11; }
+
+NiupNidnForce NiupNidn::readForce(const std::string &filename) const
+{
+    NiupNidnForce force(L);
+
+    if( !checkFile(filename) ) force = complex<double>(0,0);
+    else readFile( force.size(), force.data(), filename );
+
+    return force;
+}
 
 NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap) const
 {

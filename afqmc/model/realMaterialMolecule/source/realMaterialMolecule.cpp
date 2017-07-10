@@ -180,3 +180,20 @@ void RealMaterialMolecule::setKpEigenValueAndVector()
 
     KpEigenStatus = 2;
 }
+
+double RealMaterialMolecule::getMemory() const
+{
+    double mem(0.0);
+
+    mem += 8.0*4;
+    mem += t.getMemory() + K.getMemory();
+    mem += choleskyVecs.getMemory();
+    mem += choleskyBg.getMemory();
+
+    mem += 8.0;
+    mem += Kp.getMemory();
+    mem += KpEigenValue.getMemory();
+    mem += KpEigenVector.getMemory();
+
+    return mem;
+}

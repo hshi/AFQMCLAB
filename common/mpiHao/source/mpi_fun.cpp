@@ -159,6 +159,11 @@ void MPIReduce(const size_t &sendbuf, size_t &recvbuf, MPI_Op op, int root, MPI_
     MPI_Reduce(&sendbuf, &recvbuf, sizeof(sendbuf), MPI_BYTE, op, root, comm);
 }
 
+void MPIReduce(const double &sendbuf, double &recvbuf, MPI_Op op, int root, MPI_Comm const &comm)
+{
+    MPI_Reduce(&sendbuf, &recvbuf, 1, MPI_DOUBLE, op, root, comm);
+}
+
 void MPIAllreduce(const double &sendbuf, double &recvbuf, MPI_Op op, const MPI_Comm& comm)
 {
     MPI_Allreduce(&sendbuf, &recvbuf, 1, MPI_DOUBLE, op, comm);
@@ -295,6 +300,7 @@ void MPISum(size_t count, const complex<double>* sendbuf, complex<double>*recvbu
         sendbufPerChunk += currentChunkSize; recvbufPerChunk += currentChunkSize;
     }
 }
+
 #else
 void MPIInit(int& argc,char** & argv){return;}
 void MPIInitFunnel(int& argc,char** & argv) {return;}

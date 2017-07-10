@@ -61,12 +61,14 @@ class RealMaterialMolecule
     LogHop2is returnLogExpMinusAlphaK(double alpha);
     CholeskyReal returnExpMinusAlphaV(double alpha);
 
+    void setKp();
+    void setKpEigenValueAndVector();
+
+    double getMemory() const;
+
  private:
     RealMaterialMolecule(const RealMaterialMolecule& x);
     RealMaterialMolecule & operator  = (const RealMaterialMolecule& x);
-
-    void setKp();
-    void setKpEigenValueAndVector();
 };
 
 #endif //AFQMCLAB_REALMATERIALMOLECULE_H

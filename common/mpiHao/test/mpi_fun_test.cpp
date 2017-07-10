@@ -160,7 +160,7 @@ TEST(MPIReduce, size_t_max)
     size_t maxi;
     MPIReduce(i, maxi, MPI_MAX);
 
-    if( MPIRank()==0 ) EXPECT_COMPLEXDOUBLE_EQ( MPISize()-1, maxi);
+    if( MPIRank()==0 ) EXPECT_EQ( MPISize()-1, maxi);
 }
 
 TEST(MPIReduce, size_t_min)
@@ -169,7 +169,16 @@ TEST(MPIReduce, size_t_min)
     size_t mini;
     MPIReduce(i, mini, MPI_MIN);
 
-    if( MPIRank()==0 ) EXPECT_COMPLEXDOUBLE_EQ( 0, mini);
+    if( MPIRank()==0 ) EXPECT_EQ( static_cast<size_t>(0), mini);
+}
+
+TEST(MPIReduce, double_min)
+{
+    double i = MPIRank();
+    double mini;
+    MPIReduce(i, mini, MPI_MIN);
+
+    if( MPIRank()==0 ) EXPECT_DOUBLE_EQ( 0.0, mini);
 }
 
 TEST(MPIAllreduce, double_sum)
@@ -179,7 +188,7 @@ TEST(MPIAllreduce, double_sum)
     double sum;
     MPIAllreduce(i, sum, MPI_SUM);
 
-    EXPECT_COMPLEXDOUBLE_EQ(i*size, sum);
+    EXPECT_DOUBLE_EQ(i*size, sum);
 }
 
 TEST(MPIAllreduce, complex_double_sum)

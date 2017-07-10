@@ -36,6 +36,7 @@ class CholeskyReal
     const std::complex<double> &getSqrtMinusDt() const;
     size_t returnBasisSize() const;
 
+    CholeskyRealForce readForce(const std::string &filename) const;
     CholeskyRealAux sampleAuxFromForce(const CholeskyRealForce &force) const;
     double logProbOfAuxFromForce(const CholeskyRealAux &aux, const CholeskyRealForce &force) const;
     CholeskyRealSample getTwoBodySampleFromAux(const CholeskyRealAux &aux) const;

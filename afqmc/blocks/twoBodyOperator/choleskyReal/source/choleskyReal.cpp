@@ -1,9 +1,8 @@
 //
 // Created by boruoshihao on 5/23/17.
 //
-
-#include "../include/choleskyReal.h"
 #include "../../../../../common/common.h"
+#include "../include/choleskyReal.h"
 
 using namespace std;
 using namespace tensor_hao;
@@ -41,6 +40,16 @@ size_t CholeskyReal::getCholeskyNumber() const { return choleskyNumber; }
 const complex<double> &CholeskyReal::getSqrtMinusDt() const { return sqrtMinusDt; }
 
 size_t CholeskyReal::returnBasisSize() const { return choleskyVecs->rank(0); }
+
+CholeskyRealForce CholeskyReal::readForce(const std::string &filename) const
+{
+    CholeskyRealForce force(choleskyNumber);
+
+    if( !checkFile(filename) ) force = 0.0;
+    else readFile( force.size(), force.data(), filename );
+
+    return force;
+}
 
 CholeskyRealAux CholeskyReal::sampleAuxFromForce(const CholeskyRealForce &force) const
 {
