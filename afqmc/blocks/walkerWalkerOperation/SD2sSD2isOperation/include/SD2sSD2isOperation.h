@@ -39,6 +39,7 @@ class SD2sSD2isOperation
     const tensor_hao::TensorHao<std::complex<double>, 2> &returnThetaUp_T();
     const tensor_hao::TensorHao<std::complex<double>, 2> &returnThetaDn_T();
 
+    void set(const SD2s &walkerLeft_, const SD2is &walkerRight_);
     void reSet();
     std::complex<double> returnLogOverlap();
     tensor_hao::TensorHao< std::complex<double>, 2 > returnGreenMatrixUp();
@@ -56,6 +57,6 @@ class SD2sSD2isOperation
     void calculateTheta_T();
 };
 
-void sampleWalkerFromPhiT(SD2is &walker, const SD2s& phiT);
+void setWalkerFromPhiT(std::vector<SD2is> &walker, const SD2s &phiT);
 
 #endif //AFQMCLAB_SD2SSD2ISOPERATION_H

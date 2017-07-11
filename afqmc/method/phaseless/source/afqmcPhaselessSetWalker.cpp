@@ -36,7 +36,6 @@ void AfqmcPhaseless::initialPhiT()
 
 void AfqmcPhaseless::initialWalker()
 {
-
     walker.resize(method.walkerSizePerThread);
 
     if(method.initialWalkerFlag == "setFromModel")
@@ -65,10 +64,7 @@ void AfqmcPhaseless::initialWalker()
     }
     else if(method.initialWalkerFlag == "sampleFromPhiT")
     {
-        for(int i = 0; i < method.walkerSizePerThread; ++i)
-        {
-            sampleWalkerFromPhiT(walker[i], phiT);
-        }
+        setWalkerFromPhiT(walker, phiT);
     }
     else if(method.initialWalkerFlag == "readFromFile")
     {
@@ -96,13 +92,13 @@ void AfqmcPhaseless::initialWalker()
         exit(1);
     }
 
-    initialOverlap();
+    initialMgsAndPopControl();
 }
 
 void AfqmcPhaseless::writeWalkers()
 {
     MPIBarrier();
-    if( MPIRank() == 0)
+    if( MPIRank() == 0 )
     {
         int flag = system("mkdir -p walkers");
         if(flag != 0) cout<<"WARNING!!! system command does not exit properly!"<<endl;
@@ -118,13 +114,8 @@ void AfqmcPhaseless::writeWalkers()
     }
 }
 
-void AfqmcPhaseless::initialOverlap()
+void AfqmcPhaseless::initialMgsAndPopControl()
 {
-    complex<double> logOverlap;
-    for(int i = 0; i < method.walkerSizePerThread; ++i)
-    {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
-        logOverlap = walkerWalkerOperation.returnLogOverlap();
-        walker[i].addLogw( -logOverlap );
-    }
+    modifyGM( false );
+    popControl( false );
 }

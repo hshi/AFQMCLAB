@@ -13,21 +13,7 @@ SD2sSD2isOperation::SD2sSD2isOperation():state(SD2sSD2isOperationState::VOID), w
 
 SD2sSD2isOperation::SD2sSD2isOperation(const SD2s &walkerLeft_, const SD2is &walkerRight_)
 {
-    state = SD2sSD2isOperationState::VOID;
-    walkerLeft  = &walkerLeft_;
-    walkerRight = &walkerRight_;
-
-    size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
-    if( L != walkerRight->getL() || Nup != walkerRight->getNup() || Ndn != walkerRight->getNdn() )
-    {
-        cout<<"Error!!! Find Inconsistency between walkerLeft and walkerRight!"<<endl;
-        exit(1);
-    }
-
-    wfRightUp=TensorHaoRef<complex<double>, 2>(L, Nup);
-    wfRightDn=TensorHaoRef<complex<double>, 2>(L, Ndn);
-    wfRightUp.point( const_cast<complex<double>*> ( walkerRight->getWf().data() ) );
-    wfRightDn.point( const_cast<complex<double>*> ( walkerRight->getWf().data() ) );
+    set(walkerLeft_, walkerRight_);
 }
 
 SD2sSD2isOperation::~SD2sSD2isOperation() { }
@@ -62,6 +48,25 @@ const TensorHao<complex<double>, 2> &SD2sSD2isOperation::returnThetaDn_T()
     calculateLUOverlap();
     calculateTheta_T();
     return thetaDn_T;
+}
+
+void SD2sSD2isOperation::set(const SD2s &walkerLeft_, const SD2is &walkerRight_)
+{
+    state = SD2sSD2isOperationState::VOID;
+    walkerLeft  = &walkerLeft_;
+    walkerRight = &walkerRight_;
+
+    size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
+    if( L != walkerRight->getL() || Nup != walkerRight->getNup() || Ndn != walkerRight->getNdn() )
+    {
+        cout<<"Error!!! Find Inconsistency between walkerLeft and walkerRight!"<<endl;
+        exit(1);
+    }
+
+    wfRightUp=TensorHaoRef<complex<double>, 2>(L, Nup);
+    wfRightDn=TensorHaoRef<complex<double>, 2>(L, Ndn);
+    wfRightUp.point( const_cast<complex<double>*> ( walkerRight->getWf().data() ) );
+    wfRightDn.point( const_cast<complex<double>*> ( walkerRight->getWf().data() ) );
 }
 
 void SD2sSD2isOperation::reSet()
@@ -174,8 +179,20 @@ void SD2sSD2isOperation::calculateTheta_T()
     state = SD2sSD2isOperationState ::THETA_T;
 }
 
-void sampleWalkerFromPhiT(SD2is &walker, const SD2s &phiT)
+void setWalkerFromPhiT(vector<SD2is> &walker, const SD2s &phiT)
 {
-    cout<<"Error!!! We can not sample SD2s walker to get SD2is walker!"<<endl;
-    exit(1);
+    if( MPIRank()==0 ) cout<<"Warning!!! Set SD2is walker from SD2S phiT, only pick one spin component!"<<endl;
+
+    int walkerSizePerThread = walker.size();
+    int walkerSize = walkerSizePerThread * MPISize();
+    if( walkerSize < 1 ) { cout<<"Error!!! Total walkerSize is smaller than 1:  "<<walkerSize<<endl; exit(1); }
+
+    size_t L = phiT.getL(); size_t Nup = phiT.getNup(); size_t Ndn = phiT.getNdn();
+    for(int i = 0; i < walkerSizePerThread; ++i)
+    {
+        walker[i].resize(L, Nup, Ndn);
+        walker[i].logwRef() = phiT.getLogw();
+        if( Nup > Ndn )  walker[i].wfRef() = phiT.getWfUp();
+        else walker[i].wfRef() = phiT.getWfDn();
+    }
 }

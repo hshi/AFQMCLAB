@@ -1,6 +1,7 @@
 //
 // Created by boruoshihao on 7/8/17.
 //
+
 #ifndef AFQMCLAB_AFQMCPHASELESS_H
 #define AFQMCLAB_AFQMCPHASELESS_H
 
@@ -22,6 +23,7 @@ class AfqmcPhaseless
     TwoBodySampleWalkerRightOperation twoBodySampleWalkerRightOperation;
 
     TwoBodyAux twoBodyAux;
+    TwoBodySample twoBodySample;
 
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
@@ -44,13 +46,13 @@ class AfqmcPhaseless
     void initialPhiT();
     void initialWalker();
     void writeWalkers();
-    void initialOverlap();
+    void initialMgsAndPopControl();
 
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
     void projectExpMinusDtKExpMinusDtV();
-    void modifyGM();
-    void popControl();
+    void modifyGM(bool isAdjustable );
+    void popControl(bool isAdjustable);
 
     void addMeasurement();
     void writeAndResetMeasurement();

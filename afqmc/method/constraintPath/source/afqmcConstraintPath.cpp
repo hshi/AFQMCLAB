@@ -52,9 +52,7 @@ void AfqmcConstraintPath::estimateMemory()
 {
     double mem(0.0);
     mem += model.getMemory();
-    mem += expMinusDtK.getMemory();
-    mem += expMinusHalfDtK.getMemory();
-    mem += expHalfDtK.getMemory();
+    mem += expMinusDtK.getMemory()+expMinusHalfDtK.getMemory()+expHalfDtK.getMemory();
     mem += expMinusDtV.getMemory();
     mem += constForce.getMemory() * 2.0;
 

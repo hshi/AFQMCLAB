@@ -76,6 +76,9 @@ void AfqmcPhaseless::estimateMemory()
     twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
     mem += twoBodyAux.getMemory();
 
+    twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+    mem += twoBodySample.getMemory();
+
     mem += phiT.getMemory();
     mem += walker[0].getMemory() * method.walkerSizePerThread;
 
@@ -138,14 +141,14 @@ void AfqmcPhaseless::measureWithProjection()
 
         if (method.isETAndBackGroundGrowthEstimable)
         {
-            if (i < method.ETAndBackGroundGrowthEstimateMaxSize && i > method.ETAndBackGroundAdjustMaxSize)
+            if (i < method.ETAndBackGroundGrowthEstimateMaxSize && i >= method.ETAndBackGroundAdjustMaxSize)
             {
-                if ((i + 1 - method.ETAndBackGroundAdjustMaxSize) % method.ETAndBackGroundGrowthEstimateStep == 0)
+                if ( (i + 1 - method.ETAndBackGroundAdjustMaxSize) % method.ETAndBackGroundGrowthEstimateStep == 0 )
                 {
                     addMeasurement();
                 }
 
-                if (i == (method.ETAndBackGroundGrowthEstimateMaxSize - 1))
+                if ( i == (method.ETAndBackGroundGrowthEstimateMaxSize - 1) )
                 {
                     adjustETAndBackGroundThenResetMeasurement();
                     expMinusDtK     = model.returnExpMinusAlphaK(  method.dt     );
@@ -160,14 +163,14 @@ void AfqmcPhaseless::measureWithProjection()
         mgsIndex++;
         if (mgsIndex == method.mgsStep)
         {
-            modifyGM();
+            modifyGM( method.isMgsStepAdjustable );
             mgsIndex = 0;
         }
 
         popControlIndex++;
-        if ((i + 1) % method.popControlStep == 0)
+        if (popControlIndex == method.popControlStep )
         {
-            popControl();
+            popControl( method.isPopControlStepAdjustable );
             popControlIndex = 0;
         }
 
@@ -194,6 +197,7 @@ void AfqmcPhaseless::prepareStop()
 {
     if( MPIRank()==0 ) method.write("afqmc_param");
     if( MPIRank()==0 ) model.writeBackGround("model_param");
+    projectExpHalfDtK();
     writeWalkers();
     randomHaoSave();
 }

@@ -63,7 +63,6 @@ void AfqmcPhaseless::projectExpMinusDtKExpMinusDtV()
 {
     double phase;
     WalkerRight walkerTemp;
-    TwoBodySample twoBodySample;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
         WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
@@ -96,7 +95,7 @@ void AfqmcPhaseless::projectExpMinusDtKExpMinusDtV()
     }
 }
 
-void AfqmcPhaseless::modifyGM()
+void AfqmcPhaseless::modifyGM(bool isAdjustable)
 {
     if( MPIRank()==0 )
     {
@@ -104,9 +103,9 @@ void AfqmcPhaseless::modifyGM()
         cout<<"Current mgsStep is "<< method.mgsStep <<endl;
     }
 
-    if( method.isMgsStepAdjustable )
+    if( isAdjustable )
     {
-        double ratio(0.0), ratioMin(1e100), ratioMinGlobal(0.0);
+        double ratio(0.0), ratioMin(1e100), ratioMinGlobal(1e100);
         for(int i = 0; i < method.walkerSizePerThread; ++i)
         {
             walker[i].stabilize( ratio );
@@ -114,6 +113,7 @@ void AfqmcPhaseless::modifyGM()
         }
 
         MPIReduce( ratioMin, ratioMinGlobal, MPI_MIN );
+        //Assume method.mgsStep = exp( alpha * ratioMinGlobal )
         method.mgsStep = log(method.mgsStepTolerance)/log(ratioMinGlobal) * method.mgsStep;
         MPIBcast( method.mgsStep );
 
@@ -134,7 +134,7 @@ void AfqmcPhaseless::modifyGM()
     if( MPIRank()==0 ) cout<<endl;
 }
 
-void AfqmcPhaseless::popControl()
+void AfqmcPhaseless::popControl(bool isAdjustable)
 {
     vector<double> weightPerThread( method.walkerSizePerThread );
     complex<double> logOverlap;
@@ -157,17 +157,24 @@ void AfqmcPhaseless::popControl()
     MPI_Gather( weightPerThread.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION,
                 weight.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD );
 
+    double ratio, average;
+    tie(ratio, average) = popCheck(weight);
     if( MPIRank()==0 )
     {
         cout<<"In Population control: "<<endl;
         cout<<"Current popControlStep is "<< method.popControlStep <<endl;
-        double ratio, average;
-        tie(ratio, average) = popCheck(weight);
-        method.popControlStep = log(method.popControlStepTolerance)/log(ratio) * method.popControlStep;
         cout<<"Max weight ratio is "<< ratio <<endl;
         cout<<"Average weight is "<< average <<endl;
-        cout<<"Adjust popControlStep to  "<< method.popControlStep <<endl;
-        cout<<endl;
+    }
+    if( isAdjustable )
+    {
+        if( MPIRank()==0 )
+        {
+            //Assume method.popControlStep = exp( alpha * ratio )
+            method.popControlStep = log(method.popControlStepTolerance)/log(ratio) * method.popControlStep;
+            cout<<"Adjust popControlStep to  "<< method.popControlStep <<endl;
+        }
+        MPIBcast(method.popControlStep);
     }
 
     vector<int> table;
@@ -177,4 +184,6 @@ void AfqmcPhaseless::popControl()
     walkerPop.reserve( method.walkerSizePerThread );
     for(int i=0; i<method.walkerSizePerThread; i++) walkerPop.push_back( AfqmcWalkerPop(walker[i]) );
     populationControl(walkerPop, table);
+
+    if( MPIRank()==0 ) cout<<endl;
 }

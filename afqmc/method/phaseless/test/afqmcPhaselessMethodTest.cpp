@@ -28,7 +28,7 @@ void generateAfqmcPhaselessMethodInputFile(const string &filename)
     writeFile("mgsStepTolerance = 0.3", file);
     writeFile("popControlStep = 50", file);
     writeFile("isPopControlStepAdjustable = true", file);
-    writeFile("popControlStepTolerance = 0.22", file);
+    writeFile("popControlStepTolerance = 2.2", file);
     writeFile("ET = -18.0", file);
     writeFile("isETAndBackGroundAdjustable = true", file);
     writeFile("ETAndBackGroundAdjustStep = 20", file);
@@ -71,7 +71,7 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
 
     EXPECT_EQ( method.popControlStep, static_cast<size_t>(50) );
     EXPECT_EQ( method.isPopControlStepAdjustable, true );
-    EXPECT_EQ( method.popControlStepTolerance, 0.22) ;
+    EXPECT_EQ( method.popControlStepTolerance, 2.2) ;
 
     EXPECT_EQ( method.ET, -18.0 );
     EXPECT_EQ( method.isETAndBackGroundAdjustable, true );

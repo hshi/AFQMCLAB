@@ -1,6 +1,6 @@
 set(SOURCE_TESTS
         afqmcConstraintPathMethodTest.cpp
-        afqmcConstraintPathTest.cpp)
+        )
 
 add_executable(afqmcConstraintPathTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 

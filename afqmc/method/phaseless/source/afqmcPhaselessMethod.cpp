@@ -221,6 +221,12 @@ void AfqmcPhaselessMethod::setDefault()
 
 void AfqmcPhaselessMethod::analysis()
 {
+    if( timesliceSize==0 )
+    {
+        cout<<"The code will measure everything without projection!"<<endl;
+        return;
+    }
+
     if( dt <= 0.0 )
     {
         cout<<"Error!!! dt must be postive!"<<endl;
@@ -269,22 +275,22 @@ void AfqmcPhaselessMethod::analysis()
 
     if( isPopControlStepAdjustable )
     {
-        if( popControlStep<0 )
+        if( popControlStepTolerance<1.0 )
         {
-            cout<<"Error!!! popControlStep is not a positive number!"<<endl;
+            cout<<"Error!!! popControlStepTolerance needs to be larger than one!"<<endl;
             exit(1);
         }
     }
 
     if( isETAndBackGroundGrowthEstimable && !isETAndBackGroundAdjustable )
     {
-        cout<<"Error!!! isETAndBackGroundGrowthEstimable is true, isETAndBackGroundAdjustable must be true!"<<endl;
+        cout<<"Error!!! If isETAndBackGroundGrowthEstimable is true, isETAndBackGroundAdjustable must be true!"<<endl;
         exit(1);
     }
 
     if( isETAndBackGroundAdjustable )
     {
-        if (ETAndBackGroundAdjustMaxSize > thermalSize)
+        if( ETAndBackGroundAdjustMaxSize > thermalSize )
         {
             cout << "Error!!! We should not adjust ET and backGround after thermalizing!" << endl;
             exit(1);

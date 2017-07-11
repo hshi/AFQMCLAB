@@ -30,10 +30,16 @@ void AfqmcPhaseless::writeAndResetMeasurement()
     mixedMeasure.reSet();
 }
 
-
 void AfqmcPhaseless::adjustETAndBackGroundThenResetMeasurement()
 {
     method.ET = ( mixedMeasure.returnEnergy() ).real();
     model.updateBackGround( mixedMeasure.returnCholeskyBg() );
+
+    if( MPIRank()==0 )
+    {
+        cout<<"\nAdjust trial energy: "<<method.ET<<"\n"<<endl;
+        cout<<"Adjust background: "<<model.getCholeskyBg()<<endl;
+    }
+
     mixedMeasure.reSet();
 }
