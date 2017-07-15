@@ -28,7 +28,7 @@ class LogHop2isSD2isOperation
     tensor_hao::TensorHao<std::complex<double>,2> wfTempOld, wfTempNew;
 
  public:
-    LogHop2isSD2isOperation(std::string flag="dynamicOrder", size_t taylorOrder=0, double accuracy=1e-8, size_t baseTaylorOrder=3);
+    LogHop2isSD2isOperation(std::string flag="dynamicOrder", size_t taylorOrder=0, double accuracy=1e-10, size_t baseTaylorOrder=3);
     ~LogHop2isSD2isOperation();
 
     void reset(std::string flag="dynamicOrder", size_t taylorOrder=0, double accuracy=1e-8, size_t baseTaylorOrder=3);

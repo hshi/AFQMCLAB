@@ -52,9 +52,9 @@ void SD2is::stabilize()
     {
         TensorHao<double,1> detList( max(Nup, Ndn) );
         logw += log( BL_NAME(QRMatrix)(wf, detList) );
-
         size_t Nmin = min( Nup, Ndn );
-        double norm(1.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
+        //norm can be a negative number, use complex for log function
+        complex<double> norm(1.0, 0.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
         logw += log( norm );
     }
 }
@@ -67,7 +67,8 @@ void SD2is::stabilize(double &ratio)
     TensorHao<double,1> detList( Nmax );
     logw += log( BL_NAME(QRMatrix)(wf, detList) );
 
-    double norm(1.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
+    //norm can be a negative number, use complex for log function
+    complex<double> norm(1.0, 0.0); for(size_t i = 0; i < Nmin; ++i) norm *= detList(i);
     logw += log( norm );
 
     TensorHao<double,1> absDetList = abs( detList );

@@ -1,4 +1,5 @@
 add_subdirectory(fit)
+add_subdirectory(pyscf)
 add_subdirectory(simpleMath)
 add_subdirectory(supercubic)
 add_subdirectory(threeBandHubbardModel)

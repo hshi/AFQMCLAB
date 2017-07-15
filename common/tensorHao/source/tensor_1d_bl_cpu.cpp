@@ -70,6 +70,8 @@ namespace tensor_hao
             }
         }
 
+        if( y.size()==0 ) return;
+        if( A.size()==0 ) { y*=beta; return; }
         dgemv ( &TRANSA , &M , &N , &alpha , A.data() , &M , x.data() , &inc_x , &beta , y.data() , &inc_y );
     }
 
@@ -97,6 +99,8 @@ namespace tensor_hao
             }
         }
 
+        if( y.size()==0 ) return;
+        if( A.size()==0 ) { y*=beta; return; }
         zgemv ( &TRANSA , &M , &N , &alpha , A.data() , &M , x.data() , &inc_x , &beta , y.data() , &inc_y );
     }
 

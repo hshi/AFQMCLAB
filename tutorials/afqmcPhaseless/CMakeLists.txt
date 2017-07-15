@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(afqmcConstraintPath C CXX)
+project(afqmcPhaseless C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,18 +14,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${AFQMCLAB_FLAGS}")
 add_definitions(${AFQMCLAB_DEFINITIONS})
 
 set(SOURCE_HEADERS
-        include/afqmcConstraintPath.h
-        include/afqmcConstraintPathDefine.h
-        include/afqmcConstraintPathMethod.h
+        include/afqmcPhaseless.h
+        include/afqmcPhaselessDefine.h
+        include/afqmcPhaselessMethod.h
         include/afqmcWalkerPop.h
         )
 
 set(SOURCE_FILES
-        source/afqmcConstraintPath.cpp
-        source/afqmcConstraintPathMeasure.cpp
-        source/afqmcConstraintPathMethod.cpp
-        source/afqmcConstraintPathProjection.cpp
-        source/afqmcConstraintPathSetWalker.cpp
+        source/afqmcPhaseless.cpp
+        source/afqmcPhaselessMeasure.cpp
+        source/afqmcPhaselessMethod.cpp
+        source/afqmcPhaselessProjection.cpp
+        source/afqmcPhaselessSetWalker.cpp
         source/afqmcWalkerPop.cpp
         source/main.cpp)
 

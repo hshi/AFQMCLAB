@@ -21,6 +21,8 @@ namespace tensor_hao
      LDB= B.rank(0);
      LDC= C.rank(0);
 
+     if( C.size()==0 ) return;
+     if( A.size()==0 ) { C*=beta; return;}
      sgemm(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
@@ -35,6 +37,8 @@ namespace tensor_hao
      LDB= B.rank(0);
      LDC= C.rank(0);
 
+     if( C.size()==0 ) return;
+     if( A.size()==0 ) { C*=beta; return;}
      dgemm(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
@@ -49,6 +53,8 @@ namespace tensor_hao
      LDB= B.rank(0);
      LDC= C.rank(0);
 
+     if( C.size()==0 ) return;
+     if( A.size()==0 ) { C*=beta; return;}
      cgemm(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
@@ -63,6 +69,8 @@ namespace tensor_hao
      LDB= B.rank(0);
      LDC= C.rank(0);
 
+     if( C.size()==0 ) return;
+     if( A.size()==0 ) { C*=beta; return;}
      zgemm(&TRANSA, &TRANSB, &M, &N, &K, &alpha, A.data(), &LDA, B.data(), &LDB, &beta, C.data(), &LDC);
  }
 
@@ -116,6 +124,7 @@ namespace tensor_hao
      HAO_INT N= x.rank(0);
      LUDecomp<double> y; y.A=x; y.ipiv=TensorHao<HAO_INT,1>(N);
 
+     if( x.size()==0 ) return y;
      dgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
@@ -127,6 +136,7 @@ namespace tensor_hao
      HAO_INT N= x.rank(0);
      LUDecomp<double> y; y.A= move(x); y.ipiv=TensorHao<HAO_INT,1>(N);
 
+     if( x.size()==0 ) return y;
      dgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
@@ -138,6 +148,7 @@ namespace tensor_hao
      HAO_INT N= x.rank(0);
      LUDecomp<complex<double>> y; y.A=x; y.ipiv=TensorHao<HAO_INT,1>(N);
 
+     if( x.size()==0 ) return y;
      zgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
@@ -149,6 +160,7 @@ namespace tensor_hao
      HAO_INT N= x.rank(0);
      LUDecomp<complex<double>> y; y.A= move(x); y.ipiv=TensorHao<HAO_INT,1>(N);
 
+     if( x.size()==0 ) return y;
      zgetrf(&N, &N, y.A.data(), &N, y.ipiv.data(), &(y.info) );
      if(y.info<0) {cout<<"The "<<y.info<<"-th parameter is illegal in LUconstruct_cpu!"<<endl; exit(1);}
      return y;
@@ -193,6 +205,8 @@ namespace tensor_hao
  {
      if(x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      HAO_INT N= M.rank(0); HAO_INT NRHS= M.rank(1); HAO_INT info;
+
+     if( M.size()==0 ) return;
      dgetrs(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
      if(info!=0)
      {
@@ -205,6 +219,8 @@ namespace tensor_hao
  {
      if(x.A.rank(0) != M.rank(0) )  {cout<<"Input size for solving linear equation is not consistent!"<<endl; exit(1);}
      HAO_INT N= M.rank(0); HAO_INT NRHS= M.rank(1); HAO_INT info;
+
+     if( M.size()==0 ) return;
      zgetrs(&TRANS, &N, &NRHS, x.A.data(), &N, x.ipiv.data(), M.data(), &N, &info);
      if(info!=0)
      {
