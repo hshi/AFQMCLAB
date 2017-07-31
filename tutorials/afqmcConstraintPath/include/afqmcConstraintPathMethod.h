@@ -7,6 +7,11 @@
 
 #include "afqmcConstraintPathDefine.h"
 
+#ifdef MPI_HAO
+class AfqmcConstraintPathMethod;
+void MPIBcast(AfqmcConstraintPathMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class AfqmcConstraintPathMethod
 {
  public:
@@ -33,7 +38,7 @@ class AfqmcConstraintPathMethod
     void read(const std::string& filename);
 
 #ifdef MPI_HAO
-    friend void MPIBcast(AfqmcConstraintPathMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(AfqmcConstraintPathMethod &buffer, int root,  const MPI_Comm& comm);
 #endif
 
  private:

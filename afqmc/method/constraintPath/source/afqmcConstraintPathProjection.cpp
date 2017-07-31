@@ -13,7 +13,7 @@ void AfqmcConstraintPath::projectExpHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
         walker[i] = move( walkerTemp );
     }
 }
@@ -23,7 +23,7 @@ void AfqmcConstraintPath::projectExpMinusHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
+        oneBodyWalkerOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
         walker[i] = move( walkerTemp );
     }
 }
@@ -60,11 +60,11 @@ void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
 
         TwoBodySample twoBodySample = expMinusDtV.getTwoBodySampleFromAux(twoBodyAux);
 
-        applyTwoBodySampleToRightWalker(walker[i], walkerTemp, twoBodySample);
+        twoBodyWalkerOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
 
         walkerTemp.addLogw( log(norm)-logProb + method.dt*ET );
 
-        oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
+        oneBodyWalkerOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
     }
 }
 

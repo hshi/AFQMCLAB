@@ -8,9 +8,13 @@
 using namespace std;
 using namespace tensor_hao;
 
-void applyTwoBodySampleToRightWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample)
+NiupNidnSampleSDOperation::NiupNidnSampleSDOperation()  { }
+
+NiupNidnSampleSDOperation::~NiupNidnSampleSDOperation() { }
+
+void NiupNidnSampleSDOperation::applyToRight(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const
 {
-    size_t L = walker.getL(); size_t N = walker.getN(); size_t halfL = twoBodySample.getL();
+    size_t L = walker.getL(); size_t N = walker.getN(); size_t halfL = oneBody.getL();
 
     if( L != halfL*2 ) { cout<<"Error!!! NiupNidnSample size is not consistent with walker!"<<endl; exit(1); }
     if( walkerNew.getL() != L  ||  walkerNew.getN() != N ) walkerNew.wfRef().resize( L, N );
@@ -18,10 +22,10 @@ void applyTwoBodySampleToRightWalker(const SD &walker, SD &walkerNew, const Niup
     const TensorHao<complex<double>,2> &wf = walker.getWf();
     TensorHao<complex<double>,2> &wfNew = walkerNew.wfRef();
 
-    const TensorHao<complex<double>,1> &diag00 = twoBodySample.diag00;
-    const TensorHao<complex<double>,1> &diag10 = twoBodySample.diag10;
-    const TensorHao<complex<double>,1> &diag01 = twoBodySample.diag01;
-    const TensorHao<complex<double>,1> &diag11 = twoBodySample.diag11;
+    const TensorHao<complex<double>,1> &diag00 = oneBody.diag00;
+    const TensorHao<complex<double>,1> &diag10 = oneBody.diag10;
+    const TensorHao<complex<double>,1> &diag01 = oneBody.diag01;
+    const TensorHao<complex<double>,1> &diag11 = oneBody.diag11;
 
     for(size_t j = 0; j < N; ++j)
     {
@@ -32,12 +36,13 @@ void applyTwoBodySampleToRightWalker(const SD &walker, SD &walkerNew, const Niup
         }
     }
 
-    walkerNew.logwRef() = twoBodySample.logw + walker.getLogw();
+    walkerNew.logwRef() = oneBody.logw + walker.getLogw();
+
 }
 
-void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample)
+void NiupNidnSampleSDOperation::applyToLeft(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const
 {
-    size_t L = walker.getL(); size_t N = walker.getN(); size_t halfL = twoBodySample.getL();
+    size_t L = walker.getL(); size_t N = walker.getN(); size_t halfL = oneBody.getL();
 
     if( L != halfL*2 ) { cout<<"Error!!! NiupNidnSample size is not consistent with walker!"<<endl; exit(1); }
     if( walkerNew.getL() != L  ||  walkerNew.getN() != N ) walkerNew.wfRef().resize( L, N );
@@ -45,10 +50,10 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
     const TensorHao<complex<double>,2> &wf = walker.getWf();
     TensorHao<complex<double>,2> &wfNew = walkerNew.wfRef();
 
-    const TensorHao<complex<double>,1> diag00 = conj( twoBodySample.diag00 );
-    const TensorHao<complex<double>,1> diag10 = conj( twoBodySample.diag01 );
-    const TensorHao<complex<double>,1> diag01 = conj( twoBodySample.diag10 );
-    const TensorHao<complex<double>,1> diag11 = conj( twoBodySample.diag11 );
+    const TensorHao<complex<double>,1> diag00 = conj( oneBody.diag00 );
+    const TensorHao<complex<double>,1> diag10 = conj( oneBody.diag01 );
+    const TensorHao<complex<double>,1> diag01 = conj( oneBody.diag10 );
+    const TensorHao<complex<double>,1> diag11 = conj( oneBody.diag11 );
 
     for(size_t j = 0; j < N; ++j)
     {
@@ -59,7 +64,7 @@ void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupN
         }
     }
 
-    walkerNew.logwRef() = conj( twoBodySample.logw ) + walker.getLogw();
+    walkerNew.logwRef() = conj( oneBody.logw ) + walker.getLogw();
 }
 
 void getForce(NiupNidnForce& force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation )
@@ -287,13 +292,14 @@ complex<double> measureLogTwoBodyForceBiasSample(const SD &walkerLeft, const SD 
     SDSDOperation sdsdOperation(walkerLeft, walkerRight);
     complex<double> logW = sdsdOperation.returnLogOverlap();
 
+    NiupNidnSampleSDOperation twoBodyWalkerOperation;
     getForce(force, niupNidn, walkerLeft, walkerRight);
     complex<double> num(0,0), den(0,0);
     for(size_t i = 0; i < sampleSize; ++i)
     {
         aux = niupNidn.sampleAuxFromForce(force, sampleCap);
         sample = niupNidn.getTwoBodySampleFromAux(aux);
-        applyTwoBodySampleToRightWalker(walkerRight, walkerRightTemp, sample);
+        twoBodyWalkerOperation.applyToRight(sample, walkerRight, walkerRightTemp);
 
         num += exp( sdsdTempOperation.returnLogOverlap() -logW - niupNidn.logProbOfAuxFromForce(aux, force, sampleCap) );
         den += 1.0;

@@ -18,8 +18,8 @@ typedef HubbardSOC Model;
 
 typedef SD  WalkerLeft;
 typedef SD  WalkerRight;
-typedef HopSDOperation OneBodyWalkerLeftOperation;
-typedef HopSDOperation OneBodyWalkerRightOperation;
+typedef HopSDOperation OneBodyWalkerOperation;
+typedef NiupNidnSampleSDOperation TwoBodyWalkerOperation;
 typedef SDSDOperation WalkerWalkerOperation;
 typedef HubbardSOCSDSDMeasureCommute ModelCommuteMeasure;
 typedef HubbardSOCSDSDMeasureObserve ModelObserveMeasure;

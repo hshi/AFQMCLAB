@@ -13,7 +13,7 @@ void AfqmcConstraintPath::addMeasurement()
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
 
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
 
@@ -37,7 +37,7 @@ void AfqmcConstraintPath::setET()
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
         
         WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
 

@@ -54,10 +54,10 @@ All rights reserved. Please do not distribute the program, or any of its parts, 
 
 Frist set path to AFQMCLAB_DIR, e.g.
 
-    export AFQMCLAB_DIR='/where/to/install/AFQMCLAB'
+    export AFQMCLAB_DIR='~/lib/afqmclab'
 or
 
-    setenv AFQMCLAB_DIR /where/to/install/AFQMCLAB
+    setenv AFQMCLAB_DIR ~/lib/afqmclab
 
 Then see tutorials for detail examples.
 
@@ -132,6 +132,8 @@ might need to move to `-openmp` (icpc) later.
   //TODO: Use flag -DOPENMPALL, -DOPENMP, -DOPENMPLAPACKBLAS
   
   //TODO: Make sure compilor support mac
+  
+  //TODO: Cmake, also try to make a dynamic library
 
   //TODO: How to do a FCI in PySCF
   

@@ -12,14 +12,14 @@ void AfqmcMetropolis::measureWithwalkerRightInBlock(const WalkerLeft &walkerLeft
     WalkerRight walkerRightTemp;
     if( method.measureVarianceType == "normal" )
     {
-        oneBodyWalkerLeftOperation.applyToLeft(expHalfDtK, walkerLeft, walkerLeftTemp);
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walkerRightInBlock[inBlockIndex+1], walkerRightTemp);
+        oneBodyWalkerOperation.applyToLeft(expHalfDtK, walkerLeft, walkerLeftTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walkerRightInBlock[inBlockIndex+1], walkerRightTemp);
         addMeasurement(walkerLeftTemp, walkerRightTemp);
     }
     else if( method.measureVarianceType == "fixVariance" )
     {
-        oneBodyWalkerLeftOperation.applyToLeft(expHalfDtK, walkerLeft, walkerLeftTemp);
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walkerRightInBlock[inBlockIndex], walkerRightTemp);
+        oneBodyWalkerOperation.applyToLeft(expHalfDtK, walkerLeft, walkerLeftTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walkerRightInBlock[inBlockIndex], walkerRightTemp);
         //<walkerLeftTemp| exp(-dt H) | walkerRightTemp>
         complex<double> logExpMinusTauHAvg = measureLogExpMinusDtV(walkerLeft, walkerRightInBlock[inBlockIndex]);
         addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, logExpMinusTauHAvg);
@@ -36,14 +36,14 @@ void AfqmcMetropolis::measureWithWalkerLeftInBlock(size_t inBlockIndex, const Wa
     WalkerRight walkerRightTemp;
     if( method.measureVarianceType == "normal" )
     {
-        oneBodyWalkerLeftOperation.applyToLeft(expHalfDtK, walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex], walkerLeftTemp);
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walkerRight, walkerRightTemp);
+        oneBodyWalkerOperation.applyToLeft(expHalfDtK, walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex], walkerLeftTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walkerRight, walkerRightTemp);
         addMeasurement(walkerLeftTemp, walkerRightTemp);
     }
     else if( method.measureVarianceType == "fixVariance" )
     {
-        oneBodyWalkerLeftOperation.applyToLeft(expHalfDtK, walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerLeftTemp);
-        oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walkerRight, walkerRightTemp);
+        oneBodyWalkerOperation.applyToLeft(expHalfDtK, walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerLeftTemp);
+        oneBodyWalkerOperation.applyToRight(expHalfDtK, walkerRight, walkerRightTemp);
         //<walkerLeftTemp| exp(-dt H) | walkerRightTemp>
         complex<double> logExpMinusTauHAvg = measureLogExpMinusDtV(walkerLeftInBlock[method.timesliceBlockSize-inBlockIndex-1], walkerRight);
         addMeasurementFixVariance(walkerLeftTemp, walkerRightTemp, logExpMinusTauHAvg);

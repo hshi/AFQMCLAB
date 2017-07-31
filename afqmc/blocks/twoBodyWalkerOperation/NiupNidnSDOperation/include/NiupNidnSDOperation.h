@@ -10,8 +10,16 @@
 #include "../../../walkerWalkerOperation/SDSDOperation/include/SDSDOperation.h"
 #include "../../../twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
-void applyTwoBodySampleToRightWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample);
-void applyTwoBodySampleToLeftWalker(const SD &walker, SD &walkerNew, const NiupNidnSample &twoBodySample);
+class NiupNidnSampleSDOperation
+{
+ public:
+    NiupNidnSampleSDOperation();
+    ~NiupNidnSampleSDOperation();
+
+    void applyToRight(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const;
+    void applyToLeft(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const;
+};
+
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation );
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight);
 void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const std::string &filename);
