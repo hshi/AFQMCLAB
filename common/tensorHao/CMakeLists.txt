@@ -11,7 +11,8 @@ set(SOURCE_HEADERS
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_2d_common_fun.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_core.h
         ${CMAKE_CURRENT_LIST_DIR}/include/tensor_fill.h
-        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_hao_ref.h)
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_hao_ref.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/tensor_myabs.h)
 
 add_subdirectory(include)
 add_subdirectory(source)
