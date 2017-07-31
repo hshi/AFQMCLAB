@@ -200,4 +200,10 @@ void AfqmcPhaseless::prepareStop()
     projectExpHalfDtK();
     writeWalkers();
     randomHaoSave();
+
+    if( method.isETAndBackGroundAdjustable )
+    {
+        if( MPIRank()==0 ) cout<<"logOneBodyWalkerRightOperation information: "<<endl;
+        logOneBodyWalkerRightOperation.print();
+    }
 }

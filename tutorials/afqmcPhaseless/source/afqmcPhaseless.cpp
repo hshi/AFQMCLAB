@@ -60,6 +60,7 @@ void AfqmcPhaseless::initialParameters()
 
 void AfqmcPhaseless::initialMixedMeasure()
 {
+    logOneBodyWalkerRightOperation.reset("dynamicOrder", 0, 1e-14);
     mixedMeasure.setModelWalker(model, phiT);
 }
 

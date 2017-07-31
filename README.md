@@ -129,6 +129,9 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+  //TODO: Use flag -DOPENMPALL, -DOPENMP, -DOPENMPLAPACKBLAS
+  
+  //TODO: Make sure compilor support mac
 
   //TODO: How to do a FCI in PySCF
   

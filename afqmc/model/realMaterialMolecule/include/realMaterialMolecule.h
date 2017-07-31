@@ -15,6 +15,11 @@
 //K is t - choleskyVecs*choleskyVecs.
 //Kp is K - choleskyBg*choleskyVecs.
 
+#ifdef MPI_HAO
+class RealMaterialMolecule;
+void MPIBcast(RealMaterialMolecule &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class RealMaterialMolecule
 {
  private:
@@ -50,7 +55,7 @@ class RealMaterialMolecule
     void read(const std::string &filename);
     void write(const std::string &filename) const;
 #ifdef MPI_HAO
-    friend void MPIBcast(RealMaterialMolecule &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(RealMaterialMolecule &buffer, int root,  const MPI_Comm& comm);
 #endif
 
     void writeBackGround(const std::string &filename) const;

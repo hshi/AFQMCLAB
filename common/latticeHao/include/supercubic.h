@@ -10,6 +10,11 @@
 #include<string>
 #include "../../tensorHao/include/tensor_all.h"
 
+#ifdef MPI_HAO
+class Supercubic;
+void MPIBcast(Supercubic &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class Supercubic
 {
  private:
@@ -44,7 +49,7 @@ class Supercubic
     void write(const std::string &filename) const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(Supercubic &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(Supercubic &buffer, int root,  const MPI_Comm& comm);
 #endif
 
  private:

@@ -4,6 +4,7 @@
 #include <complex>
 #include "tensor_hao_ref.h"
 #include "tensor_hao.h"
+#include "tensor_myabs.h"
 
 namespace tensor_hao
 {
@@ -59,7 +60,7 @@ namespace tensor_hao
      size_t L = A.size();
      const T * A_p = A.data();
      T * B_p = B.data();
-     for(size_t i=0; i<L; i++) B_p[i] = std::abs( A_p[i] );
+     for(size_t i=0; i<L; i++) B_p[i] = myabs( A_p[i] );
      return B;
  }
 
@@ -235,13 +236,13 @@ namespace tensor_hao
     //std::cout<<abs(0.123)<<" "<<std::abs(0.123)<<std::endl;
     //The result is 0 and 0.123
 
-     size_t flag=0; double abs_eta=std::abs(eta);
+     size_t flag=0; double abs_eta=myabs(eta);
 
     for(size_t i=0; i<D; i++) { if(A.rank(i) != B.rank(i) ) flag++; }
     for(size_t i=0; i<D; i++) { if(A.rankStep(i) != B.rankStep(i) ) flag++; }
     if(A.size() != B.size() ) flag++;
     const T* A_p = A.data(); const T* B_p = B.data();
-    for(size_t i=0; i<A.size(); i++) { if( std::abs( A_p[i]- B_p[i] )> abs_eta  ) flag++; }
+    for(size_t i=0; i<A.size(); i++) { if( myabs( A_p[i]- B_p[i] )> abs_eta  ) flag++; }
     return flag;
  }
 

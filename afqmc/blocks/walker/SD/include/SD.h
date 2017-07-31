@@ -9,6 +9,11 @@
 
 //Single Determinant.
 
+#ifdef MPI_HAO
+class SD;
+void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class SD
 {
  private:
@@ -46,7 +51,7 @@ class SD
     double getMemory() const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(SD &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(SD &buffer, int root,  const MPI_Comm& comm);
     void pack( std::vector<char> &buf,  int &posit ) const;
     void unpack( const std::vector<char> &buf, int &posit );
 #endif

@@ -9,6 +9,11 @@
 
 //Single Determinant, two spin species.
 
+#ifdef MPI_HAO
+class SD2s;
+void MPIBcast(SD2s &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class SD2s
 {
  private:
@@ -49,7 +54,7 @@ class SD2s
     double getMemory() const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(SD2s &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(SD2s &buffer, int root,  const MPI_Comm& comm);
     void pack( std::vector<char> &buf,  int &posit ) const;
     void unpack( const std::vector<char> &buf, int &posit );
 #endif

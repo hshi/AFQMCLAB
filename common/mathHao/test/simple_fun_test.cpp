@@ -41,9 +41,9 @@ TEST (simple_fun, exp2by2Matrix)
     b_exact = 10.299809224500716;
     c_exact = complex<double>(13.162279251686476, -8.774852834457649);
 
-    EXPECT_DOUBLE_EQ ( a_exact, a );
-    EXPECT_DOUBLE_EQ ( b_exact, b );
-    EXPECT_COMPLEX_NEAR ( c_exact, c );
+    EXPECT_NEAR ( a_exact, a, 1e-12 );
+    EXPECT_NEAR ( b_exact, b, 1e-12 );
+    EXPECT_COMPLEX_NEAR ( c_exact, c, 1e-12 );
 
     a = 0.0; b = 0.0; c = complex<double> (3.0, 2.0);
     exp2by2Matrix(a, b, c);

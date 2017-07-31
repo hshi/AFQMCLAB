@@ -8,6 +8,11 @@
 #include <string>
 #include "../../mpiHao/include/mpi_fun.h"
 
+#ifdef MPI_HAO
+class Cluster;
+void MPIBcast(Cluster &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class Cluster
 {
  private:
@@ -30,7 +35,7 @@ class Cluster
     void write(const std::string &filename) const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(Cluster &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(Cluster &buffer, int root,  const MPI_Comm& comm);
 #endif
 };
 #endif //AFQMCLAB_CLUSTER_H

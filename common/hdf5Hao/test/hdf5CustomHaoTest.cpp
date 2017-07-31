@@ -37,7 +37,7 @@ TEST(hdf5Test, returnComplexDoubleCompType)
     }
     MPIBarrier();
 
-    H5File file(filename, H5F_ACC_RDWR);
+    H5File file(filename, H5F_ACC_RDONLY);
     DataSet dataset = file.openDataSet("data");
     dataset.read( dataRead.data(), returnComplexDoubleCompType(PredType::NATIVE_DOUBLE) );
     EXPECT_VECOTR_COMPLEXDOUBLE_EQ( dataRead, dataWrite );
@@ -59,7 +59,7 @@ TEST(hdf5Test, returnDataSetSize)
     }
     MPIBarrier();
 
-    H5File file(filename, H5F_ACC_RDWR);
+    H5File file(filename, H5F_ACC_RDONLY);
     DataSet dataset = file.openDataSet("data");
     EXPECT_EQ( L*(L-1)*(L+3), returnDataSetSize(dataset) );
     file.close();

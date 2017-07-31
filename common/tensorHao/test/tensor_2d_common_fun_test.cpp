@@ -188,5 +188,5 @@ TEST(Tensor_2d_common_fun, pfaffian)
     complex<double> pf= pfaffian(A);
     complex<double> exact{-1.05,-10.3};
 
-    EXPECT_COMPLEXDOUBLE_EQ ( exact, pf);
+    EXPECT_COMPLEX_NEAR ( exact, pf, 1e-12);
 }

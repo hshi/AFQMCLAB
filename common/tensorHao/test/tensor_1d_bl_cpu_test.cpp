@@ -85,14 +85,14 @@ TEST(Tensor_1d_bl_cpu, gemvDouble)
     TensorHao<double,1> x(6), y(5), yExact(5);
     double alpha(2.0), beta(3.0);
 
-    randomFill(A); randomFill(x);
+    randomFill(A); randomFill(x); randomFill(y);
 
     for(size_t i = 0; i < A.rank(1); ++i)
     {
-        yExact(i) = 0.0;
+        yExact(i) = beta * y(i);
         for(size_t j = 0; j < A.rank(0); ++j)
         {
-            yExact(i) += alpha * A(j,i) * x(j) + beta * y(i);
+            yExact(i) += alpha * A(j,i) * x(j) ;
         }
     }
 
@@ -106,14 +106,14 @@ TEST(Tensor_1d_bl_cpu, gemvComplexDouble)
     TensorHao<complex<double>,1> x(6), y(5), yExact(5);
     complex<double> alpha(2.0, 3.0), beta(1.0, 2.0);
 
-    randomFill(A); randomFill(x);
+    randomFill(A); randomFill(x); randomFill(y);
 
     for(size_t i = 0; i < A.rank(1); ++i)
     {
-        yExact(i) = 0.0;
+        yExact(i) = beta * y(i);
         for(size_t j = 0; j < A.rank(0); ++j)
         {
-            yExact(i) += alpha * A(j,i) * x(j) + beta * y(i);
+            yExact(i) += alpha * A(j,i) * x(j);
         }
     }
 

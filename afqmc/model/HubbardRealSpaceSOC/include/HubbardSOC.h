@@ -9,6 +9,11 @@
 #include "../../../blocks/oneBodyOperator/hop/include/hop.h"
 #include "../../../blocks/twoBodyOperator/NiupNidn/include/NiupNidn.h"
 
+#ifdef MPI_HAO
+class HubbardSOC;
+void MPIBcast(HubbardSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class HubbardSOC
 {
  private:
@@ -42,7 +47,7 @@ class HubbardSOC
     void write(const std::string &filename) const;
 
 #ifdef MPI_HAO
-    friend void MPIBcast(HubbardSOC &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(HubbardSOC &buffer, int root,  const MPI_Comm& comm);
 #endif
 
     void setKEigenValueAndVector();

@@ -7,6 +7,11 @@
 
 #include "afqmcPhaselessDefine.h"
 
+#ifdef MPI_HAO
+class AfqmcPhaselessMethod;
+void MPIBcast(AfqmcPhaselessMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class AfqmcPhaselessMethod
 {
  public:
@@ -50,7 +55,7 @@ class AfqmcPhaselessMethod
     void print();
 
 #ifdef MPI_HAO
-    friend void MPIBcast(AfqmcPhaselessMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(AfqmcPhaselessMethod &buffer, int root,  const MPI_Comm& comm);
 #endif
 
  private:

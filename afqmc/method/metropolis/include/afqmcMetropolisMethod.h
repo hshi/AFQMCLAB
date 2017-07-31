@@ -7,6 +7,11 @@
 
 #include "afqmcMetropolisDefine.h"
 
+#ifdef MPI_HAO
+class AfqmcMetropolisMethod;
+void MPIBcast(AfqmcMetropolisMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+#endif
+
 class AfqmcMetropolisMethod
 {
  public:
@@ -38,7 +43,7 @@ class AfqmcMetropolisMethod
     void read(const std::string& filename);
 
 #ifdef MPI_HAO
-    friend void MPIBcast(AfqmcMetropolisMethod &buffer, int root=0,  const MPI_Comm& comm=MPI_COMM_WORLD);
+    friend void MPIBcast(AfqmcMetropolisMethod &buffer, int root,  const MPI_Comm& comm);
 #endif
 
  private:
