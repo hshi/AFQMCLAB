@@ -60,15 +60,13 @@ complex<double> HubbardSOCMeasureCommuteSDSD::returnEnergy()
     return energy;
 }
 
-TensorHao< complex<double>, 2 >  HubbardSOCMeasureCommuteSDSD::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
+void HubbardSOCMeasureCommuteSDSD::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     den += denIncrement;
 
-    TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
     addEnergy(greenMatrix, denIncrement);
-
-    return greenMatrix;
 }
 
 void HubbardSOCMeasureCommuteSDSD::write() const

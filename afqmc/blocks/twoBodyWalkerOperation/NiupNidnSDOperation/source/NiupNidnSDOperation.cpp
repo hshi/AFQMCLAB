@@ -77,22 +77,22 @@ void getForce(NiupNidnForce& force, const NiupNidn &twoBody, SDSDOperation &sdsd
 
     if( decompType == "densityCharge" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
     }
     else if( decompType == "densitySpin" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
     }
     else if( decompType == "hopCharge" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
     }
     else if( decompType == "hopSpin" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
     }
     else
@@ -118,22 +118,22 @@ void getForce(NiupNidnForce& force, const NiupNidn &twoBody, const SD &walkerLef
 
     if( decompType == "densityCharge" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
     }
     else if( decompType == "densitySpin" )
     {
-        TensorHao< complex<double>, 1 > greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
     }
     else if( decompType == "hopCharge" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
     }
     else if( decompType == "hopSpin" )
     {
-        TensorHao< complex<double>, 1 > greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
         for(size_t i = 0; i < halfL; ++i) force(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
     }
     else
@@ -255,7 +255,7 @@ tuple<complex<double>, complex<double>> measureLogTwoBodySecondOrder(const SD &w
     SDSDOperation sdsdOperation(walkerLeft, walkerRightNew);
     complex<double> logOverlap = sdsdOperation.returnLogOverlap();
 
-    TensorHao< complex<double>, 2 > greenMatrix = sdsdOperation.returnGreenMatrix();
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
     complex<double> firstOrder  = measureFirstOrder(greenMatrix, niupNidn);
     complex<double> secondOrder = measureSecondOrder(greenMatrix, niupNidn);
 

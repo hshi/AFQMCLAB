@@ -64,10 +64,7 @@ void AfqmcConstraintPath::initialWalker()
     }
     else if(method.initialWalkerFlag == "sampleFromPhiT")
     {
-        for(int i = 0; i < method.walkerSizePerThread; ++i)
-        {
-            sampleWalkerFromPhiT(walker[i], phiT);
-        }
+        setWalkerFromPhiT(walker, phiT);
     }
     else if(method.initialWalkerFlag == "readFromFile")
     {

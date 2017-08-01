@@ -6,8 +6,9 @@
 #define AFQMCLAB_HUBBARDSOCALL_H
 
 #include "HubbardSOC.h"
-#include "HubbardSOCSDOperation.h"
 #include "HubbardSOCMeasureCommuteSDSD.h"
+#include "HubbardSOCMeasureFixedSDSD.h"
 #include "HubbardSOCMeasureObserveSDSD.h"
+#include "HubbardSOCSDOperation.h"
 
 #endif //AFQMCLAB_HUBBARDSOCALL_H

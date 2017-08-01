@@ -77,42 +77,42 @@ void SD2sSD2isOperation::reSet()
 complex<double> SD2sSD2isOperation::returnLogOverlap()
 {
     calculateLUOverlap();
-    return conj(walkerLeft->getLogw())+walkerRight->getLogw()+logDeterminant(LUOverlapUp)+logDeterminant(LUOverlapDn);
+    logOverlap =conj(walkerLeft->getLogw())+walkerRight->getLogw()+logDeterminant(LUOverlapUp)+logDeterminant(LUOverlapDn);
+    return logOverlap;
 }
 
-TensorHao<complex<double>, 2> SD2sSD2isOperation::returnGreenMatrixUp()
+const TensorHao<complex<double>, 2> &SD2sSD2isOperation::returnGreenMatrixUp()
 {
     calculateLUOverlap();
     calculateTheta_T();
 
     size_t L = walkerLeft->getL();
-    TensorHao<complex<double>, 2> greenMatrixUp(L,L);
+    greenMatrixUp.resize(L,L);
     BL_NAME(gmm)( conj( walkerLeft->getWfUp() ), thetaUp_T, greenMatrixUp );
 
     return greenMatrixUp;
 }
 
-TensorHao<complex<double>, 2> SD2sSD2isOperation::returnGreenMatrixDn()
+const TensorHao<complex<double>, 2> &SD2sSD2isOperation::returnGreenMatrixDn()
 {
     calculateLUOverlap();
     calculateTheta_T();
 
     size_t L = walkerLeft->getL();
-    TensorHao<complex<double>, 2> greenMatrixDn(L,L);
+    greenMatrixDn.resize(L,L);
     BL_NAME(gmm)( conj( walkerLeft->getWfDn() ), thetaDn_T, greenMatrixDn );
 
     return greenMatrixDn;
 }
 
-TensorHao<complex<double>, 1> SD2sSD2isOperation::returnGreenDiagonalUp()
+const TensorHao<complex<double>, 1> &SD2sSD2isOperation::returnGreenDiagonalUp()
 {
     calculateLUOverlap();
     calculateTheta_T();
 
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup();
     const TensorHao<complex<double>, 2> &wfLeftUp = walkerLeft->getWfUp();
-    TensorHao<complex<double>, 1> greenDiagonalUp(L);
-    greenDiagonalUp = complex<double>(0,0);
+    greenDiagonalUp.resize(L); greenDiagonalUp = complex<double>(0,0);
     for(size_t j = 0; j < Nup; ++j)
     {
         for(size_t i = 0; i < L; ++i)
@@ -123,15 +123,14 @@ TensorHao<complex<double>, 1> SD2sSD2isOperation::returnGreenDiagonalUp()
     return greenDiagonalUp;
 }
 
-TensorHao<complex<double>, 1> SD2sSD2isOperation::returnGreenDiagonalDn()
+const TensorHao<complex<double>, 1> &SD2sSD2isOperation::returnGreenDiagonalDn()
 {
     calculateLUOverlap();
     calculateTheta_T();
 
     size_t L = walkerLeft->getL(); size_t Ndn = walkerLeft->getNdn();
     const TensorHao<complex<double>, 2> &wfLeftDn = walkerLeft->getWfDn();
-    TensorHao<complex<double>, 1> greenDiagonalDn(L);
-    greenDiagonalDn = complex<double>(0,0);
+    greenDiagonalDn.resize(L); greenDiagonalDn = complex<double>(0,0);
     for(size_t j = 0; j < Ndn; ++j)
     {
         for(size_t i = 0; i < L; ++i)
@@ -144,9 +143,11 @@ TensorHao<complex<double>, 1> SD2sSD2isOperation::returnGreenDiagonalDn()
 
 double SD2sSD2isOperation::getMemory() const
 {
-    return 8.0*2 +LUOverlapUp.A.getMemory()+LUOverlapUp.ipiv.getMemory()
-                 +LUOverlapDn.A.getMemory()+LUOverlapDn.ipiv.getMemory()
-                 +thetaUp_T.getMemory()+thetaDn_T.getMemory();
+    return 8.0*2+LUOverlapUp.A.getMemory()+LUOverlapUp.ipiv.getMemory()
+                +LUOverlapDn.A.getMemory()+LUOverlapDn.ipiv.getMemory()
+                +thetaUp_T.getMemory()+thetaDn_T.getMemory()
+                +16.0+greenMatrixUp.getMemory()+greenMatrixDn.getMemory()
+                +greenDiagonalUp.getMemory()+greenDiagonalDn.getMemory();
 }
 
 SD2sSD2isOperation::SD2sSD2isOperation(const SD2sSD2isOperation &x) { }
@@ -192,7 +193,7 @@ void setWalkerFromPhiT(vector<SD2is> &walker, const SD2s &phiT)
     {
         walker[i].resize(L, Nup, Ndn);
         walker[i].logwRef() = phiT.getLogw();
-        if( Nup > Ndn )  walker[i].wfRef() = phiT.getWfUp();
+        if( Nup >= Ndn )  walker[i].wfRef() = phiT.getWfUp();
         else walker[i].wfRef() = phiT.getWfDn();
     }
 }

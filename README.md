@@ -208,3 +208,5 @@ might need to move to `-openmp` (icpc) later.
   //TODO: Read and Write use HDF5 file? For exact diagonal code, it should be good.
 
   //TODO: FFTW GURU interface
+
+  //TODO: Is there a way to make GHF faster? returnGreenDiagonal now show return a reference to density.

@@ -37,17 +37,17 @@ void HubbardSOCMeasureObserveSDSD::reSet()
     spairSpairNum = zero;
 }
 
-TensorHao< complex<double>, 2 > HubbardSOCMeasureObserveSDSD::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    TensorHao< complex<double>, 2 > greenMatrix = HubbardSOCMeasureCommuteSDSD::addMeasurement(sdsdOperation, denIncrement);
+    HubbardSOCMeasureCommuteSDSD::addMeasurement(sdsdOperation, denIncrement);
+
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
     addGreenMatrix(greenMatrix, denIncrement);
     addDensityDensity(greenMatrix, denIncrement);
     addSplusSminus(greenMatrix, denIncrement);
     addSminusSplus(greenMatrix, denIncrement);
     addSpairSpair(greenMatrix, denIncrement);
-
-    return greenMatrix;
 }
 
 void HubbardSOCMeasureObserveSDSD::write() const
