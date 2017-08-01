@@ -10,6 +10,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 set(PLATFORM "DEFUALT" CACHE STRING "The platform to be run.")
 include("PLATFORM_${PLATFORM}")
+message("-- Using the compiler ${CMAKE_CXX_COMPILER_ID}")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

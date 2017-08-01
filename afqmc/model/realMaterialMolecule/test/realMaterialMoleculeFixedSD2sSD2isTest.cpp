@@ -138,7 +138,8 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
     double dt=0.01; double cap=0.21;
     RealMaterialMoleculeFixedSD2sSD2is meas(model, walkerLeft);
     SD2sSD2isOperation walkerWalkerOperation(walkerLeft, walkerRight);
-    CholeskyRealForce force = meas.getForce(model.returnExpMinusAlphaV(dt), walkerWalkerOperation, cap);
+    CholeskyReal twoBody=model.returnExpMinusAlphaV(dt);
+    CholeskyRealForce force = meas.getForce(twoBody, walkerWalkerOperation, cap);
     MPIBcast(force);
 
     TensorHao<complex<double>, 2 > greenUp = walkerWalkerOperation.returnGreenMatrixUp();
@@ -156,8 +157,7 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
             }
         }
         tmp -= choleskyBg(k);
-        tmp *= sqrt(-dt*complex<double>(1.0, 0.0));
-
+        tmp *= twoBody.getSqrtMinusDt();
         if( tmp.real() > cap ) forceExact(k) = cap;
         else if( tmp.real() <-cap ) forceExact(k) =-cap;
         else forceExact(k) = tmp.real();

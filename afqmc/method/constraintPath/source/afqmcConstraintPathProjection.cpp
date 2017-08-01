@@ -95,9 +95,14 @@ void AfqmcConstraintPath::popControl()
     }
 
     vector<double> weight;
+
+#ifdef MPI_HAO
     if( MPIRank()==0 ) weight.resize( method.walkerSize );
     MPI_Gather( weightPerThread.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION,
                 weight.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD );
+#else
+    weight =  weightPerThread;
+#endif
 
     vector<int> table;
     if( MPIRank()==0 ) table=popConfiguration( MPISize(), weight );
