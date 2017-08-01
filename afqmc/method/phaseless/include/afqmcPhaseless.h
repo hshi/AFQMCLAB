@@ -28,7 +28,7 @@ class AfqmcPhaseless
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
 
-    ModelMeasureMixedEstimator mixedMeasure;
+    ModelMeasureMixed mixedMeasure;
 
  public:
     AfqmcPhaseless();

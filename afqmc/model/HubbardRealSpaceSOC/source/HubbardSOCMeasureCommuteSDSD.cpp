@@ -2,45 +2,45 @@
 // Created by boruoshihao on 1/13/17.
 //
 
-#include "../include/HubbardSOCSDSDMeasureCommute.h"
+#include "../include/HubbardSOCMeasureCommuteSDSD.h"
 #include "../../../utilities/manipulateMCData/include/writeThreadSum.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-HubbardSOCSDSDMeasureCommute::HubbardSOCSDSDMeasureCommute()
+HubbardSOCMeasureCommuteSDSD::HubbardSOCMeasureCommuteSDSD()
 {
     initModelNullptr();
     reSet();
 }
 
-HubbardSOCSDSDMeasureCommute::HubbardSOCSDSDMeasureCommute(const HubbardSOC &hubbardSOC_)
+HubbardSOCMeasureCommuteSDSD::HubbardSOCMeasureCommuteSDSD(const HubbardSOC &hubbardSOC_)
 {
     setModel(hubbardSOC_);
     reSet();
 }
 
-HubbardSOCSDSDMeasureCommute::~HubbardSOCSDSDMeasureCommute()
+HubbardSOCMeasureCommuteSDSD::~HubbardSOCMeasureCommuteSDSD()
 {
 
 }
 
-const HubbardSOC *HubbardSOCSDSDMeasureCommute::getHubbardSOC() const
+const HubbardSOC *HubbardSOCMeasureCommuteSDSD::getHubbardSOC() const
 {
     return hubbardSOC;
 }
 
-void HubbardSOCSDSDMeasureCommute::initModelNullptr()
+void HubbardSOCMeasureCommuteSDSD::initModelNullptr()
 {
     hubbardSOC = nullptr;
 }
 
-void HubbardSOCSDSDMeasureCommute::setModel(const HubbardSOC &hubbardSOC_)
+void HubbardSOCMeasureCommuteSDSD::setModel(const HubbardSOC &hubbardSOC_)
 {
     hubbardSOC = &hubbardSOC_;
 }
 
-void HubbardSOCSDSDMeasureCommute::reSet()
+void HubbardSOCMeasureCommuteSDSD::reSet()
 {
     complex<double> zero(0,0);
     den = zero;
@@ -50,7 +50,7 @@ void HubbardSOCSDSDMeasureCommute::reSet()
     RNum = zero;
 }
 
-complex<double> HubbardSOCSDSDMeasureCommute::returnEnergy()
+complex<double> HubbardSOCMeasureCommuteSDSD::returnEnergy()
 {
     complex<double> Htot   = MPISum(HNum);
     complex<double> denTot = MPISum(den);
@@ -60,7 +60,7 @@ complex<double> HubbardSOCSDSDMeasureCommute::returnEnergy()
     return energy;
 }
 
-TensorHao< complex<double>, 2 >  HubbardSOCSDSDMeasureCommute::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
+TensorHao< complex<double>, 2 >  HubbardSOCMeasureCommuteSDSD::addMeasurement(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     den += denIncrement;
 
@@ -71,20 +71,20 @@ TensorHao< complex<double>, 2 >  HubbardSOCSDSDMeasureCommute::addMeasurement(SD
     return greenMatrix;
 }
 
-void HubbardSOCSDSDMeasureCommute::write() const
+void HubbardSOCMeasureCommuteSDSD::write() const
 {
     writeThreadSum(den, "den.dat", ios::app);
     writeThreadSum(HNum, "HNum.dat", ios::app);
 }
 
-void HubbardSOCSDSDMeasureCommute::writeKNumVumRum() const
+void HubbardSOCMeasureCommuteSDSD::writeKNumVumRum() const
 {
     writeThreadSum(KNum, "KNum.dat", ios::app);
     writeThreadSum(VNum, "VNum.dat", ios::app);
     writeThreadSum(RNum, "RNum.dat", ios::app);
 }
 
-void HubbardSOCSDSDMeasureCommute::addEnergy(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureCommuteSDSD::addEnergy(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
 {
     complex<double> Kenergy(0,0), Venergy(0,0), Renergy(0,0);
 
@@ -126,17 +126,17 @@ void HubbardSOCSDSDMeasureCommute::addEnergy(const TensorHao<complex<double>, 2>
     RNum += ( Renergy * denIncrement );
 }
 
-double HubbardSOCSDSDMeasureCommute::getMemory() const
+double HubbardSOCMeasureCommuteSDSD::getMemory() const
 {
     return 8.0+16.0*5;
 }
 
-HubbardSOCSDSDMeasureCommute::HubbardSOCSDSDMeasureCommute(const HubbardSOCSDSDMeasureCommute &x)
+HubbardSOCMeasureCommuteSDSD::HubbardSOCMeasureCommuteSDSD(const HubbardSOCMeasureCommuteSDSD &x)
 {
 
 }
 
-HubbardSOCSDSDMeasureCommute &HubbardSOCSDSDMeasureCommute::operator=(const HubbardSOCSDSDMeasureCommute &x)
+HubbardSOCMeasureCommuteSDSD &HubbardSOCMeasureCommuteSDSD::operator=(const HubbardSOCMeasureCommuteSDSD &x)
 {
     return *this;
 }

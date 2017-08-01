@@ -2,7 +2,7 @@
 // Created by boruoshihao on 1/13/17.
 //
 
-#include "../include/HubbardSOCSDSDMeasureObserve.h"
+#include "../include/HubbardSOCMeasureObserveSDSD.h"
 #include "../../../../common/testHao/gtest_custom.h"
 #include "../../../../common/readWriteHao/include/readWriteHao.h"
 
@@ -76,7 +76,7 @@ TEST(HubbardSOCSDSDMeasureTest, energy)
 
     SDSDOperation sdsdOperation(sdLeft, sdRight);
 
-    HubbardSOCSDSDMeasureObserve hubbardSOCSDSDMeasure(hubbard);
+    HubbardSOCMeasureObserveSDSD hubbardSOCSDSDMeasure(hubbard);
     hubbardSOCSDSDMeasure.addMeasurement( sdsdOperation, 1.0 );
     hubbardSOCSDSDMeasure.write();
 

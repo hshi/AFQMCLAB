@@ -31,7 +31,7 @@ void AfqmcConstraintPath::writeAndResetMeasurement()
 
 void AfqmcConstraintPath::setET()
 {
-    ModelCommuteMeasure commuteMeasure(model);
+    ModelMeasureCommute commuteMeasure(model);
     complex<double> overlap;
     WalkerRight walkerTemp;
 

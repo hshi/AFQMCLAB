@@ -21,7 +21,7 @@ typedef SD  WalkerRight;
 typedef HopSDOperation OneBodyWalkerOperation;
 typedef NiupNidnSampleSDOperation TwoBodyWalkerOperation;
 typedef SDSDOperation WalkerWalkerOperation;
-typedef HubbardSOCSDSDMeasureCommute ModelCommuteMeasure;
-typedef HubbardSOCSDSDMeasureObserve ModelObserveMeasure;
+typedef HubbardSOCMeasureCommuteSDSD ModelMeasureCommute;
+typedef HubbardSOCMeasureObserveSDSD ModelMeasureObserve;
 
 #endif //AFQMCLAB_AFQMCMETROPOLISDEFINE_H

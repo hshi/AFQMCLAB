@@ -8,7 +8,7 @@
 #include "realMaterialMolecule.h"
 #include "../../../blocks/walkerWalkerOperation/SD2sSD2isOperation/include/SD2sSD2isOperation.h"
 
-class RealMaterialMoleculeFixedSD2sSD2is
+class RealMaterialMoleculeMeasureFixedSD2sSD2is
 {
  private:
     const RealMaterialMolecule *realMaterialMolecule;
@@ -23,9 +23,9 @@ class RealMaterialMoleculeFixedSD2sSD2is
     tensor_hao::TensorHao<std::complex<double>,2> wfUpDaggerT, wfDnDaggerT;
     tensor_hao::TensorHao<std::complex<double>,3> wfUpDaggerCholeskyVecs, wfDnDaggerCholeskyVecs;
  public:
-    RealMaterialMoleculeFixedSD2sSD2is();
-    RealMaterialMoleculeFixedSD2sSD2is(const RealMaterialMolecule& realMaterialMolecule_, const SD2s &walkerLeft_);
-    ~RealMaterialMoleculeFixedSD2sSD2is();
+    RealMaterialMoleculeMeasureFixedSD2sSD2is();
+    RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMolecule& realMaterialMolecule_, const SD2s &walkerLeft_);
+    ~RealMaterialMoleculeMeasureFixedSD2sSD2is();
 
     void initModelWalkerNullptr();
     void setModelWalker(const RealMaterialMolecule& realMaterialMolecule_, const SD2s &walkerLeft_);
@@ -38,8 +38,8 @@ class RealMaterialMoleculeFixedSD2sSD2is
     void write() const;
     double getMemory() const;
  private:
-    RealMaterialMoleculeFixedSD2sSD2is(const RealMaterialMoleculeFixedSD2sSD2is& x);
-    RealMaterialMoleculeFixedSD2sSD2is & operator  = (const RealMaterialMoleculeFixedSD2sSD2is& x);
+    RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMoleculeMeasureFixedSD2sSD2is& x);
+    RealMaterialMoleculeMeasureFixedSD2sSD2is & operator  = (const RealMaterialMoleculeMeasureFixedSD2sSD2is& x);
 
     void initWfDaggerT();
     void initWfDaggerCholeskyVecs();

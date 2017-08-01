@@ -26,7 +26,7 @@ class AfqmcConstraintPath
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
 
-    ModelCommuteMeasure commuteMeasure;
+    ModelMeasureCommute commuteMeasure;
 
  public:
     AfqmcConstraintPath();

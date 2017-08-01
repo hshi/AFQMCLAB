@@ -29,8 +29,8 @@ class AfqmcMetropolis
     std::vector<std::complex<double>> logWeightLeftInBlock, logWeightLeftSave;
 
     long updateNumber, acceptNumber, singleUpdateNumber, singleAcceptNumber;
-    ModelCommuteMeasure commuteMeasure;
-    ModelObserveMeasure observeMeasure;
+    ModelMeasureCommute commuteMeasure;
+    ModelMeasureObserve observeMeasure;
 
     long varianceMeasureNumber, varianceSampleNumber;
 

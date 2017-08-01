@@ -65,7 +65,7 @@ void AfqmcConstraintPath::estimateMemory()
     mem += walker.getMemory() * method.walkerSizePerThread;
 
     WalkerWalkerOperation walkerWalkerOperation(phiT, walker);
-    ModelCommuteMeasure commuteMeasure(model);
+    ModelMeasureCommute commuteMeasure(model);
     commuteMeasure.addMeasurement(walkerWalkerOperation, 1.0);
     mem += walkerWalkerOperation.getMemory();
     mem += commuteMeasure.getMemory();

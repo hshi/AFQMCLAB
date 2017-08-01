@@ -7,7 +7,7 @@
 
 #include "HubbardSOC.h"
 #include "HubbardSOCSDOperation.h"
-#include "HubbardSOCSDSDMeasureCommute.h"
-#include "HubbardSOCSDSDMeasureObserve.h"
+#include "HubbardSOCMeasureCommuteSDSD.h"
+#include "HubbardSOCMeasureObserveSDSD.h"
 
 #endif //AFQMCLAB_HUBBARDSOCALL_H

@@ -42,6 +42,7 @@ class AfqmcConstraintPathMethod
 #endif
 
  private:
+    void setDefault();
     void analysis();
 };
 

@@ -1,7 +1,7 @@
 //
 // Created by boruoshihao on 6/5/17.
 //
-#include "../include/realMaterialMoleculeFixedSD2sSD2is.h"
+#include "../include/realMaterialMoleculeMeasureFixedSD2sSD2is.h"
 
 using namespace std;
 using namespace H5;
@@ -77,7 +77,7 @@ class realMaterialMoleculeFixedSD2sSD2isTest: public ::testing::Test
 
 TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, returnEnergy)
 {
-    RealMaterialMoleculeFixedSD2sSD2is meas(model, walkerLeft);
+    RealMaterialMoleculeMeasureFixedSD2sSD2is meas(model, walkerLeft);
     SD2sSD2isOperation walkerWalkerOperation(walkerLeft, walkerRight);
     meas.addMeasurement(walkerWalkerOperation, 1.0);
 
@@ -136,7 +136,7 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, returnEnergy)
 TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
 {
     double dt=0.01; double cap=0.21;
-    RealMaterialMoleculeFixedSD2sSD2is meas(model, walkerLeft);
+    RealMaterialMoleculeMeasureFixedSD2sSD2is meas(model, walkerLeft);
     SD2sSD2isOperation walkerWalkerOperation(walkerLeft, walkerRight);
     CholeskyReal twoBody=model.returnExpMinusAlphaV(dt);
     CholeskyRealForce force = meas.getForce(twoBody, walkerWalkerOperation, cap);

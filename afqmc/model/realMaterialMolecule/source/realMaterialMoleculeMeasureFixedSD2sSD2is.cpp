@@ -2,37 +2,37 @@
 // Created by boruoshihao on 6/5/17.
 //
 
-#include "../include/realMaterialMoleculeFixedSD2sSD2is.h"
+#include "../include/realMaterialMoleculeMeasureFixedSD2sSD2is.h"
 #include "../../../utilities/manipulateMCData/include/writeThreadSum.h"
 
 using namespace std;
 using namespace tensor_hao;
 
-RealMaterialMoleculeFixedSD2sSD2is::RealMaterialMoleculeFixedSD2sSD2is()
+RealMaterialMoleculeMeasureFixedSD2sSD2is::RealMaterialMoleculeMeasureFixedSD2sSD2is()
 {
     initModelWalkerNullptr();
     reSet();
 }
 
-RealMaterialMoleculeFixedSD2sSD2is::RealMaterialMoleculeFixedSD2sSD2is(const RealMaterialMolecule &realMaterialMolecule_,
+RealMaterialMoleculeMeasureFixedSD2sSD2is::RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMolecule &realMaterialMolecule_,
                                                                        const SD2s &walkerLeft_)
 {
     setModelWalker(realMaterialMolecule_, walkerLeft_);
     reSet();
 }
 
-RealMaterialMoleculeFixedSD2sSD2is::~RealMaterialMoleculeFixedSD2sSD2is()
+RealMaterialMoleculeMeasureFixedSD2sSD2is::~RealMaterialMoleculeMeasureFixedSD2sSD2is()
 {
 
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::initModelWalkerNullptr()
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::initModelWalkerNullptr()
 {
     realMaterialMolecule = nullptr;
     walkerLeft = nullptr;
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::setModelWalker(const RealMaterialMolecule &realMaterialMolecule_, const SD2s &walkerLeft_)
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::setModelWalker(const RealMaterialMolecule &realMaterialMolecule_, const SD2s &walkerLeft_)
 {
     if( realMaterialMolecule_.getL() != walkerLeft_.getL() ) {cout<<"Model L does not consistent with walker L!"<<endl; exit(1);}
     if( realMaterialMolecule_.getNup() != walkerLeft_.getNup() ) {cout<<"Model Nup does not consistent with walker Nup!"<<endl; exit(1);}
@@ -44,7 +44,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::setModelWalker(const RealMaterialMolecu
     initWfDaggerCholeskyVecs();
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::reSet()
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::reSet()
 {
     complex<double> zero(0,0);
 
@@ -55,7 +55,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::reSet()
     HNum = zero;
 }
 
-complex<double> RealMaterialMoleculeFixedSD2sSD2is::returnEnergy()
+complex<double> RealMaterialMoleculeMeasureFixedSD2sSD2is::returnEnergy()
 {
     complex<double> Htot   = MPISum(HNum);
     complex<double> denTot = MPISum(den);
@@ -65,7 +65,7 @@ complex<double> RealMaterialMoleculeFixedSD2sSD2is::returnEnergy()
     return energy;
 }
 
-TensorHao<double,1> RealMaterialMoleculeFixedSD2sSD2is::returnCholeskyBg()
+TensorHao<double,1> RealMaterialMoleculeMeasureFixedSD2sSD2is::returnCholeskyBg()
 {
     size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
 
@@ -81,7 +81,7 @@ TensorHao<double,1> RealMaterialMoleculeFixedSD2sSD2is::returnCholeskyBg()
     return choleskyBg;
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::addMeasurement(SD2sSD2isOperation &sd2sSD2isOperation, complex<double> denIncrement)
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::addMeasurement(SD2sSD2isOperation &sd2sSD2isOperation, complex<double> denIncrement)
 {
     checkWalkerLeft(sd2sSD2isOperation);
 
@@ -93,7 +93,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::addMeasurement(SD2sSD2isOperation &sd2s
     addEnergy(thetaUp_T, thetaDn_T, denIncrement);
 }
 
-CholeskyRealForce RealMaterialMoleculeFixedSD2sSD2is::getForce(const CholeskyReal &choleskyReal,
+CholeskyRealForce RealMaterialMoleculeMeasureFixedSD2sSD2is::getForce(const CholeskyReal &choleskyReal,
                                                                SD2sSD2isOperation &sd2sSD2isOperation,
                                                                double cap)
 {
@@ -117,7 +117,7 @@ CholeskyRealForce RealMaterialMoleculeFixedSD2sSD2is::getForce(const CholeskyRea
     return force;
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::write() const
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::write() const
 {
     writeThreadSum(den, "den.dat", ios::app);
     writeThreadSum(TNum, "TNum.dat", ios::app);
@@ -126,7 +126,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::write() const
     writeThreadSum(HNum, "HNum.dat", ios::app);
 }
 
-double RealMaterialMoleculeFixedSD2sSD2is::getMemory() const
+double RealMaterialMoleculeMeasureFixedSD2sSD2is::getMemory() const
 {
     double mem(0.0);
     mem += 8.0*2;
@@ -137,17 +137,17 @@ double RealMaterialMoleculeFixedSD2sSD2is::getMemory() const
     return mem;
 }
 
-RealMaterialMoleculeFixedSD2sSD2is::RealMaterialMoleculeFixedSD2sSD2is(const RealMaterialMoleculeFixedSD2sSD2is &x)
+RealMaterialMoleculeMeasureFixedSD2sSD2is::RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMoleculeMeasureFixedSD2sSD2is &x)
 {
 
 }
 
-RealMaterialMoleculeFixedSD2sSD2is & RealMaterialMoleculeFixedSD2sSD2is::operator=(const RealMaterialMoleculeFixedSD2sSD2is &x)
+RealMaterialMoleculeMeasureFixedSD2sSD2is & RealMaterialMoleculeMeasureFixedSD2sSD2is::operator=(const RealMaterialMoleculeMeasureFixedSD2sSD2is &x)
 {
     return *this;
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::initWfDaggerT()
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::initWfDaggerT()
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
 
@@ -164,7 +164,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::initWfDaggerT()
     BL_NAME(gmm)(walkerLeft->getWfDn(), tComplex, wfDnDaggerT, 'C');
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::initWfDaggerCholeskyVecs()
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::initWfDaggerCholeskyVecs()
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
     size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
@@ -187,16 +187,16 @@ void RealMaterialMoleculeFixedSD2sSD2is::initWfDaggerCholeskyVecs()
     }
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::checkWalkerLeft(const SD2sSD2isOperation &sd2sSD2isOperation)
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::checkWalkerLeft(const SD2sSD2isOperation &sd2sSD2isOperation)
 {
     if( walkerLeft != sd2sSD2isOperation.getWalkerLeft() )
     {
-        cout<<"Error!!! RealMaterialMoleculeFixedSD2sSD2is only accept SD2sSD2isOperation with fixed SD2s!"<<endl;
+        cout<<"Error!!! RealMaterialMoleculeMeasureFixedSD2sSD2is only accept SD2sSD2isOperation with fixed SD2s!"<<endl;
         exit(1);
     }
 }
 
-void RealMaterialMoleculeFixedSD2sSD2is::addEnergy(const TensorHao<complex<double>, 2> &thetaUp_T,
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::addEnergy(const TensorHao<complex<double>, 2> &thetaUp_T,
                                                    const TensorHao<complex<double>, 2> &thetaDn_T,
                                                    complex<double> denIncrement)
 {
@@ -223,7 +223,7 @@ void RealMaterialMoleculeFixedSD2sSD2is::addEnergy(const TensorHao<complex<doubl
     HNum += ( Henergy * denIncrement );
 }
 
-complex<double> RealMaterialMoleculeFixedSD2sSD2is::calculateTenergy(const TensorHao<complex<double>, 2> &thetaUp_T,
+complex<double> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateTenergy(const TensorHao<complex<double>, 2> &thetaUp_T,
                                                                      const TensorHao<complex<double>, 2> &thetaDn_T)
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
@@ -237,7 +237,7 @@ complex<double> RealMaterialMoleculeFixedSD2sSD2is::calculateTenergy(const Tenso
     return Tenergy;
 }
 
-TensorHao<complex<double>, 1> RealMaterialMoleculeFixedSD2sSD2is::calculateCholeskyBg(const TensorHao<complex<double>, 2> &thetaUp_T,
+TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyBg(const TensorHao<complex<double>, 2> &thetaUp_T,
                                                                                       const TensorHao<complex<double>, 2> &thetaDn_T)
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
@@ -257,7 +257,7 @@ TensorHao<complex<double>, 1> RealMaterialMoleculeFixedSD2sSD2is::calculateChole
     return choleskyBg;
 }
 
-TensorHao<complex<double>, 1> RealMaterialMoleculeFixedSD2sSD2is::calculateCholeskyEx(const TensorHao<complex<double>, 2> &thetaUp_T,
+TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyEx(const TensorHao<complex<double>, 2> &thetaUp_T,
                                                                                       const TensorHao<complex<double>, 2> &thetaDn_T)
 {
     size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();

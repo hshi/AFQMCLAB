@@ -8,7 +8,7 @@
 #include "HubbardSOC.h"
 #include "../../../blocks/walkerWalkerOperation/SDSDOperation/include/SDSDOperation.h"
 
-class HubbardSOCSDSDMeasureCommute
+class HubbardSOCMeasureCommuteSDSD
 {
  private:
     const HubbardSOC * hubbardSOC;
@@ -16,9 +16,9 @@ class HubbardSOCSDSDMeasureCommute
     std::complex<double> HNum, KNum, VNum, RNum;
 
  public:
-    HubbardSOCSDSDMeasureCommute();
-    HubbardSOCSDSDMeasureCommute(const HubbardSOC &hubbardSOC_);
-    ~HubbardSOCSDSDMeasureCommute();
+    HubbardSOCMeasureCommuteSDSD();
+    HubbardSOCMeasureCommuteSDSD(const HubbardSOC &hubbardSOC_);
+    ~HubbardSOCMeasureCommuteSDSD();
 
     const HubbardSOC *getHubbardSOC() const;
 
@@ -33,8 +33,8 @@ class HubbardSOCSDSDMeasureCommute
 
  private:
     void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
-    HubbardSOCSDSDMeasureCommute(const HubbardSOCSDSDMeasureCommute& x);
-    HubbardSOCSDSDMeasureCommute & operator  = (const HubbardSOCSDSDMeasureCommute& x);
+    HubbardSOCMeasureCommuteSDSD(const HubbardSOCMeasureCommuteSDSD& x);
+    HubbardSOCMeasureCommuteSDSD & operator  = (const HubbardSOCMeasureCommuteSDSD& x);
 };
 
 #endif //AFQMCLAB_HUBBARDSOCSDSDMEASURECOMMUTE_H

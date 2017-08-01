@@ -5,9 +5,9 @@
 #ifndef AFQMCLAB_HUBBARDSOCSDSDMEASUREOBSERVE_H
 #define AFQMCLAB_HUBBARDSOCSDSDMEASUREOBSERVE_H
 
-#include "HubbardSOCSDSDMeasureCommute.h"
+#include "HubbardSOCMeasureCommuteSDSD.h"
 
-class HubbardSOCSDSDMeasureObserve : public HubbardSOCSDSDMeasureCommute
+class HubbardSOCMeasureObserveSDSD : public HubbardSOCMeasureCommuteSDSD
 {
  private:
     tensor_hao::TensorHao<std::complex<double>, 2> greenMatrixNum;
@@ -17,9 +17,9 @@ class HubbardSOCSDSDMeasureObserve : public HubbardSOCSDSDMeasureCommute
     tensor_hao::TensorHao<std::complex<double>, 2> spairSpairNum;
 
  public:
-    HubbardSOCSDSDMeasureObserve();
-    HubbardSOCSDSDMeasureObserve(const HubbardSOC &hubbardSOC_);
-    ~HubbardSOCSDSDMeasureObserve();
+    HubbardSOCMeasureObserveSDSD();
+    HubbardSOCMeasureObserveSDSD(const HubbardSOC &hubbardSOC_);
+    ~HubbardSOCMeasureObserveSDSD();
 
     void reSet();
     tensor_hao::TensorHao< std::complex<double>, 2 > addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
@@ -33,8 +33,8 @@ class HubbardSOCSDSDMeasureObserve : public HubbardSOCSDSDMeasureCommute
     void addSminusSplus(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
     void addSpairSpair(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
 
-    HubbardSOCSDSDMeasureObserve(const HubbardSOCSDSDMeasureObserve& x);
-    HubbardSOCSDSDMeasureObserve & operator  = (const HubbardSOCSDSDMeasureObserve& x);
+    HubbardSOCMeasureObserveSDSD(const HubbardSOCMeasureObserveSDSD& x);
+    HubbardSOCMeasureObserveSDSD & operator  = (const HubbardSOCMeasureObserveSDSD& x);
 };
 
 #endif //AFQMCLAB_HUBBARDSOCSDSDMEASUREOBSERVE_H

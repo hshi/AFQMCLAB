@@ -8,6 +8,7 @@ using namespace std;
 
 AfqmcConstraintPathMethod::AfqmcConstraintPathMethod()
 {
+    setDefault();
 
 }
 
@@ -64,6 +65,27 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
     MPIBcast(buffer.seed);
 }
 #endif
+
+
+void AfqmcConstraintPathMethod::setDefault()
+{
+    dt=0.01;
+    decompType = "densitySpin";
+    forceType = "dynamicForce";
+    sampleCap = 0.5;
+    stabilizeStep = 10;
+    populationControlStep=10;
+    timesliceSize=6600;
+    thermalStep=600;
+    measureSkipTimesliceStep=5;
+    writeSkipTimesliceStep=100;
+    initialPhiTFlag = "readFromFile";
+    initialWalkerFlag = "readFromFile";
+    setETMaxStep = 100;
+    walkerSizePerThread =300;
+    walkerSize = walkerSizePerThread * MPISize();
+    seed = 985456376;
+}
 
 void AfqmcConstraintPathMethod::analysis()
 {

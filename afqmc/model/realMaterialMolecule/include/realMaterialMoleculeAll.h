@@ -6,7 +6,7 @@
 #define AFQMCLAB_REALMATERIALMOLECULEALL_H
 
 #include "realMaterialMolecule.h"
-#include "realMaterialMoleculeFixedSD2sSD2is.h"
+#include "realMaterialMoleculeMeasureFixedSD2sSD2is.h"
 #include "realMaterialMoleculeSD2isOperation.h"
 #include "realMaterialMoleculeSD2sOperation.h"
 

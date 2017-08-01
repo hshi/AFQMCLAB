@@ -1,0 +1,15 @@
+//
+// Created by Hao Shi on 8/1/17.
+//
+
+#ifndef AFQMCLAB_HUBBARDSOCMEASUREFIXEDSDSD_H
+#define AFQMCLAB_HUBBARDSOCMEASUREFIXEDSDSD_H
+
+
+class HubbardSOCMeasureFixedSDSD
+{
+
+};
+
+
+#endif //AFQMCLAB_HUBBARDSOCMEASUREFIXEDSDSD_H

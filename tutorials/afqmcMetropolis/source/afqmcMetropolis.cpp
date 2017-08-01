@@ -80,14 +80,14 @@ void AfqmcMetropolis::estimateMemory()
     WalkerWalkerOperation walkerWalkerOperation(walkerLeft, walkerRight);
     if( method.measureType == "commute" )
     {
-        ModelCommuteMeasure commuteMeasure(model);
+        ModelMeasureCommute commuteMeasure(model);
         commuteMeasure.addMeasurement(walkerWalkerOperation, 1.0);
         mem += walkerWalkerOperation.getMemory();
         mem += commuteMeasure.getMemory();
     }
     else if( method.measureType == "observable" )
     {
-        ModelObserveMeasure observeMeasure(model);
+        ModelMeasureObserve observeMeasure(model);
         observeMeasure.addMeasurement(walkerWalkerOperation, 1.0);
         mem += walkerWalkerOperation.getMemory();
         mem += observeMeasure.getMemory();

@@ -112,7 +112,9 @@ void AfqmcPhaseless::modifyGM(bool isAdjustable)
             if( ratioMin>ratio ) ratioMin = ratio;
         }
 
+#ifdef MPI_HAO
         MPIReduce( ratioMin, ratioMinGlobal, MPI_MIN );
+#endif
         //Assume method.mgsStep = exp( alpha * ratioMinGlobal )
         method.mgsStep = log(method.mgsStepTolerance)/log(ratioMinGlobal) * method.mgsStep;
         MPIBcast( method.mgsStep );
@@ -153,10 +155,13 @@ void AfqmcPhaseless::popControl(bool isAdjustable)
     }
 
     vector<double> weight;
+#ifdef MPI_HAO
     if( MPIRank()==0 ) weight.resize( method.walkerSize );
     MPI_Gather( weightPerThread.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION,
                 weight.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD );
-
+#else
+    weight = weightPerThread;
+#endif
     double ratio, average;
     tie(ratio, average) = popCheck(weight);
     if( MPIRank()==0 )
