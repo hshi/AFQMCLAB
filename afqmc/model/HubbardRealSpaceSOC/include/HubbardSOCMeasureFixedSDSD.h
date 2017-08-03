@@ -15,7 +15,9 @@ class HubbardSOCMeasureFixedSDSD
     const SD *walkerLeft;
 
     std::complex<double> den;
-    std::complex<double>  KNum, VNum, RNum, HNum;
+    std::complex<double> KNum, VNum, RNum, HNum;
+    tensor_hao::TensorHao<std::complex<double>, 1> NupNum, NdnNum, SplusNum, SminusNum;
+    std::complex<double> NupTotNum, NdnTotNum, SplusTotNum, SminusTotNum;
 
     tensor_hao::TensorHao<std::complex<double>,2> wfDaggerK;
 
@@ -36,11 +38,13 @@ class HubbardSOCMeasureFixedSDSD
 
  private:
     HubbardSOCMeasureFixedSDSD(const HubbardSOCMeasureFixedSDSD& x);
-    HubbardSOCMeasureFixedSDSD & operator  = (const HubbardSOCMeasureFixedSDSD& x);
+    HubbardSOCMeasureFixedSDSD & operator = (const HubbardSOCMeasureFixedSDSD& x);
 
     void initWfDaggerK();
     void checkWalkerLeft(const SDSDOperation &sdsdOperation);
     void addEnergy(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
+    void addNupNdn(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
+    void addSplusSminus(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
 };
 
 
