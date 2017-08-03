@@ -137,6 +137,8 @@ might need to move to `-openmp` (icpc) later.
   
   //TODO: Check to make sure M-GS and PopControl step is good enough. Automaticly adjust thee steps
   
+  //TODO: Check phaseless code.
+  
   //TODO: Yuanyao mention MKL zgemv do not have openmp version. Check that?
 
   //TODO: Check the code for low optimization level v.s high optimization level: correct or not? speedUp? 

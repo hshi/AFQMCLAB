@@ -9,7 +9,6 @@ using namespace std;
 AfqmcConstraintPathMethod::AfqmcConstraintPathMethod()
 {
     setDefault();
-
 }
 
 AfqmcConstraintPathMethod::~AfqmcConstraintPathMethod()
@@ -19,49 +18,135 @@ AfqmcConstraintPathMethod::~AfqmcConstraintPathMethod()
 
 void AfqmcConstraintPathMethod::read(const string &filename)
 {
-    ifstream file;
-    file.open(filename, ios::in);
+    readBySearchString(dt, "dt", filename);
+    readBySearchString(thermalSize, "thermalSize", filename);
+    readBySearchString(writeNumber, "writeNumber", filename);
+    readBySearchString(measureSkipStep, "measureSkipStep", filename);
+    readBySearchString(writeSkipStep, "writeSkipStep", filename);
+    
+    readBySearchString(walkerSizePerThread, "walkerSizePerThread", filename);
+    walkerSize = walkerSizePerThread*MPISize();
+
+    readBySearchString(decompType, "decompType", filename);
+    readBySearchString(forceType, "forceType", filename);
+    readBySearchString(forceCap, "forceCap", filename);
+    readBySearchString(initialPhiTFlag, "initialPhiTFlag", filename);
+    readBySearchString(initialWalkerFlag, "initialWalkerFlag", filename);
+
+    readBySearchString(mgsStep, "mgsStep", filename);
+    readBySearchString(popControlStep, "popControlStep", filename);
+
+    readBySearchString(ET, "ET", filename);
+    readBySearchString(ETAdjustStep, "ETAdjustStep", filename);
+    readBySearchString(ETAdjustMaxSize, "ETAdjustMaxSize", filename);
+
+    readBySearchString(seed, "seed", filename);
+    
+    analysis();
+}
+
+void AfqmcConstraintPathMethod::write(const string &filename)
+{
+    ofstream file;
+    file.open(filename, ios::out|ios::trunc);
     if ( ! file.is_open() ) {cout << "Error opening file in File!!! "<<filename<<endl; exit(1);}
 
-    file>>dt;
-    file>>decompType;
-    file>>forceType;
-    file>>sampleCap;
-    file>>stabilizeStep;
-    file>>populationControlStep;
-    file>>timesliceSize;
-    file>>thermalStep;
-    file>>measureSkipTimesliceStep;
-    file>>writeSkipTimesliceStep;
-    file>>initialPhiTFlag;
-    file>>initialWalkerFlag;
-    file>>setETMaxStep;
-    file>>walkerSizePerThread;
-    file>>seed;
+    file<<left<<endl;
+
+    file<<setw(36)<<"dt "<<setw(26)<<dt<<endl;
+    file<<setw(36)<<"thermalSize "<<setw(26)<<thermalSize<<endl;
+    file<<setw(36)<<"writeNumber "<<setw(26)<<writeNumber<<endl;
+    file<<setw(36)<<"measureSkipStep "<<setw(26)<<measureSkipStep<<endl;
+    file<<setw(36)<<"writeSkipStep "<<setw(26)<<writeSkipStep<<endl;
+    file<<endl;
+
+    file<<setw(36)<<"walkerSizePerThread "<<setw(26)<<walkerSizePerThread<<endl;
+    file<<endl;
+
+    file<<setw(36)<<"decompType "<<setw(26)<<decompType<<endl;
+    file<<setw(36)<<"forceType "<<setw(26)<<forceType<<endl;
+    file<<setw(36)<<"forceCap "<<setw(26)<<forceCap<<endl;
+    file<<setw(36)<<"initialPhiTFlag "<<setw(26)<<initialPhiTFlag<<endl;
+    file<<setw(36)<<"initialWalkerFlag "<<setw(26)<<initialWalkerFlag<<endl;
+    file<<endl;
+
+    file<<setw(36)<<"mgsStep "<<setw(26)<<mgsStep<<endl;
+    file<<setw(36)<<"popControlStep "<<setw(26)<<popControlStep<<endl;
+    file<<endl;
+
+    file<<setw(36)<<"ET "<<setw(26)<<ET<<endl;
+    file<<setw(36)<<"ETAdjustStep "<<setw(26)<<ETAdjustStep<<endl;
+    file<<setw(36)<<"ETAdjustMaxSize "<<setw(26)<<ETAdjustMaxSize<<endl;
+    file<<endl;
+
+    file<<setw(36)<<"seed "<<setw(26)<<seed<<endl;
+    file<<endl;
 
     file.close();
+}
 
-    analysis();
+void AfqmcConstraintPathMethod::print()
+{
+    cout<<left<<endl;
+
+    cout<<setw(36)<<"AFQMC parameters: \n"<<endl;
+
+    cout<<setw(36)<<"dt "<<setw(26)<<dt<<endl;
+    cout<<setw(36)<<"thermalSize "<<setw(26)<<thermalSize<<endl;
+    cout<<setw(36)<<"writeNumber "<<setw(26)<<writeNumber<<endl;
+    cout<<setw(36)<<"measureSkipStep "<<setw(26)<<measureSkipStep<<endl;
+    cout<<setw(36)<<"writeSkipStep "<<setw(26)<<writeSkipStep<<endl;
+    cout<<endl;
+    
+    cout<<setw(36)<<"walkerSizePerThread "<<setw(26)<<walkerSizePerThread<<endl;
+    cout<<setw(36)<<"walkerSize "<<setw(26)<<walkerSize<<endl;
+    cout<<endl;
+    
+    cout<<setw(36)<<"decompType "<<setw(26)<<decompType<<endl;
+    cout<<setw(36)<<"forceType "<<setw(26)<<forceType<<endl;
+    cout<<setw(36)<<"forceCap "<<setw(26)<<forceCap<<endl;
+    cout<<setw(36)<<"initialPhiTFlag "<<setw(26)<<initialPhiTFlag<<endl;
+    cout<<setw(36)<<"initialWalkerFlag "<<setw(26)<<initialWalkerFlag<<endl;
+    cout<<endl;
+    
+    cout<<setw(36)<<"mgsStep "<<setw(26)<<mgsStep<<endl;
+    cout<<setw(36)<<"popControlStep "<<setw(26)<<popControlStep<<endl;
+    cout<<endl;
+    
+    cout<<setw(36)<<"ET "<<setw(26)<<ET<<endl;
+    cout<<setw(36)<<"ETAdjustStep "<<setw(26)<<ETAdjustStep<<endl;
+    cout<<setw(36)<<"ETAdjustMaxSize "<<setw(26)<<ETAdjustMaxSize<<endl;
+    cout<<endl;
+    
+    cout<<setw(36)<<"seed "<<setw(26)<<seed<<endl;
+    cout<<endl;
 }
 
 #ifdef MPI_HAO
 void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
 {
     MPIBcast(buffer.dt);
-    MPIBcast(buffer.decompType);
-    MPIBcast(buffer.forceType);
-    MPIBcast(buffer.sampleCap);
-    MPIBcast(buffer.stabilizeStep);
-    MPIBcast(buffer.populationControlStep);
-    MPIBcast(buffer.timesliceSize);
-    MPIBcast(buffer.thermalStep);
-    MPIBcast(buffer.measureSkipTimesliceStep);
-    MPIBcast(buffer.writeSkipTimesliceStep);
-    MPIBcast(buffer.initialPhiTFlag);
-    MPIBcast(buffer.initialWalkerFlag);
-    MPIBcast(buffer.setETMaxStep);
+    MPIBcast(buffer.thermalSize);
+    MPIBcast(buffer.writeNumber);
+    MPIBcast(buffer.measureSkipStep);
+    MPIBcast(buffer.writeSkipStep);
+    
     MPIBcast(buffer.walkerSizePerThread);
     MPIBcast(buffer.walkerSize);
+    
+    MPIBcast(buffer.decompType);
+    MPIBcast(buffer.forceType);
+    MPIBcast(buffer.forceCap);
+    MPIBcast(buffer.initialPhiTFlag);
+    MPIBcast(buffer.initialWalkerFlag);
+    
+    MPIBcast(buffer.mgsStep);
+    MPIBcast(buffer.popControlStep);
+
+    MPIBcast(buffer.ET);
+    MPIBcast(buffer.ETAdjustStep);
+    MPIBcast(buffer.ETAdjustMaxSize);
+
     MPIBcast(buffer.seed);
 }
 #endif
@@ -70,71 +155,48 @@ void MPIBcast(AfqmcConstraintPathMethod &buffer, int root, MPI_Comm const &comm)
 void AfqmcConstraintPathMethod::setDefault()
 {
     dt=0.01;
-    decompType = "densitySpin";
-    forceType = "dynamicForce";
-    sampleCap = 0.5;
-    stabilizeStep = 10;
-    populationControlStep=10;
-    timesliceSize=6600;
-    thermalStep=600;
-    measureSkipTimesliceStep=5;
-    writeSkipTimesliceStep=100;
-    initialPhiTFlag = "readFromFile";
-    initialWalkerFlag = "readFromFile";
-    setETMaxStep = 100;
-    walkerSizePerThread =300;
+    thermalSize = 600;
+    writeNumber = 60;
+    measureSkipStep = 5;
+    writeSkipStep = 100;
+
+    walkerSizePerThread = 1000 / MPISize();
     walkerSize = walkerSizePerThread * MPISize();
+
+    decompType = "None";
+    forceType = "dynamicForce";
+    forceCap = 1.5;
+    initialPhiTFlag = "readFromFile";   
+    initialWalkerFlag = "readFromFile";
+
+    mgsStep = 10;
+    popControlStep = 10;
+
+    ET = -10;
+    ETAdjustStep = 10;
+    ETAdjustMaxSize = 200;
+
     seed = 985456376;
 }
 
 void AfqmcConstraintPathMethod::analysis()
 {
-    walkerSize = walkerSizePerThread*MPISize();
-
-    if( (timesliceSize-thermalStep)%writeSkipTimesliceStep != 0 )
+    if( std::abs(dt) < 1e-12 )
     {
-        size_t numberOfWrite=(timesliceSize-thermalStep)/writeSkipTimesliceStep;
-        timesliceSize = writeSkipTimesliceStep*numberOfWrite+thermalStep;
-        cout<<"Warning!!! (timesliceSize-thermalStep)%writeSkipTimesliceStep is not zero!"<<endl;
-        cout<<"Cut timesliceSize to avoid unnecessary projection step: "<<timesliceSize<<endl;
+        cout<<"The code will measure everything without projection!"<<endl;
+        return;
     }
 
-    if( dt <= 0.0 )
+    if( dt < 0.0 )
     {
         cout<<"Error!!! dt must be postive!"<<endl;
         exit(1);
     }
 
-    if( sampleCap < 0.0 )
+    if( writeSkipStep%measureSkipStep != 0 )
     {
-        cout<<"Error!!! sampleCap must be positive or zero!"<<endl;
+        cout<<"Error!!! writeSkipStep%measureSkipStep is not zero!"<<endl;
         exit(1);
-    }
-
-    if( dt * stabilizeStep > 2.0 )
-    {
-        cout<<"Warning!!! Stabilization beta is larger than 2.0!"<<endl;
-    }
-
-    if( dt * populationControlStep > 2.0 )
-    {
-        cout<<"Warning!!! Population control beta is larger than 2.0!"<<endl;
-    }
-
-    if( thermalStep > timesliceSize )
-    {
-        cout<<"Warning!!! thermalStep is larger than timesliceSize!"<<endl;
-    }
-
-    if( writeSkipTimesliceStep%measureSkipTimesliceStep != 0 )
-    {
-        cout<<"Error!!! writeSkipTimesliceStep%measureSkipTimesliceStep is not zero!"<<endl;
-        exit(1);
-    }
-
-    if( dt * setETMaxStep > 2.0 )
-    {
-        cout<<"Warning!!! dt * setETMaxStep is larger than 2.0!"<<endl;
     }
 
     if( walkerSizePerThread <= 0 )
@@ -142,4 +204,24 @@ void AfqmcConstraintPathMethod::analysis()
         cout<<"Error!!! walkerSizePerThread is not a positive number!"<<endl;
         exit(1);
     }
+
+    if( forceCap < 0.0 )
+    {
+        cout<<"Error!!! forceCap must be positive or zero!"<<endl;
+        exit(1);
+    }
+
+    if( ETAdjustMaxSize > thermalSize )
+    {
+        cout << "Error!!! We should not adjust ET and backGround after thermalizing!" << endl;
+        exit(1);
+    }
+    
+    if( writeNumber==0 )
+    {
+        cout<<"Warning!!! The code will not write any measurement to disk!"<<endl;
+    }
+    
+    cout<<"Total projection time is "<<(thermalSize+writeNumber*writeSkipStep)*dt<<endl;
+    cout<<"Total projection timesliceSize is "<<thermalSize+writeNumber*writeSkipStep<<endl;
 }

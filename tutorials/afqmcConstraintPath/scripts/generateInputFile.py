@@ -7,9 +7,9 @@ from setHoping import *
 latt_n   = [4,4]
 ktwist   = [0.0,0.0]
 t1       = 1.0
-U        = -4.0
+U        = 4.0
 mu       = 0.0
-Ntot     = 16
+Ntot     = 10
 UpDnFlag = 0    # 0 up=dn, 1 up=conj(dn) ==> different twist
 
 #Set lattice information
@@ -49,39 +49,43 @@ f.close()
 
 
 #Method Parameter
-dt                        =  0.01
-decompType                =  "densityCharge" # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
-forceType                 =  "dynamicForce"  # "dynamicForce", "constForce"
-sampleCap                 =  1.0
-stabilizeStep             =  10
-populationControlStep     =  10
-timesliceSize             =  3000
-thermalStep               =  0
-measureSkipTimesliceStep  =  5
-writeSkipTimesliceStep    =  20
-initialPhiTFlag           =  "setFromModel"  #"setFromModel", "setRandomly", "readFromFile"
-initialWalkerFlag         =  "setFromModel"  #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
-setETMaxStep              =  100
-walkerSizePerThread       =  500
-seed                      =  985456376  # -1. read file, 0. random, else is seeds
+dt                  = 0.01
+thermalSize         = 600
+writeNumber         = 60
+measureSkipStep     = 5
+writeSkipStep       = 100
+walkerSizePerThread = 1000
+decompType          = "densityCharge"  # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
+forceType           = "dynamicForce"   # "dynamicForce", "constForce"
+forceCap            = 1.5
+initialPhiTFlag     = "setFromModel"   #"setFromModel", "setRandomly", "readFromFile"
+initialWalkerFlag   = "setFromModel"   #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
+mgsStep             = 10
+popControlStep      = 10
+ET                  = -10.20
+ETAdjustStep        = 10
+ETAdjustMaxSize     = 200
+seed                = 985456376        # -1. read file, 0. random, else is seeds
 
 #write method_param
 f = open('afqmc_param', 'w')
-f.write('{:26.18e} \n'.format(dt                      ) )
-f.write(   '{:>26} \n'.format(decompType              ) )
-f.write(   '{:>26} \n'.format(forceType               ) )
-f.write('{:26.18e} \n'.format(sampleCap               ) )
-f.write(   '{:26d} \n'.format(stabilizeStep           ) )
-f.write(   '{:26d} \n'.format(populationControlStep   ) )
-f.write(   '{:26d} \n'.format(timesliceSize           ) )
-f.write(   '{:26d} \n'.format(thermalStep             ) )
-f.write(   '{:26d} \n'.format(measureSkipTimesliceStep) )
-f.write(   '{:26d} \n'.format(writeSkipTimesliceStep  ) )
-f.write(   '{:>26} \n'.format(initialPhiTFlag         ) )
-f.write(   '{:>26} \n'.format(initialWalkerFlag       ) )
-f.write(   '{:>26} \n'.format(setETMaxStep            ) )
-f.write(   '{:>26} \n'.format(walkerSizePerThread     ) )
-f.write(   '{:26d} \n'.format(seed                    ) )
+f.write(" {:<36} {:<26.18e} \n".format("dt", dt ) )
+f.write(" {:<36} {:<26} \n".format("thermalSize", thermalSize) )
+f.write(" {:<36} {:<26} \n".format("writeNumber", writeNumber) )
+f.write(" {:<36} {:<26} \n".format("measureSkipStep", measureSkipStep) )
+f.write(" {:<36} {:<26} \n".format("writeSkipStep", writeSkipStep) )
+f.write(" {:<36} {:<26} \n".format("walkerSizePerThread",walkerSizePerThread) )
+f.write(" {:<36} {:<26} \n".format("decompType",decompType) )
+f.write(" {:<36} {:<26} \n".format("forceType", forceType) )
+f.write(" {:<36} {:<26.18e} \n".format("forceCap", forceCap) )
+f.write(" {:<36} {:<26} \n".format("initialPhiTFlag",initialPhiTFlag) )
+f.write(" {:<36} {:<26} \n".format("initialWalkerFlag",initialWalkerFlag) )
+f.write(" {:<36} {:<26} \n".format("mgsStep", mgsStep) )
+f.write(" {:<36} {:<26} \n".format("popControlStep", popControlStep) )
+f.write(" {:<36} {:<26.18e} \n".format("ET", ET) )
+f.write(" {:<36} {:<26} \n".format("ETAdjustStep", ETAdjustStep) )
+f.write(" {:<36} {:<26} \n".format("ETAdjustMaxSize", ETAdjustMaxSize) )
+f.write(" {:<36} {:<26} \n".format("seed", seed) )
 f.close()
 
 #write constForce_param

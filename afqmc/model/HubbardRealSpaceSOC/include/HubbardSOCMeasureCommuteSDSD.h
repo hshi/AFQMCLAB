@@ -32,9 +32,9 @@ class HubbardSOCMeasureCommuteSDSD
     double getMemory() const;
 
  private:
-    void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
     HubbardSOCMeasureCommuteSDSD(const HubbardSOCMeasureCommuteSDSD& x);
     HubbardSOCMeasureCommuteSDSD & operator  = (const HubbardSOCMeasureCommuteSDSD& x);
+    void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &greenMatrix, std::complex<double> denIncrement);
 };
 
 #endif //AFQMCLAB_HUBBARDSOCSDSDMEASURECOMMUTE_H

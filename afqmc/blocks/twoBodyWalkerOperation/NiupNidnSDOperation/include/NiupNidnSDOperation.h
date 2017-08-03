@@ -19,14 +19,13 @@ class NiupNidnSampleSDOperation
     void applyToRight(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const;
     void applyToLeft(const NiupNidnSample &oneBody, const SD &walker, SD &walkerNew) const;
 };
-
-void getForce(NiupNidnForce &force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation );
-void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight);
-void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const std::string &filename);
-
-std::tuple < std::complex<double>, std::complex<double> >
-measureLogTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn);
-
-std::complex<double> measureLogTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
-                                                      const NiupNidn &niupNidn, double sampleCap, size_t sampleSize = 1000);
+//
+//void getForce(NiupNidnForce &force, const NiupNidn &twoBody, SDSDOperation &sdsdOperation );
+//void getForce(NiupNidnForce &force, const NiupNidn &twoBody, const SD &walkerLeft, const SD &walkerRight);
+//
+//std::tuple < std::complex<double>, std::complex<double> >
+//measureLogTwoBodySecondOrder(const SD &walkerLeft, const SD &walkerRight, const NiupNidn &niupNidn);
+//
+//std::complex<double> measureLogTwoBodyForceBiasSample(const SD &walkerLeft, const SD &walkerRight,
+//                                                      const NiupNidn &niupNidn, double sampleCap, size_t sampleSize = 1000);
 #endif //AFQMCLAB_NIUPNIDNSDOPERATION_H

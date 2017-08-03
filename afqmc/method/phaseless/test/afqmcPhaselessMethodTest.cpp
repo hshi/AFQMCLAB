@@ -51,7 +51,7 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
     if( MPIRank()==0 ) method.read(filename);
     MPIBcast(method);
 
-    EXPECT_EQ( method.dt, 0.02 );
+    EXPECT_DOUBLE_EQ( method.dt, 0.02 );
     EXPECT_EQ( method.timesliceSize, static_cast<size_t>(8000) );
     EXPECT_EQ( method.thermalSize, static_cast<size_t>(1000) );
     EXPECT_EQ( method.measureSkipStep, static_cast<size_t>(20) );
@@ -61,19 +61,19 @@ TEST(afqmcConstraintPathMethodTest, readAndBcast)
     EXPECT_EQ( method.walkerSize, 200*MPISize() );
 
     EXPECT_EQ( method.forceType, "constForce" );
-    EXPECT_EQ( method.forceCap, 0.5 );
+    EXPECT_DOUBLE_EQ( method.forceCap, 0.5 );
     EXPECT_EQ( method.initialPhiTFlag, "setRandomly" );
     EXPECT_EQ( method.initialWalkerFlag, "setRandomly" );
 
     EXPECT_EQ( method.mgsStep, static_cast<size_t>(20) );
     EXPECT_EQ( method.isMgsStepAdjustable, true );
-    EXPECT_EQ( method.mgsStepTolerance, 0.3 );
+    EXPECT_DOUBLE_EQ( method.mgsStepTolerance, 0.3 );
 
     EXPECT_EQ( method.popControlStep, static_cast<size_t>(50) );
     EXPECT_EQ( method.isPopControlStepAdjustable, true );
-    EXPECT_EQ( method.popControlStepTolerance, 2.2) ;
+    EXPECT_DOUBLE_EQ( method.popControlStepTolerance, 2.2) ;
 
-    EXPECT_EQ( method.ET, -18.0 );
+    EXPECT_DOUBLE_EQ( method.ET, -18.0 );
     EXPECT_EQ( method.isETAndBackGroundAdjustable, true );
     EXPECT_EQ( method.ETAndBackGroundAdjustStep, static_cast<size_t>(20) );
     EXPECT_EQ( method.ETAndBackGroundAdjustMaxSize, static_cast<size_t>(120) );

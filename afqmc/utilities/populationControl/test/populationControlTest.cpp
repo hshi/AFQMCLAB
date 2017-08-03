@@ -11,17 +11,19 @@ using namespace std;
 
 TEST(populationControlTest, check)
 {
-    int L=10; vector<double> a(L); double ratio, average;
+    int L=10; vector<double> a(L); double minW, maxW, avgW;
 
     for(int i=0; i<L; i++) a[i]=i+1.0;
-    tie(ratio,average) = popCheck(a);
-    EXPECT_DOUBLE_EQ(ratio, 5.5);
-    EXPECT_DOUBLE_EQ(average, 5.5);
+    tie(minW, maxW, avgW) = popCheck(a);
+    EXPECT_DOUBLE_EQ(minW, 1.0);
+    EXPECT_DOUBLE_EQ(maxW, 10);
+    EXPECT_DOUBLE_EQ(avgW, 5.5);
 
     for(int i=0; i<L; i++) a[i]=1.0; a[5] =6.0;
-    tie(ratio,average) = popCheck(a);
-    EXPECT_DOUBLE_EQ(ratio, 4.0);
-    EXPECT_DOUBLE_EQ(average, 1.5);
+    tie(minW, maxW, avgW) = popCheck(a);
+    EXPECT_DOUBLE_EQ(minW, 1.0);
+    EXPECT_DOUBLE_EQ(maxW, 6.0);
+    EXPECT_DOUBLE_EQ(avgW, 1.5);
 }
 
 TEST(populationControlTest, configuration)

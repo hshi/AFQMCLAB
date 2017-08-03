@@ -5,24 +5,20 @@
 
 using namespace std;
 
-//Return ratio and average value of weight
-tuple <double, double> popCheck(const std::vector<double> &weight)
+//Return min, max and average weight
+tuple <double, double, double> popCheck(const std::vector<double> &weight)
 {
     int L=weight.size();
     double sum=0.0; for(int i=0; i<L; i++) sum+=weight[i];
-    vector<double> prob(L); for(int i=0; i<L; i++) prob[i]=weight[i]/sum;
 
-    double maxProb(0.0), minProb(1.0);
+    double maxW(0.0), minW(1e20);
     for(int i = 0;  i< L; i++)
     {
-        if( maxProb < prob[i] ) maxProb = prob[i];
-        if( minProb > prob[i] ) minProb = prob[i];
+        if( maxW < weight[i] ) maxW = weight[i];
+        if( minW > weight[i] ) minW = weight[i];
     }
 
-    double ratioMax = maxProb*L;
-    double ratioMin = 1.0/(minProb*L);
-
-    return make_tuple( max(ratioMax,ratioMin), sum/(L*1.0) );
+    return make_tuple( minW, maxW, sum/(L*1.0) );
 }
 
 vector<int> popConfiguration(int size, const vector<double>& weight)

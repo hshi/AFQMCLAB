@@ -13,40 +13,33 @@ void AfqmcConstraintPath::addMeasurement()
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+        if( walkerIsAlive[i] )
+        {
+            oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
 
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
+            walkerWalkerOperation.set(phiT, walkerTemp);
 
-        overlap = exp( walkerWalkerOperation.returnLogOverlap() );
+            overlap = exp( walkerWalkerOperation.returnLogOverlap() );
 
-        commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
+            mixedMeasure.addMeasurement(walkerWalkerOperation, overlap);
+        }
     }
 }
 
 void AfqmcConstraintPath::writeAndResetMeasurement()
 {
-    commuteMeasure.write();
-    commuteMeasure.reSet();
+    mixedMeasure.reSet();
+    mixedMeasure.write();
 }
 
-void AfqmcConstraintPath::setET()
+void AfqmcConstraintPath::adjustETAndResetMeasurement()
 {
-    ModelMeasureCommute commuteMeasure(model);
-    complex<double> overlap;
-    WalkerRight walkerTemp;
+    method.ET = ( mixedMeasure.returnEnergy() ).real();
 
-    for(int i = 0; i < method.walkerSizePerThread; ++i)
+    if( MPIRank()==0 )
     {
-        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
-        
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
-
-        overlap = exp( walkerWalkerOperation.returnLogOverlap() );
-
-        commuteMeasure.addMeasurement(walkerWalkerOperation, overlap);
+        cout<<"\nAdjust trial energy: "<<method.ET<<"\n"<<endl;
     }
 
-    ET = ( commuteMeasure.returnEnergy() ).real();
-
-    if( MPIRank()==0 ) cout<<"\nSet trial energy: "<<ET<<"\n"<<endl;
+    mixedMeasure.reSet();
 }

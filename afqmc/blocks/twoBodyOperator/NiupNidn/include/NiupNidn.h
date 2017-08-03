@@ -46,10 +46,11 @@ class NiupNidn
     const tensor_hao::TensorHao<std::complex<double>, 1> &getConstDiag11() const;
 
     NiupNidnForce readForce(const std::string &filename) const;
-    NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap=1e300) const;
-    double logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap = 1e300) const;
-    double sumOfAuxFromForce(const NiupNidnForce &force, double gammaForceCap = 1e300) const;
+    NiupNidnAux sampleAuxFromForce(const NiupNidnForce &force) const;
+    double logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force) const;
     NiupNidnSample getTwoBodySampleFromAux(const NiupNidnAux &aux) const;
+    NiupNidnSample getTwoBodySampleFromAuxForce(const NiupNidnAux &aux, const NiupNidnForce &force) const;
+
     size_t getAuxSize() const;
     size_t getAuxDiffSize(const NiupNidnAux &auxOne, const NiupNidnAux &auxTwo) const;
     double getMemory() const;
@@ -65,6 +66,7 @@ class NiupNidn
                       const tensor_hao::TensorHao<double,1> &hx,
                       const tensor_hao::TensorHao<double,1> &hy,
                       const tensor_hao::TensorHao<double,1> &hz);
+    void setTwoBodySampleMatrix(NiupNidnSample &twoBodySample, const NiupNidnAux &aux) const;
 };
 
 #endif //AFQMCLAB_NIUPNIDN_H

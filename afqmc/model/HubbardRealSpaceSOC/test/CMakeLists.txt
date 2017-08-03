@@ -1,6 +1,8 @@
 set(SOURCE_TESTS
+        createZeroUInputFile.cpp
         HubbardSOCTest.cpp
-        HubbardSOCSDSDMeasureTest.cpp)
+        HubbardSOCMeasureSDSDTest.cpp
+        HubbardSOCMeasureFixedSDSDTest.cpp)
 
 add_executable(afqmcHubbardRealSpaceSOCTest ${SOURCE_HEADERS} ${SOURCE_TESTS})
 

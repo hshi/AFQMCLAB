@@ -57,29 +57,23 @@ NiupNidnForce NiupNidn::readForce(const std::string &filename) const
 {
     NiupNidnForce force(L);
 
-    if( !checkFile(filename) ) force = complex<double>(0,0);
+    if( !checkFile(filename) ) force = 0.0;
     else readFile( force.size(), force.data(), filename );
 
     return force;
 }
 
-NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gammaForceCap) const
+NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force) const
 {
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
 
-    if( gammaForceCap < 0.0 ) gammaForceCap=0.0;
-
     NiupNidnAux aux(L);
-    double gammaForce, expPlus, expMinus, prob;
+    double expPlus, expMinus, prob;
 
     for(size_t i=0; i<L; i++)
     {
-        gammaForce = ( gamma(i) * force(i) ).real();
-        if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
-        if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
-
-        expMinus = exp( -gammaForce );
-        expPlus = exp( gammaForce );
+        expMinus = exp( -force(i) );
+        expPlus = exp( force(i) );
         prob = expMinus / (expMinus + expPlus);
 
         if( uniformHao() < prob ) aux(i) = -1;
@@ -89,42 +83,18 @@ NiupNidnAux NiupNidn::sampleAuxFromForce(const NiupNidnForce &force, double gamm
     return aux;
 }
 
-double NiupNidn::logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force, double gammaForceCap) const
+double NiupNidn::logProbOfAuxFromForce(const NiupNidnAux &aux, const NiupNidnForce &force) const
 {
     if( L != aux.size() ) { cout<<"Error!!! Aux size does not consistent with L! "<<aux.size()<<endl; exit(1); }
     if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
 
-    double logProb(0), gammaForce(0);
-
+    double logProb(0);
     for(size_t i=0; i<L; i++)
     {
-        gammaForce = ( gamma(i) * force(i) ).real();
-        if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
-        if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
-
-        logProb += aux(i) * gammaForce;
+        logProb += aux(i)*force(i) - log( exp(force(i)) + exp(-force(i)) );
     }
-    logProb += log(0.5) * L;
 
     return logProb;
-}
-
-double NiupNidn::sumOfAuxFromForce(const NiupNidnForce &force, double gammaForceCap) const
-{
-    if( L != force.size() ) { cout<<"Error!!! Force size does not consistent with L! "<<force.size()<<endl; exit(1); }
-
-    double gammaForce(0);
-    double sum(1.0);
-    for(size_t i=0; i<L; i++)
-    {
-        gammaForce = ( gamma(i) * force(i) ).real();
-        if( gammaForce > gammaForceCap  ) gammaForce = gammaForceCap;
-        if( gammaForce < -gammaForceCap ) gammaForce = -gammaForceCap;
-
-        sum *= 0.5 * ( exp( gammaForce ) + exp( -gammaForce) );
-    }
-
-    return sum;
 }
 
 NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
@@ -133,78 +103,25 @@ NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
 
     NiupNidnSample twoBodySample(L);
 
+    setTwoBodySampleMatrix(twoBodySample, aux);
+    
     if( decompType == "densityCharge" )
     {
         KahanData<complex<double>> gammaAuxSum;
         for(size_t i = 0; i < L; ++i) gammaAuxSum += aux(i)*1.0*gamma(i);
         twoBodySample.logw = log(0.5)*L + dtUSum*0.5 - gammaAuxSum.returnSum();
-
-        //  ( exp(gamma x)    0      ) ( constDiag00 constDiag01 )
-        //  (    0      exp(gamma x) ) ( constDiag10 constDiag11 )
-        complex<double> expGammaAux;
-        for(size_t i = 0; i < L; ++i)
-        {
-            expGammaAux = exp( aux(i)*1.0*gamma(i) );
-
-            twoBodySample.diag00(i) = expGammaAux * constDiag00(i);
-            twoBodySample.diag10(i) = expGammaAux * constDiag10(i);
-            twoBodySample.diag01(i) = expGammaAux * constDiag01(i);
-            twoBodySample.diag11(i) = expGammaAux * constDiag11(i);
-        }
     }
     else if( decompType == "densitySpin" )
     {
         twoBodySample.logw = log(0.5)*L;
-
-        //  ( exp(gamma x)       0        ) ( constDiag00 constDiag01 )
-        //  (    0          exp(-gamma x) ) ( constDiag10 constDiag11 )
-        complex<double> expGammaAux, expMinusGammaAux;
-        for(size_t i = 0; i < L; ++i)
-        {
-            expGammaAux = exp( aux(i)*1.0*gamma(i) );
-            expMinusGammaAux = 1.0 / expGammaAux;
-
-            twoBodySample.diag00(i) = expGammaAux * constDiag00(i);
-            twoBodySample.diag10(i) = expMinusGammaAux * constDiag10(i);
-            twoBodySample.diag01(i) = expGammaAux * constDiag01(i);
-            twoBodySample.diag11(i) = expMinusGammaAux * constDiag11(i);
-        }
     }
     else if( decompType == "hopCharge" )
     {
         twoBodySample.logw = log(0.5)*L;
-
-        //   (  cosh(gamma x)  sinh(gamma x) )  ( constDiag00 constDiag01 )
-        //   (  sinh(gamma x)  cosh(gamma x) )  ( constDiag10 constDiag11 )
-        complex<double> coshGammaAux, sinhGammaAux;
-        for(size_t i = 0; i < L; ++i)
-        {
-            coshGammaAux = cosh( aux(i)*1.0*gamma(i) );
-            sinhGammaAux = sinh( aux(i)*1.0*gamma(i) );
-
-            twoBodySample.diag00(i) = coshGammaAux * constDiag00(i) + sinhGammaAux * constDiag10(i);
-            twoBodySample.diag10(i) = sinhGammaAux * constDiag00(i) + coshGammaAux * constDiag10(i);
-            twoBodySample.diag01(i) = coshGammaAux * constDiag01(i) + sinhGammaAux * constDiag11(i);
-            twoBodySample.diag11(i) = sinhGammaAux * constDiag01(i) + coshGammaAux * constDiag11(i);
-        }
     }
     else if( decompType == "hopSpin" )
     {
         twoBodySample.logw = log(0.5)*L;
-
-        //   (  cos(gamma x) sin(gamma x) ) ( constDiag00 constDiag01 )
-        //   ( -sin(gamma x) cos(gamma x) ) ( constDiag10 constDiag11 )
-        complex<double> cosGammaAux, sinGammaAux;
-        for(size_t i = 0; i < L; ++i)
-        {
-            cosGammaAux = cos( aux(i)*1.0*gamma(i) );
-            sinGammaAux = sin( aux(i)*1.0*gamma(i) );
-
-            twoBodySample.diag00(i) =  cosGammaAux * constDiag00(i) + sinGammaAux * constDiag10(i);
-            twoBodySample.diag10(i) = -sinGammaAux * constDiag00(i) + cosGammaAux * constDiag10(i);
-            twoBodySample.diag01(i) =  cosGammaAux * constDiag01(i) + sinGammaAux * constDiag11(i);
-            twoBodySample.diag11(i) = -sinGammaAux * constDiag01(i) + cosGammaAux * constDiag11(i);
-        }
     }
     else
     {
@@ -212,6 +129,15 @@ NiupNidnSample NiupNidn::getTwoBodySampleFromAux(const NiupNidnAux &aux) const
         exit(1);
     }
 
+    return twoBodySample;
+}
+
+NiupNidnSample NiupNidn::getTwoBodySampleFromAuxForce(const NiupNidnAux &aux, const NiupNidnForce &force) const
+{
+    NiupNidnSample twoBodySample = getTwoBodySampleFromAux(aux);
+    
+    twoBodySample.logw = twoBodySample.logw - logProbOfAuxFromForce(aux, force);
+    
     return twoBodySample;
 }
 
@@ -320,5 +246,77 @@ void NiupNidn::setConstDiag(double dt,
 
         constDiag00(i) = a; constDiag01(i) = conj(c);
         constDiag10(i) = c; constDiag11(i) = b;
+    }
+}
+
+void NiupNidn::setTwoBodySampleMatrix(NiupNidnSample &twoBodySample, const NiupNidnAux &aux) const
+{
+    if( decompType == "densityCharge" )
+    {
+        //  ( exp(gamma x)    0      ) ( constDiag00 constDiag01 )
+        //  (    0      exp(gamma x) ) ( constDiag10 constDiag11 )
+        complex<double> expGammaAux;
+        for(size_t i = 0; i < L; ++i)
+        {
+            expGammaAux = exp( aux(i)*1.0*gamma(i) );
+
+            twoBodySample.diag00(i) = expGammaAux * constDiag00(i);
+            twoBodySample.diag10(i) = expGammaAux * constDiag10(i);
+            twoBodySample.diag01(i) = expGammaAux * constDiag01(i);
+            twoBodySample.diag11(i) = expGammaAux * constDiag11(i);
+        }
+    }
+    else if( decompType == "densitySpin" )
+    {
+        //  ( exp(gamma x)       0        ) ( constDiag00 constDiag01 )
+        //  (    0          exp(-gamma x) ) ( constDiag10 constDiag11 )
+        complex<double> expGammaAux, expMinusGammaAux;
+        for(size_t i = 0; i < L; ++i)
+        {
+            expGammaAux = exp( aux(i)*1.0*gamma(i) );
+            expMinusGammaAux = 1.0 / expGammaAux;
+
+            twoBodySample.diag00(i) = expGammaAux * constDiag00(i);
+            twoBodySample.diag10(i) = expMinusGammaAux * constDiag10(i);
+            twoBodySample.diag01(i) = expGammaAux * constDiag01(i);
+            twoBodySample.diag11(i) = expMinusGammaAux * constDiag11(i);
+        }
+    }
+    else if( decompType == "hopCharge" )
+    {
+        //   (  cosh(gamma x)  sinh(gamma x) )  ( constDiag00 constDiag01 )
+        //   (  sinh(gamma x)  cosh(gamma x) )  ( constDiag10 constDiag11 )
+        complex<double> coshGammaAux, sinhGammaAux;
+        for(size_t i = 0; i < L; ++i)
+        {
+            coshGammaAux = cosh( aux(i)*1.0*gamma(i) );
+            sinhGammaAux = sinh( aux(i)*1.0*gamma(i) );
+
+            twoBodySample.diag00(i) = coshGammaAux * constDiag00(i) + sinhGammaAux * constDiag10(i);
+            twoBodySample.diag10(i) = sinhGammaAux * constDiag00(i) + coshGammaAux * constDiag10(i);
+            twoBodySample.diag01(i) = coshGammaAux * constDiag01(i) + sinhGammaAux * constDiag11(i);
+            twoBodySample.diag11(i) = sinhGammaAux * constDiag01(i) + coshGammaAux * constDiag11(i);
+        }
+    }
+    else if( decompType == "hopSpin" )
+    {
+        //   (  cos(gamma x) sin(gamma x) ) ( constDiag00 constDiag01 )
+        //   ( -sin(gamma x) cos(gamma x) ) ( constDiag10 constDiag11 )
+        complex<double> cosGammaAux, sinGammaAux;
+        for(size_t i = 0; i < L; ++i)
+        {
+            cosGammaAux = cos( aux(i)*1.0*gamma(i) );
+            sinGammaAux = sin( aux(i)*1.0*gamma(i) );
+
+            twoBodySample.diag00(i) =  cosGammaAux * constDiag00(i) + sinGammaAux * constDiag10(i);
+            twoBodySample.diag10(i) = -sinGammaAux * constDiag00(i) + cosGammaAux * constDiag10(i);
+            twoBodySample.diag01(i) =  cosGammaAux * constDiag01(i) + sinGammaAux * constDiag11(i);
+            twoBodySample.diag11(i) = -sinGammaAux * constDiag01(i) + cosGammaAux * constDiag11(i);
+        }
+    }
+    else
+    {
+        cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
+        exit(1);
     }
 }

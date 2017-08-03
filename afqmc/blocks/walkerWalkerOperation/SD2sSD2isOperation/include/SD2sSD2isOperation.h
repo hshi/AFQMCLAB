@@ -25,9 +25,9 @@ class SD2sSD2isOperation
     tensor_hao::LUDecomp< std::complex<double> > LUOverlapUp, LUOverlapDn;
     tensor_hao::TensorHao< std::complex<double>, 2 > thetaUp_T, thetaDn_T;
 
-    std::complex<double> logOverlap;
-    tensor_hao::TensorHao< std::complex<double>, 2 > greenMatrixUp, greenMatrixDn;
-    tensor_hao::TensorHao< std::complex<double>, 1 > greenDiagonalUp, greenDiagonalDn;
+    std::complex<double> logOverlap; bool logOverlapIsCalculated;
+    tensor_hao::TensorHao< std::complex<double>, 2 > greenMatrixUp, greenMatrixDn; bool greenMatrixUpIsCalculated, greenMatrixDnIsCalculated;
+    tensor_hao::TensorHao< std::complex<double>, 1 > greenDiagonalUp, greenDiagonalDn; bool greenDiagonalUpIsCalculated, greenDiagonalDnIsCalculated;
  public:
     SD2sSD2isOperation();
     SD2sSD2isOperation(const SD2s &walkerLeft_, const SD2is &walkerRight_);
@@ -36,14 +36,15 @@ class SD2sSD2isOperation
     SD2sSD2isOperationState getState() const;
     const SD2s *getWalkerLeft() const;
     const SD2is *getWalkerRight() const;
+    
+    void set(const SD2s &walkerLeft_, const SD2is &walkerRight_);
+    void reSet();
 
     const tensor_hao::LUDecomp<std::complex<double>> &returnLUOverlapUp();
     const tensor_hao::LUDecomp<std::complex<double>> &returnLUOverlapDn();
     const tensor_hao::TensorHao<std::complex<double>, 2> &returnThetaUp_T();
     const tensor_hao::TensorHao<std::complex<double>, 2> &returnThetaDn_T();
 
-    void set(const SD2s &walkerLeft_, const SD2is &walkerRight_);
-    void reSet();
     std::complex<double> returnLogOverlap();
     const tensor_hao::TensorHao< std::complex<double>, 2 > &returnGreenMatrixUp();
     const tensor_hao::TensorHao< std::complex<double>, 2 > &returnGreenMatrixDn();

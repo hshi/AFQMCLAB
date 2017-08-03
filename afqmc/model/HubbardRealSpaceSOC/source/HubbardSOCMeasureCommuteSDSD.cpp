@@ -82,6 +82,21 @@ void HubbardSOCMeasureCommuteSDSD::writeKNumVumRum() const
     writeThreadSum(RNum, "RNum.dat", ios::app);
 }
 
+double HubbardSOCMeasureCommuteSDSD::getMemory() const
+{
+    return 8.0+16.0*5;
+}
+
+HubbardSOCMeasureCommuteSDSD::HubbardSOCMeasureCommuteSDSD(const HubbardSOCMeasureCommuteSDSD &x)
+{
+
+}
+
+HubbardSOCMeasureCommuteSDSD &HubbardSOCMeasureCommuteSDSD::operator=(const HubbardSOCMeasureCommuteSDSD &x)
+{
+    return *this;
+}
+
 void HubbardSOCMeasureCommuteSDSD::addEnergy(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
 {
     complex<double> Kenergy(0,0), Venergy(0,0), Renergy(0,0);
@@ -122,19 +137,4 @@ void HubbardSOCMeasureCommuteSDSD::addEnergy(const TensorHao<complex<double>, 2>
     KNum += ( Kenergy * denIncrement );
     VNum += ( Venergy * denIncrement );
     RNum += ( Renergy * denIncrement );
-}
-
-double HubbardSOCMeasureCommuteSDSD::getMemory() const
-{
-    return 8.0+16.0*5;
-}
-
-HubbardSOCMeasureCommuteSDSD::HubbardSOCMeasureCommuteSDSD(const HubbardSOCMeasureCommuteSDSD &x)
-{
-
-}
-
-HubbardSOCMeasureCommuteSDSD &HubbardSOCMeasureCommuteSDSD::operator=(const HubbardSOCMeasureCommuteSDSD &x)
-{
-    return *this;
 }

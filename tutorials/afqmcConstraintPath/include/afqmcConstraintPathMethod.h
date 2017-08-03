@@ -16,26 +16,35 @@ class AfqmcConstraintPathMethod
 {
  public:
     double dt;
-    std::string decompType;  // depends on two body operator, check twoBodyOperator for types.
-    std::string forceType;   // "dynamicForce", "constForce"
-    double sampleCap;
-    size_t stabilizeStep;
-    size_t populationControlStep;
-    size_t timesliceSize;
-    size_t thermalStep;
-    size_t measureSkipTimesliceStep;
-    size_t writeSkipTimesliceStep;
-    std::string initialPhiTFlag;   //"setFromModel", "setRandomly", "readFromFile"
-    std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
-    size_t setETMaxStep;
+    size_t thermalSize;
+    size_t writeNumber;
+    size_t measureSkipStep;
+    size_t writeSkipStep;
+
     int walkerSizePerThread;
     int walkerSize;
+
+    std::string decompType;  // depends on two body operator, check twoBodyOperator for types.
+    std::string forceType;   // "dynamicForce", "constForce"
+    double forceCap;
+    std::string initialPhiTFlag;   //"setFromModel", "setRandomly", "readFromFile"
+    std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
+
+    size_t mgsStep;
+    size_t popControlStep;
+
+    double ET;
+    size_t ETAdjustStep;
+    size_t ETAdjustMaxSize;
+
     int seed;  // -1. read file, 0. random, else is seeds
 
     AfqmcConstraintPathMethod();
     ~AfqmcConstraintPathMethod();
 
     void read(const std::string& filename);
+    void write(const std::string& filename);
+    void print();
 
 #ifdef MPI_HAO
     friend void MPIBcast(AfqmcConstraintPathMethod &buffer, int root,  const MPI_Comm& comm);

@@ -23,6 +23,7 @@ class NiupNidnSample
     NiupNidnSample & operator  = (NiupNidnSample&& x);
 
     size_t getL() const;
+    double getMemory() const;
 
  private:
     void copy_deep(const NiupNidnSample &x);

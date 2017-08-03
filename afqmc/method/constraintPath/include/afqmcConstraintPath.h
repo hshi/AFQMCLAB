@@ -17,16 +17,18 @@ class AfqmcConstraintPath
     TwoBody expMinusDtV;
     TwoBodyForce dynamicForce, constForce;
 
-    OneBodyWalkerOperation oneBodyWalkerOperation;
-    TwoBodyWalkerOperation twoBodyWalkerOperation;
+    OneBodyWalkerRightOperation oneBodyWalkerRightOperation;
+    TwoBodySampleWalkerRightOperation twoBodySampleWalkerRightOperation;
 
     TwoBodyAux twoBodyAux;
-    double ET;
+    TwoBodySample twoBodySample;
 
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
+    std::vector<bool> walkerIsAlive;
 
-    ModelMeasureCommute commuteMeasure;
+    WalkerWalkerOperation walkerWalkerOperation;
+    ModelMeasureMixed mixedMeasure;
 
  public:
     AfqmcConstraintPath();
@@ -34,6 +36,7 @@ class AfqmcConstraintPath
 
     void run();
     void initialParameters();
+    void initialMixedMeasure();
     void estimateMemory();
     void measureWithoutProjection();
     void measureWithProjection();
@@ -43,16 +46,18 @@ class AfqmcConstraintPath
     void initialPhiT();
     void initialWalker();
     void writeWalkers();
+    void initialMgsAndPopControl();
 
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
     void projectExpMinusDtKExpMinusDtV();
     void modifyGM();
     void popControl();
+    void checkAndResetWalkerIsAlive();
 
     void addMeasurement();
     void writeAndResetMeasurement();
-    void setET();
+    void adjustETAndResetMeasurement();
 };
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATH_H

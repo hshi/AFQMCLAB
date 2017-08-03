@@ -13,8 +13,11 @@ void AfqmcConstraintPath::projectExpHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
-        walker[i] = move( walkerTemp );
+        if( walkerIsAlive[i] )
+        {
+            oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+            walker[i] = move( walkerTemp );
+        }
     }
 }
 
@@ -23,48 +26,50 @@ void AfqmcConstraintPath::projectExpMinusHalfDtK()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        oneBodyWalkerOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
-        walker[i] = move( walkerTemp );
+        if( walkerIsAlive[i] )
+        {
+            oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
+            walker[i] = move( walkerTemp );
+        }
     }
 }
 
 void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
 {
-    double phase, norm(0), logProb(0);
+    double phase;
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
-        phase = ( walkerWalkerOperation.returnLogOverlap() ).imag();
-        if( cos(phase) <= 0.0 ) continue;
-        walker[i].addLogw( log(cos(phase)) - complex<double>(0, phase) );
-
-        if( method.forceType == "constForce" )
+        if( walkerIsAlive[i] )
         {
-            twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
-            norm = expMinusDtV.sumOfAuxFromForce(constForce, method.sampleCap);
-            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, constForce, method.sampleCap);
+            walkerWalkerOperation.set(phiT, walker[i]);
+            phase = ( walkerWalkerOperation.returnLogOverlap() ).imag();
+            if( cos(phase) <= 0.0 ) { walkerIsAlive[i] = false; continue; }
+            walker[i].addLogw( log(cos(phase)) - complex<double>(0, phase) );
+
+            if( method.forceType == "constForce" )
+            {
+                twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
+                twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+            }
+            else if( method.forceType == "dynamicForce" )
+            {
+                dynamicForce = mixedMeasure.getForce(expMinusDtV, walkerWalkerOperation, method.forceCap);
+                twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce);
+                twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, dynamicForce);
+            }
+            else
+            {
+                cout<<"Error!!! Do not know method.forceType "<<method.forceType<<endl;
+                exit(1);
+            }
+
+            twoBodySampleWalkerRightOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
+
+            walkerTemp.addLogw( method.dt*method.ET );
+
+            oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
         }
-        else if( method.forceType == "dynamicForce" )
-        {
-            getForce( dynamicForce, expMinusDtV, walkerWalkerOperation);
-            twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce, method.sampleCap);
-            norm = expMinusDtV.sumOfAuxFromForce(dynamicForce, method.sampleCap);
-            logProb = expMinusDtV.logProbOfAuxFromForce(twoBodyAux, dynamicForce, method.sampleCap);
-        }
-        else
-        {
-            cout<<"Error!!! Do not know method.forceType "<<method.forceType<<endl;
-            exit(1);
-        }
-
-        TwoBodySample twoBodySample = expMinusDtV.getTwoBodySampleFromAux(twoBodyAux);
-
-        twoBodyWalkerOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
-
-        walkerTemp.addLogw( log(norm)-logProb + method.dt*ET );
-
-        oneBodyWalkerOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
     }
 }
 
@@ -72,27 +77,33 @@ void AfqmcConstraintPath::modifyGM()
 {
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        walker[i].stabilize();
+        if( walkerIsAlive[i] ) walker[i].stabilize();
     }
 }
 
 void AfqmcConstraintPath::popControl()
 {
     vector<double> weightPerThread( method.walkerSizePerThread );
-    complex<double> logOverlap;
-    double overlapReal;
+    complex<double> logOverlap; double overlapReal;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
+        if( walkerIsAlive[i] )
+        {
+            walkerWalkerOperation.set(phiT, walker[i]);
 
-        logOverlap = walkerWalkerOperation.returnLogOverlap();
-        overlapReal = ( exp(logOverlap) ).real();
+            logOverlap = walkerWalkerOperation.returnLogOverlap();
+            overlapReal = ( exp(logOverlap) ).real();
 
-        if( overlapReal <= 0.0) weightPerThread[i] = 0.0;
-        else weightPerThread[i] = overlapReal;
-
-        walker[i].addLogw( -logOverlap );
+            if( overlapReal <= 0.0) { weightPerThread[i] = 0.0; walkerIsAlive[i] = false; }
+            else { weightPerThread[i] = overlapReal;  walker[i].addLogw( -logOverlap ); }
+        }
+        else
+        {
+            weightPerThread[i] = 0.0;
+        }
     }
+
+    checkAndResetWalkerIsAlive();
 
     vector<double> weight;
 
@@ -104,6 +115,16 @@ void AfqmcConstraintPath::popControl()
     weight =  weightPerThread;
 #endif
 
+    double minW, maxW, avgW;
+    tie( minW, maxW, avgW ) = popCheck(weight);
+    if( MPIRank()==0 )
+    {
+        cout<<"In Population control: "<<endl;
+        cout<<"Min weight is "<< minW <<endl;
+        cout<<"Max weight is "<< maxW <<endl;
+        cout<<"Average weight is "<< avgW <<endl;
+    }
+
     vector<int> table;
     if( MPIRank()==0 ) table=popConfiguration( MPISize(), weight );
 
@@ -111,4 +132,29 @@ void AfqmcConstraintPath::popControl()
     walkerPop.reserve( method.walkerSizePerThread );
     for(int i=0; i<method.walkerSizePerThread; i++) walkerPop.push_back( AfqmcWalkerPop(walker[i]) );
     populationControl(walkerPop, table);
+
+    if( MPIRank()==0 ) cout<<endl;
+}
+
+void AfqmcConstraintPath::checkAndResetWalkerIsAlive()
+{
+    size_t aliveWalkerPerThread(0);
+    for (size_t i = 0; i < method.walkerSizePerThread; ++i)
+    {
+        if( walkerIsAlive[i] ) aliveWalkerPerThread++;
+    }
+
+    size_t aliveWalker = MPISum(aliveWalkerPerThread);
+
+    if( MPIRank()==0 )
+    {
+        cout<<"Total number of walker is "<<method.walkerSize<<"."<<endl;
+        cout<<"Currently "<<aliveWalker<<" walkers are still alive."<<endl;
+        cout<<"Currently "<<method.walkerSize-aliveWalker<<" walkers are killed."<<endl;
+    }
+
+    for (size_t i = 0; i < method.walkerSizePerThread ; ++i)
+    {
+        walkerIsAlive[i] = true;
+    }
 }

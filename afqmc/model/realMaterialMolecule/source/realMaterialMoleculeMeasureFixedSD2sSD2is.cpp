@@ -15,7 +15,7 @@ RealMaterialMoleculeMeasureFixedSD2sSD2is::RealMaterialMoleculeMeasureFixedSD2sS
 }
 
 RealMaterialMoleculeMeasureFixedSD2sSD2is::RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMolecule &realMaterialMolecule_,
-                                                                       const SD2s &walkerLeft_)
+                                                                                     const SD2s &walkerLeft_)
 {
     setModelWalker(realMaterialMolecule_, walkerLeft_);
     reSet();
@@ -87,15 +87,12 @@ void RealMaterialMoleculeMeasureFixedSD2sSD2is::addMeasurement(SD2sSD2isOperatio
 
     den += denIncrement;
 
-    const TensorHao<complex<double>, 2> &thetaUp_T =  sd2sSD2isOperation.returnThetaUp_T();
-    const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
-
-    addEnergy(thetaUp_T, thetaDn_T, denIncrement);
+    addEnergy(sd2sSD2isOperation, denIncrement);
 }
 
 CholeskyRealForce RealMaterialMoleculeMeasureFixedSD2sSD2is::getForce(const CholeskyReal &choleskyReal,
-                                                               SD2sSD2isOperation &sd2sSD2isOperation,
-                                                               double cap)
+                                                                      SD2sSD2isOperation &sd2sSD2isOperation,
+                                                                      double cap)
 {
     checkWalkerLeft(sd2sSD2isOperation);
 
@@ -105,7 +102,7 @@ CholeskyRealForce RealMaterialMoleculeMeasureFixedSD2sSD2is::getForce(const Chol
     const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
     complex<double> sqrtMinusDt = choleskyReal.getSqrtMinusDt();
 
-    TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(thetaUp_T, thetaDn_T);
+    TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(sd2sSD2isOperation);
     CholeskyRealForce force(choleskyNumber);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
@@ -196,18 +193,16 @@ void RealMaterialMoleculeMeasureFixedSD2sSD2is::checkWalkerLeft(const SD2sSD2isO
     }
 }
 
-void RealMaterialMoleculeMeasureFixedSD2sSD2is::addEnergy(const TensorHao<complex<double>, 2> &thetaUp_T,
-                                                   const TensorHao<complex<double>, 2> &thetaDn_T,
-                                                   complex<double> denIncrement)
+void RealMaterialMoleculeMeasureFixedSD2sSD2is::addEnergy(SD2sSD2isOperation &sd2sSD2isOperation, complex<double> denIncrement)
 {
     size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
 
     if( choleskyBgNum.rank(0) != choleskyNumber ) { choleskyBgNum.resize(choleskyNumber); choleskyBgNum = complex<double>(0,0); }
     if( choleskyExNum.rank(0) != choleskyNumber ) { choleskyExNum.resize(choleskyNumber); choleskyExNum = complex<double>(0,0); }
 
-    complex<double> Tenergy=calculateTenergy(thetaUp_T, thetaDn_T);
-    TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(thetaUp_T, thetaDn_T);
-    TensorHao<complex<double>, 1> choleskyEx = calculateCholeskyEx(thetaUp_T, thetaDn_T);
+    complex<double> Tenergy=calculateTenergy(sd2sSD2isOperation);
+    TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(sd2sSD2isOperation);
+    TensorHao<complex<double>, 1> choleskyEx = calculateCholeskyEx(sd2sSD2isOperation);
 
     complex<double> Henergy(0.0);
     for(size_t i = 0; i < choleskyNumber; ++i)
@@ -223,10 +218,11 @@ void RealMaterialMoleculeMeasureFixedSD2sSD2is::addEnergy(const TensorHao<comple
     HNum += ( Henergy * denIncrement );
 }
 
-complex<double> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateTenergy(const TensorHao<complex<double>, 2> &thetaUp_T,
-                                                                     const TensorHao<complex<double>, 2> &thetaDn_T)
+complex<double> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateTenergy(SD2sSD2isOperation &sd2sSD2isOperation)
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
+    const TensorHao<complex<double>, 2> &thetaUp_T =  sd2sSD2isOperation.returnThetaUp_T();
+    const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
 
     complex<double> Tenergy(0,0);
     for(size_t i = 0; i < L; ++i)
@@ -237,11 +233,12 @@ complex<double> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateTenergy(cons
     return Tenergy;
 }
 
-TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyBg(const TensorHao<complex<double>, 2> &thetaUp_T,
-                                                                                      const TensorHao<complex<double>, 2> &thetaDn_T)
+TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyBg(SD2sSD2isOperation &sd2sSD2isOperation)
 {
     size_t L = walkerLeft->getL(); size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
     size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
+    const TensorHao<complex<double>, 2> &thetaUp_T =  sd2sSD2isOperation.returnThetaUp_T();
+    const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
 
     TensorHaoRef<complex<double>, 2> leftUp(L*Nup, choleskyNumber), leftDn(L*Ndn, choleskyNumber);
     TensorHaoRef<complex<double>, 1> rightUp(L*Nup), rightDn(L*Ndn);
@@ -257,11 +254,12 @@ TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calcula
     return choleskyBg;
 }
 
-TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyEx(const TensorHao<complex<double>, 2> &thetaUp_T,
-                                                                                      const TensorHao<complex<double>, 2> &thetaDn_T)
+TensorHao<complex<double>, 1> RealMaterialMoleculeMeasureFixedSD2sSD2is::calculateCholeskyEx(SD2sSD2isOperation &sd2sSD2isOperation)
 {
     size_t Nup = walkerLeft->getNup(); size_t Ndn = walkerLeft->getNdn();
     size_t choleskyNumber = realMaterialMolecule->getCholeskyNumber();
+    const TensorHao<complex<double>, 2> &thetaUp_T =  sd2sSD2isOperation.returnThetaUp_T();
+    const TensorHao<complex<double>, 2> &thetaDn_T =  sd2sSD2isOperation.returnThetaDn_T();
 
     TensorHao<complex<double>, 2> densityUp(Nup, Nup), densityDn(Ndn, Ndn);
     TensorHaoRef<complex<double>, 2> wfDaggerCholeskyVec;

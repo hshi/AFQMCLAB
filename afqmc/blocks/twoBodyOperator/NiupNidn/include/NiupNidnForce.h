@@ -7,6 +7,6 @@
 
 #include "../../../../../common/tensorHao/include/tensor_all.h"
 
-typedef tensor_hao::TensorHao<std::complex<double>, 1> NiupNidnForce;
+typedef tensor_hao::TensorHao<double, 1> NiupNidnForce;
 
 #endif //AFQMCLAB_NIUPNIDNFORCE_H

@@ -15,13 +15,15 @@ void AfqmcConstraintPath::run()
 {
     initialParameters();
 
-    estimateMemory();
-
     initialPhiT();
 
     initialWalker();
 
-    if( method.timesliceSize == 0  ) measureWithoutProjection();
+    initialMixedMeasure();
+
+    estimateMemory();
+
+    if( std::abs(method.dt) < 1e-12  ) measureWithoutProjection();
     else measureWithProjection();
 
     prepareStop();
@@ -30,6 +32,7 @@ void AfqmcConstraintPath::run()
 void AfqmcConstraintPath::initialParameters()
 {
     if( MPIRank()==0 ) method.read("afqmc_param");
+    if( MPIRank()==0 ) method.print();
     MPIBcast(method);
 
     randomHaoInit(method.seed, 1);
@@ -43,9 +46,12 @@ void AfqmcConstraintPath::initialParameters()
     expHalfDtK      = model.returnExpMinusAlphaK( -method.dt*0.5 );
 
     expMinusDtV = model.returnExpMinusAlphaV( method.dt, method.decompType );
-    getForce(constForce, expMinusDtV, "constForce_param");
+    constForce =expMinusDtV.readForce("constForce_param");
+}
 
-    commuteMeasure.setModel(model);
+void AfqmcConstraintPath::initialMixedMeasure()
+{
+    mixedMeasure.setModelWalker(model, phiT);
 }
 
 void AfqmcConstraintPath::estimateMemory()
@@ -54,21 +60,23 @@ void AfqmcConstraintPath::estimateMemory()
     mem += model.getMemory();
     mem += expMinusDtK.getMemory()+expMinusHalfDtK.getMemory()+expHalfDtK.getMemory();
     mem += expMinusDtV.getMemory();
+
     mem += constForce.getMemory() * 2.0;
 
-    twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce, method.sampleCap);
+    twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
     mem += twoBodyAux.getMemory();
 
-    fillWalkerRandomly(phiT, model);
-    mem += phiT.getMemory();
-    WalkerRight walker; fillWalkerRandomly(walker, model);
-    mem += walker.getMemory() * method.walkerSizePerThread;
+    twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+    mem += twoBodySample.getMemory();
 
-    WalkerWalkerOperation walkerWalkerOperation(phiT, walker);
-    ModelMeasureCommute commuteMeasure(model);
-    commuteMeasure.addMeasurement(walkerWalkerOperation, 1.0);
+    mem += phiT.getMemory();
+    mem += ( walker[0].getMemory()+1.0 ) * method.walkerSizePerThread;
+
+    walkerWalkerOperation.set(phiT, walker[0]);
+    mixedMeasure.addMeasurement(walkerWalkerOperation, 1.0);
     mem += walkerWalkerOperation.getMemory();
-    mem += commuteMeasure.getMemory();
+    mem += mixedMeasure.getMemory();
+    mixedMeasure.reSet();
 
     //Make a slightly big estimation for uncounted memory.
     mem*=1.2;
@@ -90,41 +98,53 @@ void AfqmcConstraintPath::measureWithoutProjection()
 
 void AfqmcConstraintPath::measureWithProjection()
 {
-    projectExpMinusHalfDtK();
-
-    setET();
-
     if( MPIRank() == 0 ) cout<<"Start the projection..."<<endl;
 
-    for(size_t i = 0; i < method.timesliceSize; ++i)
+    projectExpMinusHalfDtK();
+
+    size_t mgsIndex(0), popControlIndex(0);
+    size_t timeSliceSize = method.thermalSize+method.writeNumber*method.writeSkipStep;
+    for(size_t i = 0; i < timeSliceSize; ++i)
     {
         if( MPIRank() == 0 ) cout<<i<<endl;
 
+        if (i < method.ETAdjustMaxSize)
+        {
+            if (i % method.ETAdjustStep == 0)
+            {
+                addMeasurement();
+                adjustETAndResetMeasurement();
+            }
+        }
+
         projectExpMinusDtKExpMinusDtV();
 
-        if( (i+1)%method.stabilizeStep == 0 )
+        mgsIndex++;
+        if (mgsIndex == method.mgsStep)
         {
             modifyGM();
+            mgsIndex = 0;
         }
 
-        if( (i+1)%method.populationControlStep == 0 )
+        popControlIndex++;
+        if (popControlIndex == method.popControlStep )
         {
             popControl();
-            if( i < method.setETMaxStep ) setET();
+            popControlIndex = 0;
         }
 
-        if( i >= method.thermalStep )
+        if (i >= method.thermalSize)
         {
-            if( (i+1-method.thermalStep)%method.measureSkipTimesliceStep == 0 )
+            if ((i + 1 - method.thermalSize) % method.measureSkipStep == 0)
             {
                 addMeasurement();
             }
 
-            if( (i+1-method.thermalStep)%method.writeSkipTimesliceStep == 0 )
+            if ((i + 1 - method.thermalSize) % method.writeSkipStep == 0)
             {
-                if( MPIRank()==0 )
+                if (MPIRank() == 0)
                 {
-                    writeFile(method.dt * (i - method.writeSkipTimesliceStep * 0.5 + 0.5), "beta.dat", ios::app);
+                    writeFile(method.dt * (i - method.writeSkipStep * 0.5 + 0.5), "beta.dat", ios::app);
                 }
                 writeAndResetMeasurement();
             }
@@ -134,6 +154,7 @@ void AfqmcConstraintPath::measureWithProjection()
 
 void AfqmcConstraintPath::prepareStop()
 {
+    if( MPIRank()==0 ) method.write("afqmc_param");
     projectExpHalfDtK();
     writeWalkers();
     randomHaoSave();

@@ -15,7 +15,7 @@ class HubbardSOCMeasureFixedSDSD
     const SD *walkerLeft;
 
     std::complex<double> den;
-    std::complex<double> HNum, KNum, VNum, RNum;
+    std::complex<double>  KNum, VNum, RNum, HNum;
 
     tensor_hao::TensorHao<std::complex<double>,2> wfDaggerK;
 
@@ -29,7 +29,10 @@ class HubbardSOCMeasureFixedSDSD
     void reSet();
     std::complex<double> returnEnergy();
     void addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
+    NiupNidnForce getForce(const NiupNidn &niupNidn, SDSDOperation &sdsdOperation, double cap=1.0);
 
+    void write() const;
+    double getMemory() const;
 
  private:
     HubbardSOCMeasureFixedSDSD(const HubbardSOCMeasureFixedSDSD& x);
@@ -37,7 +40,7 @@ class HubbardSOCMeasureFixedSDSD
 
     void initWfDaggerK();
     void checkWalkerLeft(const SDSDOperation &sdsdOperation);
-    void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &theta_T, std::complex<double> denIncrement);
+    void addEnergy(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
 };
 
 

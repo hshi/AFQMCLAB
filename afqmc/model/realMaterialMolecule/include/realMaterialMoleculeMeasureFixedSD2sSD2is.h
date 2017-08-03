@@ -22,6 +22,7 @@ class RealMaterialMoleculeMeasureFixedSD2sSD2is
 
     tensor_hao::TensorHao<std::complex<double>,2> wfUpDaggerT, wfDnDaggerT;
     tensor_hao::TensorHao<std::complex<double>,3> wfUpDaggerCholeskyVecs, wfDnDaggerCholeskyVecs;
+
  public:
     RealMaterialMoleculeMeasureFixedSD2sSD2is();
     RealMaterialMoleculeMeasureFixedSD2sSD2is(const RealMaterialMolecule& realMaterialMolecule_, const SD2s &walkerLeft_);
@@ -44,15 +45,10 @@ class RealMaterialMoleculeMeasureFixedSD2sSD2is
     void initWfDaggerT();
     void initWfDaggerCholeskyVecs();
     void checkWalkerLeft(const SD2sSD2isOperation &sd2sSD2isOperation);
-    void addEnergy(const tensor_hao::TensorHao<std::complex<double>, 2> &thetaUp_T,
-                   const tensor_hao::TensorHao<std::complex<double>, 2> &thetaDn_T,
-                   std::complex<double> denIncrement);
-    std::complex<double> calculateTenergy(const tensor_hao::TensorHao<std::complex<double>, 2> &thetaUp_T,
-                                          const tensor_hao::TensorHao<std::complex<double>, 2> &thetaDn_T);
-    tensor_hao::TensorHao<std::complex<double>, 1> calculateCholeskyBg(const tensor_hao::TensorHao<std::complex<double>, 2> &thetaUp_T,
-                                                                       const tensor_hao::TensorHao<std::complex<double>, 2> &thetaDn_T);
-    tensor_hao::TensorHao<std::complex<double>, 1> calculateCholeskyEx(const tensor_hao::TensorHao<std::complex<double>, 2> &thetaUp_T,
-                                                                       const tensor_hao::TensorHao<std::complex<double>, 2> &thetaDn_T);
+    void addEnergy(SD2sSD2isOperation &sd2sSD2isOperation, std::complex<double> denIncrement);
+    std::complex<double> calculateTenergy(SD2sSD2isOperation &sd2sSD2isOperation);
+    tensor_hao::TensorHao<std::complex<double>, 1> calculateCholeskyBg(SD2sSD2isOperation &sd2sSD2isOperation);
+    tensor_hao::TensorHao<std::complex<double>, 1> calculateCholeskyEx(SD2sSD2isOperation &sd2sSD2isOperation);
 };
 
 #endif //AFQMCLAB_REALMATERIALMOLECULEFIXEDSD2SSD2IS_H

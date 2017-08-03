@@ -16,7 +16,7 @@ AfqmcPhaselessMethod::~AfqmcPhaselessMethod()
 
 }
 
-void AfqmcPhaselessMethod::read(const std::string &filename)
+void AfqmcPhaselessMethod::read(const string &filename)
 {
     readBySearchString(dt, "dt", filename);
     readBySearchString(timesliceSize, "timesliceSize", filename);
@@ -53,7 +53,7 @@ void AfqmcPhaselessMethod::read(const std::string &filename)
     analysis();
 }
 
-void AfqmcPhaselessMethod::write(const std::string &filename)
+void AfqmcPhaselessMethod::write(const string &filename)
 {
     ofstream file;
     file.open(filename, ios::out|ios::trunc);
@@ -107,6 +107,7 @@ void AfqmcPhaselessMethod::print()
     cout<<left<<endl;
 
     cout<<setw(36)<<"AFQMC parameters: \n"<<endl;
+    
     cout<<setw(36)<<"dt "<<setw(26)<<dt<<endl;
     cout<<setw(36)<<"timesliceSize "<<setw(26)<<timesliceSize<<endl;
     cout<<setw(36)<<"thermalSize "<<setw(26)<<thermalSize<<endl;
@@ -192,7 +193,7 @@ void AfqmcPhaselessMethod::setDefault()
     measureSkipStep = 5;
     writeSkipStep = 100;
 
-    walkerSizePerThread = 300;
+    walkerSizePerThread = 1000 / MPISize();
     walkerSize = walkerSizePerThread * MPISize();
 
     forceType="dynamicForce";

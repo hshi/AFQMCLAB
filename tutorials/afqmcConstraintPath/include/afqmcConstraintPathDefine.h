@@ -18,9 +18,9 @@ typedef HubbardSOC Model;
 
 typedef SD  WalkerLeft;
 typedef SD  WalkerRight;
-typedef HopSDOperation OneBodyWalkerOperation;
-typedef NiupNidnSampleSDOperation TwoBodyWalkerOperation;
+typedef HopSDOperation OneBodyWalkerRightOperation;
+typedef NiupNidnSampleSDOperation TwoBodySampleWalkerRightOperation;
 typedef SDSDOperation WalkerWalkerOperation;
-typedef HubbardSOCMeasureCommuteSDSD ModelMeasureCommute;
+typedef HubbardSOCMeasureFixedSDSD ModelMeasureMixed;
 
 #endif //AFQMCLAB_AFQMCCONSTRAINTPATHDEFINE_H

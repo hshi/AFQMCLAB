@@ -41,13 +41,11 @@ void HubbardSOCMeasureObserveSDSD::addMeasurement(SDSDOperation &sdsdOperation, 
 {
     HubbardSOCMeasureCommuteSDSD::addMeasurement(sdsdOperation, denIncrement);
 
-    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
-
-    addGreenMatrix(greenMatrix, denIncrement);
-    addDensityDensity(greenMatrix, denIncrement);
-    addSplusSminus(greenMatrix, denIncrement);
-    addSminusSplus(greenMatrix, denIncrement);
-    addSpairSpair(greenMatrix, denIncrement);
+    addGreenMatrix(sdsdOperation, denIncrement);
+    addDensityDensity(sdsdOperation, denIncrement);
+    addSplusSminus(sdsdOperation, denIncrement);
+    addSminusSplus(sdsdOperation, denIncrement);
+    addSpairSpair(sdsdOperation, denIncrement);
 }
 
 void HubbardSOCMeasureObserveSDSD::write() const
@@ -74,9 +72,11 @@ double HubbardSOCMeasureObserveSDSD::getMemory() const
     return mem;
 }
 
-void HubbardSOCMeasureObserveSDSD::addGreenMatrix(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addGreenMatrix(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     size_t L2  = ( *getHubbardSOC() ).getL() * 2;
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
+
     if( greenMatrixNum.rank(0) != L2 )
     {
         greenMatrixNum.resize(L2, L2);
@@ -86,9 +86,11 @@ void HubbardSOCMeasureObserveSDSD::addGreenMatrix(const TensorHao<complex<double
     greenMatrixNum += ( greenMatrix * denIncrement );
 }
 
-void HubbardSOCMeasureObserveSDSD::addDensityDensity(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addDensityDensity(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     size_t L2  = ( *getHubbardSOC() ).getL() * 2;
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
+
     if( densityDensityNum.rank(0) != L2 )
     {
         densityDensityNum.resize(L2, L2);
@@ -107,9 +109,11 @@ void HubbardSOCMeasureObserveSDSD::addDensityDensity(const TensorHao<complex<dou
     }
 }
 
-void HubbardSOCMeasureObserveSDSD::addSplusSminus(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addSplusSminus(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     size_t L   = ( *getHubbardSOC() ).getL();
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
+
     if( splusSminusNum.rank(0) != L )
     {
         splusSminusNum.resize(L, L);
@@ -135,9 +139,11 @@ void HubbardSOCMeasureObserveSDSD::addSplusSminus(const TensorHao<complex<double
     }
 }
 
-void HubbardSOCMeasureObserveSDSD::addSminusSplus(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addSminusSplus(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     size_t L   = ( *getHubbardSOC() ).getL();
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
+
     if( sminusSplusNum.rank(0) != L )
     {
         sminusSplusNum.resize(L, L);
@@ -163,9 +169,11 @@ void HubbardSOCMeasureObserveSDSD::addSminusSplus(const TensorHao<complex<double
     }
 }
 
-void HubbardSOCMeasureObserveSDSD::addSpairSpair(const TensorHao<complex<double>, 2> &greenMatrix, complex<double> denIncrement)
+void HubbardSOCMeasureObserveSDSD::addSpairSpair(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
     size_t L   = ( *getHubbardSOC() ).getL();
+    const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
+
     if( spairSpairNum.rank(0) != L )
     {
         spairSpairNum.resize(L, L);
