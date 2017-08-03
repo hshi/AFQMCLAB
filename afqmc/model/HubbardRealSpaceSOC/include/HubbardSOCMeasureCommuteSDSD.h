@@ -27,6 +27,8 @@ class HubbardSOCMeasureCommuteSDSD
     void reSet();
     std::complex<double> returnEnergy();
     void addMeasurement(SDSDOperation &sdsdOperation, std::complex<double> denIncrement);
+    NiupNidnForce getForce(const NiupNidn &niupNidn, SDSDOperation &sdsdOperation, double cap=1.0);
+
     void write() const;
     void writeKNumVumRum() const;
     double getMemory() const;

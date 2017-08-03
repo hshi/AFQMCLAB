@@ -69,6 +69,49 @@ void HubbardSOCMeasureCommuteSDSD::addMeasurement(SDSDOperation &sdsdOperation, 
     addEnergy(greenMatrix, denIncrement);
 }
 
+NiupNidnForce HubbardSOCMeasureCommuteSDSD::getForce(const NiupNidn &niupNidn, SDSDOperation &sdsdOperation, double cap)
+{
+    size_t halfL = niupNidn.getL(); const string &decompType = niupNidn.getDecompType();
+
+    TensorHao< complex<double>, 1 > backGround(halfL);
+    if( decompType == "densityCharge" )
+    {
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) backGround(i) = greenDiagonal(i) + greenDiagonal(i+halfL) -1.0;
+    }
+    else if( decompType == "densitySpin" )
+    {
+        const TensorHao< complex<double>, 1 > &greenDiagonal = sdsdOperation.returnGreenDiagonal();
+        for(size_t i = 0; i < halfL; ++i) backGround(i) = greenDiagonal(i) - greenDiagonal(i+halfL);
+    }
+    else if( decompType == "hopCharge" )
+    {
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) backGround(i) = greenOffDiagonal(i) + greenOffDiagonal(i+halfL);
+    }
+    else if( decompType == "hopSpin" )
+    {
+        const TensorHao< complex<double>, 1 > &greenOffDiagonal = sdsdOperation.returnGreenOffDiagonal();
+        for(size_t i = 0; i < halfL; ++i) backGround(i) = greenOffDiagonal(i) - greenOffDiagonal(i+halfL);
+    }
+    else
+    {
+        cout<<"Error! Can not find the matched decompType! "<<decompType<<endl;
+        exit(1);
+    }
+
+    NiupNidnForce force(halfL);
+    const TensorHao<complex<double>, 1> &gamma = niupNidn.getGamma();
+    for (size_t i = 0; i < halfL; ++i)
+    {
+        force(i) = ( gamma(i) * backGround(i) ).real();
+        if( force(i) >  cap ) force(i) =  cap;
+        if( force(i) < -cap ) force(i) = -cap;
+    }
+
+    return force;
+}
+
 void HubbardSOCMeasureCommuteSDSD::write() const
 {
     writeThreadSum(den, "den.dat", ios::app);
@@ -101,10 +144,10 @@ void HubbardSOCMeasureCommuteSDSD::addEnergy(const TensorHao<complex<double>, 2>
 {
     complex<double> Kenergy(0,0), Venergy(0,0), Renergy(0,0);
 
-    size_t L  = (*hubbardSOC).getL(); size_t L2 = L*2;
+    size_t L  = hubbardSOC->getL(); size_t L2 = L*2;
 
     //Add K
-    const TensorHao< complex<double>, 2 > &K = (*hubbardSOC).getK();
+    const TensorHao< complex<double>, 2 > &K = hubbardSOC->getK();
     for(size_t i = 0; i < L2; ++i)
     {
         for(size_t j = 0; j < L2; ++j)
@@ -114,17 +157,17 @@ void HubbardSOCMeasureCommuteSDSD::addEnergy(const TensorHao<complex<double>, 2>
     }
 
     //Add U
-    const TensorHao< double, 1> &U = (*hubbardSOC).getU();
+    const TensorHao< double, 1> &U = hubbardSOC->getU();
     for(size_t i = 0; i < L; ++i)
     {
         Venergy += U(i) * ( greenMatrix(i,i)*greenMatrix(i+L,i+L) - greenMatrix(i, i+L)*greenMatrix(i+L, i) );
     }
 
     //Add mu and pinning field
-    const TensorHao< double, 1> &mu = (*hubbardSOC).getMu();
-    const TensorHao< double, 1> &hx = (*hubbardSOC).getHx();
-    const TensorHao< double, 1> &hy = (*hubbardSOC).getHy();
-    const TensorHao< double, 1> &hz = (*hubbardSOC).getHz();
+    const TensorHao< double, 1> &mu = hubbardSOC->getMu();
+    const TensorHao< double, 1> &hx = hubbardSOC->getHx();
+    const TensorHao< double, 1> &hy = hubbardSOC->getHy();
+    const TensorHao< double, 1> &hz = hubbardSOC->getHz();
     for(size_t i = 0; i < L; ++i)
     {
         Renergy += ( -mu(i) + hz(i)*0.5 ) * greenMatrix(i,i);

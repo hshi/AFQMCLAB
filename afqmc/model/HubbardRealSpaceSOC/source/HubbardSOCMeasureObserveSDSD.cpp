@@ -74,28 +74,22 @@ double HubbardSOCMeasureObserveSDSD::getMemory() const
 
 void HubbardSOCMeasureObserveSDSD::addGreenMatrix(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    size_t L2  = ( *getHubbardSOC() ).getL() * 2;
     const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
-    if( greenMatrixNum.rank(0) != L2 )
-    {
-        greenMatrixNum.resize(L2, L2);
-        greenMatrixNum = complex<double>(0,0);
-    }
+    size_t L2 = getHubbardSOC()->getL() * 2;
+
+    if( greenMatrixNum.rank(0) != L2 ) { greenMatrixNum.resize(L2, L2); greenMatrixNum = complex<double>(0,0); }
 
     greenMatrixNum += ( greenMatrix * denIncrement );
 }
 
 void HubbardSOCMeasureObserveSDSD::addDensityDensity(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    size_t L2  = ( *getHubbardSOC() ).getL() * 2;
     const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
-    if( densityDensityNum.rank(0) != L2 )
-    {
-        densityDensityNum.resize(L2, L2);
-        densityDensityNum = complex<double>(0,0);
-    }
+    size_t L2 = getHubbardSOC()->getL() * 2;
+
+    if( densityDensityNum.rank(0) != L2 ) { densityDensityNum.resize(L2, L2); densityDensityNum = complex<double>(0,0); }
 
     complex<double> temp;
     for(size_t j = 0; j < L2; ++j)
@@ -111,14 +105,11 @@ void HubbardSOCMeasureObserveSDSD::addDensityDensity(SDSDOperation &sdsdOperatio
 
 void HubbardSOCMeasureObserveSDSD::addSplusSminus(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    size_t L   = ( *getHubbardSOC() ).getL();
     const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
-    if( splusSminusNum.rank(0) != L )
-    {
-        splusSminusNum.resize(L, L);
-        splusSminusNum = complex<double>(0,0);
-    }
+    size_t L = getHubbardSOC()->getL();
+
+    if( splusSminusNum.rank(0) != L ) { splusSminusNum.resize(L, L); splusSminusNum = complex<double>(0,0); }
 
     complex<double> temp;
     for(size_t j = 0; j < L; ++j)
@@ -141,14 +132,11 @@ void HubbardSOCMeasureObserveSDSD::addSplusSminus(SDSDOperation &sdsdOperation, 
 
 void HubbardSOCMeasureObserveSDSD::addSminusSplus(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    size_t L   = ( *getHubbardSOC() ).getL();
     const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
-    if( sminusSplusNum.rank(0) != L )
-    {
-        sminusSplusNum.resize(L, L);
-        sminusSplusNum = complex<double>(0,0);
-    }
+    size_t L = getHubbardSOC()->getL();
+
+    if( sminusSplusNum.rank(0) != L ) { sminusSplusNum.resize(L, L); sminusSplusNum = complex<double>(0,0); }
 
     complex<double> temp;
     for(size_t j = 0; j < L; ++j)
@@ -171,14 +159,11 @@ void HubbardSOCMeasureObserveSDSD::addSminusSplus(SDSDOperation &sdsdOperation, 
 
 void HubbardSOCMeasureObserveSDSD::addSpairSpair(SDSDOperation &sdsdOperation, complex<double> denIncrement)
 {
-    size_t L   = ( *getHubbardSOC() ).getL();
     const TensorHao< complex<double>, 2 > &greenMatrix = sdsdOperation.returnGreenMatrix();
 
-    if( spairSpairNum.rank(0) != L )
-    {
-        spairSpairNum.resize(L, L);
-        spairSpairNum = complex<double>(0,0);
-    }
+    size_t L = getHubbardSOC()->getL();
+
+    if( spairSpairNum.rank(0) != L ) { spairSpairNum.resize(L, L); spairSpairNum = complex<double>(0,0); }
 
     complex<double> temp;
     for(size_t j=0; j<L; j++)
