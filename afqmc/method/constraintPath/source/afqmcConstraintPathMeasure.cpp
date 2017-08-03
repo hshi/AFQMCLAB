@@ -28,8 +28,8 @@ void AfqmcConstraintPath::addMeasurement()
 
 void AfqmcConstraintPath::writeAndResetMeasurement()
 {
-    mixedMeasure.reSet();
     mixedMeasure.write();
+    mixedMeasure.reSet();
 }
 
 void AfqmcConstraintPath::adjustETAndResetMeasurement()

@@ -4,8 +4,8 @@ sys.path.append( os.environ['AFQMCLAB_DIR']+"/scripts/supercubic" )
 from setHoping import *
 
 #Model Parameter
-latt_n   = [4,4]
-ktwist   = [0.0,0.0]
+latt_n   = [4,3]
+ktwist   = [0.012,0.034]
 t1       = 1.0
 U        = 4.0
 mu       = 0.0
@@ -50,21 +50,21 @@ f.close()
 
 #Method Parameter
 dt                  = 0.01
-thermalSize         = 600
-writeNumber         = 60
-measureSkipStep     = 5
-writeSkipStep       = 100
-walkerSizePerThread = 1000
-decompType          = "densityCharge"  # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
+thermalSize         = 0
+writeNumber         = 600
+measureSkipStep     = 1
+writeSkipStep       = 1
+walkerSizePerThread = 10000
+decompType          = "densitySpin"  # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
 forceType           = "dynamicForce"   # "dynamicForce", "constForce"
 forceCap            = 1.5
 initialPhiTFlag     = "setFromModel"   #"setFromModel", "setRandomly", "readFromFile"
-initialWalkerFlag   = "setFromModel"   #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
+initialWalkerFlag   = "sampleFromPhiT"   #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
 mgsStep             = 10
 popControlStep      = 10
-ET                  = -10.20
+ET                  = -13.60
 ETAdjustStep        = 10
-ETAdjustMaxSize     = 200
+ETAdjustMaxSize     = 0
 seed                = 985456376        # -1. read file, 0. random, else is seeds
 
 #write method_param

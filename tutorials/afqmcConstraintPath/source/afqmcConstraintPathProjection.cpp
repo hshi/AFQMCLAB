@@ -139,7 +139,7 @@ void AfqmcConstraintPath::popControl()
 void AfqmcConstraintPath::checkAndResetWalkerIsAlive()
 {
     size_t aliveWalkerPerThread(0);
-    for (size_t i = 0; i < method.walkerSizePerThread; ++i)
+    for (int i = 0; i < method.walkerSizePerThread; ++i)
     {
         if( walkerIsAlive[i] ) aliveWalkerPerThread++;
     }
@@ -153,7 +153,7 @@ void AfqmcConstraintPath::checkAndResetWalkerIsAlive()
         cout<<"Currently "<<method.walkerSize-aliveWalker<<" walkers are killed."<<endl;
     }
 
-    for (size_t i = 0; i < method.walkerSizePerThread ; ++i)
+    for (int i = 0; i < method.walkerSizePerThread ; ++i)
     {
         walkerIsAlive[i] = true;
     }

@@ -35,6 +35,7 @@ void AfqmcConstraintPath::initialPhiT()
 void AfqmcConstraintPath::initialWalker()
 {
     walker.resize(method.walkerSizePerThread);
+    walkerIsAlive.resize(method.walkerSizePerThread);
 
     if(method.initialWalkerFlag == "setFromModel")
     {
