@@ -28,7 +28,7 @@ set(SOURCE_FILES
         source/afqmcConstraintPathMethod.cpp
         source/afqmcConstraintPathProjection.cpp
         source/afqmcConstraintPathSetWalker.cpp
-        source/afqmConstraintPathBackPropagation.cpp
+        source/afqmcConstraintPathBackPropagation.cpp
         source/afqmcWalkerPop.cpp
         source/main.cpp)
 

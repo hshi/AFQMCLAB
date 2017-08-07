@@ -187,17 +187,4 @@ void AfqmcConstraintPath::prepareStop()
     randomHaoSave();
 }
 
-//TODO:: Remove MPI Rank =2
-//TODO:: Check MPI version ==> Use MPIRUN
-//TODO:: Check serial code.
 //TODO:: Change CP code to use mixedMeasurement instead of measurement.
-//TODO:: Change CP code to use addInitialMeasurement in measureWithoutProjection.
-//TODO:: Try to remember the path, to refresh the walker in the code.
-
-//TODO:: Run the code:
-//TODO:: Check the case when backPropagationStep=0
-//TODO:: Check the code when backPropagationStep < measureSkipStep
-//TODO:: Check the code when backPropagationStep = measureSkipStep
-//TODO:: Check the code when backPropagationStep > measureSkipStep
-//TODO:: Check two overlap in measurement, make sure they are the same when there is no population control.
-//TODO:: Check BPIndex+1 or BPIndex in most of the case? When to give backup or BPMeasure?
