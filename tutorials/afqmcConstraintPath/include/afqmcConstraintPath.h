@@ -36,7 +36,7 @@ class AfqmcConstraintPath
 
     void run();
     void initialParameters();
-    void initialMixedMeasure();
+    void initialMeasure();
     void estimateMemory();
     void measureWithoutProjection();
     void measureWithProjection();
@@ -51,11 +51,12 @@ class AfqmcConstraintPath
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
     void projectExpMinusDtKExpMinusDtV();
+    void projectOneStep(size_t &mgsIndex, size_t &popControlIndex);
     void modifyGM();
     void popControl();
     void checkAndResetWalkerIsAlive();
 
-    void addMeasurement();
+    void addMixedMeasurement();
     void writeAndResetMeasurement();
     void adjustETAndResetMeasurement();
 };

@@ -6,7 +6,7 @@
 using namespace std;
 using namespace tensor_hao;
 
-void AfqmcConstraintPath::addMeasurement()
+void AfqmcConstraintPath::addMixedMeasurement()
 {
     complex<double> overlap;
     WalkerRight walkerTemp;

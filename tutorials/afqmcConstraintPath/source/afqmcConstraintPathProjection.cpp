@@ -73,6 +73,25 @@ void AfqmcConstraintPath::projectExpMinusDtKExpMinusDtV()
     }
 }
 
+void AfqmcConstraintPath::projectOneStep(size_t &mgsIndex, size_t &popControlIndex)
+{
+    projectExpMinusDtKExpMinusDtV();
+
+    mgsIndex++;
+    if (mgsIndex == method.mgsStep)
+    {
+        modifyGM();
+        mgsIndex = 0;
+    }
+
+    popControlIndex++;
+    if (popControlIndex == method.popControlStep)
+    {
+        popControl();
+        popControlIndex = 0;
+    }
+}
+
 void AfqmcConstraintPath::modifyGM()
 {
     for(int i = 0; i < method.walkerSizePerThread; ++i)
@@ -112,7 +131,7 @@ void AfqmcConstraintPath::popControl()
     MPI_Gather( weightPerThread.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION,
                 weight.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD );
 #else
-    weight =  weightPerThread;
+    weight =  move( weightPerThread );
 #endif
 
     double minW, maxW, avgW;

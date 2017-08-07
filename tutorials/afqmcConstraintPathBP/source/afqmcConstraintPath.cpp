@@ -114,10 +114,10 @@ void AfqmcConstraintPath::measureWithoutProjection()
 
 void AfqmcConstraintPath::measureWithProjection()
 {
+    if( MPIRank() == 0 ) cout<<"Start the projection..."<<endl;
+
     double beta; size_t additionalStep=method.backPropagationStep;
     if(method.backPropagationStep < method.measureSkipStep) additionalStep=0;
-
-    if( MPIRank() == 0 ) cout<<"Start the projection..."<<endl;
 
     beta = (method.thermalSize+method.writeNumber*method.measureNumberPerWrite*method.measureSkipStep
             + additionalStep)*method.dt;

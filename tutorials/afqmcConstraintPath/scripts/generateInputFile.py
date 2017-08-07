@@ -47,33 +47,32 @@ for i in range( latt.L ):
     f.write( '{:26.18e} \n'.format( U ) )
 f.close()
 
-
 #Method Parameter
-dt                  = 0.01
-thermalSize         = 0
-writeNumber         = 600
-measureSkipStep     = 1
-writeSkipStep       = 1
-walkerSizePerThread = 10000
-decompType          = "densitySpin"  # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
-forceType           = "dynamicForce"   # "dynamicForce", "constForce"
-forceCap            = 1.5
-initialPhiTFlag     = "setFromModel"   #"setFromModel", "setRandomly", "readFromFile"
-initialWalkerFlag   = "sampleFromPhiT"   #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
-mgsStep             = 10
-popControlStep      = 10
-ET                  = -13.60
-ETAdjustStep        = 10
-ETAdjustMaxSize     = 0
-seed                = 985456376        # -1. read file, 0. random, else is seeds
+dt                        = 0.01
+thermalSize               = 200
+writeNumber               = 60
+measureNumberPerWrite     = 2
+measureSkipStep           = 5
+walkerSizePerThread       = 300
+decompType                = "densitySpin"  # "densityCharge", "densitySpin", "hopCharge", "hopSpin"
+forceType                 = "dynamicForce"   # "dynamicForce", "constForce"
+forceCap                  = 1.5
+initialPhiTFlag           = "setFromModel"   #"setFromModel", "setRandomly", "readFromFile"
+initialWalkerFlag         = "sampleFromPhiT"   #"setFromModel", "setRandomly", "sampleFromPhiT","readFromFile","readAllWalkers"
+mgsStep                   = 10
+popControlStep            = 10
+ET                        = -10
+ETAdjustStep              = 10
+ETAdjustMaxSize           = 100
+seed                      = 985456376        # -1. read file, 0. random, else is seeds
 
 #write method_param
 f = open('afqmc_param', 'w')
 f.write(" {:<36} {:<26.18e} \n".format("dt", dt ) )
 f.write(" {:<36} {:<26} \n".format("thermalSize", thermalSize) )
 f.write(" {:<36} {:<26} \n".format("writeNumber", writeNumber) )
+f.write(" {:<36} {:<26} \n".format("measureNumberPerWrite", measureNumberPerWrite) )
 f.write(" {:<36} {:<26} \n".format("measureSkipStep", measureSkipStep) )
-f.write(" {:<36} {:<26} \n".format("writeSkipStep", writeSkipStep) )
 f.write(" {:<36} {:<26} \n".format("walkerSizePerThread",walkerSizePerThread) )
 f.write(" {:<36} {:<26} \n".format("decompType",decompType) )
 f.write(" {:<36} {:<26} \n".format("forceType", forceType) )

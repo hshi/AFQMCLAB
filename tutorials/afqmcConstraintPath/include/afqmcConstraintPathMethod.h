@@ -18,8 +18,8 @@ class AfqmcConstraintPathMethod
     double dt;
     size_t thermalSize;
     size_t writeNumber;
+    size_t measureNumberPerWrite;
     size_t measureSkipStep;
-    size_t writeSkipStep;
 
     int walkerSizePerThread;
     int walkerSize;

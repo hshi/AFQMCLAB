@@ -19,7 +19,7 @@ void AfqmcConstraintPath::run()
 
     initialWalker();
 
-    initialMixedMeasure();
+    initialMeasure();
 
     estimateMemory();
 
@@ -49,7 +49,7 @@ void AfqmcConstraintPath::initialParameters()
     constForce =expMinusDtV.readForce("constForce_param");
 }
 
-void AfqmcConstraintPath::initialMixedMeasure()
+void AfqmcConstraintPath::initialMeasure()
 {
     mixedMeasure.setModelWalker(model, phiT);
 }
@@ -92,7 +92,7 @@ void AfqmcConstraintPath::measureWithoutProjection()
     if( MPIRank() == 0 ) cout<<"Measure without projection."<<endl;
 
     projectExpMinusHalfDtK();
-    addMeasurement();
+    addMixedMeasurement();
     writeAndResetMeasurement();
 }
 
@@ -100,55 +100,52 @@ void AfqmcConstraintPath::measureWithProjection()
 {
     if( MPIRank() == 0 ) cout<<"Start the projection..."<<endl;
 
+    double beta;
+
+    beta = (method.thermalSize+method.writeNumber*method.measureNumberPerWrite*method.measureSkipStep)*method.dt;
+    if( MPIRank() == 0 ) cout<<"Total beta will be "<<beta<<endl;
+
     projectExpMinusHalfDtK();
 
     size_t mgsIndex(0), popControlIndex(0);
-    size_t timeSliceSize = method.thermalSize+method.writeNumber*method.writeSkipStep;
-    for(size_t i = 0; i < timeSliceSize; ++i)
-    {
-        if( MPIRank() == 0 ) cout<<i<<endl;
 
-        if (i < method.ETAdjustMaxSize)
+    if( MPIRank() == 0 ) cout<<"\nThermalize..."<<endl;
+
+    for (size_t i = 0; i < method.thermalSize; ++i)
+    {
+        if ( i<method.ETAdjustMaxSize )
         {
-            if (i % method.ETAdjustStep == 0)
+            if ( i%method.ETAdjustStep == 0 )
             {
-                addMeasurement();
+                addMixedMeasurement();
                 adjustETAndResetMeasurement();
             }
         }
 
-        projectExpMinusDtKExpMinusDtV();
+        if( MPIRank() == 0 ) cout<<i*method.dt<<endl;
+        projectOneStep(mgsIndex, popControlIndex);
+    }
 
-        mgsIndex++;
-        if (mgsIndex == method.mgsStep)
-        {
-            modifyGM();
-            mgsIndex = 0;
-        }
+    if( MPIRank() == 0 ) cout<<"\nMeasure..."<<endl;
 
-        popControlIndex++;
-        if (popControlIndex == method.popControlStep )
+    for (size_t i = 0; i < method.writeNumber; ++i)
+    {
+        for (size_t j = 0; j < method.measureNumberPerWrite; ++j)
         {
-            popControl();
-            popControlIndex = 0;
-        }
+            addMixedMeasurement();
 
-        if (i >= method.thermalSize)
-        {
-            if ((i + 1 - method.thermalSize) % method.measureSkipStep == 0)
+            for (size_t k = 0; k < method.measureSkipStep; ++k)
             {
-                addMeasurement();
-            }
-
-            if ((i + 1 - method.thermalSize) % method.writeSkipStep == 0)
-            {
-                if (MPIRank() == 0)
-                {
-                    writeFile(method.dt * (i - method.writeSkipStep * 0.5 + 0.5), "beta.dat", ios::app);
-                }
-                writeAndResetMeasurement();
+                beta = ( method.thermalSize+k+j*method.measureSkipStep
+                         +i*method.measureSkipStep*method.measureNumberPerWrite)*method.dt;
+                if (MPIRank() == 0) cout << beta << endl;
+                projectOneStep(mgsIndex, popControlIndex);
             }
         }
+
+        beta = ( method.thermalSize+(i+0.5)*method.measureNumberPerWrite*method.measureSkipStep-0.5 )*method.dt;
+        if (MPIRank() == 0) writeFile( beta, "beta.dat", ios::app);
+        writeAndResetMeasurement();
     }
 }
 
