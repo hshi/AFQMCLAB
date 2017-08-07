@@ -178,7 +178,7 @@ void setWalkerFromPhiT(vector<SD> &walker, vector<bool> &walkerIsAlive, const SD
     int walkerSize = walkerSizePerThread * MPISize();
     if( walkerSize < 1 ) { cout<<"Error!!! Total walkerSize is smaller than 1:  "<<walkerSize<<endl; exit(1); }
 
-    for (size_t i = 0; i < walkerSizePerThread; ++i)
+    for (int i = 0; i < walkerSizePerThread; ++i)
     {
         walker[i] = phiT;
         walkerIsAlive[i] = true ;

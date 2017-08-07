@@ -44,10 +44,10 @@ TEST (MPIBcast, longlong)
 TEST (MPIBcast, size_t)
 {
     size_t i=0;
-    if(MPIRank()==0) i=2;
+    if(MPIRank()==0) i=800;
     MPIBcast(i);
 
-    EXPECT_EQ (static_cast<size_t>(2), i);
+    EXPECT_EQ (static_cast<size_t>(800), i);
 }
 
 TEST (MPIBcast, float)
@@ -116,7 +116,7 @@ TEST (MPIBcast, size_t_pointer)
 {
     const size_t N = 16;
     size_t a[N] = {};
-    size_t b[N] = {};  for(size_t i=0; i<N; i++) b[i]=i;
+    size_t b[N] = {};  for(size_t i=0; i<N; i++) b[i]=i*100;
     if(MPIRank()==0)
     {
         for(size_t i=0; i<N; i++) a[i]=b[i];
@@ -293,7 +293,7 @@ TEST(MPISum, long)
 
 TEST(MPISum, longlong)
 {
-    long long i    = 2;
+    long long i    = 600;
     long long size = MPISize();
     long long sum  = MPISum(i);
 
@@ -302,7 +302,7 @@ TEST(MPISum, longlong)
 
 TEST(MPISum, size_t)
 {
-    size_t i    = 2;
+    size_t i    = 600;
     size_t size = MPISize();
     size_t sum  = MPISum(i);
 
