@@ -210,7 +210,7 @@ void SD2sSD2isOperation::calculateTheta_T()
     state = SD2sSD2isOperationState ::THETA_T;
 }
 
-void setWalkerFromPhiT(vector<SD2is> &walker, const SD2s &phiT)
+void setWalkerFromPhiT(vector<SD2is> &walker, vector<bool> &walkerIsAlive, const SD2s &phiT)
 {
     if( MPIRank()==0 ) cout<<"Warning!!! Set SD2is walker from SD2S phiT, only pick one spin component!"<<endl;
 
@@ -225,5 +225,6 @@ void setWalkerFromPhiT(vector<SD2is> &walker, const SD2s &phiT)
         walker[i].logwRef() = phiT.getLogw();
         if( Nup >= Ndn )  walker[i].wfRef() = phiT.getWfUp();
         else walker[i].wfRef() = phiT.getWfDn();
+        walkerIsAlive[i] = true;
     }
 }

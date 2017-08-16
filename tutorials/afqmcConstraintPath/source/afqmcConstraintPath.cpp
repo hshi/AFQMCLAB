@@ -23,7 +23,7 @@ void AfqmcConstraintPath::run()
 
     estimateMemory();
 
-    if( std::abs(method.dt) < 1e-12  ) measureWithoutProjection();
+    if( std::abs(method.dt) < 1e-12 ) measureWithoutProjection();
     else measureWithProjection();
 
     prepareStop();

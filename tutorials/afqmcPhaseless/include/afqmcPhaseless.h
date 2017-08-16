@@ -27,7 +27,12 @@ class AfqmcPhaseless
 
     WalkerLeft phiT;
     std::vector<WalkerRight> walker;
+    std::vector<bool> walkerIsAlive;
 
+    bool isETAndBackGroundAdjustable;
+    size_t numberOfGrowthMeasure;
+
+    WalkerWalkerOperation walkerWalkerOperation;
     ModelMeasureMixed mixedMeasure;
 
  public:
@@ -36,7 +41,7 @@ class AfqmcPhaseless
 
     void run();
     void initialParameters();
-    void initialMixedMeasure();
+    void initialMeasure();
     void estimateMemory();
     void measureWithoutProjection();
     void measureWithProjection();
@@ -51,10 +56,12 @@ class AfqmcPhaseless
     void projectExpHalfDtK();
     void projectExpMinusHalfDtK();
     void projectExpMinusDtKExpMinusDtV();
-    void modifyGM(bool isAdjustable );
-    void popControl(bool isAdjustable);
+    void projectOneStep(size_t &mgsIndex, size_t &popControlIndex);
+    void modifyGM();
+    void popControl();
+    void checkAndResetWalkerIsAlive();
 
-    void addMeasurement();
+    void addMixedMeasurement();
     void writeAndResetMeasurement();
     void adjustETAndBackGroundThenResetMeasurement();
 };

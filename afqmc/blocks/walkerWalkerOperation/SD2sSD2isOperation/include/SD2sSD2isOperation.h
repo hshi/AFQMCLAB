@@ -61,6 +61,6 @@ class SD2sSD2isOperation
     void calculateTheta_T();
 };
 
-void setWalkerFromPhiT(std::vector<SD2is> &walker, const SD2s &phiT);
+void setWalkerFromPhiT(std::vector<SD2is> &walker, std::vector<bool> &walkerIsAlive, const SD2s &phiT);
 
 #endif //AFQMCLAB_SD2SSD2ISOPERATION_H

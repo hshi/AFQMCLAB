@@ -181,6 +181,6 @@ void setWalkerFromPhiT(vector<SD> &walker, vector<bool> &walkerIsAlive, const SD
     for (int i = 0; i < walkerSizePerThread; ++i)
     {
         walker[i] = phiT;
-        walkerIsAlive[i] = true ;
+        walkerIsAlive[i] = true;
     }
 }

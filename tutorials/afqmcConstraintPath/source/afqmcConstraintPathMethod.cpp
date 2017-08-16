@@ -224,7 +224,7 @@ void AfqmcConstraintPathMethod::analysis()
 
     if( ETAdjustMaxSize > thermalSize )
     {
-        cout << "Error!!! We should not adjust ET and backGround after thermalizing!" << endl;
+        cout << "Error!!! We should not adjust ET after thermalizing!" << endl;
         exit(1);
     }
 }

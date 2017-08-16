@@ -1,6 +1,7 @@
 //
 // Created by boruoshihao on 7/8/17.
 //
+
 #include "../include/afqmcPhaseless.h"
 #include "../include/afqmcWalkerPop.h"
 
@@ -14,16 +15,22 @@ void AfqmcPhaseless::projectExpHalfDtK()
     {
         for(int i = 0; i < method.walkerSizePerThread; ++i)
         {
-            oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
-            walker[i] = move( walkerTemp );
+            if( walkerIsAlive[i] )
+            {
+                oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+                walker[i] = move(walkerTemp);
+            }
         }
     }
     else if( logExpHalfDtK.matrix.size() > 0 )
     {
         for(int i = 0; i < method.walkerSizePerThread; ++i)
         {
-            logOneBodyWalkerRightOperation.applyToRight(logExpHalfDtK, walker[i], walkerTemp);
-            walker[i] = move( walkerTemp );
+            if( walkerIsAlive[i] )
+            {
+                logOneBodyWalkerRightOperation.applyToRight(logExpHalfDtK, walker[i], walkerTemp);
+                walker[i] = move(walkerTemp);
+            }
         }
     }
     else
@@ -40,16 +47,22 @@ void AfqmcPhaseless::projectExpMinusHalfDtK()
     {
         for(int i = 0; i < method.walkerSizePerThread; ++i)
         {
-            oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
-            walker[i] = move( walkerTemp );
+            if( walkerIsAlive[i] )
+            {
+                oneBodyWalkerRightOperation.applyToRight(expMinusHalfDtK, walker[i], walkerTemp);
+                walker[i] = move(walkerTemp);
+            }
         }
     }
     else if( logExpMinusHalfDtK.matrix.size() > 0 )
     {
         for(int i = 0; i < method.walkerSizePerThread; ++i)
         {
-            logOneBodyWalkerRightOperation.applyToRight(logExpMinusHalfDtK, walker[i], walkerTemp);
-            walker[i] = move( walkerTemp );
+            if( walkerIsAlive[i] )
+            {
+                logOneBodyWalkerRightOperation.applyToRight(logExpMinusHalfDtK, walker[i], walkerTemp);
+                walker[i] = move(walkerTemp);
+            }
         }
     }
     else
@@ -65,94 +78,90 @@ void AfqmcPhaseless::projectExpMinusDtKExpMinusDtV()
     WalkerRight walkerTemp;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
-        phase = ( walkerWalkerOperation.returnLogOverlap() ).imag();
-        if( cos(phase) <= 0.0 ) continue;
-        walker[i].addLogw( log(cos(phase)) - complex<double>(0, phase) );
+        if( walkerIsAlive[i] )
+        {
+            WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
+            phase = (walkerWalkerOperation.returnLogOverlap()).imag();
+            if (cos(phase) <= 0.0) { walkerIsAlive[i] = false; continue; }
+            walker[i].addLogw(log(cos(phase)) - complex<double>(0, phase));
 
-        if( method.forceType == "constForce" )
-        {
-            twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
-            twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+            if (method.forceType == "constForce")
+            {
+                twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
+                twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+            }
+            else if (method.forceType == "dynamicForce")
+            {
+                dynamicForce = mixedMeasure.getForce(expMinusDtV, walkerWalkerOperation, method.forceCap);
+                twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce);
+                twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, dynamicForce);
+            }
+            else
+            {
+                cout << "Error!!! Do not know method.forceType " << method.forceType << endl;
+                exit(1);
+            }
+
+            twoBodySampleWalkerRightOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
+
+            walkerTemp.addLogw(method.dt * method.ET);
+
+            if (expMinusDtK.matrix.size() > 0) oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
+            else logOneBodyWalkerRightOperation.applyToRight(logExpMinusDtK, walkerTemp, walker[i]);
         }
-        else if( method.forceType == "dynamicForce" )
+    }
+}
+
+void AfqmcPhaseless::projectOneStep(size_t &mgsIndex, size_t &popControlIndex)
+{
+    projectExpMinusDtKExpMinusDtV();
+
+    mgsIndex++;
+    if (mgsIndex == method.mgsStep)
+    {
+        modifyGM();
+        mgsIndex = 0;
+    }
+
+    popControlIndex++;
+    if (popControlIndex == method.popControlStep)
+    {
+        popControl();
+        popControlIndex = 0;
+    }
+}
+
+void AfqmcPhaseless::modifyGM()
+{
+    for(int i = 0; i < method.walkerSizePerThread; ++i)
+    {
+        if( walkerIsAlive[i] ) walker[i].stabilize();
+    }
+}
+
+void AfqmcPhaseless::popControl()
+{
+    vector<double> weightPerThread( method.walkerSizePerThread );
+    complex<double> logOverlap; double overlapReal;
+    for(int i = 0; i < method.walkerSizePerThread; ++i)
+    {
+        if( walkerIsAlive[i] )
         {
-            dynamicForce = mixedMeasure.getForce( expMinusDtV, walkerWalkerOperation, method.forceCap );
-            twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce);
-            twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, dynamicForce);
+            walkerWalkerOperation.set(phiT, walker[i]);
+
+            logOverlap = walkerWalkerOperation.returnLogOverlap();
+            overlapReal = (exp(logOverlap)).real();
+
+            if (overlapReal <= 0.0) { weightPerThread[i] = 0.0; walkerIsAlive[i] = false; }
+            else { weightPerThread[i] = overlapReal;  walker[i].addLogw( -logOverlap ); }
         }
         else
         {
-            cout<<"Error!!! Do not know method.forceType "<<method.forceType<<endl;
-            exit(1);
-        }
-
-        twoBodySampleWalkerRightOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
-        walkerTemp.addLogw( method.dt* method.ET );
-
-        if( expMinusDtK.matrix.size() > 0 ) oneBodyWalkerRightOperation.applyToRight(expMinusDtK, walkerTemp, walker[i]);
-        else logOneBodyWalkerRightOperation.applyToRight(logExpMinusDtK, walkerTemp, walker[i]);
-    }
-}
-
-void AfqmcPhaseless::modifyGM(bool isAdjustable)
-{
-    if( MPIRank()==0 )
-    {
-        cout<<"In Modified gram schmidt: "<<endl;
-        cout<<"Current mgsStep is "<< method.mgsStep <<endl;
-    }
-
-    if( isAdjustable )
-    {
-        double ratio(0.0), ratioMin(1e100), ratioMinGlobal(1e100);
-        for(int i = 0; i < method.walkerSizePerThread; ++i)
-        {
-            walker[i].stabilize( ratio );
-            if( ratioMin>ratio ) ratioMin = ratio;
-        }
-
-#ifdef MPI_HAO
-        MPIReduce( ratioMin, ratioMinGlobal, MPI_MIN );
-#endif
-        //Assume method.mgsStep = exp( alpha * ratioMinGlobal )
-        method.mgsStep = log(method.mgsStepTolerance)/log(ratioMinGlobal) * method.mgsStep;
-        MPIBcast( method.mgsStep );
-
-        if( MPIRank()==0 )
-        {
-            cout<<"Mgs minimum ratio of different particles is "<< ratioMinGlobal <<endl;
-            cout<<"Adjust mgsStep to  "<< method.mgsStep <<endl;
-        }
-    }
-    else
-    {
-        for(int i = 0; i < method.walkerSizePerThread; ++i)
-        {
-            walker[i].stabilize();
+            weightPerThread[i] = 0.0;
         }
     }
 
-    if( MPIRank()==0 ) cout<<endl;
-}
-
-void AfqmcPhaseless::popControl(bool isAdjustable)
-{
-    vector<double> weightPerThread( method.walkerSizePerThread );
-    complex<double> logOverlap;
-    double overlapReal;
-    for(int i = 0; i < method.walkerSizePerThread; ++i)
-    {
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walker[i]);
-
-        logOverlap = walkerWalkerOperation.returnLogOverlap();
-        overlapReal = ( exp(logOverlap) ).real();
-
-        if( overlapReal <= 0.0) weightPerThread[i] = 0.0;
-        else weightPerThread[i] = overlapReal;
-
-        walker[i].addLogw( -logOverlap );
-    }
+    checkAndResetWalkerIsAlive();
 
     vector<double> weight;
 #ifdef MPI_HAO
@@ -160,26 +169,17 @@ void AfqmcPhaseless::popControl(bool isAdjustable)
     MPI_Gather( weightPerThread.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION,
                 weight.data(), method.walkerSizePerThread, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD );
 #else
-    weight = weightPerThread;
+    weight = move( weightPerThread );
 #endif
-    double ratio, average;
-    tie(ratio, average) = popCheck(weight);
+
+    double minW, maxW, avgW;
+    tie( minW, maxW, avgW ) = popCheck(weight);
     if( MPIRank()==0 )
     {
         cout<<"In Population control: "<<endl;
-        cout<<"Current popControlStep is "<< method.popControlStep <<endl;
-        cout<<"Max weight ratio is "<< ratio <<endl;
-        cout<<"Average weight is "<< average <<endl;
-    }
-    if( isAdjustable )
-    {
-        if( MPIRank()==0 )
-        {
-            //Assume method.popControlStep = exp( alpha * ratio )
-            method.popControlStep = log(method.popControlStepTolerance)/log(ratio) * method.popControlStep;
-            cout<<"Adjust popControlStep to  "<< method.popControlStep <<endl;
-        }
-        MPIBcast(method.popControlStep);
+        cout<<"Min weight is "<< minW <<endl;
+        cout<<"Max weight is "<< maxW <<endl;
+        cout<<"Average weight is "<< avgW <<endl;
     }
 
     vector<int> table;
@@ -191,4 +191,27 @@ void AfqmcPhaseless::popControl(bool isAdjustable)
     populationControl(walkerPop, table);
 
     if( MPIRank()==0 ) cout<<endl;
+}
+
+void AfqmcPhaseless::checkAndResetWalkerIsAlive()
+{
+    size_t aliveWalkerPerThread(0);
+    for (int i = 0; i < method.walkerSizePerThread; ++i)
+    {
+        if( walkerIsAlive[i] ) aliveWalkerPerThread++;
+    }
+
+    size_t aliveWalker = MPISum(aliveWalkerPerThread);
+
+    if( MPIRank()==0 )
+    {
+        cout<<"Total number of walker is "<<method.walkerSize<<"."<<endl;
+        cout<<"Currently "<<aliveWalker<<" walkers are still alive."<<endl;
+        cout<<"Currently "<<method.walkerSize-aliveWalker<<" walkers are killed."<<endl;
+    }
+
+    for (int i = 0; i < method.walkerSizePerThread ; ++i)
+    {
+        walkerIsAlive[i] = true;
+    }
 }

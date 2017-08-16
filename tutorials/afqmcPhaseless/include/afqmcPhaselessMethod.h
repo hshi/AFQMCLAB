@@ -16,10 +16,10 @@ class AfqmcPhaselessMethod
 {
  public:
     double dt;
-    size_t timesliceSize;
     size_t thermalSize;
+    size_t writeNumber;
+    size_t measureNumberPerWrite;
     size_t measureSkipStep;
-    size_t writeSkipStep;
 
     int walkerSizePerThread;
     int walkerSize;
@@ -30,18 +30,11 @@ class AfqmcPhaselessMethod
     std::string initialWalkerFlag; //"setFromModel", "setRandomly", "sampleFromPhiT", "readFromFile", "readAllWalkers"
 
     size_t mgsStep;
-    bool isMgsStepAdjustable;
-    double mgsStepTolerance;
-
     size_t popControlStep;
-    bool isPopControlStepAdjustable;
-    double popControlStepTolerance;
 
     double ET;
-    bool isETAndBackGroundAdjustable;
     size_t ETAndBackGroundAdjustStep;
     size_t ETAndBackGroundAdjustMaxSize;
-    bool isETAndBackGroundGrowthEstimable;
     size_t ETAndBackGroundGrowthEstimateStep;
     size_t ETAndBackGroundGrowthEstimateMaxSize;
 

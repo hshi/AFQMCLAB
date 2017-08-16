@@ -6,21 +6,24 @@
 using namespace std;
 using namespace tensor_hao;
 
-void AfqmcPhaseless::addMeasurement()
+void AfqmcPhaseless::addMixedMeasurement()
 {
     complex<double> overlap;
     WalkerRight walkerTemp;
 
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
-        if( expHalfDtK.matrix.size() > 0 ) oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
-        else logOneBodyWalkerRightOperation.applyToRight(logExpHalfDtK, walker[i], walkerTemp);
+        if( walkerIsAlive[i] )
+        {
+            if (expHalfDtK.matrix.size() > 0) oneBodyWalkerRightOperation.applyToRight(expHalfDtK, walker[i], walkerTemp);
+            else logOneBodyWalkerRightOperation.applyToRight(logExpHalfDtK, walker[i], walkerTemp);
 
-        WalkerWalkerOperation walkerWalkerOperation(phiT, walkerTemp);
+            walkerWalkerOperation.set(phiT, walkerTemp);
 
-        overlap = exp( walkerWalkerOperation.returnLogOverlap() );
+            overlap = exp(walkerWalkerOperation.returnLogOverlap());
 
-        mixedMeasure.addMeasurement(walkerWalkerOperation, overlap);
+            mixedMeasure.addMeasurement(walkerWalkerOperation, overlap);
+        }
     }
 }
 
@@ -37,8 +40,8 @@ void AfqmcPhaseless::adjustETAndBackGroundThenResetMeasurement()
 
     if( MPIRank()==0 )
     {
-        cout<<"\nAdjust trial energy: "<<method.ET<<"\n"<<endl;
-        cout<<"Adjust background: "<<model.getCholeskyBg()<<endl;
+        cout<<"\nAdjust trial energy: "<<method.ET<<endl;
+        cout<<"Adjust background: "<<model.getCholeskyBg()<<"\n"<<endl;
     }
 
     mixedMeasure.reSet();

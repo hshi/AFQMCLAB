@@ -186,5 +186,3 @@ void AfqmcConstraintPath::prepareStop()
     writeWalkers();
     randomHaoSave();
 }
-
-//TODO:: Change CP code to use mixedMeasurement instead of measurement.
