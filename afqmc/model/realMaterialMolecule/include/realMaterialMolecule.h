@@ -13,7 +13,7 @@
 //Details about t, K, Kp are in my note.
 //t is the non-interacting matrix.
 //K is t - choleskyVecs*choleskyVecs.
-//Kp is K - choleskyBg*choleskyVecs.
+//Kp is K + choleskyBg*choleskyVecs.
 
 #ifdef MPI_HAO
 class RealMaterialMolecule;

@@ -71,7 +71,7 @@ class CanonicalBais:
         if( tol >= value[-1] ):
             print("Error!!! Tol = {}, too big for determining the dependency!".format(tol))
             sys.exit(1)
-        numberOfDependent = next(i for i, value in enumerate(value) if value > tol)
+        numberOfDependent = next(i for i, v in enumerate(value) if v > tol)
 
         print( "Number of dependent obritals is {}.".format(numberOfDependent) )
         self.L = self.nbasis - numberOfDependent
@@ -94,7 +94,7 @@ def getCholeskyAO(mol=None, tol=1e-5):
     Vdiag = V.diagonal().copy()
     while True:
         imax = np.argmax(Vdiag); vmax = Vdiag[imax]
-        print( "In side modified Cholesky {:<9} {:26.18e}.".format(choleskyNum, vmax) )
+        print( "Inside modified Cholesky {:<9} {:26.18e}.".format(choleskyNum, vmax) )
         if(vmax<tol):
             print( "Number of Cholesky fields is {:9}".format(choleskyNum) )
             break
