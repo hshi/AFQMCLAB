@@ -76,6 +76,7 @@ void AfqmcPhaseless::projectExpMinusDtKExpMinusDtV()
 {
     double phase;
     WalkerRight walkerTemp;
+    complex<double> auxForce;
     for(int i = 0; i < method.walkerSizePerThread; ++i)
     {
         if( walkerIsAlive[i] )
@@ -89,18 +90,25 @@ void AfqmcPhaseless::projectExpMinusDtKExpMinusDtV()
             {
                 twoBodyAux = expMinusDtV.sampleAuxFromForce(constForce);
                 twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, constForce);
+                auxForce = 0.0; for(size_t k = 0; k < model.getCholeskyNumber() ; ++k) auxForce += twoBodyAux(k)*constForce(k);
             }
             else if (method.forceType == "dynamicForce")
             {
                 dynamicForce = mixedMeasure.getForce(expMinusDtV, walkerWalkerOperation, method.forceCap);
                 twoBodyAux = expMinusDtV.sampleAuxFromForce(dynamicForce);
                 twoBodySample = expMinusDtV.getTwoBodySampleFromAuxForce(twoBodyAux, dynamicForce);
+                auxForce = 0.0; for(size_t k = 0; k < model.getCholeskyNumber() ; ++k) auxForce += twoBodyAux(k)*dynamicForce(k);
             }
             else
             {
                 cout << "Error!!! Do not know method.forceType " << method.forceType << endl;
                 exit(1);
             }
+
+            //Cos projection
+            phase = auxForce.imag();
+            if (cos(phase) <= 0.0) { walkerIsAlive[i] = false; continue; }
+            walker[i].addLogw( log( cos(phase) ) );
 
             twoBodySampleWalkerRightOperation.applyToRight(twoBodySample, walker[i], walkerTemp);
 

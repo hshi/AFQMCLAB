@@ -118,15 +118,6 @@ CholeskyRealSample CholeskyReal::getTwoBodySampleFromAuxForce(const CholeskyReal
     }
     choleskyRealSample.logw =  0.5*force2Sum - auxForce - sqrtMinusDt*auxBSum;
 
-//    complex<double> logAuxWeight = ( 0.5*force2Sum - auxForce );
-//    double cosPhase = cos( logAuxWeight.imag() );
-//    if( cosPhase>0.0 ) choleskyRealSample.logw =  logAuxWeight.real() + log(cosPhase) - sqrtMinusDt*auxBSum;
-//    else choleskyRealSample.logw = -200.0;
-
-    double cosPhase = cos( auxForce.imag() );
-    if( cosPhase>0.0 ) choleskyRealSample.logw += log(cosPhase);
-    else choleskyRealSample.logw = -200.0;
-
     setTwoBodySampleMatrix(choleskyRealSample, aux);
 
     return choleskyRealSample;
