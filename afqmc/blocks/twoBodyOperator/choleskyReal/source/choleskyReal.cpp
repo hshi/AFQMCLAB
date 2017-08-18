@@ -9,29 +9,32 @@ using namespace tensor_hao;
 
 #define pi 3.14159265358979324
 
-CholeskyReal::CholeskyReal():dt(0), choleskyVecs(nullptr), choleskyBg(nullptr) { }
+CholeskyReal::CholeskyReal():dt(0), sqrtMinusDt(0), choleskyNumber(0),choleskyBg(nullptr) { }
 
 CholeskyReal::CholeskyReal(double dt,
                            const TensorHao<double, 3> &choleskyVecs,
                            const TensorHao<double, 1> &choleskyBg)
 {
     CholeskyReal::dt = dt;
-    CholeskyReal::choleskyVecs = &choleskyVecs;
-    CholeskyReal::choleskyBg = &choleskyBg;
-
-    choleskyNumber = choleskyVecs.rank(2);
     sqrtMinusDt = sqrt( -dt*complex<double>(1.0, 0.0) );
+    choleskyNumber = choleskyVecs.rank(2);
+    initialSqrtMinusDtCholeskyVecs(choleskyVecs);
+    CholeskyReal::choleskyBg = &choleskyBg;
 }
 
 CholeskyReal::CholeskyReal(const CholeskyReal &x) { copy_deep(x); }
 
+CholeskyReal::CholeskyReal(CholeskyReal &&x) { move_deep(x); }
+
 CholeskyReal::~CholeskyReal() { }
 
-CholeskyReal &CholeskyReal::operator=(const CholeskyReal &x) { copy_deep(x); return *this; }
+CholeskyReal &CholeskyReal::operator = (const CholeskyReal &x) { copy_deep(x); return *this; }
+
+CholeskyReal &CholeskyReal::operator = (CholeskyReal &&x) { move_deep(x); return *this; }
 
 double CholeskyReal::getDt() const { return dt; }
 
-const TensorHao<double, 3> *CholeskyReal::getCholeskyVecs() const { return choleskyVecs; }
+const TensorHao<complex<double>, 3> &CholeskyReal::getSqrtMinusDtCholeskyVecs() const { return sqrtMinusDtCholeskyVecs; }
 
 const TensorHao<double, 1> *CholeskyReal::getCholeskyBg() const { return choleskyBg; }
 
@@ -39,7 +42,7 @@ size_t CholeskyReal::getCholeskyNumber() const { return choleskyNumber; }
 
 const complex<double> &CholeskyReal::getSqrtMinusDt() const { return sqrtMinusDt; }
 
-size_t CholeskyReal::returnBasisSize() const { return choleskyVecs->rank(0); }
+size_t CholeskyReal::returnBasisSize() const { return sqrtMinusDtCholeskyVecs.rank(0); }
 
 CholeskyRealForce CholeskyReal::readForce(const std::string &filename) const
 {
@@ -61,13 +64,13 @@ CholeskyRealAux CholeskyReal::sampleAuxFromForce(const CholeskyRealForce &force)
     return choleskyRealAux;
 }
 
-double CholeskyReal::logProbOfAuxFromForce(const CholeskyRealAux &aux, const CholeskyRealForce &force) const
+complex<double> CholeskyReal::logProbOfAuxFromForce(const CholeskyRealAux &aux, const CholeskyRealForce &force) const
 {
     if( choleskyNumber != aux.size() ) { cout<<"Error!!! Aux size does not consistent with choleskyNumber! "<<aux.size()<<endl; exit(1); }
     if( choleskyNumber != force.size() ) { cout<<"Error!!! Force size does not consistent with choleskyNumber! "<<force.size()<<endl; exit(1); }
 
     // Product: 1/sqrt(2.0*Pi) * Exp( -(x-force)^2 / 2.0 )
-    double logProb(0); double auxMinusForceSquare(0); double tmp;
+    complex<double> logProb(0,0), auxMinusForceSquare(0,0), tmp;
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         tmp = aux(i)-force(i);
@@ -82,10 +85,10 @@ CholeskyRealSample CholeskyReal::getTwoBodySampleFromAux(const CholeskyRealAux &
 {
     if( choleskyNumber != aux.size() ) { cout<<"Error!!! Aux size does not consistent with choleskyNumber! "<<aux.size()<<endl; exit(1); }
 
-    CholeskyRealSample choleskyRealSample( choleskyVecs->rank(0) );
+    CholeskyRealSample choleskyRealSample( sqrtMinusDtCholeskyVecs.rank(0) );
 
     // Product: 1/sqrt(2.0*Pi) * Exp( -x^2 / 2.0 ) * Exp( -sqrt(-dt) x*B )
-    double aux2Sum(0.0); double auxBSum(0.0);
+    complex<double> aux2Sum(0,0), auxBSum(0,0);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         aux2Sum += aux(i)*aux(i);
@@ -103,10 +106,10 @@ CholeskyRealSample CholeskyReal::getTwoBodySampleFromAuxForce(const CholeskyReal
     if( choleskyNumber != aux.size() ) { cout<<"Error!!! Aux size does not consistent with choleskyNumber! "<<aux.size()<<endl; exit(1); }
     if( choleskyNumber != force.size() ) { cout<<"Error!!! Force size does not consistent with choleskyNumber! "<<force.size()<<endl; exit(1); }
 
-    CholeskyRealSample choleskyRealSample( choleskyVecs->rank(0) );
+    CholeskyRealSample choleskyRealSample( sqrtMinusDtCholeskyVecs.rank(0) );
 
     // Product: Exp( force^2/2 - x*force ) Exp( -sqrt(-dt) x*B )
-    double force2Sum(0.0); double auxForce(0.0); double auxBSum(0.0);
+    complex<double> force2Sum(0,0), auxForce(0,0),auxBSum(0,0);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         force2Sum += force(i)*force(i);
@@ -115,6 +118,15 @@ CholeskyRealSample CholeskyReal::getTwoBodySampleFromAuxForce(const CholeskyReal
     }
     choleskyRealSample.logw =  0.5*force2Sum - auxForce - sqrtMinusDt*auxBSum;
 
+//    complex<double> logAuxWeight = ( 0.5*force2Sum - auxForce );
+//    double cosPhase = cos( logAuxWeight.imag() );
+//    if( cosPhase>0.0 ) choleskyRealSample.logw =  logAuxWeight.real() + log(cosPhase) - sqrtMinusDt*auxBSum;
+//    else choleskyRealSample.logw = -200.0;
+
+    double cosPhase = cos( auxForce.imag() );
+    if( cosPhase>0.0 ) choleskyRealSample.logw += log(cosPhase);
+    else choleskyRealSample.logw = -200.0;
+
     setTwoBodySampleMatrix(choleskyRealSample, aux);
 
     return choleskyRealSample;
@@ -122,29 +134,47 @@ CholeskyRealSample CholeskyReal::getTwoBodySampleFromAuxForce(const CholeskyReal
 
 double CholeskyReal::getMemory() const
 {
-    return 8.0*3.0+8.0+16.0;
+    return 8.0+16.0+8.0+sqrtMinusDtCholeskyVecs.getMemory()+8.0;
 }
 
 void CholeskyReal::copy_deep(const CholeskyReal &x)
 {
     dt = x.dt;
-    choleskyVecs = x.choleskyVecs;
-    choleskyBg = x.choleskyBg;
-    choleskyNumber = x.choleskyNumber;
     sqrtMinusDt = x.sqrtMinusDt;
+    choleskyNumber = x.choleskyNumber;
+    sqrtMinusDtCholeskyVecs = x.sqrtMinusDtCholeskyVecs;
+    choleskyBg = x.choleskyBg;
+}
+
+void CholeskyReal::move_deep(CholeskyReal &x)
+{
+    dt = x.dt;
+    sqrtMinusDt = x.sqrtMinusDt;
+    choleskyNumber = x.choleskyNumber;
+    sqrtMinusDtCholeskyVecs = move( x.sqrtMinusDtCholeskyVecs );
+    choleskyBg = x.choleskyBg;
+}
+
+void CholeskyReal::initialSqrtMinusDtCholeskyVecs(const tensor_hao::TensorHao<double, 3> &choleskyVecs)
+{
+    sqrtMinusDtCholeskyVecs.resize( choleskyVecs.getRank() );
+    complex<double> *p0 = sqrtMinusDtCholeskyVecs.data();
+    const double *p1 = choleskyVecs.data();
+    //There is a cubic scaling, can be faster by OpenMP
+    for(size_t i = 0; i < choleskyVecs.size(); ++i)
+    {
+        p0[i] = p1[i] * sqrtMinusDt;
+    }
 }
 
 void CholeskyReal::setTwoBodySampleMatrix(CholeskyRealSample &choleskyRealSample, const CholeskyRealAux &aux) const
 {
-    //Calculate aux * choleskyVecs
-    size_t L = choleskyVecs->rank(0); size_t L2 = L*L;
-    TensorHao<double, 1> vecsAux(L2);
-    TensorHaoRef<double, 2> vecs(L2, choleskyNumber);
-    vecs.point( const_cast<double*>( choleskyVecs->data() ) );
+    //Calculate aux * sqrtMinusDt * choleskyVecs
+    size_t L = sqrtMinusDtCholeskyVecs.rank(0); size_t L2 = L * L;
+    TensorHaoRef<complex<double>, 1> vecsAux(L2);
+    TensorHaoRef<complex<double>, 2> vecs(L2, choleskyNumber);
+    vecsAux.point( choleskyRealSample.matrix.data() );
+    vecs.point( const_cast<complex<double>*> ( sqrtMinusDtCholeskyVecs.data() ) );
     BL_NAME(gemv)(vecs, aux, vecsAux);
-
-    // sqrt(-dt) * aux * choleskyVecs
-    complex<double> *pMatrix = choleskyRealSample.matrix.data();
-    const double *pVecsAux = vecsAux.data();
-    for(size_t i = 0; i < L2; ++i) pMatrix[i] = sqrtMinusDt * pVecsAux[i];
 }
+

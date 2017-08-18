@@ -213,7 +213,6 @@ TEST_F(RealMaterialMoleculeTest, returnExpMinusAlphaV)
     CholeskyReal choleskyReal=realMaterialMolecule.returnExpMinusAlphaV(dt);
 
     EXPECT_EQ( dt, choleskyReal.getDt() );
-    EXPECT_EQ( choleskyReal.getCholeskyVecs(), &realMaterialMolecule.getCholeskyVecs() );
     EXPECT_EQ( choleskyReal.getCholeskyBg(), &realMaterialMolecule.getCholeskyBg() );
     EXPECT_EQ( choleskyNumber, choleskyReal.getCholeskyNumber() );
 }

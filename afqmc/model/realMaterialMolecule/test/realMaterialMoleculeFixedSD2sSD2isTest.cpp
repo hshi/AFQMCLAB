@@ -145,7 +145,7 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
     const TensorHao<complex<double>, 2 > &greenUp = walkerWalkerOperation.returnGreenMatrixUp();
     const TensorHao<complex<double>, 2 > &greenDn = walkerWalkerOperation.returnGreenMatrixDn();
 
-    TensorHao<double,1> forceExact(choleskyNumber); complex<double> tmp;
+    TensorHao<complex<double>,1> forceExact(choleskyNumber); complex<double> tmp;
     for(size_t k = 0; k < choleskyNumber; ++k)
     {
         tmp = 0.0;
@@ -158,9 +158,9 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
         }
         tmp -= choleskyBg(k);
         tmp *= twoBody.getSqrtMinusDt();
-        if( tmp.real() > cap ) forceExact(k) = cap;
-        else if( tmp.real() <-cap ) forceExact(k) =-cap;
-        else forceExact(k) = tmp.real();
+        if( tmp.real() > cap ) forceExact(k) = complex<double>( cap, tmp.imag() );
+        else if( tmp.real() <-cap ) forceExact(k) =complex<double>( -cap, tmp.imag() );
+        else forceExact(k) = tmp;
     }
     MPIBcast(forceExact);
 

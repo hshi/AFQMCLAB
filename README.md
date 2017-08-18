@@ -129,6 +129,10 @@ intel-mkl-link-line-advisor now suggests to link library `-liomp5` (icpc) and `-
 might need to move to `-openmp` (icpc) later.
 - Number of walkers in QMC should be smaller than INT_MAX, since MPI MPI_Scatterv does not support long displs array.
 
+  //TODO: If everything is right, change Cholesky real to Cholesky
+  
+  //TODO: Back ground can be real? And Cholesky can combine with dt?
+  
   //TODO: Update metropolis code! And make the phaseless code to work.
   
   //TODO: Use flag -DOPENMPALL, -DOPENMP, -DOPENMPLAPACKBLAS

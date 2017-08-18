@@ -17,7 +17,7 @@ class CholeskyRealTest: public ::testing::Test
     size_t L, choleskyNumber;
     TensorHao<double, 3> choleskyVecs;
     TensorHao<double, 1> choleskyBg;
-    TensorHao<double, 1> force;
+    TensorHao<complex<double>, 1> force;
 
     CholeskyRealTest( )
     {
@@ -34,7 +34,6 @@ TEST_F(CholeskyRealTest, voidConstruction)
 {
     CholeskyReal choleskyReal;
     EXPECT_EQ( 0.0, choleskyReal.getDt() );
-    EXPECT_FALSE( choleskyReal.getCholeskyVecs() );
     EXPECT_FALSE( choleskyReal.getCholeskyBg() );
 }
 
@@ -43,7 +42,6 @@ TEST_F(CholeskyRealTest, paramsConstruction)
     CholeskyReal choleskyReal(dt, choleskyVecs, choleskyBg);
 
     EXPECT_DOUBLE_EQ( dt, choleskyReal.getDt() );
-    EXPECT_EQ( &choleskyVecs, choleskyReal.getCholeskyVecs() );
     EXPECT_EQ( &choleskyBg, choleskyReal.getCholeskyBg() );
     EXPECT_EQ( choleskyNumber, choleskyReal.getCholeskyNumber() );
     EXPECT_EQ( L, choleskyReal.returnBasisSize() );
@@ -60,14 +58,14 @@ TEST_F(CholeskyRealTest, logProbOfAuxFromForce)
 {
     CholeskyReal choleskyReal(dt, choleskyVecs, choleskyBg);
     CholeskyRealAux aux = choleskyReal.sampleAuxFromForce(force);
-    double logProb = choleskyReal.logProbOfAuxFromForce(aux, force);
+    complex<double> logProb = choleskyReal.logProbOfAuxFromForce(aux, force);
 
-    double prob(1.0);
+    complex<double> prob(1.0);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         prob *= exp( -0.5 * (aux(i)-force(i)) * (aux(i)-force(i)) ) / ( sqrt(2.0*pi) );
     }
-    EXPECT_DOUBLE_EQ( prob, exp(logProb) );
+    EXPECT_COMPLEX_NEAR( prob, exp(logProb), 1e-12 );
 }
 
 TEST_F(CholeskyRealTest, getTwoBodySampleFromAux)
@@ -76,25 +74,27 @@ TEST_F(CholeskyRealTest, getTwoBodySampleFromAux)
     CholeskyRealAux aux = choleskyReal.sampleAuxFromForce(force);
     CholeskyRealSample sample = choleskyReal.getTwoBodySampleFromAux(aux);
 
-    complex<double> w(1.0); complex<double> sqrtMinusDt=sqrt( -dt*complex<double>(1.0,0.0) );
+    complex<double> w(1.0); complex<double> sqrtMinusDt= choleskyReal.getSqrtMinusDt();
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         w *= exp( -0.5*aux(i)*aux(i) -aux(i)*sqrtMinusDt*choleskyBg(i) ) / ( sqrt(2.0*pi) );
     }
     EXPECT_COMPLEX_NEAR( w, exp(sample.logw), 1e-12 );
 
-    TensorHao<double, 2> matrixReal(L,L); matrixReal=0.0;
+    TensorHao<complex<double>, 2> matrixExact(L,L); matrixExact= complex<double>(0,0);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
-        matrixReal += aux(i) * choleskyVecs[i];
+        for(size_t j = 0; j < L; ++j)
+        {
+            for(size_t k = 0; k < L; ++k)
+            {
+                matrixExact(k,j) += aux(i) * choleskyVecs(k,j,i);
+            }
+        }
     }
-    TensorHao< complex<double>, 2> matrixComplex(L,L);
-    for(size_t i = 0; i <L ; ++i)
-    {
-        for(size_t j = 0; j < L; ++j) matrixComplex(j,i) = sqrtMinusDt * matrixReal(j,i);
-    }
+    matrixExact *= sqrtMinusDt;
 
-    EXPECT_FALSE( diff(matrixComplex, sample.matrix, 1e-12) );
+    EXPECT_FALSE( diff(matrixExact, sample.matrix, 1e-12) );
 }
 
 TEST_F(CholeskyRealTest, getTwoBodySampleFromAuxForce)
@@ -110,16 +110,18 @@ TEST_F(CholeskyRealTest, getTwoBodySampleFromAuxForce)
     }
     EXPECT_COMPLEX_NEAR( w, exp(sample.logw), 1e-12 );
 
-    TensorHao<double, 2> matrixReal(L,L); matrixReal=0.0;
+    TensorHao<complex<double>, 2> matrixExact(L,L); matrixExact= complex<double>(0,0);
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
-        matrixReal += aux(i) * choleskyVecs[i];
+        for(size_t j = 0; j < L; ++j)
+        {
+            for(size_t k = 0; k < L; ++k)
+            {
+                matrixExact(k,j) += aux(i) * choleskyVecs(k,j,i);
+            }
+        }
     }
-    TensorHao< complex<double>, 2> matrixComplex(L,L);
-    for(size_t i = 0; i <L ; ++i)
-    {
-        for(size_t j = 0; j < L; ++j) matrixComplex(j,i) = sqrtMinusDt * matrixReal(j,i);
-    }
+    matrixExact *= sqrtMinusDt;
 
-    EXPECT_FALSE( diff(matrixComplex, sample.matrix, 1e-12) );
+    EXPECT_FALSE( diff(matrixExact, sample.matrix, 1e-12) );
 }
