@@ -103,20 +103,13 @@ CholeskyRealForce RealMaterialMoleculeMeasureFixedSD2sSD2is::getForce(const Chol
     complex<double> sqrtMinusDt = choleskyReal.getSqrtMinusDt();
 
     TensorHao<complex<double>, 1> choleskyBg = calculateCholeskyBg(sd2sSD2isOperation);
-    CholeskyRealForce force(choleskyNumber); complex<double> oneForce; double forceReal, forceImag;
+    CholeskyRealForce force(choleskyNumber); complex<double> oneForce;
     for(size_t i = 0; i < choleskyNumber; ++i)
     {
         oneForce = (choleskyBg(i)-currentBg(i)) * sqrtMinusDt;
 
-        forceReal = oneForce.real();
-        if( forceReal >  cap )  forceReal = cap;
-        if( forceReal < -cap )  forceReal =-cap;
-
-        forceImag = oneForce.imag();
-        if( forceImag >  cap )  forceImag = cap;
-        if( forceImag < -cap )  forceImag =-cap;
-
-        force(i) = complex<double>(forceReal, forceImag);
+        if( abs(oneForce) > cap ) force(i) = oneForce*cap/abs(oneForce);
+        else force(i) = oneForce;
     }
 
     return force;

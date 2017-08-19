@@ -159,17 +159,8 @@ TEST_F(realMaterialMoleculeFixedSD2sSD2isTest, getForce)
         tmp -= choleskyBg(k);
         tmp *= twoBody.getSqrtMinusDt();
 
-        double real, imag;
-
-        if( tmp.real() > cap ) real = cap;
-        else if( tmp.real()<-cap ) real = -cap;
-        else real=tmp.real();
-
-        if( tmp.imag() > cap ) imag = cap;
-        else if( tmp.imag()<-cap ) imag = -cap;
-        else imag=tmp.imag();
-
-        forceExact(k) = complex<double>(real, imag);
+        if( abs(tmp) > cap ) forceExact(k) = tmp/abs(tmp) * cap;
+        else forceExact(k)=tmp;
     }
     MPIBcast(forceExact);
 
