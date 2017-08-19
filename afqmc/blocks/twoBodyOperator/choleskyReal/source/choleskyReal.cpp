@@ -151,11 +151,10 @@ void CholeskyReal::initialSqrtMinusDtCholeskyVecs(const tensor_hao::TensorHao<do
     sqrtMinusDtCholeskyVecs.resize( choleskyVecs.getRank() );
     complex<double> *p0 = sqrtMinusDtCholeskyVecs.data();
     const double *p1 = choleskyVecs.data();
+
     //There is a cubic scaling, can be faster by OpenMP
-    for(size_t i = 0; i < choleskyVecs.size(); ++i)
-    {
-        p0[i] = p1[i] * sqrtMinusDt;
-    }
+    size_t choleskyVecsSize = choleskyVecs.size();
+    for(size_t i = 0; i < choleskyVecsSize; ++i) p0[i] = p1[i] * sqrtMinusDt;
 }
 
 void CholeskyReal::setTwoBodySampleMatrix(CholeskyRealSample &choleskyRealSample, const CholeskyRealAux &aux) const

@@ -48,8 +48,8 @@ void RealMaterialMolecule::read(const string &filename)
     readFile(choleskyNumber, file, "choleskyNumber");
     t.resize(L, L); readFile( t.size(),  t.data(),  file, "t" );
     K.resize(L, L); readFile( K.size(),  K.data(),  file, "K" );
-    choleskyVecs.resize(L, L, choleskyNumber); readFile(choleskyVecs.size(), choleskyVecs.data(), file, "choleskyVecs");
-    choleskyBg.resize(choleskyNumber); readFile(choleskyBg.size(), choleskyBg.data(), file, "choleskyBg");
+    choleskyVecs.resize(L, L, choleskyNumber); readFile(choleskyVecs.size(), choleskyVecs.data(), file, "choleskyVecs" );
+    choleskyBg.resize(choleskyNumber); readFile(choleskyBg.size(), choleskyBg.data(), file, "choleskyBg" );
 
     file.close();
 
@@ -69,8 +69,8 @@ void RealMaterialMolecule::write(const string &filename) const
     writeFile( choleskyNumber, file, "choleskyNumber" );
     writeFile( t.size(),  t.data(),  file, "t" );
     writeFile( K.size(),  K.data(),  file, "K" );
-    writeFile( choleskyVecs.size(), choleskyVecs.data(), file, "choleskyVecs");
-    writeFile( choleskyBg.size(), choleskyBg.data(), file, "choleskyBg");
+    writeFile( choleskyVecs.size(), choleskyVecs.data(), file, "choleskyVecs" );
+    writeFile( choleskyBg.size(), choleskyBg.data(), file, "choleskyBg" );
 
     file.close();
 }
@@ -150,10 +150,6 @@ CholeskyReal RealMaterialMolecule::returnExpMinusAlphaV(double alpha)
     return CholeskyReal(alpha, choleskyVecs, choleskyBg);
 }
 
-RealMaterialMolecule::RealMaterialMolecule(const RealMaterialMolecule &x)  { }
-
-RealMaterialMolecule &RealMaterialMolecule::operator=(const RealMaterialMolecule &x) { return *this; }
-
 void RealMaterialMolecule::setKp()
 {
     if( KpEigenStatus >=1 ) return;
@@ -197,3 +193,7 @@ double RealMaterialMolecule::getMemory() const
 
     return mem;
 }
+
+RealMaterialMolecule::RealMaterialMolecule(const RealMaterialMolecule &x)  { }
+
+RealMaterialMolecule &RealMaterialMolecule::operator=(const RealMaterialMolecule &x) { return *this; }
